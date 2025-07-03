@@ -1,0 +1,22 @@
+# Node modules (usually very large, no need to push)
+node_modules/
+
+# Environment variables
+.env
+
+# Build output folders
+dist/
+build/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+.idea/
+
+
