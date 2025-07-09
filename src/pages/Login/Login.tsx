@@ -51,7 +51,7 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="login">
       <h1>Login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
