@@ -3,16 +3,18 @@ import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/Login/Login";
 import "./index.css";
 
+import { Layout } from "./components/layout";
+
 function App() {
   const { isAuthenticated, logout } = useContext(AuthContext);
 
   return (
     <>
       {isAuthenticated ? (
-        <div>
+        <Layout>
           <h1>Welcome!</h1>
           <button onClick={logout}>Logout</button>
-        </div>
+        </Layout>
       ) : (
         <Login />
       )}

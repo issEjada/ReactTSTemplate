@@ -4,18 +4,12 @@ import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 
+
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const context = useContext(AuthContext);
 
-  const { control, handleSubmit } = useForm<FormLoginValues>({
-    mode: "onTouched",
-    defaultValues: {
-      name: "",
-      password: "",
-      remember: false,
-    },
-  });
+
 
   const onSubmit = async (data: FormLoginValues) => {
     setIsLoading(true);
@@ -52,51 +46,77 @@ const LoginForm = () => {
   };
   return (
     <>
-      <h1 className="text-red-200">Login</h1>
-      <div className="flex  items-center w-[720px] h-[1024px] !bg-red-100 !text-red-900">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
-            <div className="input-group">
-              <label htmlFor="name">Username: </label>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => <input id="name" {...field} />}
-              />
+      <div className="flex max-w-1440 mx-auto min-h-screen">
+
+        <div className=" flex-1 flex flex-col  justify-center items-center relative">
+          <div className="max-w-[360px]">
+            <div className="mb-10">
+              <img src="/src/assets/svg/logo_with_text.svg" alt="Logo" />
             </div>
-            <div className="input-group">
-              <label htmlFor="password">Password: </label>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <input type="password" id="password" {...field} />
-                )}
-              />
+            <div className="mb-8">
+              <div className="font-bold text-4xl mb-3">Login</div>
+              <div className="text-gray-600">Welcome back! Please enter your details.</div>
             </div>
-            <div className="input-group">
-              <label htmlFor="remember">Remember me: </label>
-              <Controller
-                name="remember"
-                control={control}
-                render={({ field }) => (
+
+            <div>
+              <div className="mb-5">
+                <label className="">
+                  <div className="mb-1.5 text-sm text-gray-600 font-semibold">Email</div>
                   <input
-                    type="checkbox"
-                    id="remember"
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
+                    type="text"
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+                    {...useForm<FormLoginValues>().register("name", { required: true })}
                   />
-                )}
-              />
+                </label>
+              </div>
+              <div className="mb-6">
+                <label className="">
+                  <div className="mb-1.5 text-sm text-gray-600 font-semibold">Password</div>
+                  <input
+                    type="password"
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+                    {...useForm<FormLoginValues>().register("name", { required: true })}
+                  />
+                </label>
+              </div>
+
+              <div className="flex justify-between mb-6">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="w-4 h-4 border-gray-300" />
+                  Remember me
+                </label>
+                <a href="#" className="text-blue-700 font-bold hover:underline">Forgot Password?</a>
+              </div>
+
+              <button className="text-white font-bold bg-blue-700 p-2.5 w-full rounded-lg">Sign in</button>
+            </div>
+
+            <div className="mt-9 text-sm text-gray-600 text-center">
+              Don’t have an account?
+              <a href="#" className="text-blue-700 font-bold hover:underline mx-2">Sign up</a>
             </div>
           </div>
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+
+          <div className="font-medium text-sm text-gray-600 absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            © ALPHAS 2025
+          </div>
+        </div>
+
+
+        <div className="bg-black flex-1 relative p-8">
+
+          <div className="text-end">
+            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg">
+              <img src="/src/assets/svg/life-buoy.svg" />
+              Need Help!
+            </button>
+          </div>
+
+          <img src="/login_lower_logo.png" alt="Login Background" className="absolute bottom-16" />
+
+        </div>
       </div>
     </>
   );
