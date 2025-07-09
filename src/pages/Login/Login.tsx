@@ -52,8 +52,8 @@ const LoginForm = () => {
   };
   return (
     <>
-      <h1>Login</h1>
-      <div className="flex-1 flex-col items-center w-[720px] h-[1024px] opacity-100 rotate-0">
+      <h1 className="text-red-200">Login</h1>
+      <div className="flex  items-center w-[720px] h-[1024px] !bg-red-100 !text-red-900">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
             <div className="input-group">
