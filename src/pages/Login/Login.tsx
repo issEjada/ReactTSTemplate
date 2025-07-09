@@ -51,52 +51,54 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="login">
+    <>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
-          <div className="input-group">
-            <label htmlFor="name">Username: </label>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => <input id="name" {...field} />}
-            />
+      <div className="flex-1 flex-col items-center w-[720px] h-[1024px] opacity-100 rotate-0">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-group">
+            <div className="input-group">
+              <label htmlFor="name">Username: </label>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => <input id="name" {...field} />}
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password: </label>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <input type="password" id="password" {...field} />
+                )}
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="remember">Remember me: </label>
+              <Controller
+                name="remember"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
+                )}
+              />
+            </div>
           </div>
-          <div className="input-group">
-            <label htmlFor="password">Password: </label>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <input type="password" id="password" {...field} />
-              )}
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="remember">Remember me: </label>
-            <Controller
-              name="remember"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={field.value}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                  onBlur={field.onBlur}
-                  name={field.name}
-                  ref={field.ref}
-                />
-              )}
-            />
-          </div>
-        </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-    </div>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 
