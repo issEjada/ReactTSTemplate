@@ -49,7 +49,7 @@ const LoginForm = () => {
         <div className=" flex-1 flex flex-col  justify-center items-center relative">
           <div className="max-w-[360px]">
             <div className="mb-10">
-              <LogoWithText />
+              <LogoWithText className=" dark:text-white" />
             </div>
             <div className="mb-8">
               <div className="font-bold text-4xl mb-3">Login</div>
