@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const DarkModeToggle: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -9,18 +9,16 @@ const DarkModeToggle: React.FC = () => {
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
-  useEffect(() => {
-    if (isDarkMode) {
+  const toggleDarkMode = () => {
+    const newIsDarkMode = !isDarkMode;
+    setIsDarkMode(newIsDarkMode);
+    if (newIsDarkMode) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
   };
 
   return (

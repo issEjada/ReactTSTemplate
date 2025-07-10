@@ -138,7 +138,7 @@ const LoginForm = () => {
 
         <div className="bg-black flex-1 relative p-8 dark:bg-gray-900">
           <div className="text-end">
-            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg dark:bg-gray-700">
+            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg dark:bg-gray-800">
               <img src="/src/assets/svg/life-buoy.svg" alt="Help" />
               Need Help!
             </button>
