@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
+import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
@@ -48,7 +49,7 @@ const LoginForm = () => {
         <div className=" flex-1 flex flex-col  justify-center items-center relative">
           <div className="max-w-[360px]">
             <div className="mb-10">
-              <img src="/src/assets/svg/logo_with_text.svg" alt="Logo" />
+              <LogoWithText />
             </div>
             <div className="mb-8">
               <div className="font-bold text-4xl mb-3">Login</div>
