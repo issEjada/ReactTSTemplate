@@ -24,9 +24,14 @@ export const DarkModeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+      className={`w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300
+        ${isDarkMode ? "bg-green-400" : "bg-gray-300"}`}
+      aria-label="Toggle Dark Mode"
     >
-      {isDarkMode ? "Light Mode" : "Dark Mode"}
+      <div
+        className={`w-6 h-6 rounded-full bg-white transition-transform duration-300 transform
+          ${isDarkMode ? "translate-x-6" : "translate-x-0"}`}
+      />
     </button>
   );
 };
