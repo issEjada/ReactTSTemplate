@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const DarkModeToggle: React.FC = () => {
+export const DarkModeToggle: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
@@ -31,4 +31,14 @@ const DarkModeToggle: React.FC = () => {
   );
 };
 
-export default DarkModeToggle;
+export interface ThemeWrapperProps {
+  children: React.ReactNode;
+}
+
+export const ThemeWrapper: React.FC<ThemeWrapperProps> = ({ children }) => {
+  return (
+    <div className="min-h-screen bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+      {children}
+    </div>
+  );
+};
