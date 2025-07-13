@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
+import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
@@ -48,7 +49,7 @@ const LoginForm = () => {
         <div className=" flex-1 flex flex-col  justify-center items-center relative">
           <div className="max-w-[360px]">
             <div className="mb-10">
-              <img src="/src/assets/svg/logo_with_text.svg" alt="Logo" />
+              <LogoWithText className=" dark:text-white" />
             </div>
             <div className="mb-8">
               <div className="font-bold text-4xl mb-3">Login</div>
@@ -60,13 +61,13 @@ const LoginForm = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-5">
                 <label className="">
-                  <div className="mb-1.5 text-sm text-gray-600 font-semibold">
+                  <div className="mb-1.5 text-sm text-gray-600  font-semibold">
                     Email
                   </div>
                   <input
                     type="text"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-white"
                     {...register("name", {
                       required: true,
                     })}
@@ -75,13 +76,13 @@ const LoginForm = () => {
               </div>
               <div className="mb-6">
                 <label className="">
-                  <div className="mb-1.5 text-sm text-gray-600 font-semibold">
+                  <div className="mb-1.5 text-sm text-gray-600  font-semibold">
                     Password
                   </div>
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-white"
                     {...register("password", {
                       required: true,
                     })}
@@ -98,7 +99,7 @@ const LoginForm = () => {
                     render={({ field }) => (
                       <input
                         type="checkbox"
-                        className="w-4 h-4 border-gray-300"
+                        className="w-4 h-4 border-gray-300 bg-white"
                         checked={field.value}
                         {...field}
                       />
@@ -131,14 +132,14 @@ const LoginForm = () => {
             </div>
           </div>
 
-          <div className="font-medium text-sm text-gray-600 absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <div className="font-medium text-sm text-gray-600  absolute bottom-8 left-1/2 transform -translate-x-1/2">
             © ALPHAS 2025
           </div>
         </div>
 
-        <div className="bg-black flex-1 relative p-8">
+        <div className="bg-black flex-1 relative p-8 ">
           <div className="text-end">
-            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg">
+            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg ">
               <img src="/src/assets/svg/life-buoy.svg" alt="Help" />
               Need Help!
             </button>

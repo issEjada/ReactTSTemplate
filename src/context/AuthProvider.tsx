@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode } from "react";
+import React, { useState, useEffect, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import SecureStorage from "react-secure-storage";
 import { httpClient } from "../services/api/httpClient";
@@ -8,6 +8,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const accessToken = SecureStorage.getItem(ConstantKeys.accessToken);
+    if (accessToken) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const login = async (
     username?: string,
