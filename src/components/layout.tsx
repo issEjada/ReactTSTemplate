@@ -7,7 +7,14 @@ type LayoutProps = {
 export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="container min-h-screen mx-auto">
-        {children}
+      <div className='flex'>
+        <div className='w-[256px]'>
+          side bar goes here
+        </div>
+        <div>
+          {children}
+        </div>
+      </div>
     </div>
   );
 };
