@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
+import FullScreenSpinner from "/src/components/FullScreenSpinner";
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
@@ -46,6 +47,11 @@ const LoginForm = () => {
   return (
     <>
       <div className="flex max-w-1440 mx-auto min-h-screen">
+
+        {isLoading &&
+          <FullScreenSpinner />
+        }
+
         <div className=" flex-1 flex flex-col  justify-center items-center relative">
           <div className="max-w-[360px]">
             <div className="mb-10">
