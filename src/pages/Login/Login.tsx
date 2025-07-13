@@ -46,26 +46,26 @@ const LoginForm = () => {
   };
   return (
     <>
-      <div className="flex max-w-1440 mx-auto min-h-screen">
+      <div className="flex  mx-auto min-h-screen">
 
         {isLoading &&
           <FullScreenSpinner />
         }
 
-        <div className=" flex-1 flex flex-col  justify-center items-center relative">
-          <div className="max-w-[360px]">
+        <div className=" flex-1 flex flex-col  justify-center items-center relative w-1/2">
+          <div className="w-[360px] mt-24 -ml-6">
             <div className="mb-10">
               <LogoWithText className=" dark:text-white" />
             </div>
             <div className="mb-8">
-              <div className="font-bold text-4xl mb-3">Login</div>
+              <div className="font-bold text-4xl mb-3">LOGIN</div>
               <div className="text-gray-600">
                 Welcome back! Please enter your details.
               </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-5">
+              <div className="mb-2.5">
                 <label className="">
                   <div className="mb-1.5 text-sm text-gray-600  font-semibold">
                     Email
@@ -80,7 +80,7 @@ const LoginForm = () => {
                   />
                 </label>
               </div>
-              <div className="mb-6">
+              <div className="mb-2">
                 <label className="">
                   <div className="mb-1.5 text-sm text-gray-600  font-semibold">
                     Password
@@ -97,7 +97,7 @@ const LoginForm = () => {
               </div>
 
               <div className="flex justify-between mb-6">
-                <label className="flex items-center gap-2">
+                <label className="flex items-center gap-2 text-sm">
                   <Controller
                     name="remember"
                     control={control}
@@ -113,7 +113,7 @@ const LoginForm = () => {
                   />
                   Remember me
                 </label>
-                <a href="#" className="text-blue-700 font-bold hover:underline">
+                <a href="#" className="text-blue-700 font-bold hover:underline text-sm">
                   Forgot Password?
                 </a>
               </div>
@@ -143,9 +143,9 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <div className="bg-black flex-1 relative p-8 ">
+        <div className="bg-black flex-1 relative pt-8 pr-14  w-1/2">
           <div className="text-end">
-            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg ">
+            <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg text-xs ">
               <img src="/src/assets/svg/life-buoy.svg" alt="Help" />
               Need Help!
             </button>
@@ -154,9 +154,10 @@ const LoginForm = () => {
           <img
             src="/login_lower_logo.png"
             alt="Login Background"
-            className="absolute bottom-16"
+            className="absolute bottom-16 right-8"
           />
         </div>
+
       </div>
     </>
   );

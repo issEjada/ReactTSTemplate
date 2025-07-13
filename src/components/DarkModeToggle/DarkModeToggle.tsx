@@ -42,7 +42,7 @@ export interface ThemeWrapperProps {
 
 export const ThemeWrapper: React.FC<ThemeWrapperProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+    <div className="bg-white  dark:bg-gray-800  transition-colors duration-300">
       {children}
     </div>
   );
