@@ -1,3 +1,15 @@
 export const AppRoutes = {
   home: "/",
+  testing: "/testing",
+  login: "/login",
+  rules: "/rules",
+  events: "/events",
+  systemConfiguration: "/system-configuration",
+  monitoring: "/monitoring",
+  organizations: "/organizations",
+  users: "/users",
+  analytics: "/analytics",
+  myAccount: "/my-account",
+  aboutUs: "/about-us",
+  support: "/support",
 };
