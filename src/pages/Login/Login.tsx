@@ -4,19 +4,23 @@ import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
+import SupportIcon from "../../assets/svg/support.svg?react";
 import FullScreenSpinner from "../../components/FullScreenSpinner";
+
+
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const context = useContext(AuthContext);
 
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const onSubmit = async (data: FormLoginValues) => {
     setIsLoading(true);
     console.log("Submitting login form", data, data.remember);
     try {
       await context.login(data.name, data.password, data.remember);
-      console.log("Login successful", data);
 
       toast("Welcome!", {
         position: "top-right",
@@ -125,6 +129,9 @@ const LoginForm = () => {
               >
                 Sign in
               </button>
+              <div className="text-xs text-red-600 mt-2">
+                {errorMsg && errorMsg} 
+              </div>
             </form>
 
             <div className="mt-9 text-sm text-gray-600 text-center">
@@ -144,12 +151,15 @@ const LoginForm = () => {
         </div>
 
         <div className="bg-black flex-1 relative pt-8 pr-14  w-1/2">
+
           <div className="text-end">
             <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg text-xs ">
-              <img src="/src/assets/svg/life-buoy.svg" alt="Help" />
+              <SupportIcon />
               Need Help!
             </button>
           </div>
+
+          <img src="/login_patteren_bg.svg" alt="Login Background" className="absolute top-0 left-0 w-full h-full object-cover" />
 
           <img
             src="/login_lower_logo.png"
