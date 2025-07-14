@@ -1,4 +1,5 @@
 /// <reference types="vite-plugin-svgr/client" />
+/// <reference types="vite/client" />
 
 // src/declarations.d.ts
 declare module "*.svg?react" {
@@ -15,4 +16,16 @@ declare module "*.svg" {
 declare module "*.css" {
   const classes: { [key: string]: string };
   export default classes;
+}
+
+interface ImportMetaEnv {
+  readonly VITE_API_LOGIN_URL: string;
+  readonly VITE_API_LOGOUT_URL: string;
+  readonly VITE_AUTH_USERNAME: string;
+  readonly VITE_AUTH_PASSWORD: string;
+  // Add other VITE_ variables here as needed
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
 }

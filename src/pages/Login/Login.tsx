@@ -7,14 +7,12 @@ import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
 import SupportIcon from "../../assets/svg/support.svg?react";
 import FullScreenSpinner from "../../components/FullScreenSpinner";
 
-
-
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const context = useContext(AuthContext);
 
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  // const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const onSubmit = async (data: FormLoginValues) => {
     setIsLoading(true);
@@ -108,7 +106,7 @@ const LoginForm = () => {
                         type="checkbox"
                         className="w-4 h-4 border-gray-300 bg-white"
                         checked={field.value}
-                        {...field}
+                        onChange={(e) => field.onChange(e.target.checked)}
                       />
                     )}
                   />
@@ -130,7 +128,7 @@ const LoginForm = () => {
                 Sign in
               </button>
               <div className="text-xs text-red-600 mt-2">
-                {errorMsg && errorMsg}
+                {/* {errorMsg && errorMsg} */}
               </div>
             </form>
 
@@ -151,7 +149,6 @@ const LoginForm = () => {
         </div>
 
         <div className="bg-black flex-1 relative pt-8 pr-14  w-1/2">
-
           <div className="text-end">
             <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg text-xs ">
               <SupportIcon />
@@ -159,7 +156,11 @@ const LoginForm = () => {
             </button>
           </div>
 
-          <img src="/login_patteren_bg.svg" alt="Login Background" className="absolute top-0 left-0 w-full h-full object-cover" />
+          <img
+            src="/login_patteren_bg.svg"
+            alt="Login Background"
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
 
           <img
             src="/login_lower_logo.png"
