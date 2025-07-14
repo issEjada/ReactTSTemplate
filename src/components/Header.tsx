@@ -18,11 +18,11 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <div className="flex items-center space-x-4">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
-          <SearchIcon className=" absolute left-3 w-4 h-4 text-gray-800" />
+          <SearchIcon className="absolute left-3 w-4 h-4 text-gray-800 dark:text-gray-400 cursor-pointer " />
           <input
             type="text"
             placeholder="Search"
-            className="pl-10 pr-10 py-1.5 rounded-md bg-gray-100 dark:bg-gray-900 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none"
+            className="pl-10 pr-10 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none"
           />
           <kbd className="absolute right-2 text-xs text-gray-400">⌘/</kbd>
         </div>
@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
         <div className="flex items-center space-x-3">
           <SunIcon className="dark:text-gray-400 cursor-pointer" />
           <ClockIcon className="dark:text-gray-400 cursor-pointer" />
-          <BellIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer" />
+          <BellIcon className="dark:text-gray-400 cursor-pointer" />
         </div>
 
         {/* Profile */}
