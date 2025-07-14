@@ -68,8 +68,6 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter(Boolean);
 
-  const [isClosed] = useState<boolean>(false);
-
   return (
     <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
       <SideBarIcon
