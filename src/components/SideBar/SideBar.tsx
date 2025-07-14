@@ -4,6 +4,7 @@ import TablerIcon from "../../assets/svg/darkMode.svg?react";
 import HealthIcon from "../../assets/svg/systemHealthStatusNormal.svg?react";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
+import LogoWithoutText from "../../../public/logo.svg?react";
 
 export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
   console.log("isClosed", isClosed);
@@ -12,18 +13,22 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
     <>
       <div
         className={
-          `h-screen px-4 py-4 gap-2 flex flex-col justify-between` +
-          (isClosed ? " w-36 items-center" : " w-64")
+          `h-screen px-4 py-4 flex flex-col justify-between` +
+          (isClosed ? " w-18 items-center" : " w-64 gap-2")
         }
       >
-        <div className="flex flex-col gap-2">
+        <div className={`flex flex-col` + (isClosed ? " " : " gap-2")}>
           <div>
             <header className="flex flex-col items-start justify-between">
-              <LogoWithText className="text-black dark:text-white" />
+              {isClosed ? (
+                <LogoWithoutText className="text-black dark:text-white w-11 h-14" />
+              ) : (
+                <LogoWithText className="text-black dark:text-white" />
+              )}
               <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2"></div>
             </header>
           </div>
-          <div className="pb-3">
+          <div className={isClosed? "pb-0" : "pb-3"}>
             <SideBarItemsGroup
               isClosed={isClosed}
               items={[
@@ -48,7 +53,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               ]}
             />
           </div>
-          <div className="pb-3">
+          <div className={isClosed? "pb-0" : "pb-3"}>
             {!isClosed && (
               <span className="text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7">
                 Developer
@@ -120,6 +125,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               ]}
             />
             {
+            !isClosed && (
               <div
                 className={`flex px-2 rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9${
                   isClosed ? " justify-center" : ""
@@ -128,7 +134,6 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 <span className="m-1">
                   <TablerIcon className="text-gray-900 dark:text-gray-500" />
                 </span>
-                {!isClosed && (
                   <>
                     <span
                       className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white`}
@@ -139,11 +144,11 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                       <DarkModeToggle />
                     </div>
                   </>
-                )}
               </div>
-            }
+             )}
           </div>
         </div>
+        {!isClosed && (
         <div className="flex flex-col justify-between">
           <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2"></div>
           <div
@@ -157,9 +162,10 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 Normal
               </span>
             </div>
-            {!isClosed && <HealthIcon className="w-6 h-6 text-green-500" />}
+            <HealthIcon className="w-6 h-6 text-green-500" />
           </div>
         </div>
+        )}
       </div>
     </>
   );
