@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <div className="flex items-center space-x-4">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
-          <SearchIcon className="absolute left-3 w-4 h-4 text-gray-800 dark:text-gray-400 cursor-pointer " />
+          <SearchIcon className="absolute left-3 text-gray-800 dark:text-gray-400 cursor-pointer " />
           <input
             type="text"
             placeholder="Search"
