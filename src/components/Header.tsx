@@ -70,12 +70,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   return (
     <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
       <SideBarIcon
-        className="text-black dark:text-gray-400 cursor-pointer"
+        className="text-black dark:text-white cursor-pointer"
         onClick={onSidebarIconClick}
       />
       {pathnames.length === 0 ? (
-        <span className="text-gray-500 dark:text-gray-400 dark:text-white">
-          Dashboard / Overview
+        <span className="text-gray-500 dark:text-gray-400">
+          Dashboard / <span className="dark:text-white">Overview</span>
         </span>
       ) : (
         <>
