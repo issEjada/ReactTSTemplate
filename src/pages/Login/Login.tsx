@@ -130,7 +130,7 @@ const LoginForm = () => {
                 Sign in
               </button>
               <div className="text-xs text-red-600 mt-2">
-                {errorMsg && errorMsg} 
+                {errorMsg && errorMsg}
               </div>
             </form>
 
