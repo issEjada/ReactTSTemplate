@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
-import FullScreenSpinner from "/src/components/FullScreenSpinner";
+import FullScreenSpinner from "../../components/FullScreenSpinner";
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
@@ -47,10 +47,7 @@ const LoginForm = () => {
   return (
     <>
       <div className="flex  mx-auto min-h-screen">
-
-        {isLoading &&
-          <FullScreenSpinner />
-        }
+        {isLoading && <FullScreenSpinner />}
 
         <div className=" flex-1 flex flex-col  justify-center items-center relative w-1/2">
           <div className="w-[360px] mt-24 -ml-6">
@@ -113,7 +110,10 @@ const LoginForm = () => {
                   />
                   Remember me
                 </label>
-                <a href="#" className="text-blue-700 font-bold hover:underline text-sm">
+                <a
+                  href="#"
+                  className="text-blue-700 font-bold hover:underline text-sm"
+                >
                   Forgot Password?
                 </a>
               </div>
@@ -157,7 +157,6 @@ const LoginForm = () => {
             className="absolute bottom-16 right-8"
           />
         </div>
-
       </div>
     </>
   );

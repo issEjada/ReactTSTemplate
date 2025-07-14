@@ -1,15 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import App from "../App";
-import LayoutWithSideBar from "../components/SideBar/LayoutWithSideBar";
+import Home from "../pages/Home";
+import LoginForm from "../pages/Login/Login";
+
 export const AppRouter = createBrowserRouter([
   {
     path: "/",
-    element: <LayoutWithSideBar />,
+    element: <App />,
     children: [
       {
-        path: "",
-        element: <div></div>,
+        path: "/",
+        element: <Home />,
         errorElement: <></>,
       },
       {
@@ -66,12 +68,12 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.support,
         element: <div>SUPPORT</div>,
         errorElement: <></>,
-      }
+      },
     ],
   },
   {
     path: AppRoutes.login,
-    element: <App></App>,
+    element: <LoginForm />,
     errorElement: <></>,
   },
 ]);

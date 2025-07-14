@@ -24,13 +24,13 @@ export const DarkModeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className={`w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300
-        ${isDarkMode ? "bg-green-400" : "bg-gray-300"}`}
+      className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300
+        ${isDarkMode ? "bg-blue-400" : "bg-gray-300"}`}
       aria-label="Toggle Dark Mode"
     >
       <div
-        className={`w-6 h-6 rounded-full bg-white transition-transform duration-300 transform
-          ${isDarkMode ? "translate-x-6" : "translate-x-0"}`}
+        className={`w-4 h-4 rounded-full bg-white transition-transform duration-300 transform
+          ${isDarkMode ? "translate-x-4" : "translate-x-0"}`}
       />
     </button>
   );
@@ -42,7 +42,7 @@ export interface ThemeWrapperProps {
 
 export const ThemeWrapper: React.FC<ThemeWrapperProps> = ({ children }) => {
   return (
-    <div className="bg-white  dark:bg-gray-800  transition-colors duration-300">
+    <div className="bg-white dark:bg-[#121418] transition-colors duration-300">
       {children}
     </div>
   );
