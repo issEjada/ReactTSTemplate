@@ -1,5 +1,4 @@
 import { useLocation, Link } from "react-router-dom";
-import { useState } from "react";
 import SunIcon from "../assets/svg/Sun.svg?react";
 import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
 import SideBarIcon from "../assets/svg/Sidebar.svg?react";
