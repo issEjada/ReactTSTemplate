@@ -11,7 +11,7 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="container min-h-screen">
       <div className="flex">
-        <div className="w-[256px]">
+        <div>
           <div className="text-white h-screen border-r border-r-[1px] border-r-[#1C1C1C1A]">
             <SideBar isClosed={isClosed} />
           </div>
