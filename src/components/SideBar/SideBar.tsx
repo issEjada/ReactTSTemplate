@@ -28,7 +28,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2"></div>
             </header>
           </div>
-          <div className={isClosed? "pb-0" : "pb-3"}>
+          <div className={isClosed ? "pb-0" : "pb-3"}>
             <SideBarItemsGroup
               isClosed={isClosed}
               items={[
@@ -53,7 +53,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               ]}
             />
           </div>
-          <div className={isClosed? "pb-0" : "pb-3"}>
+          <div className={isClosed ? "pb-0" : "pb-3"}>
             {!isClosed && (
               <span className="text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7">
                 Developer
@@ -124,8 +124,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 },
               ]}
             />
-            {
-            !isClosed && (
+            {!isClosed && (
               <div
                 className={`flex px-2 rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9${
                   isClosed ? " justify-center" : ""
@@ -134,37 +133,37 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 <span className="m-1">
                   <TablerIcon className="text-gray-900 dark:text-gray-500" />
                 </span>
-                  <>
-                    <span
-                      className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white`}
-                    >
-                      Dark Mode
-                    </span>
-                    <div className=" ml-auto">
-                      <DarkModeToggle />
-                    </div>
-                  </>
+                <>
+                  <span
+                    className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white`}
+                  >
+                    Dark Mode
+                  </span>
+                  <div className=" ml-auto">
+                    <DarkModeToggle />
+                  </div>
+                </>
               </div>
-             )}
+            )}
           </div>
         </div>
         {!isClosed && (
-        <div className="flex flex-col justify-between">
-          <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2"></div>
-          <div
-            className={`flex flex-row justify-between items-start text-white px-3 py-2 rounded-[8px] border border-[#414651] bg-[linear-gradient(45deg,_#101828_0%,_#535862_100%)] shadow-[0px_1px_2px_0px_#0A0D120D]`}
-          >
-            <div className={`flex gap-1 flex-col`}>
-              <span className="text-gray-200  text-[10px] leading-[14px] tracking-[0]">
-                System Health Status:
-              </span>
-              <span className="font-bold text-[12px] leading-[18px] tracking-[0]">
-                Normal
-              </span>
+          <div className="flex flex-col justify-between">
+            <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2 dark:bg-gray-800"></div>
+            <div
+              className={`flex flex-row justify-between items-start text-white px-3 py-2 rounded-[8px] border border-[#414651] bg-[linear-gradient(45deg,_#101828_0%,_#535862_100%)] shadow-[0px_1px_2px_0px_#0A0D120D]`}
+            >
+              <div className={`flex gap-1 flex-col`}>
+                <span className="text-gray-200  text-[10px] leading-[14px] tracking-[0]">
+                  System Health Status:
+                </span>
+                <span className="font-bold text-[12px] leading-[18px] tracking-[0]">
+                  Normal
+                </span>
+              </div>
+              <HealthIcon className="w-6 h-6 text-green-500" />
             </div>
-            <HealthIcon className="w-6 h-6 text-green-500" />
           </div>
-        </div>
         )}
       </div>
     </>

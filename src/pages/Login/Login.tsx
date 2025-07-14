@@ -12,13 +12,14 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const context = useContext(AuthContext);
 
-  // const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const onSubmit = async (data: FormLoginValues) => {
     setIsLoading(true);
     console.log("Submitting login form", data, data.remember);
     try {
       await context.login(data.name, data.password, data.remember);
+      setTimeout(() => {}, 1000);
 
       toast("Welcome!", {
         position: "top-right",
@@ -29,12 +30,9 @@ const LoginForm = () => {
         style: { background: "transparent", boxShadow: "none", padding: 0 },
       });
     } catch (error) {
+      setErrorMsg((error as Error).message);
       console.log("authError", error);
-      const errorMessage = {
-        title: "Auth Error",
-        body: (error as Error).message,
-      };
-      toast(`${errorMessage.title}: ${errorMessage.body}`, {
+      toast(`Auth Error: ${(error as Error).message}`, {
         position: "top-right",
         autoClose: 5000,
         closeOnClick: true,
@@ -128,7 +126,7 @@ const LoginForm = () => {
                 Sign in
               </button>
               <div className="text-xs text-red-600 mt-2">
-                {/* {errorMsg && errorMsg} */}
+                {errorMsg && errorMsg}
               </div>
             </form>
 
