@@ -11,7 +11,7 @@ export const Layout = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       <div className="flex">
         <div>
           <div className="text-white h-screen border-r border-r-[1px] border-r-[#1C1C1C1A]">
