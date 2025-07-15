@@ -1,53 +1,55 @@
-import { Search, Sun, Bell, Square, History } from "lucide-react";
+import { useLocation, Link } from "react-router-dom";
+import SunIcon from "../assets/svg/Sun.svg?react";
+import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
+import SideBarIcon from "../assets/svg/Sidebar.svg?react";
+import SearchIcon from "../assets/svg/Search.svg?react";
+import BellIcon from "../assets/svg/Bell.svg?react";
 import { useHeader } from "./useHeader";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+interface HeaderProps {
+  onSidebarIconClick: () => void;
+}
 
-const Header = () => {
-  const { headerRef, showDropdown, toggleDropdown } =
+const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
+    const { headerRef, showDropdown, toggleDropdown } =
     useHeader();
 
     const {logout} = useContext(AuthContext);
-
   return (
     <header className="flex items-center justify-between px-6 py-4 w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {/* Left: Breadcrumbs */}
-      <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-        <Square className="w-4 h-4" />
-        <span className="text-gray-700 dark:text-gray-400">Dashboards</span>
-        <span>/</span>
-        <span className="text-gray-400 dark:text-white">Overview</span>
-      </div>
+      <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
 
       {/* Right: Actions */}
       <div className="flex items-center space-x-4">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
-          <Search className="absolute left-3 w-4 h-4 text-gray-400" />
+          <SearchIcon className="absolute left-3 text-gray-800 dark:text-gray-400 cursor-pointer " />
           <input
             type="text"
             placeholder="Search"
-            className="pl-10 pr-10 py-1.5 rounded-md bg-gray-100 dark:bg-gray-900 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none"
+            className="pl-10 pr-10 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none"
           />
           <kbd className="absolute right-2 text-xs text-gray-400">⌘/</kbd>
         </div>
 
         {/* Icons */}
-        <div ref={headerRef} className="relative flex items-center space-x-4">
+         <div ref={headerRef} className="relative flex items-center space-x-4">
           <div className="flex items-center space-x-3">
-            <Sun className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("sun")}/>
+            <SunIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("sun")}/>
             {showDropdown.sun && (
               <div className="absolute top-[34px] right-20 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
                 Those are my sun settings
               </div>
             )}
-            <History className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("history")}/>
+            <ClockIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("history")}/>
             {showDropdown.history && (
               <div className="absolute top-[34px] right-12 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
                 Those are my history settings
               </div>
             )}
-            <Bell className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("bell")}/>
+            <BellIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("bell")}/>
             {showDropdown.bell && (
               <div className="absolute top-[34px] right-4 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
                 Those are my notifications
@@ -100,3 +102,62 @@ const Header = () => {
 };
 
 export default Header;
+
+interface BreadcrumbProps {
+  onSidebarIconClick: () => void;
+}
+
+export const Breadcrumb: React.FC<BreadcrumbProps> = ({
+  onSidebarIconClick,
+}) => {
+  const location = useLocation();
+  const pathnames = location.pathname.split("/").filter(Boolean);
+
+  return (
+    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+      <SideBarIcon
+        className="text-black dark:text-white cursor-pointer"
+        onClick={onSidebarIconClick}
+      />
+      {pathnames.length === 0 ? (
+        <span className="text-gray-500 dark:text-gray-400">
+          Dashboard / <span className="dark:text-white">Overview</span>
+        </span>
+      ) : (
+        <>
+          <Link
+            to="/"
+            className="text-gray-950 dark:text-gray-400 hover:underline"
+          >
+            Home
+          </Link>
+          <span>/</span>
+          {pathnames.map((name, index) => {
+            const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
+            const isLast = index === pathnames.length - 1;
+
+            return (
+              <span key={name} className="flex items-center space-x-2">
+                {isLast ? (
+                  <span className="text-black dark:text-white capitalize">
+                    {decodeURIComponent(name)}
+                  </span>
+                ) : (
+                  <>
+                    <Link
+                      to={routeTo}
+                      className="text-gray-950 dark:text-gray-400 hover:underline capitalize"
+                    >
+                      {decodeURIComponent(name)}
+                    </Link>
+                    <span>/</span>
+                  </>
+                )}
+              </span>
+            );
+          })}
+        </>
+      )}
+    </div>
+  );
+};
