@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
@@ -20,26 +19,9 @@ const LoginForm = () => {
     try {
       await context.login(data.name, data.password, data.remember);
       setTimeout(() => {}, 1000);
-
-      toast("Welcome!", {
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-        closeButton: false,
-        hideProgressBar: true,
-        style: { background: "transparent", boxShadow: "none", padding: 0 },
-      });
     } catch (error) {
       setErrorMsg((error as Error).message);
       console.log("authError", error);
-      toast(`Auth Error: ${(error as Error).message}`, {
-        position: "top-right",
-        autoClose: 5000,
-        closeOnClick: true,
-        closeButton: false,
-        hideProgressBar: true,
-        style: { background: "transparent", boxShadow: "none", padding: 0 },
-      });
     } finally {
       setIsLoading(false);
     }
