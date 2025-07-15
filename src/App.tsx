@@ -2,8 +2,6 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/Login/Login";
 import "./index.css";
-import { ToastContainer } from "react-toastify";
-
 import { Layout } from "./components/layout";
 import { ThemeWrapper } from "./components/DarkModeToggle/DarkModeToggle";
 
@@ -11,10 +9,7 @@ function App() {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <ThemeWrapper>
-      <ToastContainer />
-      {isAuthenticated ? <Layout /> : <Login />}
-    </ThemeWrapper>
+    <ThemeWrapper>{isAuthenticated ? <Layout /> : <Login />}</ThemeWrapper>
   );
 }
 
