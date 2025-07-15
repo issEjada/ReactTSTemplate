@@ -8,7 +8,17 @@ const data = [
 
 const COLORS = ["#1637C4", "#e5e7eb"];
 
-const CustomTooltip = ({ active, payload }) => {
+interface PayloadType {
+  name: string;
+  value: number;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: PayloadType[];
+}
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     const total = data.reduce((sum, entry) => sum + entry.value, 0);
     const percent = ((payload[0].value / total) * 100).toFixed(1);
@@ -42,7 +52,7 @@ export default function PieChartComponent() {
               dataKey="value"
               stroke="none"
             >
-              {data.map((entry, index) => (
+              {data.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index]} />
               ))}
             </Pie>

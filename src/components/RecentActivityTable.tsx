@@ -5,7 +5,14 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table";
 
-const data = [
+// Define the data type
+type Activity = {
+  name: string;
+  time: string;
+  risk: "High" | "Medium" | "Low";
+};
+
+const data: Activity[] = [
   { name: "Hi-Risk IP Address Detected", time: "2 minutes ago", risk: "High" },
   {
     name: "Hi-Risk IP Address Detected",
@@ -16,7 +23,8 @@ const data = [
   { name: "Hi-Risk IP Address Detected", time: "2 minutes ago", risk: "Low" },
 ];
 
-const columnHelper = createColumnHelper();
+// Use the typed column helper
+const columnHelper = createColumnHelper<Activity>();
 
 const columns = [
   columnHelper.accessor("name", {
@@ -31,7 +39,7 @@ const columns = [
     header: () => "Risk",
     cell: ({ getValue }) => {
       const value = getValue();
-      const badgeStyle = {
+      const badgeStyle: Record<Activity["risk"], string> = {
         High: "bg-red-700 text-white",
         Medium: "bg-black text-white",
         Low: "bg-gray-200 text-black",
@@ -55,7 +63,7 @@ export default function RecentActivityTable() {
   });
 
   return (
-    <div className=" bg-gray-50 p-4 rounded-2xl w-[844px]  h-full overflow-x-auto ">
+    <div className="bg-gray-50 p-4 rounded-2xl w-[844px] h-full overflow-x-auto">
       <p className="text-black font-semibold text-base mb-4 text-left">
         Recent Activity
       </p>
