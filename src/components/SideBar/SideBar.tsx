@@ -17,18 +17,19 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           (isClosed ? " w-16 items-center" : " w-64")
         }
       >
-        <div className={`flex flex-col gap-2`}>
+        <div className={`flex flex-col gap-2 ${isClosed ? " w-16" : " "}`}>
+          {/* Logo Section */}
           <div>
-            <header className="flex flex-col items-start justify-between">
+            <header className={`flex flex-col justify-between gap-2` + (isClosed ? " items-center" : " items-start")}>
               {isClosed ? (
-                <LogoWithoutText className="text-black dark:text-white w-11 h-14" />
+                <LogoWithoutText className="text-black dark:text-white w-11 h-12" />
               ) : (
                 <LogoWithText className="text-black dark:text-white" />
               )}
               <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2"></div>
             </header>
           </div>
-          <div className={isClosed? "pb-0" : "pb-3"}>
+          <div className="pb-3">
             <SideBarItemsGroup
               isClosed={isClosed}
               items={[
