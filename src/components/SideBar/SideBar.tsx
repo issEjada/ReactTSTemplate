@@ -13,11 +13,11 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
     <>
       <div
         className={
-          `h-screen px-4 py-4 flex flex-col justify-between` +
-          (isClosed ? " w-18 items-center" : " w-64 gap-2")
+          `h-screen px-4 py-4 flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out` +
+          (isClosed ? " w-16 items-center" : " w-64")
         }
       >
-        <div className={`flex flex-col` + (isClosed ? " " : " gap-2")}>
+        <div className={`flex flex-col gap-2`}>
           <div>
             <header className="flex flex-col items-start justify-between">
               {isClosed ? (
@@ -53,12 +53,10 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               ]}
             />
           </div>
-          <div className={isClosed? "pb-0" : "pb-3"}>
-            {!isClosed && (
-              <span className="text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7">
-                Developer
-              </span>
-            )}
+          <div className="pb-3">
+            <span className={`text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7` + (isClosed ? " opacity-0" : "")}>
+              Developer
+            </span>
             <SideBarItemsGroup
               isClosed={isClosed}
               items={[
@@ -90,11 +88,9 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             />
           </div>
           <div>
-            {!isClosed && (
-              <span className="text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7">
-                Account
-              </span>
-            )}
+            <span className={`text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7` + (isClosed ? " opacity-0" : "")}>
+              Account
+            </span>
             <SideBarItemsGroup
               isClosed={isClosed}
               items={[
