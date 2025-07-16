@@ -13,7 +13,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
     <>
       <div
         className={
-          `h-screen px-4 py-4 flex flex-col justify-between` +
+          `h-screen px-4 py-4 flex flex-col justify-between dark:bg-[#121418] dark:border-gray-800` +
           (isClosed ? " w-18 items-center" : " w-64 gap-2")
         }
       >
