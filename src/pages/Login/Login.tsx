@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/Context";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
@@ -52,7 +52,7 @@ const LoginForm = () => {
                   <input
                     type="text"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-white"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-white dark:text-black"
                     {...register("name", {
                       required: true,
                     })}
@@ -67,7 +67,7 @@ const LoginForm = () => {
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-white"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 bg-white dark:text-black"
                     {...register("password", {
                       required: true,
                     })}

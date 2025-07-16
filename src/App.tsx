@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext } from "./context/Context";
 import Login from "./pages/Login/Login";
 import "./index.css";
 import { Layout } from "./components/layout";
-import { ThemeWrapper } from "./components/DarkModeToggle/DarkModeToggle";
+import { ThemeProvider } from "./context/ThemeProvider";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <ThemeWrapper>{isAuthenticated ? <Layout /> : <Login />}</ThemeWrapper>
+    <ThemeProvider>{isAuthenticated ? <Layout /> : <Login />}</ThemeProvider>
   );
 }
 

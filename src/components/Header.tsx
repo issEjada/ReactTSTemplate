@@ -1,14 +1,19 @@
 import { useLocation, Link } from "react-router-dom";
+import { useContext } from "react";
+import { ThemeContext } from "../context/Context";
 import SunIcon from "../assets/svg/Sun.svg?react";
 import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
 import SideBarIcon from "../assets/svg/Sidebar.svg?react";
 import SearchIcon from "../assets/svg/Search.svg?react";
 import BellIcon from "../assets/svg/Bell.svg?react";
+import MoonIcon from "../assets/svg/darkMode.svg?react";
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
+  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
+
   return (
     <header className="flex items-center justify-between px-6 py-4 w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {/* Left: Breadcrumbs */}
@@ -29,7 +34,17 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
         {/* Icons */}
         <div className="flex items-center space-x-3">
-          <SunIcon className="dark:text-gray-400 cursor-pointer" />
+          {isDarkMode ? (
+            <MoonIcon
+              className="dark:text-gray-400 cursor-pointer"
+              onClick={toggleDarkMode}
+            />
+          ) : (
+            <SunIcon
+              className="dark:text-gray-400 cursor-pointer"
+              onClick={toggleDarkMode}
+            />
+          )}
           <ClockIcon className="dark:text-gray-400 cursor-pointer" />
           <BellIcon className="dark:text-gray-400 cursor-pointer" />
         </div>
