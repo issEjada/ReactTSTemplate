@@ -1,12 +1,12 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/Context";
 
 //temporary static data
 const data = [
   { name: "Active", value: 223 },
   { name: "Inactive", value: 1243 },
 ];
-
-const COLORS = ["#1637C4", "#e5e7eb"];
 
 interface PayloadType {
   name: string;
@@ -32,9 +32,14 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
 };
 
 export default function PieChartComponent() {
+  const { isDarkMode } = useContext(ThemeContext);
+  const COLORS = isDarkMode
+    ? ["#1637C4", "#252B37"] // blue + gray for dark mode
+    : ["#1637C4", "#e5e7eb"]; // original light mode colors
+
   return (
-    <div className="flex-1 max-w-[272px] p-6 bg-white rounded-2xl shadow w-64">
-      <h2 className="font-semibold text-sm mb-4 text-black text-left">
+    <div className="flex-1 max-w-[272px] max-h-[289px] p-6 bg-white rounded-2xl shadow w-64 dark:bg-[#121418] dark:border-gray-800">
+      <h2 className="font-semibold text-sm mb-4 text-black text-left dark:text-white">
         Total Events
       </h2>
 
@@ -61,21 +66,21 @@ export default function PieChartComponent() {
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-4 space-y-2 text-sm text-black font-medium">
+      <div className="mt-4 space-y-2 text-sm text-black font-medium dark:text-white">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-blue-600" />
-            <span className="text-black font-light">Active</span>
+            <span className="font-light">Active</span>
           </div>
-          <span className="text-black">223</span>
+          <span>223</span>
         </div>
 
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-gray-300" />
-            <span className="text-black font-light">Inactive</span>
+            <span className="font-light">Inactive</span>
           </div>
-          <span className="text-black">1243</span>
+          <span>1243</span>
         </div>
       </div>
     </div>

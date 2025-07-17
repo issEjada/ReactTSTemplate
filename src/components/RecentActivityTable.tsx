@@ -41,8 +41,8 @@ const columns = [
       const value = getValue();
       const badgeStyle: Record<Activity["risk"], string> = {
         High: "bg-red-700 text-white",
-        Medium: "bg-black text-white",
-        Low: "bg-gray-200 text-black",
+        Medium: "bg-black text-white dark:bg-warning-600",
+        Low: "bg-gray-200 text-black dark:bg-blue-700  dark:text-white",
       };
       return (
         <span
@@ -63,8 +63,8 @@ export default function RecentActivityTable() {
   });
 
   return (
-    <div className="bg-gray-50 p-4 rounded-2xl w-[844px] h-full overflow-x-auto">
-      <p className="text-black font-semibold text-base mb-4 text-left">
+    <div className="bg-gray-50 dark:bg-[#121418] dark:border-gray-800 p-4 rounded-2xl w-[844px] h-full overflow-x-auto">
+      <p className="text-black dark:text-white font-semibold text-base mb-4 text-left">
         Recent Activity
       </p>
       <table className="w-full text-left text-sm">
@@ -74,7 +74,7 @@ export default function RecentActivityTable() {
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="py-2 px-2 text-gray-400 font-medium whitespace-nowrap"
+                  className="py-2 px-2 text-gray-400 dark:text-gray-600 font-medium whitespace-nowrap"
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -91,7 +91,7 @@ export default function RecentActivityTable() {
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className="py-3 px-2 text-black whitespace-nowrap"
+                  className="py-3 px-2 text-black dark:text-white whitespace-nowrap"
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>

@@ -15,3 +15,18 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: () => {},
 });
+
+interface ThemeContextType {
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
+}
+
+const defaultThemeContext: ThemeContextType = {
+  isDarkMode: false,
+  toggleDarkMode: () => {},
+};
+
+export const ThemeContext =
+  createContext<ThemeContextType>(defaultThemeContext);
+
+export type { ThemeContextType };

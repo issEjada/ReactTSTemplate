@@ -1,21 +1,22 @@
 import { useLocation, Link } from "react-router-dom";
+import { useContext } from "react";
+import { ThemeContext, AuthContext } from "../context/Context";
 import SunIcon from "../assets/svg/Sun.svg?react";
 import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
 import SideBarIcon from "../assets/svg/Sidebar.svg?react";
 import SearchIcon from "../assets/svg/Search.svg?react";
 import BellIcon from "../assets/svg/Bell.svg?react";
 import { useHeader } from "./useHeader";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import MoonIcon from "../assets/svg/darkMode.svg?react";
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
-    const { headerRef, showDropdown, toggleDropdown } =
-    useHeader();
+  const { headerRef, showDropdown, toggleDropdown } = useHeader();
+  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
 
-    const {logout} = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   return (
     <header className="flex items-center justify-between px-6 py-4 w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {/* Left: Breadcrumbs */}
@@ -35,21 +36,37 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
         </div>
 
         {/* Icons */}
-         <div ref={headerRef} className="relative flex items-center space-x-4">
+        <div ref={headerRef} className="relative flex items-center space-x-4">
           <div className="flex items-center space-x-3">
-            <SunIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("sun")}/>
+            {isDarkMode ? (
+              <MoonIcon
+                className="dark:text-gray-400 cursor-pointer"
+                onClick={toggleDarkMode}
+              />
+            ) : (
+              <SunIcon
+                className="w-5 h-5  dark:text-gray-400 cursor-pointer"
+                onClick={toggleDarkMode}
+              />
+            )}
             {showDropdown.sun && (
               <div className="absolute top-[34px] right-20 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
                 Those are my sun settings
               </div>
             )}
-            <ClockIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("history")}/>
+            <ClockIcon
+              className="w-5 h-5  dark:text-gray-400 cursor-pointer"
+              onClick={() => toggleDropdown("history")}
+            />
             {showDropdown.history && (
               <div className="absolute top-[34px] right-12 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
                 Those are my history settings
               </div>
             )}
-            <BellIcon className="w-5 h-5  dark:text-gray-400 cursor-pointer"  onClick={() => toggleDropdown("bell")}/>
+            <BellIcon
+              className="w-5 h-5  dark:text-gray-400 cursor-pointer"
+              onClick={() => toggleDropdown("bell")}
+            />
             {showDropdown.bell && (
               <div className="absolute top-[34px] right-4 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
                 Those are my notifications
@@ -58,7 +75,10 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           </div>
 
           {/* Profile */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => toggleDropdown("user")}>
+          <div
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => toggleDropdown("user")}
+          >
             <img
               src="https://i.pravatar.cc/40"
               alt="Avatar"
@@ -73,27 +93,30 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               </div>
             </div>
             {showDropdown.user && (
-            <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
-              <div className="flex flex-row items-center flex-start gap-3 overflow-hidden">
-                <img
-                  src="https://i.pravatar.cc/40"
-                  alt="Avatar"
-                  className="w-6 h-6 rounded-full"
-                />
-                <div className="text-sm">
-                  <div className="font-sm text-gray-800 dark:text-white">
-                    Ahmed Abdullah
-                  </div>
-                  <div className="text-gray-500 dark:text-gray-400 text-xs">
-                    a.abdullah@company.comsdfsdfdsfsds
+              <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
+                <div className="flex flex-row items-center flex-start gap-3 overflow-hidden">
+                  <img
+                    src="https://i.pravatar.cc/40"
+                    alt="Avatar"
+                    className="w-6 h-6 rounded-full"
+                  />
+                  <div className="text-sm">
+                    <div className="font-sm text-gray-800 dark:text-white">
+                      Ahmed Abdullah
+                    </div>
+                    <div className="text-gray-500 dark:text-gray-400 text-xs">
+                      a.abdullah@company.comsdfsdfdsfsds
+                    </div>
                   </div>
                 </div>
+                <button
+                  onClick={logout}
+                  className="text-sm text-gray-500 dark:text-gray-400 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 border border-gray-200 dark:border-gray-700 mt-2 text-left"
+                >
+                  Logout
+                </button>
               </div>
-              <button onClick={logout} className="text-sm text-gray-500 dark:text-gray-400 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 border border-gray-200 dark:border-gray-700 mt-2 text-left">
-                Logout
-              </button>
-            </div>
-          )}
+            )}
           </div>
         </div>
       </div>

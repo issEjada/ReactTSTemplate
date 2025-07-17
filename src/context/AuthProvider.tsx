@@ -1,5 +1,5 @@
 import React, { useState, useEffect, type ReactNode } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./Context";
 import SecureStorage from "react-secure-storage";
 import { httpClient } from "../services/api/httpClient";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
