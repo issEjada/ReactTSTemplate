@@ -136,51 +136,45 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter(Boolean);
 
+  // Inject 'overview' if the path is root
+  const fullPath = pathnames.length === 0 ? ["overview"] : pathnames;
+
   return (
     <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
       <SideBarIcon
         className="text-black dark:text-white cursor-pointer"
         onClick={onSidebarIconClick}
       />
-      {pathnames.length === 0 ? (
-        <span className="text-gray-500 dark:text-gray-400">
-          Dashboard / <span className="dark:text-white">Overview</span>
-        </span>
-      ) : (
-        <>
-          <Link
-            to="/"
-            className="text-gray-950 dark:text-gray-400 hover:underline"
-          >
-            Home
-          </Link>
-          <span>/</span>
-          {pathnames.map((name, index) => {
-            const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
-            const isLast = index === pathnames.length - 1;
 
-            return (
-              <span key={name} className="flex items-center space-x-2">
-                {isLast ? (
-                  <span className="text-black dark:text-white capitalize">
-                    {decodeURIComponent(name)}
-                  </span>
-                ) : (
-                  <>
-                    <Link
-                      to={routeTo}
-                      className="text-gray-950 dark:text-gray-400 hover:underline capitalize"
-                    >
-                      {decodeURIComponent(name)}
-                    </Link>
-                    <span>/</span>
-                  </>
-                )}
+      <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
+        Dashboard
+      </Link>
+      <span>/</span>
+
+      {fullPath.map((name, index) => {
+        const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
+        const isLast = index === fullPath.length - 1;
+
+        return (
+          <span key={name} className="flex items-center space-x-2">
+            {isLast ? (
+              <span className="text-black dark:text-white capitalize">
+                {decodeURIComponent(name)}
               </span>
-            );
-          })}
-        </>
-      )}
+            ) : (
+              <>
+                <Link
+                  to={routeTo}
+                  className="text-gray-950 dark:text-gray-400 hover:underline capitalize"
+                >
+                  {decodeURIComponent(name)}
+                </Link>
+                <span>/</span>
+              </>
+            )}
+          </span>
+        );
+      })}
     </div>
   );
 };

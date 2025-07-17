@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
@@ -10,15 +11,18 @@ const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const context = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   const onSubmit = async (data: FormLoginValues) => {
     setIsLoading(true);
     console.log("Submitting login form", data, data.remember);
     try {
       await context.login(data.name, data.password, data.remember);
-      setTimeout(() => {}, 1000);
+      await delay(1000);
+      navigate("/");
     } catch (error) {
       setErrorMsg((error as Error).message);
       console.log("authError", error);
