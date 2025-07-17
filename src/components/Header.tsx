@@ -110,7 +110,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                   </div>
                 </div>
                 <button
-                  onClick={logout}
+                  onClick={() => logout()}
                   className="text-sm text-gray-500 dark:text-gray-400 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 border border-gray-200 dark:border-gray-700 mt-2 text-left"
                 >
                   Logout

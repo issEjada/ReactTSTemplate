@@ -1,6 +1,5 @@
 import React, { useState, useEffect, type ReactNode } from "react";
 import { AuthContext } from "./Context";
-import SecureStorage from "react-secure-storage";
 import { httpClient } from "../services/api/httpClient";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 
@@ -10,10 +9,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const accessToken = SecureStorage.getItem(ConstantKeys.accessToken);
-    if (accessToken) {
-      setIsAuthenticated(true);
-    }
+    const token =
+      sessionStorage.getItem(ConstantKeys.accessToken) ||
+      localStorage.getItem(ConstantKeys.accessToken);
+    if (token) setIsAuthenticated(true);
   }, []);
 
   const login = async (
@@ -30,8 +29,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         "scope",
         "sdk_backoffice fpt_backoffice scoring_rules_management alphas_backoffice"
       );
-      await httpClient
-        .post(
+
+      try {
+        const response = await httpClient.post(
           `${
             import.meta.env.VITE_API_LOGIN_URL
           }/realms/master/protocol/openid-connect/token`,
@@ -42,31 +42,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
               password: import.meta.env.VITE_AUTH_PASSWORD ?? "",
             },
           }
-        )
-        .then((response) => {
-          SecureStorage.setItem(
-            ConstantKeys.accessToken,
-            response.data.access_token
-          );
-          SecureStorage.setItem(ConstantKeys.rememberMe, remember);
-          setIsAuthenticated(true);
-        })
-        .catch((error) => {
-          setIsAuthenticated(false);
-          console.error("Login failed:", error);
-          throw new Error(error.response?.data.error_description);
-        });
+        );
+
+        const storage = remember ? localStorage : sessionStorage;
+        storage.setItem(ConstantKeys.accessToken, response.data.access_token);
+        storage.setItem(ConstantKeys.rememberMe, String(remember));
+        setIsAuthenticated(true);
+      } catch (error: any) {
+        setIsAuthenticated(false);
+        console.error("Login failed:", error);
+        throw new Error(error.response?.data.error_description);
+      }
     }
   };
 
   const logout = () => {
-    const accessToken = SecureStorage.getItem(
-      ConstantKeys.accessToken
-    ) as string;
+    const accessToken =
+      sessionStorage.getItem(ConstantKeys.accessToken) ||
+      localStorage.getItem(ConstantKeys.accessToken);
+
     if (accessToken) {
       const data = new URLSearchParams();
       data.append("token", accessToken);
       data.append("token_type_hint", "access_token");
+
       return httpClient
         .post(
           `${
@@ -81,7 +80,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           }
         )
         .then(() => {
-          SecureStorage.removeItem(ConstantKeys.accessToken);
+          // Clear both just in case
+          sessionStorage.removeItem(ConstantKeys.accessToken);
+          localStorage.removeItem(ConstantKeys.accessToken);
+          sessionStorage.removeItem(ConstantKeys.rememberMe);
+          localStorage.removeItem(ConstantKeys.rememberMe);
           setIsAuthenticated(false);
         })
         .catch((error) => {
