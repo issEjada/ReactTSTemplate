@@ -7,7 +7,7 @@ export interface AuthContextType {
     password?: string,
     remember?: boolean
   ) => Promise<void>;
-  logout: () => void;
+  logout: (remember?: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({

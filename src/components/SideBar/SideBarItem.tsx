@@ -6,12 +6,23 @@ interface SidebarItemProps {
   item: MenuItem;
 }
 
-const loadIconComponent = (iconName: string | undefined) => {
-  return React.lazy(() => import(`../../assets/svg/${iconName}.svg?react`));
+const iconComponentCache: Record<
+  string,
+  React.LazyExoticComponent<React.FC<React.SVGProps<SVGSVGElement>>>
+> = {};
+
+const getIconComponent = (iconName: string | undefined) => {
+  if (!iconName) return null;
+  if (!iconComponentCache[iconName]) {
+    iconComponentCache[iconName] = React.lazy(
+      () => import(`../../assets/svg/${iconName}.svg?react`)
+    );
+  }
+  return iconComponentCache[iconName];
 };
 
 export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
-  const IconComponent = loadIconComponent(item?.icon?.replace(".svg", ""));
+  const IconComponent = getIconComponent(item?.icon);
 
   return (
     <li className="mb-1 flex flex-col justify-center">
@@ -27,19 +38,22 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
         }
       >
         <span className="m-1">
-          {item.icon && (
-            <Suspense fallback={<span className="backdrop-blur-md w-4 h-4 block bg-gray-200 dark:bg-gray-600 rounded-sm"></span>}>
+          {IconComponent && (
+            <Suspense
+              fallback={
+                <span className="backdrop-blur-md w-4 h-4 block bg-gray-200 dark:bg-gray-600 rounded-sm"></span>
+              }
+            >
               <IconComponent className="icon" />
             </Suspense>
           )}
         </span>
-        
-          <span
-            className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white`}
-          >
-            {item.text}
-          </span>
-        
+
+        <span
+          className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white`}
+        >
+          {item.text}
+        </span>
       </NavLink>
     </li>
   );
@@ -49,9 +63,7 @@ export interface SidebarProps {
   items: MenuItem[];
 }
 
-export const SideBarItemsGroup: React.FC<SidebarProps> = ({
-  items,
-}) => {
+export const SideBarItemsGroup: React.FC<SidebarProps> = ({ items }) => {
   return (
     <div className="bg-primary-blue text-white w-full ">
       <aside>
@@ -59,10 +71,7 @@ export const SideBarItemsGroup: React.FC<SidebarProps> = ({
           <div className="flex-1 overflow-y-auto ">
             <ul className={`flex flex-col`}>
               {items.map((item, idx) => (
-                <SidebarItem
-                  key={`${item.pageTitle}-${idx}`}
-                  item={item}
-                />
+                <SidebarItem key={`${item.pageTitle}-${idx}`} item={item} />
               ))}
             </ul>
           </div>
