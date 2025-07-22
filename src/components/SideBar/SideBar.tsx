@@ -9,17 +9,17 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
   return (
     <>
       <div
-        className={`h-screen px-4 py-4 flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-[#121418] dark:border-gray-800 ${
-          isClosed ? " w-[72px] " : " w-64"
+        className={`h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-[#121418] dark:border-gray-800 ${
+          isClosed ? " w-[110px] ps-[33px] pe-[34px] py-[35px]" : " w-64 px-4 py-4"
         }`}
       >
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
 
-          <div className={`flex flex-col justify-between gap-2`}>
+          <div className={`flex flex-col justify-between gap-2 overflow-hidden ${isClosed ? " ps-1" : ""}`}>
             <LogoWithTextIcon
               className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
-                isClosed && "w-[164px]"
+                isClosed && "w-[130px]"
               }`}
             />
             <div className="h-[1px] bg-[#D2D6DB] w-full mb-3 mt-2"></div>
@@ -51,8 +51,8 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           </div>
           <div className="pb-3">
             <span
-              className={`text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 ${
-                isClosed ? " opacity-0" : ""
+              className={`block text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 ${
+                isClosed ? ' translate-x-[-50%]' : ' translate-x-0'
               }`}
             >
               Developer
@@ -88,8 +88,8 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           </div>
           <div>
             <span
-              className={`text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 ${
-                isClosed ? " opacity-0" : ""
+              className={`block text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 ${
+                isClosed ? ' translate-x-[-40%]' : ' translate-x-0'
               }`}
             >
               Account
@@ -124,7 +124,8 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             />
 
             <div
-              className={`flex justify-between rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden`}
+              // className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden ${isClosed? " justify-center": " justify-between "}`}
+              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden justify-between duration-300 ${isClosed? ' translate-x-[-10%]' : ' translate-x-0'}`}
             >
               <div
                 className={`flex items-center duration-300 transition-all ${
