@@ -25,7 +25,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
   const IconComponent = getIconComponent(item?.icon);
 
   return (
-    <li className="mb-1 flex flex-col justify-center">
+    <li className="flex flex-col justify-center">
       <NavLink
         to={item.url!}
         className={({ isActive }) =>
@@ -44,7 +44,9 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
                 <span className="backdrop-blur-md w-4 h-4 block bg-gray-200 dark:bg-gray-600 rounded-sm"></span>
               }
             >
-              <IconComponent className="icon" />
+              <div className="w-5 h-5 flex items-center justify-center">
+                <IconComponent className="icon" />
+              </div>
             </Suspense>
           )}
         </span>
@@ -65,11 +67,11 @@ export interface SidebarProps {
 
 export const SideBarItemsGroup: React.FC<SidebarProps> = ({ items }) => {
   return (
-    <div className="bg-primary-blue text-white w-full mt-4">
+    <div className="bg-primary-blue text-white w-full">
       <aside>
         <nav className="w-full flex flex-col h-full">
           <div className="flex-1 overflow-y-auto ">
-            <ul className={`flex flex-col`}>
+            <ul className={`flex flex-col gap-1`}>
               {items.map((item, idx) => (
                 <SidebarItem key={`${item.pageTitle}-${idx}`} item={item} />
               ))}
