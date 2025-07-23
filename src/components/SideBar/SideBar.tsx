@@ -28,7 +28,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               }`}
             />
           </div>
-          <div className={`h-[1px] bg-[#D2D6DB] mb-3 ${isClosed ? "-mx-8" : "-mx-4"}`}></div>
+          <div className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300  ${isClosed ? " -mx-8" : " -mx-4"}`}></div>
           <div className="pb-3">
             <SideBarItemsGroup
               items={[
