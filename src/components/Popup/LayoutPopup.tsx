@@ -5,21 +5,27 @@ interface PopupProps {
   children: React.ReactNode;
 }
 
-const GeneralPopup: React.FC<PopupProps> = ({ isOpen, children }) => {
-  if (!isOpen) return null;
-
+const LayoutPopup: React.FC<PopupProps> = ({ isOpen, children }) => {
   return (
-    // The backdrop overlay
-    <div className="m-0 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-[16px] bg-[#434C5FB2]">
-      {/* The popup modal */}
-      <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-[544px]">
-        {/* Close Button */}
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center 
+        transition-opacity duration-300
+        ${
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }
+      `}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 backdrop-blur-[16px] bg-[#434C5FB2] dark:bg-[#181D27C9]" />
 
-        {/* Content */}
+      {/* Popup Content */}
+      <div className="relative bg-white dark:bg-black rounded-xl shadow-2xl p-6 w-[544px] z-10">
         {children}
       </div>
     </div>
   );
 };
 
-export default GeneralPopup;
+export default LayoutPopup;
