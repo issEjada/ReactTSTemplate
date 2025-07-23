@@ -15,7 +15,7 @@ const Home = () => {
       <HomeWidgetGroup />
 
       {/* Line Chart */}
-      <div className="flex flex-col-1 lg:flex-row w-full gap-6">
+      <div className="flex flex-col-1 lg:flex-row mx-4 w-full gap-6">
         <Chart chartType="line" />
         <GlobalThreatMap />
       </div>
@@ -23,7 +23,7 @@ const Home = () => {
       <div className="flex flex-col lg:flex-row w-full gap-6"></div>
 
       {/* Table + Pie Chart */}
-      <div className="flex flex-col lg:flex-row w-full gap-6">
+      <div className="flex flex-col lg:flex-row mx-4 w-full gap-6">
         <RecentActivityTable />
         <Chart chartType="pie" />
       </div>
