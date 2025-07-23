@@ -65,7 +65,7 @@ export interface SidebarProps {
 
 export const SideBarItemsGroup: React.FC<SidebarProps> = ({ items }) => {
   return (
-    <div className="bg-primary-blue text-white w-full ">
+    <div className="bg-primary-blue text-white w-full mt-4">
       <aside>
         <nav className="w-full flex flex-col h-full">
           <div className="flex-1 overflow-y-auto ">

@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import LoginForm from "../pages/Login/Login";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
+import AboutUs from "../pages/AboutUs";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -127,7 +128,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.aboutUs,
         element: (
           <ProtectedRoute>
-            <div>ABOUT US</div>
+            <AboutUs />
           </ProtectedRoute>
         ),
         errorElement: <></>,
