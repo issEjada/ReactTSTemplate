@@ -1,73 +1,145 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import App from "../App";
 import Home from "../pages/Home";
 import LoginForm from "../pages/Login/Login";
+import { ConstantKeys } from "../constants/ConstantKeys.constants";
+import Support from "../pages/Support";
 import AboutUs from "../pages/AboutUs";
+
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const token =
+    sessionStorage.getItem(ConstantKeys.accessToken) ||
+    localStorage.getItem(ConstantKeys.accessToken);
+
+  if (!token) {
+    return <Navigate to={AppRoutes.login} />;
+  }
+
+  return <>{children}</>;
+};
+
+export default ProtectedRoute;
 
 export const AppRouter = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.testing,
-        element: <div>TESTING</div>,
+        element: (
+          <ProtectedRoute>
+            <div>TESTING</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.organizations,
-        element: <div>ORGANIZATIONS</div>,
+        element: (
+          <ProtectedRoute>
+            <div>ORGANIZATIONS</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.users,
-        element: <div>USERS</div>,
+        element: (
+          <ProtectedRoute>
+            <div>USERS</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.monitoring,
-        element: <div>MONITORING</div>,
+        element: (
+          <ProtectedRoute>
+            <div>MONITORING</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.systemConfiguration,
-        element: <div>SYSTEM CONFIGURATION</div>,
+        element: (
+          <ProtectedRoute>
+            <div>SYSTEM CONFIGURATION</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.rules,
-        element: <div>RULES</div>,
+        element: (
+          <ProtectedRoute>
+            <div>RULES</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.events,
-        element: <div>EVENTS</div>,
+        element: (
+          <ProtectedRoute>
+            <div>EVENTS</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.analytics,
-        element: <div>ANALYTICS</div>,
+        element: (
+          <ProtectedRoute>
+            <div>ANALYTICS</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.myAccount,
-        element: <div>MY ACCOUNT</div>,
+        element: (
+          <ProtectedRoute>
+            <div>MY ACCOUNT</div>
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.aboutUs,
-        element: <AboutUs/>,
+        element: (
+          <ProtectedRoute>
+            <AboutUs />
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
       {
         path: AppRoutes.support,
-        element: <div>SUPPORT</div>,
+        element: (
+          <ProtectedRoute>
+            <Support />
+          </ProtectedRoute>
+        ),
         errorElement: <></>,
       },
     ],

@@ -4,8 +4,8 @@ import { ThemeContext } from "../../context/Context";
 
 //temporary static data
 const data = [
-  { name: "Active", value: 223 },
-  { name: "Inactive", value: 1243 },
+  { name: "viewed", value: 223 },
+  { name: "not viewed", value: 1243 },
 ];
 
 interface PayloadType {
@@ -14,12 +14,12 @@ interface PayloadType {
 }
 
 interface CustomTooltipProps {
-  active?: boolean;
+  viewed?: boolean;
   payload?: PayloadType[];
 }
 
-const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
-  if (active && payload && payload.length) {
+const CustomTooltip = ({ viewed, payload }: CustomTooltipProps) => {
+  if (viewed && payload && payload.length) {
     const total = data.reduce((sum, entry) => sum + entry.value, 0);
     const percent = ((payload[0].value / total) * 100).toFixed(1);
     return (
@@ -40,7 +40,7 @@ export default function PieChartComponent() {
   return (
     <div className="flex-1 max-w-[272px] max-h-[289px] p-6 bg-white rounded-2xl shadow w-64 dark:bg-[#121418] dark:border-gray-800">
       <h2 className="font-semibold text-sm mb-4 text-black text-left dark:text-white">
-        Total Events
+        Session Activity Overview
       </h2>
 
       <div className="flex justify-center">
@@ -70,15 +70,15 @@ export default function PieChartComponent() {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-blue-600" />
-            <span className="font-light">Active</span>
+            <span className="font-light">Viewed Sessions</span>
           </div>
-          <span>223</span>
+          <span className="text-blue-700">223</span>
         </div>
 
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-gray-300" />
-            <span className="font-light">Inactive</span>
+            <span className="font-light">Not Viewed Sessions</span>
           </div>
           <span>1243</span>
         </div>
