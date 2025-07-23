@@ -2,7 +2,7 @@ import React from "react";
 import AboutUsImg from "../assets/svg/aboutUsImg.svg?react";
 const AboutUs: React.FC = () => {
   return (
-    <section className="bg-white text-gray-800  py-3 md:px-6 dark:bg-black">
+    <section className="bg-white text-gray-800  py-8 md:px-6 dark:bg-black">
       <div className="max-w-6xl grid md:grid-cols-1 gap-12 items-end">
         <div className="flex">
           <div className="flex flex-col text-left w-[70%]">
@@ -13,7 +13,7 @@ const AboutUs: React.FC = () => {
               We bring honesty and transparency to anti-fraud services
               technology
             </h1>
-            <blockquote className="italic text-lg text-gray-600 mb-6 dark:text-gray-50">
+            <blockquote className="italic text-xl text-gray-600 mb-6 dark:text-gray-50">
               "As fraudsters evolve, so must their hunters."
             </blockquote>
           </div>
@@ -23,7 +23,7 @@ const AboutUs: React.FC = () => {
         </div>
         <div className="flex">
           <div className="flex flex-col w-[50%] text-left">
-            <p className="text-[18px] leading-relaxed mb-4 font-normal dark:text-gray-50">
+            <p className="text-lg leading-relaxed mb-4 font-normal dark:text-gray-50">
               ALPHAS delivers the region’s first advanced anti-fraud platform
               engineered in Saudi Arabia. We arm governments, financial
               institutions, and enterprises with AI-driven defenses to combat
@@ -31,15 +31,15 @@ const AboutUs: React.FC = () => {
               advantage.
             </p>
             <div className="mr-[40px]">
-              <h2 className="text-2xl font-bold mt-10 mb-4 dark:text-white">
+              <h2 className="text-3xl font-bold mt-10 mb-8 dark:text-white">
                 Why we’re better
               </h2>
-              <p className="text-base text-gray-600 mb-4 dark:text-gray-50">
+              <p className="text-base w-[90%] text-gray-600 mb-4 dark:text-gray-50">
                 Unlike reactive systems, our suite predicts, scores, and
                 neutralizes threats in real-time:
               </p>
 
-              <ul className="list-disc pl-6 space-y-2 text-gray-600 font-normal dark:text-gray-50">
+              <ul className="list-disc pl-6 space-y-2 text-gray-600 font-normal dark:text-gray-50 line-height-">
                 <li>
                   AI-Powered Vigilance: Behavioral pattern analysis, temporal
                   sequencing, and anomaly detection.
