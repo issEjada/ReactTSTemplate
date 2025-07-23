@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ThemeContext, AuthContext } from "../context/Context";
 import SunIcon from "../assets/svg/Sun.svg?react";
 import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
@@ -11,18 +11,33 @@ import ProfileIcon from "../assets/svg/profile.svg?react";
 import LogoutIcon from "../assets/svg/logout.svg?react";
 import { useHeader } from "./useHeader";
 import MoonIcon from "../assets/svg/darkMode.svg?react";
+import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
+import PopupLayout from "./Popup/LayoutPopup";
+import FullScreenSpinner from "./FullScreenSpinner";
 
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
+  const { logout } = useContext(AuthContext);
   const { headerRef, showDropdown, toggleDropdown } = useHeader();
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { logout } = useContext(AuthContext);
+  const handleLogout = () => {
+    setIsPopupOpen(false);
+    setIsLoading(true);
+    setTimeout(() => {
+      logout();
+      setIsLoading(false);
+    }, 1000);
+  };
+
   return (
     <header className="flex items-center justify-between px-6 py-4 w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
+      {isLoading && <FullScreenSpinner />}
       {/* Left: Breadcrumbs */}
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
 
@@ -118,7 +133,8 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                 <div className="flex items-center space-x-2">
                   <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                   <button
-                    onClick={() => logout()}
+                    // onClick={() => logout()}
+                    onClick={() => setIsPopupOpen(true)}
                     className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
                     Logout
@@ -127,6 +143,14 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               </div>
             )}
           </div>
+        </div>
+        <div>
+          <PopupLayout isOpen={isPopupOpen}>
+            <LogoutPopupJsx
+              onCancel={() => setIsPopupOpen(false)}
+              onConfirm={handleLogout}
+            />
+          </PopupLayout>
         </div>
       </div>
     </header>
