@@ -45,6 +45,11 @@ module.exports = {
       maxWidth: {
         1440: "1440px",
       },
+      boxShadow: {
+        "logout-inner": "0px 8px 8px -4px rgba(10, 13, 18, 0.03)",
+        "logout-outer": "0px 20px 24px -4px rgba(10, 13, 18, 0.08)",
+        // Use your original hex alphas as RGBA
+      },
     },
   },
   plugins: [],
