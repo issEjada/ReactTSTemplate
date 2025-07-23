@@ -62,7 +62,7 @@ const HomeWidgetGroup: React.FC = () => {
   ];
 
   return (
-    <div className="w-full flex flex-wrap gap-4 sm:gap-[28px] sm:justify-start px-4">
+    <div className="w-full flex flex-wrap gap-4 sm:justify-start px-4">
       {valueData.map((item, index) => {
         const arrowIcon = item.percentage.startsWith("-")
           ? ArrowDown
