@@ -3,6 +3,7 @@ import { AppRoutes } from "./AppRoutes";
 import App from "../App";
 import Home from "../pages/Home";
 import LoginForm from "../pages/Login/Login";
+import AboutUs from "../pages/AboutUs";
 
 export const AppRouter = createBrowserRouter([
   {
@@ -61,7 +62,7 @@ export const AppRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.aboutUs,
-        element: <div>ABOUT US</div>,
+        element: <AboutUs/>,
         errorElement: <></>,
       },
       {
