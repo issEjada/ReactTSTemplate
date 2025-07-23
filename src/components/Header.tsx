@@ -6,8 +6,12 @@ import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
 import SideBarIcon from "../assets/svg/Sidebar.svg?react";
 import SearchIcon from "../assets/svg/Search.svg?react";
 import BellIcon from "../assets/svg/Bell.svg?react";
+import SettingsIcon from "../assets/svg/settings.svg?react";
+import ProfileIcon from "../assets/svg/profile.svg?react";
+import LogoutIcon from "../assets/svg/logout.svg?react";
 import { useHeader } from "./useHeader";
 import MoonIcon from "../assets/svg/darkMode.svg?react";
+
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
@@ -94,27 +98,32 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             </div>
             {showDropdown.user && (
               <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
-                <div className="flex flex-row items-center flex-start gap-3 overflow-hidden">
-                  <img
-                    src="https://i.pravatar.cc/40"
-                    alt="Avatar"
-                    className="w-6 h-6 rounded-full"
-                  />
-                  <div className="text-sm">
-                    <div className="font-sm text-gray-800 dark:text-white">
-                      Ahmed Abdullah
-                    </div>
-                    <div className="text-gray-500 dark:text-gray-400 text-xs">
-                      a.abdullah@company.comsdfsdfdsfsds
-                    </div>
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                    <button className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                      View Profile
+                    </button>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                    <button className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                      Settings
+                    </button>
                   </div>
                 </div>
-                <button
-                  onClick={() => logout()}
-                  className="text-sm text-gray-500 dark:text-gray-400 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 border border-gray-200 dark:border-gray-700 mt-2 text-left"
-                >
-                  Logout
-                </button>
+
+                <div className="h-[3px] bg-gray-200 w-full mb-3 mt-2"></div>
+
+                <div className="flex items-center space-x-2">
+                  <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                  <button
+                    onClick={() => logout()}
+                    className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             )}
           </div>
