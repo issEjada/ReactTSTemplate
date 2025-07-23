@@ -1,9 +1,9 @@
 import React from "react";
-import AboutUsAlphas from '../assets/svg/aboutUsAlphas.svg?react'; 
+import AboutUsImg from '../assets/svg/aboutUsImg.svg?react'; 
 const AboutUs: React.FC = () => {
   return (
-    <section className="bg-white text-gray-800 px-6 py-16 md:px-20">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-1 gap-12 items-start">
+    <section className="bg-white text-gray-800  py-3 md:px-6">
+      <div className="max-w-6xl grid md:grid-cols-1 gap-12 items-end">
         <div className="flex">
         <div className="flex flex-col text-left w-[70%]">
           <p className="text-blue-700 font-semibold mb-2 ">Why we’re different</p>
@@ -13,23 +13,24 @@ const AboutUs: React.FC = () => {
           <blockquote className="italic text-lg text-gray-600 mb-6">
             "As fraudsters evolve, so must their hunters."
           </blockquote>
-                    </div>
-          <button className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto hover:bg-blue-800 transition duration-300">Contact Us</button>
+            </div>
+          <button className="bg-blue-700 w-[125px] h-[48px] mx-[-65px] text-white px-5 py-3 rounded-[8px] ml-auto hover:bg-blue-800 transition duration-300">Contact Us</button>
             </div>
         <div className="flex">
         <div className="flex flex-col w-[50%] text-left">
-          <p className="text-[18px] leading-relaxed mb-4 font-weight-[400]">
+          <p className="text-[18px] leading-relaxed mb-4 font-normal">
             ALPHAS delivers the region’s first advanced anti-fraud platform
             engineered in Saudi Arabia. We arm governments, financial institutions, 
             and enterprises with AI-driven defenses to combat evolving cyber 
             threats—turning fraud prevention into a strategic advantage.
           </p>
+          <div className="mr-[40px]">
           <h2 className="text-2xl font-bold mt-10 mb-4 ">Why we’re better</h2>
           <p className="text-base text-gray-600 mb-4 ">
             Unlike reactive systems, our suite predicts, scores, and neutralizes threats in real-time:
           </p>
 
-          <ul className="list-disc pl-6 space-y-2 text-gray-600">
+          <ul className="list-disc pl-6 space-y-2 text-gray-600 font-normal">
             <li>
               AI-Powered Vigilance: Behavioral pattern analysis, 
               temporal sequencing, and anomaly detection.
@@ -44,9 +45,10 @@ const AboutUs: React.FC = () => {
             </li>
           </ul>
           </div>
+          </div>
         <div className="flex justify-center">
             {/* <img src={aboutUsAlphas} alt="Cyber Security Illustration"  className="w-full"/> */}
-            <AboutUsAlphas className="w-full"/>
+            <AboutUsImg className="w-full ml-20"/>
         </div>
         </div>
       </div>
