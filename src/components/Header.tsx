@@ -1,16 +1,19 @@
 import { useLocation, Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/Context";
-import SideBarIcon from "../assets/svg/Sidebar.svg?react";
-import SearchIcon from "../assets/svg/Search.svg?react";
-import SettingsIcon from "../assets/svg/settings.svg?react";
-import ProfileIcon from "../assets/svg/profile.svg?react";
-import LogoutIcon from "../assets/svg/logout.svg?react";
 import { useHeader } from "./useHeader";
 import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
 import PopupLayout from "./Popup/LayoutPopup";
 import FullScreenSpinner from "./FullScreenSpinner";
+import { ConstantKeys } from "../constants/ConstantKeys.constants";
 
+const SideBarIcon = React.lazy(() => import("../assets/svg/Sidebar.svg?react"));
+const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
+const SettingsIcon = React.lazy(
+  () => import("../assets/svg/settings.svg?react")
+);
+const ProfileIcon = React.lazy(() => import("../assets/svg/profile.svg?react"));
+const LogoutIcon = React.lazy(() => import("../assets/svg/logout.svg?react"));
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
@@ -20,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const { headerRef, showDropdown, toggleDropdown } = useHeader();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsAuthenticated] = useState(false);
 
   const handleLogout = () => {
     setIsPopupOpen(false);
@@ -27,6 +31,11 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
     setTimeout(() => {
       logout();
       setIsLoading(false);
+      sessionStorage.removeItem(ConstantKeys.accessToken);
+      localStorage.removeItem(ConstantKeys.accessToken);
+      sessionStorage.removeItem(ConstantKeys.rememberMe);
+      localStorage.removeItem(ConstantKeys.rememberMe);
+      setIsAuthenticated(false);
     }, 1000);
   };
 
@@ -85,14 +94,14 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
-                    <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
-                    <button className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                    <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                      <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       View Profile
                     </button>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
-                    <button className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                    <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                      <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       Settings
                     </button>
                   </div>
@@ -101,12 +110,12 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                 <div className="h-[3px] bg-gray-200 w-full mb-3 mt-2"></div>
 
                 <div className="flex items-center space-x-2">
-                  <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                   <button
                     // onClick={() => logout()}
                     onClick={() => setIsPopupOpen(true)}
-                    className="text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
+                    className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
+                    <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                     Logout
                   </button>
                 </div>
