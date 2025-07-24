@@ -1,5 +1,9 @@
 import React from "react";
-import AboutUsImg from "../assets/svg/aboutUsImg.svg?react";
+
+const AboutUsImg = React.lazy(
+  () => import("../assets/svg/aboutUsImg.svg?react")
+);
+
 const AboutUs: React.FC = () => {
   return (
     <section className="bg-white text-gray-800  py-8 md:px-6 dark:bg-black">

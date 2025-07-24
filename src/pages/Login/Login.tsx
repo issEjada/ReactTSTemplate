@@ -1,11 +1,16 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/Context";
 import { useNavigate } from "react-router-dom";
 import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
-import LogoWithText from "../../assets/svg/logo_with_text.svg?react";
-import SupportIcon from "../../assets/svg/support.svg?react";
 import FullScreenSpinner from "../../components/FullScreenSpinner";
+
+const LogoWithText = React.lazy(
+  () => import("../../assets/svg/logo_with_text.svg?react")
+);
+const SupportIcon = React.lazy(
+  () => import("../../assets/svg/support.svg?react")
+);
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
