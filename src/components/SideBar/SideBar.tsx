@@ -114,7 +114,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
 
             <div
               // className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden ${isClosed? " justify-center": " justify-between "}`}
-              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 ${isClosed? ' translate-x-[-10%] h-20 px-2' : ' items-center translate-x-0 h-9 px-1'}`}
+              className={`flex px-2 rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 ${isClosed? ' translate-x-[-10%] h-20' : ' items-center translate-x-0 h-9'}`}
             >
               <div
                 className={`flex duration-700 transition-all ${isClosed ? "ms-[5px] mt-1 " : "ms-[1px] items-center "}`}
