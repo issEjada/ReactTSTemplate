@@ -4,7 +4,6 @@ import type { MenuItem } from "../../types/types";
 
 interface SidebarItemProps {
   item: MenuItem;
-  isClosed?: boolean;
 }
 
 const iconComponentCache: Record<
@@ -22,7 +21,7 @@ const getIconComponent = (iconName: string | undefined) => {
   return iconComponentCache[iconName];
 };
 
-export const SidebarItem: React.FC<SidebarItemProps> = ({ item, isClosed }) => {
+export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
   const IconComponent = getIconComponent(item?.icon);
 
   return (
@@ -30,12 +29,11 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item, isClosed }) => {
       <NavLink
         to={item.url!}
         className={({ isActive }) =>
-          `flex items-center rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 justify-center md:justify-start   ${
+          `flex px-2 items-center rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 justify-center md:justify-start   ${
             isActive
               ? "h-11 py-2 bg-blue-700 dark:bg-gray-800 text-white font-semibold relative z-10 before:absolute before:z-20 before:bg-white before:w-2 before:h-full before:-left-8 before:top-0 before:bottom-0 before:rounded-lg gap-[3px] "
               : "text-gray-700 h-9 dark:text-gray-500"
           } w-full
-          ${isClosed ? " px-2" : " px-1 "} 
           `
         }
       >
@@ -65,10 +63,9 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item, isClosed }) => {
 
 export interface SidebarProps {
   items: MenuItem[];
-  isClosed?: boolean;
 }
 
-export const SideBarItemsGroup: React.FC<SidebarProps> = ({ items, isClosed }) => {
+export const SideBarItemsGroup: React.FC<SidebarProps> = ({ items }) => {
   return (
     <div className="bg-primary-blue text-white w-full">
       <aside>
@@ -76,7 +73,7 @@ export const SideBarItemsGroup: React.FC<SidebarProps> = ({ items, isClosed }) =
           <div className="flex-1 overflow-y-auto ">
             <ul className={`flex flex-col gap-1`}>
               {items.map((item, idx) => (
-                <SidebarItem key={`${item.pageTitle}-${idx}`} item={item} isClosed={isClosed} />
+                <SidebarItem key={`${item.pageTitle}-${idx}`} item={item} />
               ))}
             </ul>
           </div>
