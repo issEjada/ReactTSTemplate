@@ -31,10 +31,10 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
         className={({ isActive }) =>
           `flex px-2 items-center rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 justify-center md:justify-start   ${
             isActive
-              ? "h-11 py-2 bg-blue-700 dark:bg-gray-800 text-white font-semibold relative z-10 before:absolute before:z-20 before:bg-white before:w-2 before:h-full before:-left-8 before:top-0 before:bottom-0 before:rounded-lg "
+              ? "h-11 py-2 bg-blue-700 dark:bg-gray-800 text-white font-semibold relative z-10 before:absolute before:z-20 before:bg-white before:w-2 before:h-full before:-left-8 before:top-0 before:bottom-0 before:rounded-lg gap-[3px] "
               : "text-gray-700 h-9 dark:text-gray-500"
           } w-full
-            `
+          `
         }
       >
         <span className="m-1">
@@ -52,7 +52,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
         </span>
 
         <span
-          className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white`}
+          className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-[5px] font-sans hidden md:inline dark:text-white`}
         >
           {item.text}
         </span>

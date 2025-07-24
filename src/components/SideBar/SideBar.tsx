@@ -28,13 +28,11 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           {/* Logo Section */}
 
           <div
-            className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px] ${
-              isClosed ? " ps-1" : ""
-            }`}
+            className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
           >
             <LogoWithTextIcon
               className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
-                isClosed && "w-[130px]"
+                isClosed && "w-[140px]"
               }`}
             />
           </div>
@@ -145,7 +143,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 </span>
 
                 <span
-                  className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white ${
+                  className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-[5px] font-sans hidden md:inline dark:text-white ${
                     isClosed ? "opacity-0 w-0 h-0" : ""
                   }`}
                 >
@@ -155,7 +153,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               <div
                 className={`transition-transform duration-300 ease-in-out transform ${
                   isClosed
-                    ? "translate-x-[-113px] translate-y-[44px]"
+                    ? "translate-x-[-108px] translate-y-[44px]"
                     : "translate-x-0 translate-y-0"
                 }`}
               >
