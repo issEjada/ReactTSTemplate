@@ -31,7 +31,6 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           <div className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300  ${isClosed ? " -mx-8" : " -mx-4"}`}></div>
           <div className="pb-3">
             <SideBarItemsGroup
-              isClosed={isClosed}
               items={[
                 {
                   pageTitle: "Dashboard",
@@ -51,7 +50,6 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               Developer
             </span>
             <SideBarItemsGroup
-              isClosed={isClosed}
               items={[
                 {
                   pageTitle: "Rules",
@@ -89,7 +87,6 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               Account
             </span>
             <SideBarItemsGroup
-              isClosed={isClosed}
               items={[
                 {
                   pageTitle: "My Account",
