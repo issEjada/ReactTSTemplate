@@ -1,5 +1,5 @@
 import React from "react";
-import WorldMap from "../../assets/svg/Map.svg";
+import WorldMap from "../../assets/Map.png";
 
 interface Country {
   name: string;
