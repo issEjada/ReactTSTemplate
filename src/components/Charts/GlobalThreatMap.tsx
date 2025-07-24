@@ -22,8 +22,8 @@ const countryData: Country[] = [
 
 // 🌐 Equirectangular projection
 const geoToPixel = (lat: number, lon: number): { x: number; y: number } => {
-  const mapWidth = 224;
-  const mapHeight = 82;
+  const mapWidth = 200 + 12;
+  const mapHeight = 82 + 22;
 
   const x = ((lon + 180) / 360) * mapWidth;
   const y = ((90 - lat) / 180) * mapHeight;
@@ -55,14 +55,14 @@ const VerticalCard: React.FC = () => {
         <img
           src={WorldMap}
           alt="World Map"
-          className="w-[224px] h-[82px] object-cover"
+          className="w-[224px] h-[82px] object-contain"
         />
         {countryData.map((country, index) => {
           const { x, y } = geoToPixel(country.latitude, country.longitude);
           return (
             <div
               key={index}
-              className="absolute w-[6px] h-[6px] bg-red-600 border border-white rounded-full"
+              className="absolute w-[5px] h-[5px] bg-red-600 border border-white rounded-full"
               style={{
                 left: `${x}px`,
                 top: `${y}px`,
