@@ -21,16 +21,17 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
 
-          <div className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px] ${isClosed ? " ps-1" : ""}`}>
+          <div className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px] ${isClosed ? "" : ""}`}>
             <LogoWithTextIcon
               className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
-                isClosed && "w-[130px]"
+                isClosed && "w-[140px]"
               }`}
             />
           </div>
           <div className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300  ${isClosed ? " -mx-8" : " -mx-4"}`}></div>
           <div className="pb-3">
             <SideBarItemsGroup
+              isClosed={isClosed}
               items={[
                 {
                   pageTitle: "Dashboard",
@@ -50,6 +51,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               Developer
             </span>
             <SideBarItemsGroup
+              isClosed={isClosed}
               items={[
                 {
                   pageTitle: "Rules",
@@ -87,6 +89,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               Account
             </span>
             <SideBarItemsGroup
+              isClosed={isClosed}
               items={[
                 {
                   pageTitle: "My Account",
@@ -111,7 +114,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
 
             <div
               // className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden ${isClosed? " justify-center": " justify-between "}`}
-              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 px-2 ${isClosed? ' translate-x-[-10%] h-20' : ' items-center translate-x-0 h-9'}`}
+              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 ${isClosed? ' translate-x-[-10%] h-20 px-2' : ' items-center translate-x-0 h-9 px-1'}`}
             >
               <div
                 className={`flex duration-700 transition-all ${isClosed ? "ms-[5px] mt-1 " : "ms-[1px] items-center "}`}
@@ -127,7 +130,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 </span>
 
                 <span
-                  className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-2 font-sans hidden md:inline dark:text-white ${
+                  className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-[5px] font-sans hidden md:inline dark:text-white ${
                     isClosed ? "opacity-0 w-0 h-0" : ""
                   }`}
                 >
@@ -136,7 +139,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               </div>
               <div
                 className={`transition-transform duration-300 ease-in-out transform ${
-                  isClosed ? 'translate-x-[-113px] translate-y-[44px]' : 'translate-x-0 translate-y-0'
+                  isClosed ? 'translate-x-[-108px] translate-y-[44px]' : 'translate-x-0 translate-y-0'
                 }`}
               >
                 <DarkModeToggle />
