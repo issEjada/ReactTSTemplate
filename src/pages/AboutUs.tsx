@@ -1,8 +1,6 @@
 import React from "react";
+import AboutUsImg from "../assets/aboutUsImg.png";
 
-const AboutUsImg = React.lazy(
-  () => import("../assets/svg/aboutUsImg.svg?react")
-);
 
 const AboutUs: React.FC = () => {
   return (
@@ -60,7 +58,9 @@ const AboutUs: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <AboutUsImg className="w-full ml-20" />
+            <img src={AboutUsImg}
+                  alt="cybersecurity illustration"
+                  className="ml-[1.3rem]" />
           </div>
         </div>
       </div>
