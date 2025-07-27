@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
   const { logout } = useContext(AuthContext);
   return (
-    <header className="flex items-center justify-between px-6 py-4 w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
+    <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {/* Left: Breadcrumbs */}
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
 
@@ -85,10 +85,10 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               className="w-8 h-8 rounded-full"
             />
             <div className="text-sm">
-              <div className="font-medium text-gray-800 dark:text-white">
+              <div className="font-medium text-gray-800 dark:text-white text-[12px]">
                 Ahmed Abdullah
               </div>
-              <div className="text-gray-500 dark:text-gray-400 text-xs">
+              <div className="text-gray-500 dark:text-gray-400 text-[10px] leading-[18px] w-[123px] overflow-hidden">
                 a.abdullah@company.com
               </div>
             </div>
