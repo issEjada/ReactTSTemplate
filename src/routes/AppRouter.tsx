@@ -6,6 +6,7 @@ import LoginForm from "../pages/Login/Login";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
 import AboutUs from "../pages/AboutUs";
+import { RulesTable } from "../pages/Rules/RulesTable";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -92,7 +93,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.rules,
         element: (
           <ProtectedRoute>
-            <div>RULES</div>
+            <RulesTable />
           </ProtectedRoute>
         ),
         errorElement: <></>,
