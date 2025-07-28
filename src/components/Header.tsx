@@ -1,5 +1,5 @@
-import { useLocation, Link } from "react-router-dom";
 import React, { useContext, useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
 import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
@@ -7,13 +7,17 @@ import PopupLayout from "./Popup/LayoutPopup";
 import FullScreenSpinner from "./FullScreenSpinner";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 
-const SideBarIcon = React.lazy(() => import("../assets/svg/Sidebar.svg?react"));
-const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
-const SettingsIcon = React.lazy(
-  () => import("../assets/svg/settings.svg?react")
-);
-const ProfileIcon = React.lazy(() => import("../assets/svg/profile.svg?react"));
-const LogoutIcon = React.lazy(() => import("../assets/svg/logout.svg?react"));
+// import SideBarIcon from "../assets/svg/Sidebar.svg?react";
+// import SearchIcon from "../assets/svg/Search.svg?react";
+// import SettingsIcon from "../assets/svg/settings.svg?react";
+// import ProfileIcon from "../assets/svg/profile.svg?react";
+// import LogoutIcon from "../assets/svg/logout.svg?react";
+
+const SideBarIcon = React.lazy(() => import(`/src/assets/svg/Sidebar.svg?react`));
+const SearchIcon = React.lazy(() => import(`/src/assets/svg/Search.svg?react`));
+const SettingsIcon = React.lazy(() => import(`/src/assets/svg/settings.svg?react`));
+const ProfileIcon = React.lazy(() => import(`/src/assets/svg/profile.svg?react`));
+const LogoutIcon = React.lazy(() => import(`/src/assets/svg/logout.svg?react`));
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }

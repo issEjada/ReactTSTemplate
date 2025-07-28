@@ -1,9 +1,9 @@
 import React from "react";
 
-const ActivityIcon = React.lazy(
-  () => import("../assets/svg/activity.svg?react")
-);
-const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
+// import ActivityIcon from "../assets/svg/activity.svg?react";
+// import Plus from "../assets/svg/plus.svg";
+const ActivityIcon = React.lazy(() => import(`/src/assets/svg/activity.svg?react`));
+const Plus = React.lazy(() => import(`/src/assets/svg/plus.svg?react`));
 
 const Top: React.FC = () => {
   return (
@@ -29,7 +29,8 @@ const Top: React.FC = () => {
         </button>
 
         <div className="w-[36px] h-[36px] p-[8px] border-[1.5px] border-blue-700 rounded-[8px] bg-[#1637C4] flex items-center justify-center dark:bg-gray-800">
-          <PlusIcon className="w-[20px] h-[20px] object-contain" />
+          <Plus />
+         
         </div>
       </div>
     </div>

@@ -1,7 +1,9 @@
 import React from "react";
 
-const EmailIcon = React.lazy(() => import("../assets/svg/mail.svg?react"));
-const PhoneIcon = React.lazy(() => import("../assets/svg/phone.svg?react"));
+// import EmailIcon from "../assets/svg/mail.svg?react";
+// import PhoneIcon from "../assets/svg/phone.svg?react";
+const EmailIcon = React.lazy(() => import(`/src/assets/svg/mail.svg?react`));
+const PhoneIcon = React.lazy(() => import(`/src/assets/svg/phone.svg?react`));
 
 const Support: React.FC = () => {
   return (

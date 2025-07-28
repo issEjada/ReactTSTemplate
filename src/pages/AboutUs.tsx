@@ -1,8 +1,6 @@
 import React from "react";
-
-const AboutUsImg = React.lazy(
-  () => import("../assets/svg/aboutUsImg.svg?react")
-);
+// import AboutUsImg from "../assets/svg/aboutUsImg.svg?react";
+const AboutUsImg = React.lazy(() => import(`/src/assets/svg/aboutUsImg.svg?react`));
 
 const AboutUs: React.FC = () => {
   return (
