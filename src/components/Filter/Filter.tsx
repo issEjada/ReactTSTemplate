@@ -38,7 +38,7 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
               alt="Tooltip"
             />
 
-            <div className="absolute  right-full w-64 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+            <div className="absolute  right-full w-32    bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
               Enter Rule Name.
             </div>
           </div>
