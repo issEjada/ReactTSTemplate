@@ -44,37 +44,53 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
+    <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {isLoading && <FullScreenSpinner />}
       {/* Left: Breadcrumbs */}
-      <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
+      {/* <div
+        className={`
+          absolute top-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+          shadow-lg px-7 py-7 z-10 text-sm text-gray-500 dark:text-gray-400 
+          transition-all duration-300 ease-in-out overflow-hidden 
+          ${showDropdown.search ? "opacity-100 w-full h-[80px] left-0" : "opacity-0 h-0 right-0"}
+        `}
+      >
+          <div className="flex items-center mb-2">
+          <SearchIcon className="text-gray-800 dark:text-gray-400 cursor-pointer " />
+          <input
+            type="text"
+            placeholder="Search"
+            className="ml-3 rounded-lg text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
 
+            />
+          </div>
+      </div> */}
+      <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-start gap-5">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
           <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
           <input
             type="text"
             placeholder="Search"
-            className="w-40 pl-10 py-1 rounded-md bg-black/5 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-black/20 focus:outline-none"
+            className="pl-8 pr-9 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
+            // onClick={
+            //   () => toggleDropdown("search")
+            // }
+            
           />
           <kbd className="absolute right-2 text-xs text-black/20">⌘/</kbd>
         </div>
 
+        <div className="p-1">
+        <SideBarIcon
+          className="text-black dark:text-white cursor-pointer"
+          onClick={onSidebarIconClick}
+        />
+        </div>
         {/* Icons */}
         <div ref={headerRef} className="relative flex items-center space-x-4">
-          <div className="flex items-center space-x-3">
-            <SideBarIcon
-              className="text-black dark:text-white cursor-pointer"
-              onClick={onSidebarIconClick}
-            />
-            {/* {showDropdown.sidebar && (
-              <div className="absolute top-[34px] right-20 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
-                Show / Hide Sidebar
-              </div>
-            )} */}
-          </div>
 
           {/* Profile */}
           <div
@@ -87,10 +103,10 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               className="w-8 h-8 rounded-full"
             />
             <div className="text-sm">
-              <div className="font-medium text-gray-800 dark:text-white">
+              <div className="font-medium text-gray-800 dark:text-white text-[12px]">
                 Ahmed Abdullah
               </div>
-              <div className="text-gray-500 dark:text-gray-400 text-xs">
+              <div className="text-gray-500 dark:text-gray-400 text-[10px] leading-[18px] w-[123px] overflow-hidden">
                 a.abdullah@company.com
               </div>
             </div>
@@ -127,6 +143,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             )}
           </div>
         </div>
+        {isPopupOpen && (
         <div>
           <PopupLayout isOpen={isPopupOpen}>
             <LogoutPopupJsx
@@ -134,7 +151,9 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               onConfirm={handleLogout}
             />
           </PopupLayout>
-        </div>
+        </div>        
+        )}
+
       </div>
     </header>
   );
