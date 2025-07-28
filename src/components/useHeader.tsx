@@ -2,25 +2,21 @@ import { useState, useEffect, useRef } from "react";
 
 export const useHeader = () => {
   const [showDropdown, setShowDropdown] = useState({
-    sun: false,
-    history: false,
-    bell: false,
+    search: false,
     user: false,
   });
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const toggleDropdown = (type: "sun" | "history" | "bell" | "user") => {
+  const toggleDropdown = (type: "search" | "user") => {
     console.log("toggleDropdown", type);
     setShowDropdown((prev) => ({
-      sun: type === "sun" ? !prev.sun : false,
-      history: type === "history" ? !prev.history : false,
-      bell: type === "bell" ? !prev.bell : false,
+      search: type === "search" ? !prev.search : false,
       user: type === "user" ? !prev.user : false,
     }));
   };
 
   const closeAllDropdowns = () => {
-    setShowDropdown({ sun: false, history: false, bell: false, user: false });
+    setShowDropdown({ search: false, user: false });
   };
 
   const handleClickOutside = (event: MouseEvent) => {

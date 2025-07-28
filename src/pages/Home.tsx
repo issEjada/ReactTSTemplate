@@ -2,12 +2,12 @@ import HomeWidgetGroup from "../components/HomeWidget";
 import Chart from "../components/Charts/Chart.js";
 import RecentActivityTable from "../components/RecentActivityTable";
 import GlobalThreatMap from "../components/Charts/GlobalThreatMap.js";
-import Top from "../components/DashboardOperations.js";
+import DashboardOperations from "../components/DashboardOperations.js";
 const Home = () => {
   return (
     <div className="flex flex-col gap-[28px] px-4 pb-4 w-full">
       <div className="mt-[24px]">
-        <Top />
+        <DashboardOperations />
       </div>
 
       {/* Widgets */}

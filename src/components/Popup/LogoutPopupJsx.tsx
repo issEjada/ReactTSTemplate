@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-
-const AlertIcon = React.lazy(
-  () => import("../../assets/svg/AlertIcon.svg?react")
-);
+// import AlertIcon from "../../assets/svg/AlertIcon.svg?react";
+const AlertIcon = React.lazy(() => import(`/src/assets/svg/AlertIcon.svg?react`));
 interface LogoutPopupProps {
   onConfirm: () => void;
   onCancel: () => void;
