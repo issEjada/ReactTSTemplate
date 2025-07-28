@@ -22,8 +22,8 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <form className="space-y-1">
-        <div className="relative">
+      <form className="flex flex-col justify-between h-full">
+        <div className="relative flex flex-col mt-12">
           <label className="text-sm font-medium">Rule Name</label>
           <input
             type="text"
@@ -116,7 +116,8 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
           }}
           widthclass="w-[95%]"
         />
-        <div className="flex gap-4 mb-[16px]">
+        
+        <div className="flex gap-4 mb-4">
           <div className="w-[47%]">
             <label className="text-sm font-medium">Date From</label>
             <input
@@ -133,9 +134,10 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
               placeholder=" DD / MM / YY "
             />
           </div>
+          
         </div>
 
-        <div className="flex justify-end gap-2 w-[95%]">
+        <div className="flex justify-end gap-2 mb-8 w-[95%]">
           <button
             type="submit"
             className="bg-blue-700 hover:bg-primary-700 text-white text-sm px-4 py-2 rounded-md"
