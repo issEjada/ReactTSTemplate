@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -149,7 +149,7 @@ export const RulesTable = () => {
     "All" | "Active" | "Inactive"
   >("All");
 
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = React.useCallback((id: string) => {
     setData((prevData) =>
       prevData.map((rule) =>
         rule.id === id
@@ -160,21 +160,26 @@ export const RulesTable = () => {
           : rule
       )
     );
-  };
+  }, []);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const openFilterModal = () => setIsFilterOpen(true);
   const closeFilterModal = () => setIsFilterOpen(false);
 
-  const filteredData =
-    statusFilter === "All"
+  const columns = useMemo(
+    () => getColumns(handleToggleStatus),
+    [handleToggleStatus]
+  );
+  const filteredData = useMemo(() => {
+    return statusFilter === "All"
       ? data
       : data.filter((rule) => rule.status === statusFilter);
+  }, [data, statusFilter]);
 
   const table = useReactTable({
     data: filteredData,
-    columns: getColumns(handleToggleStatus),
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -236,22 +241,34 @@ export const RulesTable = () => {
       ) : (
         <div className="overflow-x-auto border rounded-lg ">
           <div className="flex justify-between items-center px-6 py-6">
-            <div className="flex space-x-0 ">
+            <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300">
               <button
                 onClick={() => onFilterStatus("All")}
-                className="text-black border border-gray-300 hover:bg-gray-100 px-3 w-[83px] h-10 rounded-l-lg text-xs"
+                className={`text-xs w-[83px] h-10 px-3 ${
+                  statusFilter === "All"
+                    ? "font-semibold"
+                    : "hover:bg-gray-100 text-black"
+                }`}
               >
                 View All
               </button>
               <button
                 onClick={() => onFilterStatus("Active")}
-                className="text-black border border-gray-300 hover:bg-gray-100 px-3 w-[83px] h-10 rounded-none text-xs"
+                className={`text-xs w-[83px] h-10 px-3 border-l ${
+                  statusFilter === "Active"
+                    ? "font-semibold"
+                    : "hover:bg-gray-100 text-black"
+                }`}
               >
                 Active
               </button>
               <button
                 onClick={() => onFilterStatus("Inactive")}
-                className="text-black border border-gray-300 hover:bg-gray-100 px-3 w-[83px] h-10 rounded-r-lg text-xs"
+                className={`text-xs w-[83px] h-10 px-3 border-l ${
+                  statusFilter === "Inactive"
+                    ? "font-semibold"
+                    : "hover:bg-gray-100 text-black"
+                }`}
               >
                 Inactive
               </button>
