@@ -1,78 +1,64 @@
 import { useLocation, Link } from "react-router-dom";
 import { useContext } from "react";
-import { ThemeContext, AuthContext } from "../context/Context";
-import SunIcon from "../assets/svg/Sun.svg?react";
-import ClockIcon from "../assets/svg/ClockCounterClockwise.svg?react";
+import { AuthContext } from "../context/Context";
 import SideBarIcon from "../assets/svg/Sidebar.svg?react";
 import SearchIcon from "../assets/svg/Search.svg?react";
-import BellIcon from "../assets/svg/Bell.svg?react";
 import { useHeader } from "./useHeader";
-import MoonIcon from "../assets/svg/darkMode.svg?react";
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const { headerRef, showDropdown, toggleDropdown } = useHeader();
-  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
 
   const { logout } = useContext(AuthContext);
   return (
     <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {/* Left: Breadcrumbs */}
-      <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
+      {/* <div
+        className={`
+          absolute top-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+          shadow-lg px-7 py-7 z-10 text-sm text-gray-500 dark:text-gray-400 
+          transition-all duration-300 ease-in-out overflow-hidden 
+          ${showDropdown.search ? "opacity-100 w-full h-[80px] left-0" : "opacity-0 h-0 right-0"}
+        `}
+      >
+          <div className="flex items-center mb-2">
+          <SearchIcon className="text-gray-800 dark:text-gray-400 cursor-pointer " />
+          <input
+            type="text"
+            placeholder="Search"
+            className="ml-3 rounded-lg text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
 
+            />
+          </div>
+      </div> */}
+      <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-start gap-5">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
           <SearchIcon className="absolute left-3 text-gray-800 dark:text-gray-400 cursor-pointer " />
           <input
             type="text"
             placeholder="Search"
-            className="pl-10 pr-10 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none"
+            className="pl-8 pr-9 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
+            // onClick={
+            //   () => toggleDropdown("search")
+            // }
+            
           />
           <kbd className="absolute right-2 text-xs text-gray-400">⌘/</kbd>
         </div>
 
+        <div className="p-1">
+        <SideBarIcon
+          className="text-black dark:text-white cursor-pointer"
+          onClick={onSidebarIconClick}
+        />
+        </div>
         {/* Icons */}
         <div ref={headerRef} className="relative flex items-center space-x-4">
-          <div className="flex items-center space-x-3">
-            {isDarkMode ? (
-              <MoonIcon
-                className="dark:text-gray-400 cursor-pointer"
-                onClick={toggleDarkMode}
-              />
-            ) : (
-              <SunIcon
-                className="w-5 h-5  dark:text-gray-400 cursor-pointer"
-                onClick={toggleDarkMode}
-              />
-            )}
-            {showDropdown.sun && (
-              <div className="absolute top-[34px] right-20 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
-                Those are my sun settings
-              </div>
-            )}
-            <ClockIcon
-              className="w-5 h-5  dark:text-gray-400 cursor-pointer"
-              onClick={() => toggleDropdown("history")}
-            />
-            {showDropdown.history && (
-              <div className="absolute top-[34px] right-12 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
-                Those are my history settings
-              </div>
-            )}
-            <BellIcon
-              className="w-5 h-5  dark:text-gray-400 cursor-pointer"
-              onClick={() => toggleDropdown("bell")}
-            />
-            {showDropdown.bell && (
-              <div className="absolute top-[34px] right-4 mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10 text-sm text-gray-500 dark:text-gray-400">
-                Those are my notifications
-              </div>
-            )}
-          </div>
 
           {/* Profile */}
           <div
