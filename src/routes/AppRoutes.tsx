@@ -3,6 +3,7 @@ export const AppRoutes = {
   testing: "/testing",
   login: "/login",
   rules: "/rules",
+  addRule: "/rules/add",
   events: "/events",
   systemConfiguration: "/system-configuration",
   monitoring: "/monitoring",
