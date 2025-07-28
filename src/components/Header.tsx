@@ -1,19 +1,47 @@
 import { useLocation, Link } from "react-router-dom";
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/Context";
-import SideBarIcon from "../assets/svg/Sidebar.svg?react";
-import SearchIcon from "../assets/svg/Search.svg?react";
 import { useHeader } from "./useHeader";
+import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
+import PopupLayout from "./Popup/LayoutPopup";
+import FullScreenSpinner from "./FullScreenSpinner";
+import { ConstantKeys } from "../constants/ConstantKeys.constants";
+
+const SideBarIcon = React.lazy(() => import("../assets/svg/Sidebar.svg?react"));
+const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
+const SettingsIcon = React.lazy(
+  () => import("../assets/svg/settings.svg?react")
+);
+const ProfileIcon = React.lazy(() => import("../assets/svg/profile.svg?react"));
+const LogoutIcon = React.lazy(() => import("../assets/svg/logout.svg?react"));
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
-  const { headerRef, showDropdown, toggleDropdown } = useHeader();
-
   const { logout } = useContext(AuthContext);
+  const { headerRef, showDropdown, toggleDropdown } = useHeader();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsAuthenticated] = useState(false);
+
+  const handleLogout = () => {
+    setIsPopupOpen(false);
+    setIsLoading(true);
+    setTimeout(() => {
+      logout();
+      setIsLoading(false);
+      sessionStorage.removeItem(ConstantKeys.accessToken);
+      localStorage.removeItem(ConstantKeys.accessToken);
+      sessionStorage.removeItem(ConstantKeys.rememberMe);
+      localStorage.removeItem(ConstantKeys.rememberMe);
+      setIsAuthenticated(false);
+    }, 1000);
+  };
+
   return (
     <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
+      {isLoading && <FullScreenSpinner />}
       {/* Left: Breadcrumbs */}
       {/* <div
         className={`
@@ -38,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <div className="flex items-start gap-5">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
-          <SearchIcon className="absolute left-3 text-gray-800 dark:text-gray-400 cursor-pointer " />
+          <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
           <input
             type="text"
             placeholder="Search"
@@ -48,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             // }
             
           />
-          <kbd className="absolute right-2 text-xs text-gray-400">⌘/</kbd>
+          <kbd className="absolute right-2 text-xs text-black/20">⌘/</kbd>
         </div>
 
         <div className="p-1">
@@ -80,31 +108,48 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             </div>
             {showDropdown.user && (
               <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
-                <div className="flex flex-row items-center flex-start gap-3 overflow-hidden">
-                  <img
-                    src="https://i.pravatar.cc/40"
-                    alt="Avatar"
-                    className="w-6 h-6 rounded-full"
-                  />
-                  <div className="text-sm">
-                    <div className="font-sm text-gray-800 dark:text-white">
-                      Ahmed Abdullah
-                    </div>
-                    <div className="text-gray-500 dark:text-gray-400 text-xs">
-                      a.abdullah@company.comsdfsdfdsfsds
-                    </div>
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                      <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                      View Profile
+                    </button>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                      <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                      Settings
+                    </button>
                   </div>
                 </div>
-                <button
-                  onClick={() => logout()}
-                  className="text-sm text-gray-500 dark:text-gray-400 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 border border-gray-200 dark:border-gray-700 mt-2 text-left"
-                >
-                  Logout
-                </button>
+
+                <div className="h-[3px] bg-gray-200 w-full mb-3 mt-2"></div>
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    // onClick={() => logout()}
+                    onClick={() => setIsPopupOpen(true)}
+                    className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
+                  >
+                    <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                    Logout
+                  </button>
+                </div>
               </div>
             )}
           </div>
         </div>
+        {isPopupOpen && (
+        <div>
+          <PopupLayout isOpen={isPopupOpen}>
+            <LogoutPopupJsx
+              onCancel={() => setIsPopupOpen(false)}
+              onConfirm={handleLogout}
+            />
+          </PopupLayout>
+        </div>        
+        )}
+
       </div>
     </header>
   );
@@ -126,16 +171,19 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const fullPath = pathnames.length === 0 ? ["overview"] : pathnames;
 
   return (
-    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
       <SideBarIcon
         className="text-black dark:text-white cursor-pointer"
         onClick={onSidebarIconClick}
       />
 
-      <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
+      <Link
+        to="/"
+        className="text-gray-950 dark:text-gray-400 hover:underline "
+      >
         Dashboard
       </Link>
-      <span>/</span>
+      <span className="text-[#1C1C1C33]">/</span>
 
       {fullPath.map((name, index) => {
         const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;

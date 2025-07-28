@@ -14,6 +14,7 @@ module.exports = {
     extend: {
       colors: {
         gray: {
+          50: "#FAFAFA",
           200: "#E9EAEB",
           300: "#D5D7DA",
           400: "#A4A7AE",
@@ -25,6 +26,7 @@ module.exports = {
           950: "#1C1C1C66",
         },
         blue: {
+          500: "#2E90FA",
           700: "#1637C4",
         },
         red: {
@@ -42,6 +44,11 @@ module.exports = {
       },
       maxWidth: {
         1440: "1440px",
+      },
+      boxShadow: {
+        "logout-inner": "0px 8px 8px -4px rgba(10, 13, 18, 0.03)",
+        "logout-outer": "0px 20px 24px -4px rgba(10, 13, 18, 0.08)",
+        // Use your original hex alphas as RGBA
       },
     },
   },

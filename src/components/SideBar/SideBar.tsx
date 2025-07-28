@@ -1,15 +1,21 @@
+import React, { useContext } from "react";
 import { SideBarItemsGroup } from "./SideBarItem";
 import { AppRoutes } from "../../routes/AppRoutes";
-import TablerIconMoon from "../../assets/svg/darkMode.svg?react";
-import TablerIconSun from "../../assets/svg/Sun.svg?react";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
-import LogoWithTextIcon from "../../assets/svg/logo_with_text.svg?react";
-import { useContext } from "react";
 import { ThemeContext } from "../../context/Context";
 
+const LogoWithTextIcon = React.lazy(
+  () => import("../../assets/svg/logo_with_text.svg?react")
+);
+const TablerIconMoon = React.lazy(
+  () => import("../../assets/svg/darkMode.svg?react")
+);
+const TablerIconSun = React.lazy(
+  () => import("../../assets/svg/Sun.svg?react")
+);
 
 export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
-  const { isDarkMode,  } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
 
   return (
     <>
@@ -21,14 +27,20 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
 
-          <div className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}>
+          <div
+            className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
+          >
             <LogoWithTextIcon
               className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
                 isClosed && "w-[140px]"
               }`}
             />
           </div>
-          <div className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300  ${isClosed ? " -mx-8" : " -mx-4"}`}></div>
+          <div
+            className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300  ${
+              isClosed ? " -mx-8" : " -mx-4"
+            }`}
+          ></div>
           <div className="pb-3">
             <SideBarItemsGroup
               items={[
@@ -44,7 +56,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           <div className="pb-3">
             <span
               className={`block text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 mb-1 ${
-                isClosed ? ' translate-x-[-50%]' : ' translate-x-0'
+                isClosed ? " translate-x-[-50%]" : " translate-x-0"
               }`}
             >
               Developer
@@ -81,7 +93,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           <div className="pb-3">
             <span
               className={`block text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 mb-1 ${
-                isClosed ? ' translate-x-[-40%]' : ' translate-x-0'
+                isClosed ? " translate-x-[-40%]" : " translate-x-0"
               }`}
             >
               Account
@@ -111,19 +123,23 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
 
             <div
               // className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden ${isClosed? " justify-center": " justify-between "}`}
-              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 px-2 ${isClosed? ' translate-x-[-10%] h-20' : ' items-center translate-x-0 h-9'}`}
+              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 px-2 ${
+                isClosed
+                  ? " translate-x-[-10%] h-20"
+                  : " items-center translate-x-0 h-9"
+              }`}
             >
               <div
-                className={`flex duration-700 transition-all ${isClosed ? "ms-[5px] mt-1 " : "ms-[1px] items-center "}`}
+                className={`flex duration-700 transition-all ${
+                  isClosed ? "ms-[5px] mt-1 " : "ms-[1px] items-center "
+                }`}
               >
                 <span className="m-1">
-                  {
-                    isDarkMode ? (
-                      <TablerIconSun className="text-gray-900 dark:text-gray-500" />
-                    ) : (
-                      <TablerIconMoon className="text-gray-900 dark:text-gray-500" />
-                    )
-                  }
+                  {isDarkMode ? (
+                    <TablerIconSun className="text-gray-900 dark:text-gray-500" />
+                  ) : (
+                    <TablerIconMoon className="text-gray-900 dark:text-gray-500" />
+                  )}
                 </span>
 
                 <span
@@ -136,7 +152,9 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               </div>
               <div
                 className={`transition-transform duration-300 ease-in-out transform ${
-                  isClosed ? 'translate-x-[-108px] translate-y-[44px]' : 'translate-x-0 translate-y-0'
+                  isClosed
+                    ? "translate-x-[-108px] translate-y-[44px]"
+                    : "translate-x-0 translate-y-0"
                 }`}
               >
                 <DarkModeToggle />
