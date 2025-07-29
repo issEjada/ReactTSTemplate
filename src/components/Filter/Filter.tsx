@@ -1,13 +1,14 @@
-// File: Filter.tsx
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import FilterLayout from "./FilterLayout";
 import LogicDropdown from "../DropDown";
 import ToolTipQuestionMark from "../../assets/svg/ToolTipQuestionMark.svg";
-const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
-  isOpen,
-  onClose,
-}) => {
+const Filter: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  onApply: (filters: Record<string, string>) => void;
+}> = ({ isOpen, onClose, onApply }) => {
+  const [ruleName, setRuleName] = useState("");
+  const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
   const [riskLevel, setRiskLevel] = useState("");
   const [device, setDevice] = useState("");
@@ -15,6 +16,30 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   const [aspect, setAspect] = useState("");
   const [control, setControl] = useState("");
   const [platform, setPlatform] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const filters = {
+      ruleName,
+      description,
+      status,
+      riskLevel,
+      device,
+      scheme,
+      aspect,
+      control,
+      platform,
+      dateFrom,
+      dateTo,
+    };
+
+    console.log("Filter values:", filters);
+    onApply(filters); // Call parent with selected filters
+    onClose(); // Optionally close the modal
+  };
 
   return (
     <FilterLayout
@@ -22,13 +47,18 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <form className="flex flex-col justify-between h-full">
+      <form
+        className="flex flex-col justify-between h-full"
+        onSubmit={handleSubmit}
+      >
         <div className="relative flex flex-col mt-12">
           <label className="text-sm font-medium">Rule Name</label>
           <input
             type="text"
             placeholder="Enter Rule Name"
             className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+            value={ruleName}
+            onChange={(e) => setRuleName(e.target.value)}
           />
 
           <div className="absolute top-[40px] left-[calc(95%-32px)] group">
@@ -50,20 +80,22 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
             type="text"
             placeholder="Type Description"
             className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
         <div className="flex gap-2">
           <LogicDropdown
             label="Status"
-            options={["High", "Medium", "Low"]}
+            options={["Active", "Inactive"]}
             value={status}
             onChange={(status) => setStatus(status)}
             widthclass="w-[47%]"
           />
           <LogicDropdown
             label="Risk Level"
-            options={["90", "80", "70"]}
+            options={["High", "Medium", "Low"]}
             value={riskLevel}
             onChange={(riskLevel) => {
               setRiskLevel(riskLevel);
@@ -116,7 +148,7 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
           }}
           widthclass="w-[95%]"
         />
-        
+
         <div className="flex gap-4 mb-4">
           <div className="w-[47%]">
             <label className="text-sm font-medium">Date From</label>
@@ -124,6 +156,8 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
               type="date"
               placeholder=" DD / MM / YY "
               className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+              value={dateFrom}
+              onChange={(e) => setDateFrom(e.target.value)}
             />
           </div>
           <div className="w-[45.5%]">
@@ -132,9 +166,10 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
               type="date"
               className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
               placeholder=" DD / MM / YY "
+              value={dateTo}
+              onChange={(e) => setDateTo(e.target.value)}
             />
           </div>
-          
         </div>
 
         <div className="flex justify-end gap-2 mb-8 w-[95%]">
@@ -145,8 +180,22 @@ const Filter: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
             Apply Filters
           </button>
           <button
-            type="button"
+            type="submit"
             className="text-sm text-gray-700 hover:underline hover:bg-gray-100 border border-gray-200 rounded-md px-4 py-2"
+            onClick={() => {
+              // Clear all filters
+              setStatus("");
+              setRiskLevel("");
+              setDevice("");
+              setScheme("");
+              setAspect("");
+              setControl("");
+              setPlatform("");
+              setRuleName("");
+              setDescription("");
+              setDateFrom("");
+              setDateTo("");
+            }}
           >
             Clear
           </button>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   useReactTable,
   getCoreRowModel,
@@ -149,7 +150,7 @@ export const RulesTable = () => {
     "All" | "Active" | "Inactive"
   >("All");
 
-  const handleToggleStatus = (id: string) => {
+  const handleToggleStatus = React.useCallback((id: string) => {
     setData((prevData) =>
       prevData.map((rule) =>
         rule.id === id
@@ -160,26 +161,54 @@ export const RulesTable = () => {
           : rule
       )
     );
-  };
+  }, []);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<Record<string, string>>({});
 
   const openFilterModal = () => setIsFilterOpen(true);
   const closeFilterModal = () => setIsFilterOpen(false);
 
-  const filteredData =
-    statusFilter === "All"
-      ? data
-      : data.filter((rule) => rule.status === statusFilter);
+  const columns = useMemo(
+    () => getColumns(handleToggleStatus),
+    [handleToggleStatus]
+  );
+  const filteredData = useMemo(() => {
+    let filtered = data;
+
+    if (statusFilter !== "All") {
+      filtered = filtered.filter((rule) => rule.status === statusFilter);
+    }
+
+    for (const key in filters) {
+      if (filters[key]) {
+        filtered = filtered.filter((rule) => {
+          const filterValue = filters[key].toLowerCase();
+          if (key === "status") {
+            return rule.status.toLowerCase() === filterValue;
+          }
+          if (key === "riskLevel") {
+            return rule.risk.toLowerCase() === filterValue;
+          }
+          const ruleValue = String(rule[key as keyof Rule]).toLowerCase();
+          return ruleValue.includes(filterValue);
+        });
+      }
+    }
+
+    return filtered;
+  }, [data, statusFilter, filters]);
 
   const table = useReactTable({
     data: filteredData,
-    columns: getColumns(handleToggleStatus),
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const navigate = useNavigate();
+
   const handleAddNewRule = () => {
-    alert("Add new rule clicked");
+    navigate("/rules/add");
   };
 
   const onFilterStatus: (status: "All" | "Active" | "Inactive") => void = (
@@ -191,13 +220,25 @@ export const RulesTable = () => {
   return (
     <div className="p-6 bg-white shadow-sm">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 pt-5">
-          Scoring Rules
-          <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-            {filteredData.length} Rule{filteredData.length !== 1 && "s"}
-          </span>
-        </h2>
-        <p className="text-sm text-gray-500">
+        <div className="flex items-center justify-between pt-5">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Scoring Rules
+            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+              {filteredData.length} Rule{filteredData.length !== 1 && "s"}
+            </span>
+          </h2>
+
+          {filteredData.length !== 0 && (
+            <button
+              onClick={handleAddNewRule}
+              className="w-[155px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
+            >
+              + Add New Rule
+            </button>
+          )}
+        </div>
+
+        <p className="text-sm text-gray-500 mt-1">
           Keep track of customers and their security levels.
         </p>
       </div>
@@ -236,22 +277,34 @@ export const RulesTable = () => {
       ) : (
         <div className="overflow-x-auto border rounded-lg ">
           <div className="flex justify-between items-center px-6 py-6">
-            <div className="flex space-x-0 ">
+            <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300">
               <button
                 onClick={() => onFilterStatus("All")}
-                className="text-black border border-gray-300 hover:bg-gray-100 px-3 w-[83px] h-10 rounded-l-lg text-xs"
+                className={`text-xs w-[83px] h-10 px-3 ${
+                  statusFilter === "All"
+                    ? "font-semibold"
+                    : "hover:bg-gray-100 text-black"
+                }`}
               >
                 View All
               </button>
               <button
                 onClick={() => onFilterStatus("Active")}
-                className="text-black border border-gray-300 hover:bg-gray-100 px-3 w-[83px] h-10 rounded-none text-xs"
+                className={`text-xs w-[83px] h-10 px-3 border-l ${
+                  statusFilter === "Active"
+                    ? "font-semibold"
+                    : "hover:bg-gray-100 text-black"
+                }`}
               >
                 Active
               </button>
               <button
                 onClick={() => onFilterStatus("Inactive")}
-                className="text-black border border-gray-300 hover:bg-gray-100 px-3 w-[83px] h-10 rounded-r-lg text-xs"
+                className={`text-xs w-[83px] h-10 px-3 border-l ${
+                  statusFilter === "Inactive"
+                    ? "font-semibold"
+                    : "hover:bg-gray-100 text-black"
+                }`}
               >
                 Inactive
               </button>
@@ -278,7 +331,13 @@ export const RulesTable = () => {
               </button>
             </div>
           </div>
-          <Filter isOpen={isFilterOpen} onClose={closeFilterModal} />
+          <Filter
+            isOpen={isFilterOpen}
+            onClose={closeFilterModal}
+            onApply={(newFilters: Record<string, string>) => {
+              setFilters(newFilters);
+            }}
+          />
           <table className="min-w-full text-sm text-center">
             <thead className="bg-gray-50 text-gray-600 ">
               {table.getHeaderGroups().map((headerGroup) => (
