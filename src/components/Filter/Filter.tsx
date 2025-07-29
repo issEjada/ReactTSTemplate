@@ -24,7 +24,7 @@ const Filter: React.FC<{
     const filters: Record<string, string> = {};
 
     if (ruleName) {
-      filters.ruleName = ruleName;
+      filters.name = ruleName;
     }
     if (description) {
       filters.description = description;
