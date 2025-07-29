@@ -1,6 +1,5 @@
 import React from "react";
-// import AboutUsImg from "../assets/svg/aboutUsImg.svg?react";
-const AboutUsImg = React.lazy(() => import(`/src/assets/svg/aboutUsImg.svg?react`));
+import AboutUsImg from "../assets/png/aboutUsImg.png";
 
 const AboutUs: React.FC = () => {
   return (
@@ -58,7 +57,7 @@ const AboutUs: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <AboutUsImg className="w-full ml-20" />
+            <img src={AboutUsImg} alt="cybersecurity illustration" className="w-full ml-20" />
           </div>
         </div>
       </div>

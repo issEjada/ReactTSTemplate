@@ -108,7 +108,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 {
                   pageTitle: "About Us",
                   text: "About Us",
-                  icon: "aboutUs",
+                  icon: "aboutUsIcon",
                   url: AppRoutes.aboutUs,
                 },
                 {
