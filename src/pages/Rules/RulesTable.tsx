@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useReactTable,
@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import Filter from "../../components/Filter/Filter";
+import useScoringRules from "./RuleServices";
 
 const SearchIcon = React.lazy(
   () => import("../../assets/svg/Search.svg?react")
@@ -18,49 +19,11 @@ const FilterIcon = React.lazy(
 
 type Rule = {
   id: string;
-  ruleName: string;
+  name: string;
   description: string;
-  status: "Active" | "Inactive";
-  risk: "Low" | "Medium" | "High";
+  status: "ENABLED" | "DISABLED";
+  riskLevel: "Low" | "Medium" | "High";
 };
-
-const dataSample: Rule[] = [
-  {
-    id: "PH01",
-    ruleName: "Admin Privilege Access",
-    description: "Detects excessive admin access by low-risk users.",
-    status: "Active",
-    risk: "High",
-  },
-  {
-    id: "PH02",
-    ruleName: "Suspicious Login",
-    description: "Flags multiple login attempts from different countries.",
-    status: "Inactive",
-    risk: "Medium",
-  },
-  {
-    id: "PH03",
-    ruleName: "Data Exfiltration",
-    description: "Monitors unusual outbound data spikes.",
-    status: "Active",
-    risk: "High",
-  },
-  {
-    id: "PH04",
-    ruleName: "Phishing Email",
-    description: "Identifies inbound messages matching phishing patterns.",
-    status: "Active",
-    risk: "Low",
-  },
-  {
-    id: "PH05",
-    ruleName: "Unusual Working Hours",
-    description: "Tracks user activity outside normal working hours.",
-    status: "Inactive",
-    risk: "Medium",
-  },
-];
 
 const getColumns = (
   onToggleStatus: (id: string) => void
@@ -69,7 +32,8 @@ const getColumns = (
     header: "OFF/ON",
     cell: ({ row }) => {
       const status = row.original.status;
-      const isActive = status === "Active";
+
+      const isActive = status === "ENABLED";
       return (
         <div className="flex justify-center">
           <button
@@ -93,7 +57,7 @@ const getColumns = (
   },
   {
     header: "Rule Name",
-    accessorKey: "ruleName",
+    accessorKey: "name",
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900">
@@ -113,31 +77,35 @@ const getColumns = (
     cell: (info) => (
       <span
         className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
-          info.getValue() === "Active"
+          info.getValue() === "ENABLED"
             ? "bg-green-100 text-green-700"
             : "bg-gray-200 text-gray-700"
         }`}
       >
-        {String(info.getValue())}
+        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
       </span>
     ),
   },
   {
     header: "Risk Level",
-    accessorKey: "risk",
+    accessorKey: "riskLevel",
     cell: (info) => {
+      const value = String(info.getValue());
       const colorMap: Record<string, string> = {
         Low: "text-gray-700",
         Medium: "text-warning-700",
         High: "text-red-700",
       };
+      // Capitalize first letter, rest lowercase
+      const display =
+        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span
-          className={`text-xs font-medium px-2 py-1  whitespace-nowrap ${
-            colorMap[info.getValue() as keyof typeof colorMap]
+          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
+            colorMap[display] || "text-gray-700"
           }`}
         >
-          {String(info.getValue())}
+          {display}
         </span>
       );
     },
@@ -145,62 +113,90 @@ const getColumns = (
 ];
 
 export const RulesTable = () => {
-  const [data, setData] = useState<Rule[]>(dataSample);
+  const {
+    data = [],
+    isLoading,
+    error,
+    totalCount,
+    currentPage,
+    itemsPerPage,
+    setCurrentPage,
+    setItemsPerPage,
+    filters,
+    setFilters,
+    refetch,
+  } = useScoringRules();
+
+  const [searchText, setSearchText] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
-    "All" | "Active" | "Inactive"
+    "All" | "ENABLED" | "DISABLED"
   >("All");
 
-  const handleToggleStatus = React.useCallback((id: string) => {
-    setData((prevData) =>
-      prevData.map((rule) =>
-        rule.id === id
-          ? {
-              ...rule,
-              status: rule.status === "Active" ? "Inactive" : "Active",
-            }
-          : rule
-      )
-    );
-  }, []);
+  // When user clicks a status button, update statusFilter with backend values
+  const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
+    setStatusFilter(status);
 
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filters, setFilters] = useState<Record<string, string>>({});
+    const newFilters: Record<string, string> = {};
+
+    // Only add status filter if not "All"
+    if (status !== "All") {
+      newFilters.status = status;
+    }
+
+    // Also include search text if any
+    if (searchText.trim() !== "") {
+      newFilters.filter = searchText.trim();
+    }
+
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
 
   const openFilterModal = () => setIsFilterOpen(true);
   const closeFilterModal = () => setIsFilterOpen(false);
 
-  const columns = useMemo(
-    () => getColumns(handleToggleStatus),
-    [handleToggleStatus]
-  );
-  const filteredData = useMemo(() => {
-    let filtered = data;
+  const applyFilters = () => {
+    const newFilters: Record<string, string> = {};
 
     if (statusFilter !== "All") {
-      filtered = filtered.filter((rule) => rule.status === statusFilter);
+      newFilters.status = statusFilter;
     }
 
-    for (const key in filters) {
-      if (filters[key]) {
-        filtered = filtered.filter((rule) => {
-          const filterValue = filters[key].toLowerCase();
-          if (key === "status") {
-            return rule.status.toLowerCase() === filterValue;
-          }
-          if (key === "riskLevel") {
-            return rule.risk.toLowerCase() === filterValue;
-          }
-          const ruleValue = String(rule[key as keyof Rule]).toLowerCase();
-          return ruleValue.includes(filterValue);
-        });
-      }
+    if (searchText.trim() !== "") {
+      newFilters.filter = searchText.trim();
     }
 
-    return filtered;
-  }, [data, statusFilter, filters]);
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
 
-  const table = useReactTable({
-    data: filteredData,
+  // On toggling status switch, we can optionally call API to update status
+  // but for now just refetch list to reflect changes or simulate local update
+  const handleToggleStatus = async () => {
+    // Here you'd call an API to update status,
+    // after success, refetch data to reflect new status
+    // For now, just refetch to reload data
+    await refetch();
+  };
+
+  const columns = useMemo(() => getColumns(handleToggleStatus), []);
+
+  // Map or cast data to Rule[]
+  const rulesData: Rule[] = useMemo(
+    () =>
+      data.map((item) => ({
+        id: String(item.id), // Ensure id is string as per Rule type
+        name: item.name ?? "",
+        description: item.description ?? "",
+        status: item.status as "ENABLED" | "DISABLED", // Cast to specific status types
+        riskLevel: item.riskLevel as "Low" | "Medium" | "High", // Cast to specific riskLevel types
+      })),
+    [data]
+  );
+
+  const table = useReactTable<Rule>({
+    data: rulesData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -211,12 +207,6 @@ export const RulesTable = () => {
     navigate("/rules/add");
   };
 
-  const onFilterStatus: (status: "All" | "Active" | "Inactive") => void = (
-    status
-  ) => {
-    setStatusFilter(status);
-  };
-
   return (
     <div className="p-6 bg-white shadow-sm">
       <div className="mb-6">
@@ -224,11 +214,11 @@ export const RulesTable = () => {
           <h2 className="text-lg font-semibold text-gray-900">
             Scoring Rules
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {filteredData.length} Rule{filteredData.length !== 1 && "s"}
+              {totalCount} Rule{totalCount !== 1 && "s"}
             </span>
           </h2>
 
-          {filteredData.length !== 0 && (
+          {totalCount !== 0 && (
             <button
               onClick={handleAddNewRule}
               className="w-[155px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
@@ -243,7 +233,15 @@ export const RulesTable = () => {
         </p>
       </div>
 
-      {filteredData.length === 0 ? (
+      {isLoading ? (
+        <div className="w-full h-[75vh] flex items-center justify-center text-gray-500 text-lg">
+          Loading...
+        </div>
+      ) : error ? (
+        <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
+          {error}
+        </div>
+      ) : totalCount === 0 ? (
         <div className="w-full h-[75vh] flex flex-col items-center justify-center bg-gray-50 rounded-md border border-dashed">
           <div className="bg-white shadow-md rounded-full p-4 mb-4">
             <svg
@@ -289,9 +287,9 @@ export const RulesTable = () => {
                 View All
               </button>
               <button
-                onClick={() => onFilterStatus("Active")}
+                onClick={() => onFilterStatus("ENABLED")}
                 className={`text-xs w-[83px] h-10 px-3 border-l ${
-                  statusFilter === "Active"
+                  statusFilter === "ENABLED"
                     ? "font-semibold"
                     : "hover:bg-gray-100 text-black"
                 }`}
@@ -299,9 +297,9 @@ export const RulesTable = () => {
                 Active
               </button>
               <button
-                onClick={() => onFilterStatus("Inactive")}
+                onClick={() => onFilterStatus("DISABLED")}
                 className={`text-xs w-[83px] h-10 px-3 border-l ${
-                  statusFilter === "Inactive"
+                  statusFilter === "DISABLED"
                     ? "font-semibold"
                     : "hover:bg-gray-100 text-black"
                 }`}
@@ -313,9 +311,18 @@ export const RulesTable = () => {
             {/* Search Box aligned right */}
             <div className="flex items-center gap-3">
               <div className="relative w-[400px] h-[44px]">
-                <SearchIcon className="absolute left-[14px] top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 w-5 h-5 pointer-events-none" />
+                <Suspense>
+                  <SearchIcon className="absolute left-[14px] top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 w-5 h-5 pointer-events-none" />
+                </Suspense>
                 <input
                   type="text"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      applyFilters();
+                    }
+                  }}
                   placeholder="Search"
                   className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500"
                 />
@@ -326,18 +333,30 @@ export const RulesTable = () => {
                 className="flex items-center gap-2 w-[100px] h-[40px] px-4 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100"
                 onClick={openFilterModal}
               >
-                <FilterIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <Suspense>
+                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                </Suspense>
                 Filter
               </button>
             </div>
           </div>
+
           <Filter
             isOpen={isFilterOpen}
             onClose={closeFilterModal}
             onApply={(newFilters: Record<string, string>) => {
-              setFilters(newFilters);
+              const updatedFilters = { ...newFilters };
+              if (statusFilter !== "All") {
+                updatedFilters.status = statusFilter;
+              }
+              if (searchText.trim() !== "") {
+                updatedFilters.filter = searchText.trim();
+              }
+              setFilters(updatedFilters);
+              setCurrentPage(1);
             }}
           />
+
           <table className="min-w-full text-sm text-center">
             <thead className="bg-gray-50 text-gray-600 ">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -370,14 +389,30 @@ export const RulesTable = () => {
               ))}
             </tbody>
           </table>
+
+          {/* Pagination */}
           <div className="flex justify-between items-center px-4 py-3 border-t text-sm text-gray-600 w-[1144px] h-[64px]">
-            <div className="pl-6">Page 1 of 10</div>
+            <div className="pl-6">
+              Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
+            </div>
             <div className="space-x-2 pr-6 text-gray-700">
-              <button className="px-3 py-2 w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-2 w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+              >
                 Previous
               </button>
 
-              <button className="px-3 py-2 w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100">
+              <button
+                onClick={() =>
+                  setCurrentPage((p) =>
+                    p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
+                  )
+                }
+                disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
+                className="px-3 py-2 w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+              >
                 Next
               </button>
             </div>

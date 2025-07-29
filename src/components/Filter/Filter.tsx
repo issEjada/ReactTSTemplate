@@ -21,20 +21,43 @@ const Filter: React.FC<{
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const filters: Record<string, string> = {};
 
-    const filters = {
-      ruleName,
-      description,
-      status,
-      riskLevel,
-      device,
-      scheme,
-      aspect,
-      control,
-      platform,
-      dateFrom,
-      dateTo,
-    };
+    if (ruleName) {
+      filters.ruleName = ruleName;
+    }
+    if (description) {
+      filters.description = description;
+    }
+    if (status === "Active") {
+      filters.status = "ENABLED";
+    } else if (status === "Inactive") {
+      filters.status = "DISABLED";
+    }
+    if (riskLevel) {
+      filters.riskLevel = riskLevel;
+    }
+    if (device) {
+      filters.device = device;
+    }
+    if (scheme) {
+      filters.scheme = scheme;
+    }
+    if (aspect) {
+      filters.aspect = aspect;
+    }
+    if (control) {
+      filters.control = control;
+    }
+    if (platform) {
+      filters.platform = platform;
+    }
+    if (dateFrom) {
+      filters.dateFrom = dateFrom;
+    }
+    if (dateTo) {
+      filters.dateTo = dateTo;
+    }
 
     console.log("Filter values:", filters);
     onApply(filters); // Call parent with selected filters
