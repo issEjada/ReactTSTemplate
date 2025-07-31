@@ -201,3 +201,18 @@ httpClient.interceptors.response.use(
   responseFulfilledInterceptor,
   responseRejectedInterceptor
 );
+
+export const getHeaders = () => {
+  const secureToken = SecureStorage.getItem(ConstantKeys.accessToken);
+  const localToken = localStorage.getItem(ConstantKeys.accessToken);
+  const token =
+    typeof secureToken === "string" && secureToken
+      ? secureToken
+      : typeof localToken === "string" && localToken
+      ? localToken
+      : "";
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+};
