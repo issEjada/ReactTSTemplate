@@ -1,4 +1,11 @@
-import React, { useState, useMemo, useEffect, Suspense } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  Suspense,
+  useRef,
+  useCallback,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useReactTable,
@@ -6,15 +13,23 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import Filter from "../../components/Filter/Filter";
-import useScoringRules from "./RuleServices";
+import { RulesFilterForm } from "../RulesFilter/RulesFilterJsx";
+import { useScoringRulesTable } from "./useRulesTable";
+import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const SearchIcon = React.lazy(
-  () => import("../../assets/svg/Search.svg?react")
+  () => import("../../../assets/svg/Search.svg?react")
 );
-
 const FilterIcon = React.lazy(
-  () => import("../../assets/svg/Filters.svg?react")
+  () => import("../../../assets/svg/Filters.svg?react")
+);
+const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
+
+const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
+
+const DeleteIcon = React.lazy(
+  () => import("../../../assets/svg/Delete.svg?react")
 );
 
 type Rule = {
@@ -110,7 +125,125 @@ const getColumns = (
       );
     },
   },
+  {
+    header: "",
+    accessorKey: "actions",
+    cell: ({ row }) => {
+      const rule = row.original;
+      return <RuleMenu rule={rule} />;
+    },
+  },
 ];
+
+const RuleMenu = ({ rule }: { rule: Rule }) => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    },
+    [dropdownRef]
+  );
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
+  const handleView = () => {
+    console.log("View rule:", rule);
+    setOpen(false);
+    navigate("/rules/view", {
+      state: {
+        id: rule.id,
+        action: "view",
+      },
+    });
+  };
+
+  const handleEdit = () => {
+    console.log("Edit rule:", rule);
+    setOpen(false);
+    navigate("/rules/edit", {
+      state: {
+        id: rule.id,
+        action: "edit",
+      },
+    });
+  };
+
+  const handleDelete = () => {
+    console.log("Delete rule:", rule);
+    setOpen(false);
+  };
+
+  return (
+    <div
+      ref={dropdownRef}
+      className="relative inline-flex items-center justify-center"
+    >
+      <button
+        className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
+        onClick={() => setOpen(!open)}
+        aria-label="More options"
+      >
+        <span className="flex flex-col justify-center items-center gap-[3px]">
+          <span className="block w-[5px] h-[5px] rounded-full bg-gray-400" />
+          <span className="block w-[5px] h-[5px] rounded-full bg-gray-400" />
+          <span className="block w-[5px] h-[5px] rounded-full bg-gray-400" />
+        </span>
+      </button>
+
+      {open && (
+        <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white shadow-lg">
+          <button
+            type="button"
+            className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"
+            onClick={handleView}
+          >
+            <div className="w-[16px] h-[16px] flex items-center justify-center">
+              <ViewIcon />
+            </div>
+            <span className="text-[14px] font-medium text-[#414651] whitespace-nowrap">
+              View Details
+            </span>
+          </button>
+          <div className="border-t border-gray-200" />
+          <button
+            type="button"
+            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
+            onClick={handleEdit}
+          >
+            <EditIcon />
+            <span className="text-[14px] font-medium text-[#414651]">
+              Edit Rule
+            </span>
+          </button>
+          <div className="border-t border-gray-200" />
+          <button
+            type="button"
+            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
+            onClick={handleDelete}
+          >
+            <DeleteIcon />
+            <span className="text-[14px] font-medium text-[#414651]">
+              Delete
+            </span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const RulesTable = () => {
   const {
@@ -121,11 +254,11 @@ export const RulesTable = () => {
     currentPage,
     itemsPerPage,
     setCurrentPage,
-    setItemsPerPage,
+    // setItemsPerPage,
     filters,
     setFilters,
     refetch,
-  } = useScoringRules();
+  } = useScoringRulesTable();
 
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -137,24 +270,22 @@ export const RulesTable = () => {
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
 
-    const newFilters: Record<string, string> = {};
+    const newFilters: ViewRulesFormValues = {
+      ...filters,
+    };
 
-    // Only add status filter if not "All"
     if (status !== "All") {
       newFilters.status = status;
-    }
-
-    // Also include search text if any
-    if (searchText.trim() !== "") {
-      newFilters.filter = searchText.trim();
+    } else {
+      delete newFilters.status;
     }
 
     setFilters(newFilters);
     setCurrentPage(1);
   };
 
-  const openFilterModal = () => setIsFilterOpen(true);
-  const closeFilterModal = () => setIsFilterOpen(false);
+  const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
+  const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
     const newFilters: Record<string, string> = {};
@@ -182,15 +313,14 @@ export const RulesTable = () => {
 
   const columns = useMemo(() => getColumns(handleToggleStatus), []);
 
-  // Map or cast data to Rule[]
   const rulesData: Rule[] = useMemo(
     () =>
       data.map((item) => ({
-        id: String(item.id), // Ensure id is string as per Rule type
+        id: String(item.id),
         name: item.name ?? "",
         description: item.description ?? "",
-        status: item.status as "ENABLED" | "DISABLED", // Cast to specific status types
-        riskLevel: item.riskLevel as "Low" | "Medium" | "High", // Cast to specific riskLevel types
+        status: item.status as "ENABLED" | "DISABLED",
+        riskLevel: item.riskLevel as "Low" | "Medium" | "High",
       })),
     [data]
   );
@@ -199,6 +329,7 @@ export const RulesTable = () => {
     data: rulesData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getRowId: (originalRow, index) => `${originalRow.id}-${index}`,
   });
 
   const navigate = useNavigate();
@@ -207,12 +338,36 @@ export const RulesTable = () => {
     navigate("/rules/add");
   };
 
+  const isFilterActive = useMemo(
+    () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
+    [filters, searchText]
+  );
+
+  const handleClearSearch = () => {
+    setSearchText("");
+    setFilters({});
+    setStatusFilter("All");
+    setCurrentPage(1);
+  };
+
+  if (error) {
+    return (
+      <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
+        {error}
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return <FullScreenSpinner />;
+  }
+
   return (
     <div className="p-6 bg-white shadow-sm">
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900">
-            Scoring Rules
+            Scoring Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
               {totalCount} Rule{totalCount !== 1 && "s"}
             </span>
@@ -233,15 +388,7 @@ export const RulesTable = () => {
         </p>
       </div>
 
-      {isLoading ? (
-        <div className="w-full h-[75vh] flex items-center justify-center text-gray-500 text-lg">
-          Loading...
-        </div>
-      ) : error ? (
-        <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-          {error}
-        </div>
-      ) : totalCount === 0 ? (
+      {totalCount === 0 && !isFilterActive ? (
         <div className="w-full h-[75vh] flex flex-col items-center justify-center bg-gray-50 rounded-md border border-dashed">
           <div className="bg-white shadow-md rounded-full p-4 mb-4">
             <svg
@@ -341,18 +488,19 @@ export const RulesTable = () => {
             </div>
           </div>
 
-          <Filter
+          <RulesFilterForm
             isOpen={isFilterOpen}
-            onClose={closeFilterModal}
-            onApply={(newFilters: Record<string, string>) => {
-              const updatedFilters = { ...newFilters };
+            closeDrawer={closeFilterModal}
+            filterData={filters as any} // or adjust type as needed
+            handleSearchSubmit={(searchData: ViewRulesFormValues) => {
+              const combinedFilters: ViewRulesFormValues = {
+                ...searchData, // directly use searchData object
+              };
+
               if (statusFilter !== "All") {
-                updatedFilters.status = statusFilter;
+                combinedFilters.status = statusFilter;
               }
-              if (searchText.trim() !== "") {
-                updatedFilters.filter = searchText.trim();
-              }
-              setFilters(updatedFilters);
+              setFilters(combinedFilters);
               setCurrentPage(1);
             }}
           />
@@ -375,18 +523,59 @@ export const RulesTable = () => {
               ))}
             </thead>
             <tbody className="w-[1144px] h-[548px]">
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-t hover:bg-gray-50">
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 h-[72px] align-middle">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
+              {table.getRowModel().rows.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className="border-t hover:bg-gray-50">
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="px-4 h-[72px] align-middle">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="px-4 py-8 text-center text-gray-500"
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4">
+                        <Suspense>
+                          <SearchIcon className="w-4 h-4 text-blue-700" />
+                        </Suspense>
+                      </div>
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        No Scoring Rules found
+                      </h2>
+                      <p className="text-gray-500 mb-6">
+                        Your search "
+                        <span className="font-medium">{searchText}</span>" did
+                        not match any rules.
+                        <br />
+                        Please try again or create a new rule.
+                      </p>
+                      <div className="flex gap-4">
+                        <button
+                          className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                          onClick={handleClearSearch}
+                        >
+                          Clear search
+                        </button>
+                        <button
+                          className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
+                          onClick={handleAddNewRule}
+                        >
+                          + Add New Rule
+                        </button>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
 

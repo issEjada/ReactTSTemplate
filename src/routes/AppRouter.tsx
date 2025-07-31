@@ -6,8 +6,8 @@ import LoginForm from "../pages/Login/Login";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
 import AboutUs from "../pages/AboutUs";
-import { RulesTable } from "../pages/Rules/RulesTable";
-import RuleForm from "../pages/Rules/RuleForm";
+import { RulesTable } from "../pages/Rules/RulesTable/RulesTable";
+import RuleForm from "../pages/Rules/RulesForm/RuleForm";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -101,6 +101,15 @@ export const AppRouter = createBrowserRouter([
       },
       {
         path: AppRoutes.addRule,
+        element: (
+          <ProtectedRoute>
+            <RuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.viewRule,
         element: (
           <ProtectedRoute>
             <RuleForm />
