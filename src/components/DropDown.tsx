@@ -55,12 +55,22 @@ const DropdownMenu = <T extends FieldValues>({
                 {required && <span className="text-red-500">*</span>}
               </label>
               <div
-                className={`appearance-none w-full h-[44px] sm:h-[48px] px-[14px] py-[10px] text-sm sm:text-base border rounded-[8px] shadow-sm bg-white flex items-center justify-between cursor-pointer relative ${
-                  error
-                    ? "border-red-500 text-red-500"
-                    : "border-[#D5D7DA] text-[#717680]"
-                } ${disabled ? "bg-gray-100 cursor-not-allowed" : ""}`}
-                onClick={toggleDropdown}
+                className={`
+              appearance-none w-full h-[44px] sm:h-[48px] px-[14px] py-[10px] 
+              text-sm sm:text-base border rounded-[8px] shadow-sm bg-white 
+              flex items-center justify-between relative 
+              ${
+                error
+                  ? "border-red-500 text-red-500"
+                  : "border-[#D5D7DA] text-[#717680]"
+              }
+              ${
+                disabled
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "cursor-pointer"
+              }
+            `}
+                onClick={!disabled ? toggleDropdown : undefined}
               >
                 <span>{value || `Choose ${label}`}</span>
                 <img

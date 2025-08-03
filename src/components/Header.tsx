@@ -13,10 +13,16 @@ import { ConstantKeys } from "../constants/ConstantKeys.constants";
 // import ProfileIcon from "../assets/svg/profile.svg?react";
 // import LogoutIcon from "../assets/svg/logout.svg?react";
 
-const SideBarIcon = React.lazy(() => import(`/src/assets/svg/Sidebar.svg?react`));
+const SideBarIcon = React.lazy(
+  () => import(`/src/assets/svg/Sidebar.svg?react`)
+);
 const SearchIcon = React.lazy(() => import(`/src/assets/svg/Search.svg?react`));
-const SettingsIcon = React.lazy(() => import(`/src/assets/svg/settings.svg?react`));
-const ProfileIcon = React.lazy(() => import(`/src/assets/svg/profile.svg?react`));
+const SettingsIcon = React.lazy(
+  () => import(`/src/assets/svg/settings.svg?react`)
+);
+const ProfileIcon = React.lazy(
+  () => import(`/src/assets/svg/profile.svg?react`)
+);
 const LogoutIcon = React.lazy(() => import(`/src/assets/svg/logout.svg?react`));
 interface HeaderProps {
   onSidebarIconClick: () => void;
@@ -78,20 +84,18 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             // onClick={
             //   () => toggleDropdown("search")
             // }
-            
           />
           <kbd className="absolute right-2 text-xs text-black/20">⌘/</kbd>
         </div>
 
         <div className="p-1">
-        <SideBarIcon
-          className="text-black dark:text-white cursor-pointer"
-          onClick={onSidebarIconClick}
-        />
+          <SideBarIcon
+            className="text-black dark:text-white cursor-pointer"
+            onClick={onSidebarIconClick}
+          />
         </div>
         {/* Icons */}
         <div ref={headerRef} className="relative flex items-center space-x-4">
-
           {/* Profile */}
           <div
             className="flex items-center space-x-2 cursor-pointer"
@@ -144,16 +148,15 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           </div>
         </div>
         {isPopupOpen && (
-        <div>
-          <PopupLayout isOpen={isPopupOpen}>
-            <LogoutPopupJsx
-              onCancel={() => setIsPopupOpen(false)}
-              onConfirm={handleLogout}
-            />
-          </PopupLayout>
-        </div>        
+          <div>
+            <PopupLayout isOpen={isPopupOpen}>
+              <LogoutPopupJsx
+                onCancel={() => setIsPopupOpen(false)}
+                onConfirm={handleLogout}
+              />
+            </PopupLayout>
+          </div>
         )}
-
       </div>
     </header>
   );
@@ -171,8 +174,11 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter(Boolean);
 
-  // Inject 'overview' if the path is root
   const fullPath = pathnames.length === 0 ? ["overview"] : pathnames;
+
+  const customBreadcrumbLabels: Record<string, string> = {
+    monitoring: "Monitor Activity Sessions",
+  };
 
   return (
     <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
@@ -181,10 +187,8 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
         onClick={onSidebarIconClick}
       />
 
-      <Link
-        to="/"
-        className="text-gray-950 dark:text-gray-400 hover:underline "
-      >
+      {/* Dashboard: always a link, always consistent */}
+      <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
         Dashboard
       </Link>
       <span className="text-[#1C1C1C33]">/</span>
@@ -192,12 +196,15 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       {fullPath.map((name, index) => {
         const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
         const isLast = index === fullPath.length - 1;
+        const label =
+          customBreadcrumbLabels[name.toLowerCase()] ||
+          decodeURIComponent(name);
 
         return (
           <span key={name} className="flex items-center space-x-2">
             {isLast ? (
-              <span className="text-black dark:text-white capitalize">
-                {decodeURIComponent(name)}
+              <span className="text-black dark:text-white font-normal capitalize">
+                {label}
               </span>
             ) : (
               <>
@@ -205,7 +212,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
                   to={routeTo}
                   className="text-gray-950 dark:text-gray-400 hover:underline capitalize"
                 >
-                  {decodeURIComponent(name)}
+                  {label}
                 </Link>
                 <span>/</span>
               </>

@@ -47,7 +47,7 @@ export const RulesFilterForm = ({
         className="flex flex-col justify-between h-full"
         onSubmit={onFormSubmit}
       >
-        <div className="relative flex flex-col mt-12">
+        <div className="relative flex flex-col mt-6">
           <label className="text-sm font-medium">Rule Name</label>
           <Controller
             control={control}

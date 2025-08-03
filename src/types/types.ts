@@ -25,3 +25,11 @@ export interface MenuItem {
   icon?: string;
   url?: string;
 }
+
+export const LoadingState = {
+  Loading: "loading",
+  Success: "success",
+  Error: "error",
+} as const;
+
+export type LoadingState = (typeof LoadingState)[keyof typeof LoadingState];
