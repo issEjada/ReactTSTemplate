@@ -27,7 +27,9 @@ const getLogMessage = (message: string) => `## HttpClient:: ${message}`;
 
 const addHeaders = (config: InternalAxiosRequestConfig) => {
   config.headers.Accept = "application/json";
-  const token = SecureStorage.getItem(ConstantKeys.accessToken);
+  const sessionToken = sessionStorage.getItem(ConstantKeys.accessToken);
+  const localToken = localStorage.getItem(ConstantKeys.accessToken);
+  const token = sessionToken || localToken;
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
