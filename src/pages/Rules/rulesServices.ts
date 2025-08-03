@@ -1,5 +1,11 @@
 import { httpClient, getHeaders } from "../../services/api/httpClient";
-import { API } from "../../constants/ConstantKeys.constants";
+
+import { API, ConstantKeys } from "../../constants/ConstantKeys.constants";
+import SecureStorage from "react-secure-storage";
+import type {
+  DropDownCategory,
+  GetDropDownsResponse,
+} from "../../services/dropdownServices";
 // import { formatTime } from "../../helpers";
 
 export interface RuleIdentifierInterface {
@@ -52,7 +58,79 @@ export interface GetScoringRulesListResponse {
   };
 }
 
-// 🟦 Internal API helpers
+export interface DropDownsAttributes {
+  key: string;
+  value: string;
+}
+
+export interface DropDownsPayload {
+  code: string;
+  attributes?: DropDownsAttributes[];
+}
+
+export interface GetRuleByIdPayload {
+  id: number;
+}
+
+export interface DeleteRuleByIdPayload {
+  id: number;
+}
+
+export interface GetRuleByIdResponse {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  condition: string;
+  riskLevel: string;
+  identifier: RuleIdentifierInterface;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
+}
+
+export interface GetRulesParametersPayload {
+  identifier: RuleIdentifierInterface;
+}
+
+export interface GetRulesParameterResponse {
+  sourceParameters: SourceParameter[];
+  targetParameters: TargetParameter[];
+  comparisonOperators: string[];
+  logicalOperators: string[];
+}
+
+interface SourceParameter {
+  name: string;
+  description: string;
+  type: string;
+  category: string;
+  source: string;
+  identifier: RuleIdentifierInterface;
+  targetParameters: TargetParameter[];
+  operators: string[];
+}
+interface TargetParameter {
+  name: string;
+  description: string;
+  type: string;
+  category: string;
+}
+
+export interface CreateRulesPayload {
+  name: string;
+  description: string;
+  identifier: RuleIdentifierInterface;
+  condition: string;
+  riskLevel: string;
+}
+
+export interface UpdateRulesPayload {
+  name: string;
+  riskLevel: string;
+  condition: string;
+  status: string;
+  description: string;
+}
 
 // 🟩 API Methods
 export const scoringRulesService = {
@@ -93,3 +171,143 @@ export const scoringRulesService = {
     );
   },
 };
+
+class ScoringRulesSdks {
+  private static accessToken: string | undefined = SecureStorage.getItem(
+    ConstantKeys.accessToken
+  )?.toString();
+
+  // Helper function to get headers
+  private static getHeaders() {
+    return {
+      Authorization: `Bearer ${this.accessToken}`,
+      "Content-Type": "application/json",
+    };
+  }
+
+  static getDropDownsValue(
+    data: DropDownsPayload
+  ): Promise<GetDropDownsResponse | DropDownCategory> {
+    return httpClient
+      .post(
+        `${import.meta.env.VITE_API_BASE_URL}${API.getDropDownsValue}`,
+        data,
+        {
+          headers: this.getHeaders(),
+          params: { code: data.code },
+        }
+      )
+      .then(
+        (response) => response.data as GetDropDownsResponse | DropDownCategory
+      )
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+
+  static getRulesById(data: GetRuleByIdPayload): Promise<GetRuleByIdResponse> {
+    return httpClient
+      .get(
+        `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${data.id}`,
+        {
+          headers: this.getHeaders(),
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+
+  static deleteRulesById(data: DeleteRuleByIdPayload): Promise<void> {
+    return httpClient
+      .delete(
+        `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${data.id}`,
+        {
+          headers: this.getHeaders(),
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+
+  static getRulesParameters(
+    data: GetRulesParametersPayload
+  ): Promise<GetRulesParameterResponse> {
+    return httpClient
+      .post(
+        `${import.meta.env.VITE_API_BASE_URL}${API.getRuleParameter}`,
+        data,
+        {
+          headers: this.getHeaders(),
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+
+  static createRule(data: CreateRulesPayload): Promise<void> {
+    return httpClient
+      .post(`${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}`, data, {
+        headers: this.getHeaders(),
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+
+  static updateRule(data: UpdateRulesPayload, ruleId: number): Promise<void> {
+    return httpClient
+      .patch(
+        `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${ruleId}`,
+        data,
+        {
+          headers: this.getHeaders(),
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+}
+export default ScoringRulesSdks;
