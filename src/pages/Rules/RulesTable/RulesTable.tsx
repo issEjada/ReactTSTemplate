@@ -32,6 +32,8 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 
+const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
+
 type Rule = {
   id: string;
   name: string;
@@ -427,7 +429,7 @@ export const RulesTable = () => {
                 onClick={() => onFilterStatus("All")}
                 className={`text-xs w-[83px] h-10 px-3 ${
                   statusFilter === "All"
-                    ? "font-semibold"
+                    ? "bg-blue-500 text-white font-semibold"
                     : "hover:bg-gray-100 text-black"
                 }`}
               >
@@ -437,7 +439,7 @@ export const RulesTable = () => {
                 onClick={() => onFilterStatus("ENABLED")}
                 className={`text-xs w-[83px] h-10 px-3 border-l ${
                   statusFilter === "ENABLED"
-                    ? "font-semibold"
+                    ? "bg-blue-500 text-white font-semibold"
                     : "hover:bg-gray-100 text-black"
                 }`}
               >
@@ -447,7 +449,7 @@ export const RulesTable = () => {
                 onClick={() => onFilterStatus("DISABLED")}
                 className={`text-xs w-[83px] h-10 px-3 border-l ${
                   statusFilter === "DISABLED"
-                    ? "font-semibold"
+                    ? "bg-blue-500 text-white font-semibold"
                     : "hover:bg-gray-100 text-black"
                 }`}
               >
@@ -505,80 +507,101 @@ export const RulesTable = () => {
             }}
           />
 
-          <table className="min-w-full text-sm text-center">
-            <thead className="bg-gray-50 text-gray-600 ">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="border-b">
-                  {headerGroup.headers.map((header) => (
-                    <th key={header.id} className="px-4 h-[72px] font-medium">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="w-[1144px] h-[548px]">
-              {table.getRowModel().rows.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-t hover:bg-gray-50">
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="px-4 h-[72px] align-middle">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
+          <div
+            className={`w-full ${
+              totalCount === 0 ? "h-[388px] overflow-hidden" : "h-[680px]"
+            } overflow-auto`}
+          >
+            <table className="w-full table-auto h-full text-sm text-center">
+              <thead className="bg-gray-50 text-gray-600 ">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id} className="border-b">
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} className="px-4 h-[72px] font-medium">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
                     ))}
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="px-4 py-8 text-center text-gray-500"
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4">
-                        <Suspense>
-                          <SearchIcon className="w-4 h-4 text-blue-700" />
-                        </Suspense>
-                      </div>
-                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                        No Scoring Rules found
-                      </h2>
-                      <p className="text-gray-500 mb-6">
-                        Your search "
-                        <span className="font-medium">{searchText}</span>" did
-                        not match any rules.
-                        <br />
-                        Please try again or create a new rule.
-                      </p>
-                      <div className="flex gap-4">
-                        <button
-                          className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
-                          onClick={handleClearSearch}
+                ))}
+              </thead>
+              <tbody className="w-[1144px] h-[548px]">
+                {table.getRowModel().rows.length > 0 ? (
+                  table.getRowModel().rows.map((row) => (
+                    <tr key={row.id} className="border-t hover:bg-gray-50">
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="px-4 h-[72px] align-middle"
                         >
-                          Clear search
-                        </button>
-                        <button
-                          className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
-                          onClick={handleAddNewRule}
-                        >
-                          + Add New Rule
-                        </button>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                ) : (
+                  <tr className="h-full">
+                    <td
+                      colSpan={columns.length}
+                      className="h-full p-0 align-top"
+                    >
+                      <div className="flex items-center justify-center w-[1144px] h-[244px] border-[#E9EAEB]">
+                        <div className="w-[512px] h-[196px] flex items-center justify-center pt-[24px] pb-[24px]">
+                          <div className="w-[352px] h-[196px] gap-[24px]">
+                            {/*Top Section*/}
+                            <div className="w-[352px] h-[132px] flex flex-col items-center gap-[16px]">
+                              {/* Icon */}
+                              <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center">
+                                <Suspense>
+                                  <SearchIcon className="text-blue-700" />
+                                </Suspense>
+                              </div>
+                              {/* Text */}
+                              <div className="w-[352px] h-[68px] flex flex-col items-center gap-[4px]">
+                                <h1 className="text-[#181D27] text-[16px] leading-[24px] font-semibold text-center h-[24px]">
+                                  No Scoring Rules found
+                                </h1>
+                                <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-[4px]">
+                                  Your search “Keyword” did not match any rules.
+                                  Please try again or create and add a new rule.
+                                </p>
+                              </div>
+                            </div>
+                            {/*bottom Section*/}
+                            <div className="w-[352px] flex flex-row gap-[12px] pt-[24px] ">
+                              <button
+                                type="button"
+                                onClick={handleClearSearch}
+                                className="w-[170px] h-[40px] border border-[#D5D7DA] rounded-[8px] px-[16px] py-[10px] text-[#414651] text-[14px] font-semibold flex items-center justify-center  hover:bg-gray-100"
+                              >
+                                Clear search
+                              </button>
+                              <button
+                                type="button"
+                                className="w-[170px] h-[40px] bg-blue-600 text-white px-[16px] py-[10px] border border-blue-600 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-[8px] hover:bg-blue-700"
+                              >
+                                <Suspense>
+                                  <PlusIcon />
+                                </Suspense>
+                                Add New Rule
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
           {/* Pagination */}
           <div className="flex justify-between items-center px-4 py-3 border-t text-sm text-gray-600 w-[1144px] h-[64px]">
             <div className="pl-6">
