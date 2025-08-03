@@ -7,26 +7,27 @@ import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
 import AboutUs from "../pages/AboutUs";
 import { RulesTable } from "../pages/Rules/RulesTable/RulesTable";
+import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringTable";
 // import RuleForm from "../pages/Rules/RulesForm/RuleForm";
-
+ 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
-
+ 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const token =
     sessionStorage.getItem(ConstantKeys.accessToken) ||
     localStorage.getItem(ConstantKeys.accessToken);
-
+ 
   if (!token) {
     return <Navigate to={AppRoutes.login} />;
   }
-
+ 
   return <>{children}</>;
 };
-
+ 
 export default ProtectedRoute;
-
+ 
 export const AppRouter = createBrowserRouter([
   {
     path: "/",
@@ -76,7 +77,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.monitoring,
         element: (
           <ProtectedRoute>
-            <div>MONITORING</div>
+            <MonitoringTable />
           </ProtectedRoute>
         ),
         errorElement: <></>,
