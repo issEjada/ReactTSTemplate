@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Edit from "../../../assets/svg/Edit.svg";
 import Ignore from "../../../assets/svg/ignore.svg";
 import Submit from "../../../assets/svg/Submit.svg";
@@ -20,11 +20,11 @@ const RuleForm = () => {
     screenAction,
     riskLevelValues,
     statusValues,
+    ruleName,
     // isAdding,
   } = useViewScoringRules();
 
-  const [ruleName, setRuleName] = useState("New Rule Name");
-  const [draftName, setDraftName] = useState(ruleName);
+  const [draftName, setDraftName] = useState(ruleName ?? "New Rule Name");
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(false);
 
@@ -33,13 +33,12 @@ const RuleForm = () => {
       setError(true);
       return;
     }
-    setRuleName(draftName);
+    setDraftName(draftName);
     setIsEditing(false);
     setError(false);
   };
 
   const handleCancelName = () => {
-    setDraftName(ruleName);
     setIsEditing(false);
     setError(false);
   };
@@ -95,18 +94,23 @@ const RuleForm = () => {
             </>
           ) : (
             <>
-              <h1 className="font-medium text-[#181D27]">{ruleName}</h1>
-              <button
-                type="button"
-                onClick={() => setIsEditing(true)}
-                className="w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
-              >
-                <img
-                  src={Edit}
-                  alt="Edit"
-                  className="w-[12px] h-[12px] object-contain"
-                />
-              </button>
+              <h1 className="font-medium text-[#181D27]">
+                {ruleName?.trim() || "New Rule Name"}
+              </h1>
+
+              {screenAction !== "view" && (
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(true)}
+                  className="w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
+                >
+                  <img
+                    src={Edit}
+                    alt="Edit"
+                    className="w-[12px] h-[12px] object-contain"
+                  />
+                </button>
+              )}
             </>
           )}
         </div>

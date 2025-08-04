@@ -42,6 +42,8 @@ function useViewScoringRules() {
     LoadingState.Loading
   );
 
+  const ruleName = ruleData?.name;
+
   const location = useLocation();
   const { id, action } = location.state || {
     id: undefined,
@@ -435,6 +437,7 @@ function useViewScoringRules() {
     watch,
     formValues,
     isFormValid,
+    ruleName,
   };
 }
 
