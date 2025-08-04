@@ -428,6 +428,7 @@ function useViewScoringRules() {
     isEditing,
     screenAction,
     isPopupOpen,
+    reset,
     setIsPopupOpen,
     popupType,
     setPopupType,
