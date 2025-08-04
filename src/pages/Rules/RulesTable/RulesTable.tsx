@@ -260,6 +260,7 @@ export const RulesTable = () => {
     filters,
     setFilters,
     refetch,
+    handleSearchSubmit,
   } = useScoringRulesTable();
 
   const [searchText, setSearchText] = useState("");
@@ -493,18 +494,8 @@ export const RulesTable = () => {
           <RulesFilterForm
             isOpen={isFilterOpen}
             closeDrawer={closeFilterModal}
-            filterData={filters as any} // or adjust type as needed
-            handleSearchSubmit={(searchData: ViewRulesFormValues) => {
-              const combinedFilters: ViewRulesFormValues = {
-                ...searchData, // directly use searchData object
-              };
-
-              if (statusFilter !== "All") {
-                combinedFilters.status = statusFilter;
-              }
-              setFilters(combinedFilters);
-              setCurrentPage(1);
-            }}
+            filterData={filters as any}
+            handleSearchSubmit={handleSearchSubmit}
           />
 
           <div

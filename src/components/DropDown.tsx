@@ -88,7 +88,7 @@ const DropdownMenu = <T extends FieldValues>({
                   <li
                     key={opt.key}
                     onClick={() => {
-                      onChange(opt.node);
+                      onChange(opt.key);
                       closeDropdown();
                     }}
                     className={`px-[14px] py-[10px] text-sm sm:text-base cursor-pointer hover:bg-gray-100 ${
