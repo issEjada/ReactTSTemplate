@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Edit from "../../../assets/svg/Edit.svg";
 import Ignore from "../../../assets/svg/ignore.svg";
 import Submit from "../../../assets/svg/Submit.svg";
@@ -6,6 +6,11 @@ import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
 import useViewScoringRules from "./useRuleForm";
+import ConditionEditor from "../../../components/ConditionEditor/ConditionEditor";
+
+const ConditionIcon = React.lazy(
+  () => import("../../../assets/svg/ConditionIcon.svg?react")
+);
 
 const RuleForm = () => {
   const {
@@ -133,6 +138,7 @@ const RuleForm = () => {
               screenAction === "edit" ||
               eventSourceDeviceValues.length === 0
             }
+            required
           />
 
           <DropdownMenu<ViewRulesFormValues>
@@ -258,17 +264,26 @@ const RuleForm = () => {
         </div>
       </div>
 
-      {/* Submit Button (you can conditionally show it if needed) */}
-      {isEditing && (
-        <div className="px-6">
-          <button
-            type="submit"
-            className="mt-4 bg-[#2E90FA] text-white px-6 py-2 rounded-md"
-          >
+      <div className="flex items-center gap-2 pl-6 pt-6">
+        <div className="flex  justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full ">
+          <ConditionIcon className="object-contain text-blue-700" />{" "}
+        </div>
+        <h3 className="text-[1.2rem]   ">Condition Editor</h3>
+      </div>
+
+      <ConditionEditor />
+      {/* {isEditing && ( */}
+      <div className="flex  justify-end">
+        <div className="flex gap-4">
+          <button className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto mt-10 hover:bg-blue-900 transition duration-100">
             Save Rule
           </button>
+          <button className=" w-[125px] h-[48px]  px-5 py-3 border font-medium rounded-[8px] ml-auto mt-10 hover:bg-gray-100  transition duration-100">
+            Cancel
+          </button>
         </div>
-      )}
+      </div>
+      {/* )} */}
     </form>
   );
 };
