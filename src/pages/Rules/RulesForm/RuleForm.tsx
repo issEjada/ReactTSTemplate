@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Edit from "../../../assets/svg/Edit.svg";
 import Ignore from "../../../assets/svg/ignore.svg";
 import Submit from "../../../assets/svg/Submit.svg";

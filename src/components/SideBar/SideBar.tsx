@@ -20,8 +20,9 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
   return (
     <>
       <div
-        className={`h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-[#121418] dark:border-gray-800 py-[20px] ${isClosed ? " w-[110px] ps-[33px] pe-[34px]" : " w-64 px-4"
-          }`}
+        className={`h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-[#121418] dark:border-gray-800 py-[20px] ${
+          isClosed ? " w-[110px] ps-[33px] pe-[34px]" : " w-64 px-4"
+        }`}
       >
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
@@ -36,7 +37,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             />
           </div>
           <div
-            className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300  ${
+            className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300 dark:bg-gray-800 ${
               isClosed ? " -mx-8" : " -mx-4"
             }`}
           ></div>
