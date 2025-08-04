@@ -293,17 +293,18 @@ export const RulesTable = () => {
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
-    const newFilters: Record<string, string> = {};
+    const newFilters: ViewRulesFormValues = {
+      ...filters,
+      name: searchText.trim(),
+    };
 
     if (statusFilter !== "All") {
       newFilters.status = statusFilter;
+    } else {
+      delete newFilters.status;
     }
 
-    if (searchText.trim() !== "") {
-      newFilters.filter = searchText.trim();
-    }
-
-    setFilters(newFilters);
+    handleSearchSubmit(newFilters);
     setCurrentPage(1);
   };
 
@@ -488,7 +489,7 @@ export const RulesTable = () => {
                     }
                   }}
                   placeholder="Search"
-                  className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800"
                 />
               </div>
 
