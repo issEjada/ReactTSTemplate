@@ -7,6 +7,7 @@ import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
 import useViewScoringRules from "./useRuleForm";
 import ConditionEditor from "../../../components/ConditionEditor/ConditionEditor";
+import { useNavigate } from "react-router-dom";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -26,12 +27,14 @@ const RuleForm = () => {
     riskLevelValues,
     statusValues,
     ruleName,
+    reset,
     // isAdding,
   } = useViewScoringRules();
 
   const [draftName, setDraftName] = useState(ruleName ?? "New Rule Name");
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const handleSaveName = () => {
     if (!draftName.trim()) {
@@ -46,6 +49,11 @@ const RuleForm = () => {
   const handleCancelName = () => {
     setIsEditing(false);
     setError(false);
+  };
+
+  const handleCancel = () => {
+    reset(); // Clear form values
+    navigate("/rules"); // Navigate back to rules table
   };
 
   return (
@@ -273,12 +281,20 @@ const RuleForm = () => {
 
       <ConditionEditor />
       {/* {isEditing && ( */}
-      <div className="flex  justify-end">
+      <div className="flex justify-end">
         <div className="flex gap-4">
-          <button className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto mt-10 hover:bg-blue-900 transition duration-100">
+          <button
+            type="submit"
+            className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto mt-10 hover:bg-blue-900 transition duration-100"
+          >
             Save Rule
           </button>
-          <button className=" w-[125px] h-[48px]  px-5 py-3 border font-medium rounded-[8px] ml-auto mt-10 hover:bg-gray-100  transition duration-100">
+
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] ml-auto mt-10 hover:bg-gray-100 transition duration-100"
+          >
             Cancel
           </button>
         </div>
