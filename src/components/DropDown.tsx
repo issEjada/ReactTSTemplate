@@ -61,7 +61,7 @@ const DropdownMenu = <T extends FieldValues>({
           const { error } = fieldState;
 
           return (
-            <div className="flex flex-col gap-[6px] relative">
+            <div className="flex flex-col gap-[6px] relative dark:bg-[#121418] dark:border-gray-800">
               <label className="text-sm sm:text-base font-medium text-[#414651] flex items-center gap-1">
                 {label}
                 {required && <span className="text-red-500">*</span>}
@@ -71,8 +71,8 @@ const DropdownMenu = <T extends FieldValues>({
               <div
                 className={`
                   appearance-none w-full h-[44px] sm:h-[48px] px-[14px] py-[10px]
-                  text-sm sm:text-base border rounded-[8px] shadow-sm bg-white
-                  flex items-center justify-between relative
+                  text-sm sm:text-base border rounded-[8px] shadow-sm
+                  flex items-center justify-between relative dark:bg-[#121418] dark:border-gray-800
                   ${
                     error
                       ? "border-red-500 text-red-500"
@@ -99,7 +99,7 @@ const DropdownMenu = <T extends FieldValues>({
 
               {/* Dropdown Menu */}
               {open && (
-                <ul className="absolute top-full left-0 z-50 mt-[4px] w-full bg-white border border-[#D5D7DA] rounded-[8px] shadow-md overflow-y-auto max-h-60">
+                <ul className="absolute top-full left-0 z-50 mt-[4px] w-full bg-white border border-[#D5D7DA] rounded-[8px] shadow-md overflow-y-auto max-h-60 dark:bg-[#121418] dark:border-gray-800">
                   {options.map((opt) => (
                     <li
                       key={opt.key}
@@ -108,7 +108,7 @@ const DropdownMenu = <T extends FieldValues>({
                         closeDropdown();
                       }}
                       className={`
-                        px-[14px] py-[10px] text-sm sm:text-base cursor-pointer hover:bg-gray-100
+                      px-[14px] py-[10px] text-sm sm:text-base cursor-pointer dark:bg-[#121418] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800
                         ${
                           opt.key === value
                             ? "bg-gray-100 font-medium text-blue-600"

@@ -48,7 +48,9 @@ export const RulesFilterForm = ({
         onSubmit={onFormSubmit}
       >
         <div className="relative flex flex-col mt-6">
-          <label className="text-sm font-medium">Rule Name</label>
+          <label className="text-sm font-medium dark:text-gray-600">
+            Rule Name
+          </label>
           <Controller
             control={control}
             name="name"
@@ -57,7 +59,7 @@ export const RulesFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Rule Name"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
@@ -84,7 +86,7 @@ export const RulesFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Type Description"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
@@ -179,7 +181,7 @@ export const RulesFilterForm = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
                 />
               )}
             />
@@ -193,7 +195,7 @@ export const RulesFilterForm = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
                 />
               )}
             />
