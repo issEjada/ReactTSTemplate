@@ -33,12 +33,13 @@ const RuleForm = () => {
     parametersData,
     editorContent,
     setEditorContent,
-    // isAdding,
+    isAdding,
     isPopupOpen,
+    isEditing,
     setIsPopupOpen,
   } = useViewScoringRules();
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const RuleForm = () => {
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <div className="flex items-center gap-2 h-[28px]">
-              {isEditing ? (
+              {isEditingName ? (
                 <>
                   <div className="flex flex-col relative">
                     <input
@@ -88,7 +89,7 @@ const RuleForm = () => {
                         setError(true);
                         return;
                       }
-                      setIsEditing(false);
+                      setIsEditingName(false);
                     }}
                   >
                     <img
@@ -102,7 +103,7 @@ const RuleForm = () => {
                     type="button"
                     className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#F04438] border border-[#F04438]"
                     onClick={() => {
-                      setIsEditing(false);
+                      setIsEditingName(false);
                       setError(false);
                       field.onChange(ruleName ?? ""); // revert to original
                     }}
@@ -123,7 +124,7 @@ const RuleForm = () => {
                   {screenAction !== "view" && (
                     <button
                       type="button"
-                      onClick={() => setIsEditing(true)}
+                      onClick={() => setIsEditingName(true)}
                       className="w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
                     >
                       <img
@@ -316,11 +317,33 @@ const RuleForm = () => {
       </div>
       {isPopupOpen && (
         <div>
-          <PopupLayout isOpen={isPopupOpen}>
-            <RulesPopup
-              onCancel={() => setIsPopupOpen(false)}
-              onConfirm={() => setIsPopupOpen(true)}
-            />
+          <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
+            {isAdding && (
+              <RulesPopup
+                isAdding
+                onConfirm={() => {
+                  setIsPopupOpen(false); // Close popup
+                  navigate("/rules/add"); // Navigate to /rules/add
+                }}
+                onCancel={() => {
+                  setIsPopupOpen(false); // Close popup
+                  navigate("/rules"); // Navigate to /rules/add
+                }}
+              />
+            )}
+            {isEditing && (
+              <RulesPopup
+                isEditing
+                onConfirm={() => {
+                  setIsPopupOpen(false); // Close popup
+                  navigate("/rules/add"); // Navigate to /rules/add
+                }}
+                onCancel={() => {
+                  setIsPopupOpen(false); // Close popup
+                  navigate("/rules"); // Navigate to /rules/add
+                }}
+              />
+            )}
           </PopupLayout>
         </div>
       )}
