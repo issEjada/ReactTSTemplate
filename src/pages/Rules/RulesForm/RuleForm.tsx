@@ -31,29 +31,12 @@ const RuleForm = () => {
     parametersData,
     editorContent,
     setEditorContent,
-
     // isAdding,
   } = useViewScoringRules();
 
-  const [draftName, setDraftName] = useState(ruleName ?? "New Rule Name");
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-
-  const handleSaveName = () => {
-    if (!draftName.trim()) {
-      setError(true);
-      return;
-    }
-    setDraftName(draftName);
-    setIsEditing(false);
-    setError(false);
-  };
-
-  const handleCancelName = () => {
-    setIsEditing(false);
-    setError(false);
-  };
 
   const handleCancel = () => {
     reset(); // Clear form values
@@ -67,70 +50,89 @@ const RuleForm = () => {
     >
       {/* Rule name editable area */}
       <div className="h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
-        <div className="flex items-center gap-2 h-[28px]">
-          {isEditing ? (
-            <>
-              <div className="flex flex-col relative">
-                <input
-                  value={draftName}
-                  onChange={(e) => {
-                    setDraftName(e.target.value);
-                    if (error) setError(false);
-                  }}
-                  placeholder="New Rule Name.."
-                  className={`w-[320px] h-[44px] font-medium text-[#252B37] rounded-[8px] px-[14px] py-[10px] focus:outline-none ${
-                    error
-                      ? "border border-red-500 bg-red-50 placeholder-red-400"
-                      : "border border-[#2E90FA] bg-[#EFF8FF]"
-                  }`}
-                />
-              </div>
-              <button
-                type="button"
-                className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#12B76A] border border-[#12B76A]"
-                onClick={handleSaveName}
-              >
-                <img
-                  src={Submit}
-                  alt="Save"
-                  className="w-[13.33px] h-[9.17px] object-contain"
-                />
-              </button>
+        <Controller
+          name="name"
+          control={control}
+          defaultValue={ruleName ?? ""}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <div className="flex items-center gap-2 h-[28px]">
+              {isEditing ? (
+                <>
+                  <div className="flex flex-col relative">
+                    <input
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (fieldState.error) setError(false);
+                      }}
+                      placeholder="New Rule Name.."
+                      className={`w-[320px] h-[44px] font-medium text-[#252B37] rounded-[8px] px-[14px] py-[10px] focus:outline-none ${
+                        fieldState.error
+                          ? "border border-red-500 bg-red-50 placeholder-red-400"
+                          : "border border-[#2E90FA] bg-[#EFF8FF]"
+                      }`}
+                    />
+                  </div>
 
-              <button
-                type="button"
-                className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#F04438] border border-[#F04438]"
-                onClick={handleCancelName}
-              >
-                <img
-                  src={Ignore}
-                  alt="Cancel"
-                  className="w-[10px] h-[10px] object-contain"
-                />
-              </button>
-            </>
-          ) : (
-            <>
-              <h1 className="font-medium text-[#181D27]">
-                {ruleName?.trim() || "New Rule Name"}
-              </h1>
+                  <button
+                    type="button"
+                    className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#12B76A] border border-[#12B76A]"
+                    onClick={() => {
+                      if (!field.value?.trim()) {
+                        setError(true);
+                        return;
+                      }
+                      setIsEditing(false);
+                    }}
+                  >
+                    <img
+                      src={Submit}
+                      alt="Save"
+                      className="w-[13.33px] h-[9.17px] object-contain"
+                    />
+                  </button>
 
-              {screenAction !== "view" && (
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(true)}
-                  className="w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
-                >
-                  <img
-                    src={Edit}
-                    alt="Edit"
-                    className="w-[12px] h-[12px] object-contain"
-                  />
-                </button>
+                  <button
+                    type="button"
+                    className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#F04438] border border-[#F04438]"
+                    onClick={() => {
+                      setIsEditing(false);
+                      setError(false);
+                      field.onChange(ruleName ?? ""); // revert to original
+                    }}
+                  >
+                    <img
+                      src={Ignore}
+                      alt="Cancel"
+                      className="w-[10px] h-[10px] object-contain"
+                    />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h1 className="font-medium text-[#181D27]">
+                    {field.value?.trim() || "New Rule Name"}
+                  </h1>
+
+                  {screenAction !== "view" && (
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(true)}
+                      className="w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
+                    >
+                      <img
+                        src={Edit}
+                        alt="Edit"
+                        className="w-[12px] h-[12px] object-contain"
+                      />
+                    </button>
+                  )}
+                </>
               )}
-            </>
+            </div>
           )}
-        </div>
+        />
       </div>
 
       {/* Form Body */}
