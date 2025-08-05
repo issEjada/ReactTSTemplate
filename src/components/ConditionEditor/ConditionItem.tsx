@@ -1,11 +1,9 @@
 import { useState } from "react";
-type DataType = {
-  option: string;
-};
 type ConditionItemProps = {
   label: string;
-  data: DataType[];
+  data?: string[];
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  isViewing?: boolean;
 };
 
 export default function ConditionItem({
@@ -17,13 +15,10 @@ export default function ConditionItem({
 
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
-    item: DataType,
+    item: string,
     index: number
   ) => {
-    e.dataTransfer.setData(
-      "text/plain",
-      JSON.stringify({ value: item.option })
-    );
+    e.dataTransfer.setData("text/plain", JSON.stringify({ value: item }));
     e.dataTransfer.effectAllowed = "move";
 
     setDraggingIndex(index);
@@ -37,12 +32,14 @@ export default function ConditionItem({
         <h2>{label}</h2>
       </div>
       <div className="flex flex-wrap gap-4">
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <div
             key={index}
             draggable
             onDragStart={(e) => handleDragStart(e, item, index)}
             onDragEnd={handleDragEnd}
+            role="button"
+            tabIndex={0}
             className={`flex flex-col items-center rounded-lg w-[5rem] gap-1 cursor-grab ${
               draggingIndex === index
                 ? "scale-105 text-black opacity-100 shadow-md "
@@ -67,7 +64,7 @@ export default function ConditionItem({
                   : "text-gray-600"
               }`}
             >
-              {item.option}
+              {item}
             </div>
           </div>
         ))}

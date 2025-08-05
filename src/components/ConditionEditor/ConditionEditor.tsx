@@ -2,10 +2,21 @@ import ConditionItem from "./ConditionItem";
 import SourceDocumentIcon from "../../assets/svg/sourceDocument.svg?react";
 import ScaleComparisonIcon from "../../assets/svg/scaleComparison.svg?react";
 import SmartphoneARIcon from "../../assets/svg/smartphoneAR.svg?react";
-import { useState, useRef } from "react";
-export default function ConditionEditor() {
+import { useRef } from "react";
+import type { GetRulesParameterResponse } from "../../pages/Rules/rulesServices";
+
+interface ConditionsEditorsProps {
+  editorContent: string;
+  setEditorContent: React.Dispatch<React.SetStateAction<string>>;
+  parametersData: GetRulesParameterResponse | undefined;
+}
+
+export const ConditionEditor = ({
+  editorContent,
+  parametersData,
+  setEditorContent,
+}: ConditionsEditorsProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [editorContent, setEditorContent] = useState("");
   const handleDrop = (event: React.DragEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
 
@@ -40,31 +51,24 @@ export default function ConditionEditor() {
   const handleDragOver = (event: React.DragEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
   };
+
+  const sourceParams =
+    parametersData?.sourceParameters?.map((item) => item.name) ?? [];
+
+  console.log("source: ", sourceParams);
+  const targetParams =
+    parametersData?.targetParameters?.map((item) => item.name) ?? [];
+
+  console.log("target: ", targetParams);
+
   const staticData = {
-    Source: [
-      { option: "OngoingCallDuringAppUsage" },
-      { option: "DeviceGyroScope" },
-      { option: "IsDeviceConnectedToCharger" },
-      { option: "NumberOfDeviceFactoryReset" },
-      { option: "NumberOfSIMCardsInDevice" },
-    ],
-    Comparison: [
-      { option: "==" },
-      { option: "!=" },
-      { option: "<" },
-      { option: ">" },
-      { option: "<=" },
-      { option: ">=" },
-      { option: "in" },
-      { option: "not in" },
-    ],
-    Target: [
-      { option: "BlockedSDK" },
-      { option: "MaxInstalledAppsCount" },
-      { option: "MinInstalledAppsCount" },
-    ],
-    Logic: [{ option: "AND" }, { option: "OR" }, { option: "NOT" }],
+    Source: sourceParams,
+    Comparison: parametersData?.comparisonOperators ?? [],
+    Target: targetParams,
+    Logic: parametersData?.logicalOperators ?? [],
   };
+
+  console.log("static data: ", staticData);
 
   return (
     <div className="flex h-[766px] gap-2 pl-6">
@@ -124,4 +128,4 @@ export default function ConditionEditor() {
       </div>
     </div>
   );
-}
+};

@@ -6,7 +6,7 @@ import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
 import useViewScoringRules from "./useRuleForm";
-import ConditionEditor from "../../../components/ConditionEditor/ConditionEditor";
+import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 
 const ConditionIcon = React.lazy(
@@ -28,6 +28,10 @@ const RuleForm = () => {
     statusValues,
     ruleName,
     reset,
+    parametersData,
+    editorContent,
+    setEditorContent,
+
     // isAdding,
   } = useViewScoringRules();
 
@@ -279,7 +283,11 @@ const RuleForm = () => {
         <h3 className="text-[1.2rem]   ">Condition Editor</h3>
       </div>
 
-      <ConditionEditor />
+      <ConditionEditor
+        editorContent={editorContent}
+        parametersData={parametersData}
+        setEditorContent={setEditorContent}
+      />
       {/* {isEditing && ( */}
       <div className="flex justify-end">
         <div className="flex gap-4">
