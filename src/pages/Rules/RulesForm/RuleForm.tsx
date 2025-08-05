@@ -40,8 +40,8 @@ const RuleForm = () => {
   } = useViewScoringRules();
 
   const [isEditingName, setIsEditingName] = useState(false);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState();
+  // const [error, setError] = useState(false);
+  // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
 
   const handleCancel = () => {
