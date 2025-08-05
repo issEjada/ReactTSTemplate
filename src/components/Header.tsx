@@ -149,7 +149,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
         </div>
         {isPopupOpen && (
           <div>
-            <PopupLayout isOpen={isPopupOpen}>
+            <PopupLayout isOpen={isPopupOpen} className="w-[38%]">
               <LogoutPopupJsx
                 onCancel={() => setIsPopupOpen(false)}
                 onConfirm={handleLogout}
