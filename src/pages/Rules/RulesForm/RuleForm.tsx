@@ -40,7 +40,7 @@ const RuleForm = () => {
   } = useViewScoringRules();
 
   const [isEditingName, setIsEditingName] = useState(false);
-  // const [error, setError] = useState(false);
+  const [error, setError] = useState(false);
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
 
@@ -79,6 +79,11 @@ const RuleForm = () => {
                           : "border border-[#2E90FA] bg-[#EFF8FF]"
                       }`}
                     />
+                    {(fieldState.error || error) && (
+                      <p className="text-red-500 text-sm mt-1">
+                        Rule name is required.
+                      </p>
+                    )}
                   </div>
 
                   <button
