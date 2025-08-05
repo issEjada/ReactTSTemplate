@@ -72,13 +72,13 @@ export const ConditionEditor = ({
 
   return (
     <div className="flex h-[766px] gap-2 pl-6">
-      <div className="w-1/3  border-gray-300 border rounded-lg flex flex-col">
+      <div className="w-[400px]  border-gray-300 border rounded-lg flex flex-col">
         <div className="border-b border-gray-300 shadow-md">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700">Components</h2>
-            <button className="text-sm text-gray-400 hover:text-gray-700">
+            <span className="text-sm text-gray-400 hover:text-gray-700">
               Drag & Drop
-            </button>
+            </span>
           </div>
         </div>
         <div className="p-4 flex flex-col gap-4 h-full overflow-y-auto ">
@@ -104,13 +104,13 @@ export const ConditionEditor = ({
           ></ConditionItem>
         </div>
       </div>
-      <div className="w-2/3  border-gray-300 border rounded-lg flex flex-col ">
+      <div className="w-[728px]  border-gray-300 border rounded-lg flex flex-col ">
         <div className="border-b border-gray-300">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700">Output</h2>
-            <button className="text-sm text-gray-400 hover:text-gray-700">
+            <span className="text-sm text-gray-400 hover:text-gray-700">
               Copy code
-            </button>
+            </span>
           </div>
         </div>
 

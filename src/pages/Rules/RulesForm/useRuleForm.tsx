@@ -439,6 +439,7 @@ function useViewScoringRules() {
     formValues,
     isFormValid,
     ruleName,
+    setValue,
   };
 }
 

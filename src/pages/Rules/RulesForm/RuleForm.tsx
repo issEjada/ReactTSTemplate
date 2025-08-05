@@ -8,6 +8,8 @@ import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
 import useViewScoringRules from "./useRuleForm";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
+import PopupLayout from "../../../components/Popup/LayoutPopup";
+import RulesPopup from "./RulesPopupJsx";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -32,10 +34,13 @@ const RuleForm = () => {
     editorContent,
     setEditorContent,
     // isAdding,
+    isPopupOpen,
+    setIsPopupOpen,
   } = useViewScoringRules();
 
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
 
   const handleCancel = () => {
@@ -146,7 +151,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[95%]"
+            className="w-[102%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -163,7 +168,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[95%]"
+            className="w-[102%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -179,7 +184,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[95%]"
+            className="w-[102%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -197,7 +202,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[95%]"
+            className="w-[105%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -213,7 +218,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[95%]"
+            className="w-[105%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -309,7 +314,16 @@ const RuleForm = () => {
           </button>
         </div>
       </div>
-      {/* )} */}
+      {isPopupOpen && (
+        <div>
+          <PopupLayout isOpen={isPopupOpen}>
+            <RulesPopup
+              onCancel={() => setIsPopupOpen(false)}
+              onConfirm={() => setIsPopupOpen(true)}
+            />
+          </PopupLayout>
+        </div>
+      )}
     </form>
   );
 };
