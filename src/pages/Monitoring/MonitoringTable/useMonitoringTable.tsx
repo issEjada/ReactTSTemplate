@@ -1,45 +1,44 @@
 import { useState, useEffect } from "react";
 import type {
-  GetScoringRulesInterface,
-  GetScoringRulesItemInterface,
+  GetSessionsInterface,
+  GetSessionItemInterface,
 } from "../monitoringServices";
-import { scoringRulesService } from "../monitoringServices";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+import { monitoringService } from "../monitoringServices";
+import type { ViewRulesFormValues } from "../MonitoringFilter/useMonitoringFilter";
 
 // 🟨 Format for table
 const formatTableData = (
-  data: GetScoringRulesInterface
-): GetScoringRulesItemInterface[] => {
-  return data.scoringRules?.map((item) => ({
-    ...item, // Include all properties from the original item
-    id: item.id,
-    name: item.name,
-    description: item.description,
+  data: GetSessionsInterface
+): GetSessionItemInterface[] => {
+  return data.sessions?.map((item) => ({
+    ...item,
+    sessionId: item.sessionId,
+    deviceId: item.deviceId,
+    channel: item.channel,
+    industry: item.industry,
+    ip: item.ip,
+    country: item.country,
+    city: item.city,
     status: item.status,
-    riskLevel: item.riskLevel,
-    identifier: item.identifier, // Ensure identifier is included
     creationTimestamp: item.creationTimestamp,
     lastUpdatedTimestamp: item.lastUpdatedTimestamp,
   }));
 };
 
-export const useScoringRulesTable = () => {
-  const [data, setData] = useState<GetScoringRulesItemInterface[]>([]);
+export const useMonitoringTable = () => {
+  const [data, setData] = useState<GetSessionItemInterface[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<ViewRulesFormValues | undefined>(
-    undefined
-  );
+  const [itemsPerPage, setItemsPerPage] = useState(7);
+  const [filters, setFilters] = useState<ViewRulesFormValues | undefined>(undefined);
 
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await scoringRulesService.getScoringRulesList({
+      const result = await monitoringService.getSessionsList({
         page: currentPage,
         maxPageSize: itemsPerPage,
         ...filters,
@@ -47,25 +46,18 @@ export const useScoringRulesTable = () => {
       setData(formatTableData(result.data));
       setTotalCount(result.data.meta?.totalItems || 0);
     } catch (err: unknown) {
-      console.error("Failed to fetch scoring rules:", err);
-      setError("Error loading rules");
+      console.error("Failed to fetch sessions:", err);
+      setError("Error loading sessions data");
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const deleteRule = async (id: number) => {
-    try {
-      await scoringRulesService.deleteRuleById(id);
-      fetchData();
-    } catch (err) {
-      console.error("Delete error:", err);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, [currentPage, itemsPerPage, filters]);
+
+  console.log("Monitoring Data:", data);
 
   return {
     data,
@@ -79,6 +71,5 @@ export const useScoringRulesTable = () => {
     filters,
     setFilters,
     refetch: fetchData,
-    deleteRule,
   };
 };

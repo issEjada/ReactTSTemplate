@@ -7,7 +7,6 @@ import type {
 } from "../../../services/dropdownServices";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
-import type { RuleIdentifierInterface } from "../monitoringServices";
  
 export interface ViewRulesFormValues {
   id?: number;
@@ -16,7 +15,6 @@ export interface ViewRulesFormValues {
   status?: string;
   condition?: string;
   riskLevel?: string;
-  identifier?: RuleIdentifierInterface;
   creationTimestamp?: string;
   lastUpdatedTimestamp?: string;
   fromCreationTimestamp?: string;
@@ -45,14 +43,6 @@ export const useRulesFilter = (
     status: "",
     condition: "",
     riskLevel: "",
-    identifier: {
-      eventSourceDevice: "",
-      scoring_scheme: "",
-      aspectCode: "",
-      controlCode: "",
-      platform: "",
-      scheme: "",
-    },
     creationTimestamp: "",
     lastUpdatedTimestamp: "",
     fromCreationTimestamp: "",
@@ -64,10 +54,7 @@ export const useRulesFilter = (
       mode: "onTouched",
       defaultValues: filterData ?? defaultValues,
     });
- 
-  const selectedScheme = watch("identifier.scheme");
-  const selectedAspect = watch("identifier.aspectCode");
- 
+
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
       code: "scoring_rule_identifier",
@@ -142,32 +129,7 @@ export const useRulesFilter = (
     fetchRiskLevelAndStatus();
     fetchDropDownsValues([]);
   }, []);
- 
-  useEffect(() => {
-    if (selectedScheme) {
-      setAspectValues([]);
-      setControleValues([]);
- 
-      fetchDropDownsValues([
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
-      ]);
-    }
-  }, [selectedScheme]);
- 
-  useEffect(() => {
-    if (selectedAspect) {
-      setControleValues([]);
-      fetchDropDownsValues([
-        {
-          key: "aspect",
-          value: selectedAspect,
-        },
-      ]);
-    }
-  }, [selectedAspect]);
+ ;
  
   const cleanObject = <T extends object>(obj: T): Partial<T> => {
     const newObj: Partial<T> = {};

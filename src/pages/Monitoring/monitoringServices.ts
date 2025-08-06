@@ -1,17 +1,7 @@
 import { httpClient, getHeaders } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
-// import { formatTime } from "../../helpers";
  
-export interface RuleIdentifierInterface {
-  eventSourceDevice: string;
-  scoring_scheme?: string;
-  scheme?: string;
-  aspectCode: string;
-  controlCode: string;
-  platform: string;
-}
- 
-export interface GetScoringRulesItemInterface {
+export interface GetSessionItemInterface {
   sessionId: string;
   deviceId: string;
   channel: string;
@@ -19,31 +9,30 @@ export interface GetScoringRulesItemInterface {
   ip: string;
   country: string;
   city: string;
-  status: "VIEWED" | "NOT VIEWED";
-  date: string;
+  status: "VIEWED" | "NOT_VIEWED";
   creationTimestamp: string;
   lastUpdatedTimestamp: string;
 }
  
-export interface GetScoringRulesInterface {
-  scoringRules: GetScoringRulesItemInterface[];
+export interface GetSessionsInterface {
+  sessions: GetSessionItemInterface[];
   meta?: { totalItems: number };
 }
  
-export type TTableColumns = GetScoringRulesItemInterface;
+export type TTableColumns = GetSessionItemInterface;
  
-export interface GetScoringRulesListPayload {
+export interface GetSessionsListPayload {
   page: number;
   maxPageSize: number;
   filter?: string;
   status?: string;
-  [key: string]: any;
+  [key: string]: string | number | undefined;
 }
  
-export interface GetScoringRulesListResponse {
+export interface GetSessionsListResponse {
   status: number;
   data: {
-    scoringRules: GetScoringRulesItemInterface[];
+    sessions: GetSessionItemInterface[];
     meta: {
       totalItems: number;
       itemCount: number;
@@ -53,17 +42,14 @@ export interface GetScoringRulesListResponse {
     };
   };
 }
- 
-// 🟦 Internal API helpers
- 
-// 🟩 API Methods
-export const scoringRulesService = {
-  getScoringRulesList: async (
-    data: GetScoringRulesListPayload
-  ): Promise<GetScoringRulesListResponse> => {
+
+export const monitoringService = {
+  getSessionsList: async (
+    data: GetSessionsListPayload
+  ): Promise<GetSessionsListResponse> => {
     const { page, maxPageSize, ...requestBody } = data;
     const response = await httpClient.post(
-      `${import.meta.env.VITE_API_BASE_URL}${API.scoringRules}`,
+      `${import.meta.env.VITE_API_BASE_URL}${API.monitoring}`,
       requestBody,
       {
         headers: getHeaders(),
@@ -74,24 +60,13 @@ export const scoringRulesService = {
       }
     );
  
-    const {
-      data: { scoringRules },
-      meta,
-    } = response.data;
- 
     return {
       status: response.status,
       data: {
-        scoringRules,
-        meta,
+        sessions : response.data.data,
+        meta : response.data.meta ,
       },
     };
   },
  
-  deleteRuleById: async (id: number): Promise<void> => {
-    await httpClient.delete(
-      `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${id}`,
-      { headers: getHeaders() }
-    );
-  },
 };

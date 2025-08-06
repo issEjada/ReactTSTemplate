@@ -9,4 +9,5 @@ export const API = {
   getDropDownsValue: "/lov_management/v1/lov",
   getRuleParameter: "/rules-parameters/v1/scoring-rules-parameters",
   getHomeStatistics: "/homepage/v1/statistics",
+  monitoring: "/user-sessions/v1/search"
 };

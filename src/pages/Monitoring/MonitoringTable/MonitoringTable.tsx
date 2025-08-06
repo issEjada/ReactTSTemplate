@@ -1,12 +1,5 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  Suspense,
-  useRef,
-  useCallback,
-} from "react";
-import { useNavigate, type SessionData } from "react-router-dom";
+import React, { useState, useMemo, Suspense, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   useReactTable,
   getCoreRowModel,
@@ -14,26 +7,21 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { RulesFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
-import { useScoringRulesTable } from "./useMonitoringTable";
+import { useMonitoringTable } from "./useMonitoringTable";
 import type { ViewRulesFormValues } from "../MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
- 
+import HomeWidgetGroup from "../../../components/HomeWidget";
+
+//Icons Imports
 const SearchIcon = React.lazy(
   () => import("../../../assets/svg/Search.svg?react")
 );
 const FilterIcon = React.lazy(
   () => import("../../../assets/svg/Filters.svg?react")
 );
-const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
- 
-const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
- 
-const DeleteIcon = React.lazy(
-  () => import("../../../assets/svg/Delete.svg?react")
-);
- 
+
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
- 
+
 type Session = {
   sessionId: string;
   deviceId: string;
@@ -42,44 +30,54 @@ type Session = {
   ip: string;
   country: string;
   city: string;
-  status: "VIEWED" | "NOT VIEWED";
+  status: "VIEWED" | "NOT_VIEWED";
   date: string;
 };
- 
+
 const getColumns = (): ColumnDef<Session>[] => [
   {
     header: "Session ID",
     accessorKey: "sessionId",
+    cell: (info) => (
+      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+        <span className="font-medium text-gray-900">
+          {String(info.getValue())}
+        </span>
+      </div>
+    ),
   },
   {
     header: "Device ID",
     accessorKey: "deviceId",
     cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900">
+      <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
+        <span className="font-medium text-gray-900 h-[20px] overflow-hidden">
           {String(info.getValue())}
         </span>
-        <span className="text-xs text-gray-500">category</span>
+        <span className="text-xs text-gray-500 h-[20px] overflow-hidden">category</span>
       </div>
     ),
   },
   {
     header: "Channel",
     accessorKey: "channel",
+    cell: (info) => (
+      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+        <span className="font-medium text-gray-900">
+          {String(info.getValue())}
+        </span>
+      </div>
+    ),
   },
   {
     header: "Industry",
     accessorKey: "industry",
     cell: (info) => (
-      <span
-        className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
-          info.getValue() === "ENABLED"
-            ? "bg-green-100 text-green-700"
-            : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
-      </span>
+      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+        <span className="font-medium text-gray-900">
+          {String(info.getValue())}
+        </span>
+      </div>
     ),
   },
   {
@@ -87,242 +85,95 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "ip",
     cell: (info) => {
       const value = String(info.getValue());
-      const colorMap: Record<string, string> = {
-        Low: "text-gray-700",
-        Medium: "text-warning-700",
-        High: "text-red-700",
-      };
-      // Capitalize first letter, rest lowercase
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
-        <span
-          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
-            colorMap[display] || "text-gray-700"
-          }`}
-        >
-          {display}
+        <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
+          {value}
         </span>
       );
     },
   },
-    {
+  {
     header: "Country",
     accessorKey: "country",
     cell: (info) => {
       const value = String(info.getValue());
-      const colorMap: Record<string, string> = {
-        Low: "text-gray-700",
-        Medium: "text-warning-700",
-        High: "text-red-700",
-      };
       // Capitalize first letter, rest lowercase
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
-        <span
-          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
-            colorMap[display] || "text-gray-700"
-          }`}
-        >
-          {display}
-        </span>
-      );
-    },
-  },
-    {
-    header: "City",
-    accessorKey: "city",
-    cell: (info) => {
-      const value = String(info.getValue());
-      const colorMap: Record<string, string> = {
-        Low: "text-gray-700",
-        Medium: "text-warning-700",
-        High: "text-red-700",
-      };
-      // Capitalize first letter, rest lowercase
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-      return (
-        <span
-          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
-            colorMap[display] || "text-gray-700"
-          }`}
-        >
-          {display}
-        </span>
-      );
-    },
-  },
-    {
-    header: "Status",
-    accessorKey: "status",
-    cell: (info) => {
-      const value = String(info.getValue());
-      const colorMap: Record<string, string> = {
-        Low: "text-gray-700",
-        Medium: "text-warning-700",
-        High: "text-red-700",
-      };
-      // Capitalize first letter, rest lowercase
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-      return (
-        <span
-          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
-            colorMap[display] || "text-gray-700"
-          }`}
-        >
-          {display}
-        </span>
-      );
-    },
-  },
-    {
-    header: "Date & Time",
-    accessorKey: "date",
-    cell: (info) => {
-      const value = String(info.getValue());
-      const colorMap: Record<string, string> = {
-        Low: "text-gray-700",
-        Medium: "text-warning-700",
-        High: "text-red-700",
-      };
-      // Capitalize first letter, rest lowercase
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-      return (
-        <span
-          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
-            colorMap[display] || "text-gray-700"
-          }`}
-        >
+        <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
           {display}
         </span>
       );
     },
   },
   {
-    header: "",
-    accessorKey: "actions",
-    cell: ({ row }) => {
-      const rule = row.original;
-      return <SessionMenu rule={rule} />;
+    header: "City",
+    accessorKey: "city",
+    cell: (info) => {
+      const value = String(info.getValue());
+      // Capitalize first letter, rest lowercase
+      const display =
+        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+      return (
+        <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
+          {display}
+        </span>
+      );
+    },
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    cell: (info) => {
+      <span
+        className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+          info.getValue() === "VIEWED"
+            ? "bg-green-100 text-green-700"
+            : "bg-gray-200 text-gray-700"
+        }`}
+      >
+        kkkk
+        {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
+      </span>;
+    },
+  },
+  {
+    header: "Date & Time",
+    accessorKey: "date",
+    cell: (info) => {
+      const value = String(info.getValue());
+      // Capitalize first letter, rest lowercase
+      const date = new Date(value);
+      const formattedDate = date.toLocaleDateString("en-GB"); // '02/07/2025'
+
+      // Format time as HH:MM:SS AM/PM
+      const formattedTime = date.toLocaleTimeString("en-US", {
+        hour12: true,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }); // '03:24:06 AM'
+
+      // If you want to trim seconds to always show `00` as in your example
+      const trimmedTime = `${formattedTime.split(":")[0]}:${
+        formattedTime.split(":")[1]
+      }:00 ${formattedTime.split(" ")[1]}`;
+      return (
+        <div className="flex flex-col w-[127px] h-[40px] overflow-hidden">
+          <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
+            {formattedDate}
+          </span>
+          <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
+            {trimmedTime}
+          </span>
+        </div>
+      );
     },
   },
 ];
- 
-const SessionMenu = ({ rule }: { rule: Session }) => {
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
- 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    },
-    [dropdownRef]
-  );
- 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [handleClickOutside]);
- 
-  const handleView = () => {
-    console.log("View rule:", rule);
-    setOpen(false);
-    navigate("/rules/view", {
-      state: {
-        id: rule.sessionId,
-        action: "view",
-      },
-    });
-  };
- 
-  const handleEdit = () => {
-    console.log("Edit rule:", rule);
-    setOpen(false);
-    navigate("/rules/edit", {
-      state: {
-        id: rule.sessionId,
-        action: "edit",
-      },
-    });
-  };
- 
-  const handleDelete = () => {
-    console.log("Delete rule:", rule);
-    setOpen(false);
-  };
- 
-  return (
-    <div
-      ref={dropdownRef}
-      className="relative inline-flex items-center justify-center"
-    >
-      <button
-        className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={() => setOpen(!open)}
-        aria-label="More options"
-      >
-        <span className="flex flex-col justify-center items-center gap-[3px]">
-          <span className="block w-[5px] h-[5px] rounded-full bg-gray-400" />
-          <span className="block w-[5px] h-[5px] rounded-full bg-gray-400" />
-          <span className="block w-[5px] h-[5px] rounded-full bg-gray-400" />
-        </span>
-      </button>
- 
-      {open && (
-        <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white shadow-lg">
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"
-            onClick={handleView}
-          >
-            <div className="w-[16px] h-[16px] flex items-center justify-center">
-              <ViewIcon />
-            </div>
-            <span className="text-[14px] font-medium text-[#414651] whitespace-nowrap">
-              View Details
-            </span>
-          </button>
-          <div className="border-t border-gray-200" />
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
-            onClick={handleEdit}
-          >
-            <EditIcon />
-            <span className="text-[14px] font-medium text-[#414651]">
-              Edit Session
-            </span>
-          </button>
-          <div className="border-t border-gray-200" />
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
-            onClick={handleDelete}
-          >
-            <DeleteIcon />
-            <span className="text-[14px] font-medium text-[#414651]">
-              Delete
-            </span>
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
- 
-export const  MonitoringTable = () => {
+
+export const MonitoringTable = () => {
   const {
     data = [],
     isLoading,
@@ -334,54 +185,52 @@ export const  MonitoringTable = () => {
     // setItemsPerPage,
     filters,
     setFilters,
-    refetch,
-  } = useScoringRulesTable();
- 
+  } = useMonitoringTable();
+
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
-    "All" | "ENABLED" | "DISABLED"
+    "All" | "VIEWED" | "NOT_VIEWED"
   >("All");
- 
+
   // When user clicks a status button, update statusFilter with backend values
-  const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
+  const onFilterStatus = (status: "All" | "VIEWED" | "NOT_VIEWED") => {
     setStatusFilter(status);
- 
+
     const newFilters: ViewRulesFormValues = {
       ...filters,
     };
- 
+
     if (status !== "All") {
       newFilters.status = status;
     } else {
       delete newFilters.status;
     }
- 
+
     setFilters(newFilters);
     setCurrentPage(1);
   };
- 
+
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
- 
+
   const applyFilters = () => {
     const newFilters: Record<string, string> = {};
- 
+
     if (statusFilter !== "All") {
       newFilters.status = statusFilter;
     }
- 
+
     if (searchText.trim() !== "") {
       newFilters.filter = searchText.trim();
     }
- 
+
     setFilters(newFilters);
     setCurrentPage(1);
   };
- 
- 
+
   const columns = useMemo(() => getColumns(), []);
- 
+
   const sessionsData: Session[] = useMemo(
     () =>
       data.map((item) => ({
@@ -393,36 +242,39 @@ export const  MonitoringTable = () => {
         country: item.country,
         city: item.city,
         status: item.status,
-        date: new Date(item.date).toLocaleString(),
+        date: item.lastUpdatedTimestamp,
       })),
     [data]
   );
- 
+
+  console.log("Sessions Data:", sessionsData);
+
   const table = useReactTable<Session>({
     data: sessionsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getRowId: (originalRow, index) => `${originalRow.sessionId}-${index}`,
+    getRowId: (row) => row.sessionId,
   });
- 
+
   const navigate = useNavigate();
- 
-  const handleAddNewRule = () => {
+
+  const handleAddNewSession = () => {
+    // To be changed
     navigate("/rules/add");
   };
- 
+
   const isFilterActive = useMemo(
     () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
     [filters, searchText]
   );
- 
+
   const handleClearSearch = () => {
     setSearchText("");
     setFilters({});
     setStatusFilter("All");
     setCurrentPage(1);
   };
- 
+
   if (error) {
     return (
       <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
@@ -430,37 +282,40 @@ export const  MonitoringTable = () => {
       </div>
     );
   }
- 
+
   if (isLoading) {
     return <FullScreenSpinner />;
   }
- 
+
+  console.log("Monitoring Table Data:", table);
+
   return (
-    <div className="p-6 bg-white shadow-sm">
-      <div className="mb-6">
-        <div className="flex items-center justify-between pt-5">
-          <h2 className="text-lg font-semibold text-gray-900">
+    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+      <div className="pt-5 px-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Monitor Activity Sessions{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
               {totalCount} Active Session{totalCount !== 1 && "s"}
             </span>
           </h2>
- 
+
           {totalCount !== 0 && (
             <button
-              onClick={handleAddNewRule}
-              className="w-[155px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
+              onClick={handleAddNewSession}
+              className="w-[179px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
             >
               + Add New Session
             </button>
           )}
         </div>
- 
+
         <p className="text-sm text-gray-500 mt-1">
           Keep track of customers and their security levels.
         </p>
       </div>
       {/* Add Cards Here */}
+      <HomeWidgetGroup />
       {totalCount === 0 && !isFilterActive ? (
         <div className="w-full h-[75vh] flex flex-col items-center justify-center bg-gray-50 rounded-md border border-dashed">
           <div className="bg-white shadow-md rounded-full p-4 mb-4">
@@ -486,7 +341,7 @@ export const  MonitoringTable = () => {
             You don’t have any rule yet. Start securing by adding new rules now.
           </p>
           <button
-            onClick={handleAddNewRule}
+            onClick={handleAddNewSession}
             className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
           >
             + Add New Session
@@ -500,34 +355,34 @@ export const  MonitoringTable = () => {
                 onClick={() => onFilterStatus("All")}
                 className={`text-xs w-[83px] h-10 px-3 ${
                   statusFilter === "All"
-                    ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-gray-100 text-black"
+                    ? "bg-blue-500 text-white font-semibold dark:text-black dark:bg-white"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:text-black"
                 }`}
               >
                 View All
               </button>
               <button
-                onClick={() => onFilterStatus("ENABLED")}
+                onClick={() => onFilterStatus("VIEWED")}
                 className={`text-xs w-[81px] h-10 px-3 border-l ${
-                  statusFilter === "ENABLED"
-                    ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-gray-100 text-black"
+                  statusFilter === "VIEWED"
+                    ? "bg-blue-500 text-white font-semibold dark:text-black dark:bg-white"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:text-black"
                 }`}
               >
                 Viewed
               </button>
               <button
-                onClick={() => onFilterStatus("DISABLED")}
+                onClick={() => onFilterStatus("NOT_VIEWED")}
                 className={`text-xs w-[107px] h-10 px-3 border-l ${
-                  statusFilter === "DISABLED"
-                    ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-gray-100 text-black"
+                  statusFilter === "NOT_VIEWED"
+                    ? "bg-blue-500 text-white font-semibold dark:text-black dark:bg-white"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:text-black"
                 }`}
               >
                 Not Viewed
               </button>
             </div>
- 
+
             {/* Search Box aligned right */}
             <div className="flex items-center gap-3">
               <div className="relative w-[400px] h-[44px]">
@@ -547,10 +402,10 @@ export const  MonitoringTable = () => {
                   className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
- 
+
               {/* Filter Button */}
               <button
-                className="flex items-center gap-2 w-[100px] h-[40px] px-4 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100"
+                className="flex items-center gap-2 w-[100px] h-[40px] px-4 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100  dark:text-white"
                 onClick={openFilterModal}
               >
                 <Suspense>
@@ -560,16 +415,16 @@ export const  MonitoringTable = () => {
               </button>
             </div>
           </div>
- 
+
           <RulesFilterForm
             isOpen={isFilterOpen}
             closeDrawer={closeFilterModal}
-            filterData={filters as any} // or adjust type as needed
+            filterData={filters as any}
             handleSearchSubmit={(searchData: ViewRulesFormValues) => {
               const combinedFilters: ViewRulesFormValues = {
                 ...searchData, // directly use searchData object
               };
- 
+
               if (statusFilter !== "All") {
                 combinedFilters.status = statusFilter;
               }
@@ -577,18 +432,21 @@ export const  MonitoringTable = () => {
               setCurrentPage(1);
             }}
           />
- 
+
           <div
             className={`w-full ${
-              totalCount === 0 ? "h-[388px] overflow-hidden" : "h-[680px]"
+              totalCount === 0 ? "overflow-hidden" : ""
             } overflow-auto`}
           >
             <table className="w-full table-auto h-full text-sm text-center">
-              <thead className="bg-gray-50 text-gray-600 ">
+              <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id} className="border-b">
                     {headerGroup.headers.map((header) => (
-                      <th key={header.id} className="px-4 h-[72px] font-medium">
+                      <th
+                        key={header.id}
+                        className="px-4 h-[48px] font-medium text-left w-[127px]"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -607,7 +465,7 @@ export const  MonitoringTable = () => {
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
-                          className="px-4 h-[72px] align-middle"
+                          className="px-4 h-[72px] align-middle text-left w-[127px]"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
@@ -618,7 +476,7 @@ export const  MonitoringTable = () => {
                     </tr>
                   ))
                 ) : (
-                  <tr className="h-full">
+                  <tr className="h-[244px]">
                     <td
                       colSpan={columns.length}
                       className="h-full p-0 align-top"
@@ -637,11 +495,12 @@ export const  MonitoringTable = () => {
                               {/* Text */}
                               <div className="w-[352px] h-[68px] flex flex-col items-center gap-[4px]">
                                 <h1 className="text-[#181D27] text-[16px] leading-[24px] font-semibold text-center h-[24px]">
-                                  No Scoring Rules found
+                                  No Sessions found
                                 </h1>
                                 <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-[4px]">
-                                  Your search “Keyword” did not match any rules.
-                                  Please try again or create and add a new rule.
+                                  Your search “Keyword” did not match any
+                                  sessions. Please try again or create and add a
+                                  new session.
                                 </p>
                               </div>
                             </div>
@@ -656,12 +515,14 @@ export const  MonitoringTable = () => {
                               </button>
                               <button
                                 type="button"
-                                className="w-[170px] h-[40px] bg-blue-600 text-white px-[16px] py-[10px] border border-blue-600 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-[8px] hover:bg-blue-700"
+                                className="w-[180px] h-[40px] bg-blue-600 text-white px-[16px] py-[10px] border border-blue-600 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-[8px] hover:bg-blue-700"
                               >
                                 <Suspense>
                                   <PlusIcon />
                                 </Suspense>
-                                Add New Session
+                                <span className="w-[120px] text-sm">
+                                  Add New Session
+                                </span>
                               </button>
                             </div>
                           </div>
@@ -686,7 +547,7 @@ export const  MonitoringTable = () => {
               >
                 Previous
               </button>
- 
+
               <button
                 onClick={() =>
                   setCurrentPage((p) =>
