@@ -14,11 +14,15 @@ export const Layout = () => {
     <div className="min-h-screen ">
       <div className="flex">
         <div>
-          <div className="text-white h-screen fixed border-r border-r-[1px] border-r-[#1C1C1C1A] bg-white z-10">
+          <div className="text-white h-screen fixed border-r border-r-[1px] border-r-[#1C1C1C1A] dark:border-gray-800 bg-white z-10">
             <SideBar isClosed={isClosed} />
           </div>
         </div>
-        <div className={`flex-1 dark:bg-black ${isClosed ? "ml-[110px]" : "ml-64"} transition-all duration-300 overflow-auto`}>
+        <div
+          className={`flex-1 dark:bg-black ${
+            isClosed ? "ml-[110px]" : "ml-64"
+          } transition-all duration-300 overflow-auto`}
+        >
           <Header onSidebarIconClick={handleSidebarIconClick} />
           <Outlet />
         </div>

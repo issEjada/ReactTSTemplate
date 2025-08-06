@@ -35,7 +35,7 @@ const DeleteIcon = React.lazy(
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 type Rule = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   status: "ENABLED" | "DISABLED";
@@ -43,7 +43,8 @@ type Rule = {
 };
 
 const getColumns = (
-  onToggleStatus: (id: string) => void
+  onToggleStatus: (id: number) => void,
+  onDelete: (id: number) => void
 ): ColumnDef<Rule>[] => [
   {
     header: "OFF/ON",
@@ -55,7 +56,7 @@ const getColumns = (
         <div className="flex justify-center">
           <button
             onClick={() => onToggleStatus(row.original.id)}
-            className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300
+            className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"
           >
@@ -77,10 +78,10 @@ const getColumns = (
     accessorKey: "name",
     cell: (info) => (
       <div className="flex flex-col">
-        <span className="font-medium text-gray-900">
+        <span className="font-medium text-gray-900  dark:text-white">
           {String(info.getValue())}
         </span>
-        <span className="text-xs text-gray-500">category</span>
+        <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>
     ),
   },
@@ -118,7 +119,7 @@ const getColumns = (
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span
-          className={`text-xs font-medium px-2 py-1 whitespace-nowrap ${
+          className={`text-xs font-medium px-2 py-1  whitespace-nowrap ${
             colorMap[display] || "text-gray-700"
           }`}
         >
@@ -132,12 +133,18 @@ const getColumns = (
     accessorKey: "actions",
     cell: ({ row }) => {
       const rule = row.original;
-      return <RuleMenu rule={rule} />;
+      return <RuleMenu rule={rule} onDelete={onDelete} />;
     },
   },
 ];
 
-const RuleMenu = ({ rule }: { rule: Rule }) => {
+const RuleMenu = ({
+  rule,
+  onDelete,
+}: {
+  rule: Rule;
+  onDelete: (id: number) => void;
+}) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -184,14 +191,14 @@ const RuleMenu = ({ rule }: { rule: Rule }) => {
   };
 
   const handleDelete = () => {
-    console.log("Delete rule:", rule);
     setOpen(false);
+    onDelete(rule.id);
   };
 
   return (
     <div
       ref={dropdownRef}
-      className="relative inline-flex items-center justify-center"
+      className="relative inline-flex items-center justify-center "
     >
       <button
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
@@ -206,7 +213,7 @@ const RuleMenu = ({ rule }: { rule: Rule }) => {
       </button>
 
       {open && (
-        <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white shadow-lg">
+        <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white">
           <button
             type="button"
             className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"
@@ -215,9 +222,7 @@ const RuleMenu = ({ rule }: { rule: Rule }) => {
             <div className="w-[16px] h-[16px] flex items-center justify-center">
               <ViewIcon />
             </div>
-            <span className="text-[14px] font-medium text-[#414651] whitespace-nowrap">
-              View Details
-            </span>
+            <span className="text-[14px] whitespace-nowrap">View Details</span>
           </button>
           <div className="border-t border-gray-200" />
           <button
@@ -226,9 +231,7 @@ const RuleMenu = ({ rule }: { rule: Rule }) => {
             onClick={handleEdit}
           >
             <EditIcon />
-            <span className="text-[14px] font-medium text-[#414651]">
-              Edit Rule
-            </span>
+            <span className="text-[14px]">Edit Rule</span>
           </button>
           <div className="border-t border-gray-200" />
           <button
@@ -237,9 +240,7 @@ const RuleMenu = ({ rule }: { rule: Rule }) => {
             onClick={handleDelete}
           >
             <DeleteIcon />
-            <span className="text-[14px] font-medium text-[#414651]">
-              Delete
-            </span>
+            <span className="text-[14px]">Delete</span>
           </button>
         </div>
       )}
@@ -260,6 +261,8 @@ export const RulesTable = () => {
     filters,
     setFilters,
     refetch,
+    handleSearchSubmit,
+    deleteRule,
   } = useScoringRulesTable();
 
   const [searchText, setSearchText] = useState("");
@@ -290,17 +293,18 @@ export const RulesTable = () => {
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
-    const newFilters: Record<string, string> = {};
+    const newFilters: ViewRulesFormValues = {
+      ...filters,
+      name: searchText.trim(),
+    };
 
     if (statusFilter !== "All") {
       newFilters.status = statusFilter;
+    } else {
+      delete newFilters.status;
     }
 
-    if (searchText.trim() !== "") {
-      newFilters.filter = searchText.trim();
-    }
-
-    setFilters(newFilters);
+    handleSearchSubmit(newFilters);
     setCurrentPage(1);
   };
 
@@ -313,12 +317,24 @@ export const RulesTable = () => {
     await refetch();
   };
 
-  const columns = useMemo(() => getColumns(handleToggleStatus), []);
+  const handleDeleteRule = async (id: number) => {
+    try {
+      await deleteRule(id);
+      await refetch(); // refresh table
+    } catch (err) {
+      console.error("Error deleting rule:", err);
+    }
+  };
+
+  const columns = useMemo(
+    () => getColumns(handleToggleStatus, handleDeleteRule),
+    []
+  );
 
   const rulesData: Rule[] = useMemo(
     () =>
       data.map((item) => ({
-        id: String(item.id),
+        id: item.id,
         name: item.name ?? "",
         description: item.description ?? "",
         status: item.status as "ENABLED" | "DISABLED",
@@ -365,10 +381,10 @@ export const RulesTable = () => {
   }
 
   return (
-    <div className="p-6 bg-white shadow-sm">
+    <div className="p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800">
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Scoring Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
               {totalCount} Rule{totalCount !== 1 && "s"}
@@ -422,15 +438,15 @@ export const RulesTable = () => {
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto border rounded-lg ">
+        <div className="overflow-x-auto border rounded-lg dark:border-gray-800 ">
           <div className="flex justify-between items-center px-6 py-6">
-            <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300">
+            <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300 ">
               <button
                 onClick={() => onFilterStatus("All")}
                 className={`text-xs w-[83px] h-10 px-3 ${
                   statusFilter === "All"
                     ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-gray-100 text-black"
+                    : "hover:bg-gray-100 text-black dark:hover:bg-gray-200 "
                 }`}
               >
                 View All
@@ -440,7 +456,7 @@ export const RulesTable = () => {
                 className={`text-xs w-[83px] h-10 px-3 border-l ${
                   statusFilter === "ENABLED"
                     ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-gray-100 text-black"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
                 }`}
               >
                 Active
@@ -450,7 +466,7 @@ export const RulesTable = () => {
                 className={`text-xs w-[83px] h-10 px-3 border-l ${
                   statusFilter === "DISABLED"
                     ? "bg-blue-500 text-white font-semibold"
-                    : "hover:bg-gray-100 text-black"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
                 }`}
               >
                 Inactive
@@ -473,17 +489,17 @@ export const RulesTable = () => {
                     }
                   }}
                   placeholder="Search"
-                  className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800"
                 />
               </div>
 
               {/* Filter Button */}
               <button
-                className="flex items-center gap-2 w-[100px] h-[40px] px-4 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100"
+                className="flex items-center gap-2 w-[100px] h-[40px] px-4 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                 onClick={openFilterModal}
               >
                 <Suspense>
-                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
                 </Suspense>
                 Filter
               </button>
@@ -493,18 +509,8 @@ export const RulesTable = () => {
           <RulesFilterForm
             isOpen={isFilterOpen}
             closeDrawer={closeFilterModal}
-            filterData={filters as any} // or adjust type as needed
-            handleSearchSubmit={(searchData: ViewRulesFormValues) => {
-              const combinedFilters: ViewRulesFormValues = {
-                ...searchData, // directly use searchData object
-              };
-
-              if (statusFilter !== "All") {
-                combinedFilters.status = statusFilter;
-              }
-              setFilters(combinedFilters);
-              setCurrentPage(1);
-            }}
+            filterData={filters as any}
+            handleSearchSubmit={handleSearchSubmit}
           />
 
           <div
@@ -512,10 +518,13 @@ export const RulesTable = () => {
               totalCount === 0 ? "h-[388px] overflow-hidden" : "h-[680px]"
             } overflow-auto`}
           >
-            <table className="w-full table-auto h-full text-sm text-center">
-              <thead className="bg-gray-50 text-gray-600 ">
+            <table className="w-full table-auto h-full text-sm text-center ">
+              <thead className="bg-gray-50 text-gray-600  dark:bg-[#121418] dark:border-gray-800 dark:text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id} className="border-b">
+                  <tr
+                    key={headerGroup.id}
+                    className="border-b dark:border-gray-800"
+                  >
                     {headerGroup.headers.map((header) => (
                       <th key={header.id} className="px-4 h-[72px] font-medium">
                         {header.isPlaceholder
@@ -532,7 +541,10 @@ export const RulesTable = () => {
               <tbody className="w-[1144px] h-[548px]">
                 {table.getRowModel().rows.length > 0 ? (
                   table.getRowModel().rows.map((row) => (
-                    <tr key={row.id} className="border-t hover:bg-gray-50">
+                    <tr
+                      key={row.id}
+                      className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800"
+                    >
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
@@ -603,7 +615,7 @@ export const RulesTable = () => {
             </table>
           </div>
           {/* Pagination */}
-          <div className="flex justify-between items-center px-4 py-3 border-t text-sm text-gray-600 w-[1144px] h-[64px]">
+          <div className="flex justify-between items-center px-4 py-3 border-t dark:border-gray-800 text-sm text-gray-600 w-[1144px] h-[64px]">
             <div className="pl-6">
               Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
             </div>
@@ -611,7 +623,7 @@ export const RulesTable = () => {
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-2 w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+                className="px-3 py-2 w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 dark:text-white"
               >
                 Previous
               </button>
@@ -623,7 +635,7 @@ export const RulesTable = () => {
                   )
                 }
                 disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-                className="px-3 py-2 w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+                className="px-3 py-2 w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 dark:text-white"
               >
                 Next
               </button>

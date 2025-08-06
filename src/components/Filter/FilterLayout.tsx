@@ -12,8 +12,8 @@ export default function FilterLayout({
 }: props & { children: React.ReactNode }) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50   bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="fixed bg-white rounded-lg shadow-lg p-6 top-0 right-0 w-1/2  h-[100vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm ">
+      <div className="fixed bg-white rounded-lg shadow-lg p-6 top-0 right-0 w-1/2  h-[100vh] overflow-y-auto dark:bg-[#121418] dark:border-gray-800">
         <div className="flex justify-between items-center w-[95%] ">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button

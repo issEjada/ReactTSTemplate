@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import type { Path, Control, FieldValues } from "react-hook-form";
 import ChevronDown from "../assets/svg/ChevronDown.svg";
@@ -26,8 +27,31 @@ const DropdownMenu = <T extends FieldValues>({
   disabled = false,
   className = "w-full",
 }: DropdownMenuProps<T>) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    if (!disabled) setOpen((prev) => !prev);
+  };
+
+  const closeDropdown = () => setOpen(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className={`mb-2 ${className}`}>
+    <div className={`mb-2 ${className}`} ref={dropdownRef}>
       <Controller
         name={name}
         control={control}
@@ -35,44 +59,37 @@ const DropdownMenu = <T extends FieldValues>({
         render={({ field, fieldState }) => {
           const { onChange, value } = field;
           const { error } = fieldState;
-          const dropdownId = `dropdown-${name}`;
-
-          const toggleDropdown = () => {
-            if (disabled) return;
-            const dropdown = document.getElementById(dropdownId);
-            dropdown?.classList.toggle("hidden");
-          };
-
-          const closeDropdown = () => {
-            const dropdown = document.getElementById(dropdownId);
-            dropdown?.classList.add("hidden");
-          };
 
           return (
-            <div className="flex flex-col gap-[6px] relative">
+            <div className="flex flex-col gap-[6px] relative dark:bg-[#121418] dark:border-gray-800">
               <label className="text-sm sm:text-base font-medium text-[#414651] flex items-center gap-1">
                 {label}
                 {required && <span className="text-red-500">*</span>}
               </label>
+
+              {/* Dropdown Trigger */}
               <div
                 className={`
-              appearance-none w-full h-[44px] sm:h-[48px] px-[14px] py-[10px] 
-              text-sm sm:text-base border rounded-[8px] shadow-sm bg-white 
-              flex items-center justify-between relative 
-              ${
-                error
-                  ? "border-red-500 text-red-500"
-                  : "border-[#D5D7DA] text-[#717680]"
-              }
-              ${
-                disabled
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "cursor-pointer"
-              }
-            `}
-                onClick={!disabled ? toggleDropdown : undefined}
+                  appearance-none w-full h-[44px] sm:h-[48px] px-[14px] py-[10px]
+                  text-sm sm:text-base border rounded-[8px] shadow-sm
+                  flex items-center justify-between relative dark:bg-[#121418] dark:border-gray-800
+                  ${
+                    error
+                      ? "border-red-500 text-red-500"
+                      : "border-[#D5D7DA] text-[#717680]"
+                  }
+                  ${
+                    disabled
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }
+                `}
+                onClick={toggleDropdown}
               >
-                <span>{value || `Choose ${label}`}</span>
+                <span>
+                  {options.find((opt) => opt.key === value)?.node ||
+                    `Choose ${label}`}
+                </span>
                 <img
                   src={ChevronDown}
                   alt="Dropdown icon"
@@ -80,27 +97,31 @@ const DropdownMenu = <T extends FieldValues>({
                 />
               </div>
 
-              <ul
-                id={dropdownId}
-                className="absolute z-50 mt-[4px] w-full bg-white border border-[#D5D7DA] rounded-[8px] shadow-md overflow-y-auto max-h-60 hidden"
-              >
-                {options.map((opt) => (
-                  <li
-                    key={opt.key}
-                    onClick={() => {
-                      onChange(opt.node);
-                      closeDropdown();
-                    }}
-                    className={`px-[14px] py-[10px] text-sm sm:text-base cursor-pointer hover:bg-gray-100 ${
-                      opt.node === value
-                        ? "bg-gray-100 font-medium text-blue-600"
-                        : ""
-                    }`}
-                  >
-                    {opt.node}
-                  </li>
-                ))}
-              </ul>
+              {/* Dropdown Menu */}
+              {open && (
+                <ul className="absolute top-full left-0 z-50 mt-[4px] w-full bg-white border border-[#D5D7DA] rounded-[8px] shadow-md overflow-y-auto max-h-60 dark:bg-[#121418] dark:border-gray-800">
+                  {options.map((opt) => (
+                    <li
+                      key={opt.key}
+                      onClick={() => {
+                        onChange(opt.key);
+                        closeDropdown();
+                      }}
+                      className={`
+                      px-[14px] py-[10px] text-sm sm:text-base cursor-pointer dark:bg-[#121418] dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800
+                        ${
+                          opt.key === value
+                            ? "bg-gray-100 font-medium text-blue-600"
+                            : ""
+                        }
+                      `}
+                    >
+                      {opt.node}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
               {error && (
                 <span className="text-sm text-red-500 mt-1">
                   {error.message}

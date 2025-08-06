@@ -11,14 +11,14 @@ import type {
   DropDownsAttributes,
   DropDownsPayload,
   GetRuleByIdPayload,
-  // GetRulesParametersPayload,
+  GetRulesParametersPayload,
   UpdateRulesPayload,
   GetRuleByIdResponse,
+  GetRulesParameterResponse,
 } from "../rulesServices";
 import { useLocation } from "react-router-dom";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { LoadingState } from "../../../types/types";
-// GetRulesParameterResponse,
 import ScoringRulesSdks from "../rulesServices";
 
 function useViewScoringRules() {
@@ -33,14 +33,16 @@ function useViewScoringRules() {
     DropDownValue[]
   >([]);
   const [ruleData, setRuleData] = useState<GetRuleByIdResponse>();
-  //   const [parametersData, setParametersData] =
-  //     useState<GetRulesParameterResponse>();
+  const [parametersData, setParametersData] =
+    useState<GetRulesParameterResponse>();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [popupType, setPopupType] = useState<string>("");
   const [popupMessage, setPopupMessage] = useState<string>("");
   const [loadingState, setloadingState] = useState<LoadingState>(
     LoadingState.Loading
   );
+
+  const ruleName = ruleData?.name;
 
   const location = useLocation();
   const { id, action } = location.state || {
@@ -177,19 +179,19 @@ function useViewScoringRules() {
         console.log(error);
       });
   };
-  //   const fetchParameterData = async () => {
-  //     const data: GetRulesParametersPayload = {
-  //       identifier: watch().identifier,
-  //     };
+  const fetchParameterData = async () => {
+    const data: GetRulesParametersPayload = {
+      identifier: watch().identifier!,
+    };
 
-  //     await ScoringRulesSdks.getRulesParameters(data)
-  //       .then((value) => {
-  //         setParametersData(value);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   };
+    await ScoringRulesSdks.getRulesParameters(data)
+      .then((value) => {
+        setParametersData(value);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     if (isViewing || isEditing) {
@@ -288,7 +290,7 @@ function useViewScoringRules() {
       selectedScheme &&
       selectedAspect
     ) {
-      //   fetchParameterData();
+      fetchParameterData();
     }
   }, [
     selectedPlatForm,
@@ -420,12 +422,13 @@ function useViewScoringRules() {
     riskLevelValues,
     deleteRule,
     isAdding,
-    // parametersData,
+    parametersData,
     isViewing,
     setScreenAction,
     isEditing,
     screenAction,
     isPopupOpen,
+    reset,
     setIsPopupOpen,
     popupType,
     setPopupType,
@@ -435,6 +438,8 @@ function useViewScoringRules() {
     watch,
     formValues,
     isFormValid,
+    ruleName,
+    setValue,
   };
 }
 
