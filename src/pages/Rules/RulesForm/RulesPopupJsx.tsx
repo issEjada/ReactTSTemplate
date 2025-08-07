@@ -20,13 +20,13 @@ const RulesPopupJsx = ({
   const title = isAdding
     ? "New Rule Created"
     : isEditing
-    ? "Successfully Edited"
+    ? "Updated Successfully"
     : "";
 
   const message = isAdding
     ? "Congratulations, your new rule is created successfully."
     : isEditing
-    ? "The scoring rule details has been successfully edited."
+    ? "The scoring rule details has been updated successfully."
     : "";
 
   return (
