@@ -270,6 +270,11 @@ export const RulesTable = () => {
       searchPlaceholder="Search rules"
       showStatusFilter={true}
       filters={filters ?? {}}
+      statusFilterOptions={[
+        { key: "All", label: "View All" },
+        { key: "ENABLED", label: "Active" },
+        { key: "DISABLED", label: "Inactive" },
+      ]}
     />
   );
 };

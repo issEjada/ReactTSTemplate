@@ -36,6 +36,7 @@ interface DynamicTableProps<TData extends object> {
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
   filters: object; // Add filters prop
+  statusFilterOptions?: { key: string; label: string }[]; // Add statusFilterOptions prop
 }
 
 export function DynamicTable<TData extends object>({
@@ -63,6 +64,7 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   filters, // Destructure filters prop
+  statusFilterOptions, // Destructure statusFilterOptions prop
 }: DynamicTableProps<TData>) {
   const table = useReactTable<TData>({
     data,
@@ -146,40 +148,30 @@ export function DynamicTable<TData extends object>({
       ) : (
         <div className="overflow-x-auto border rounded-lg dark:border-gray-800 ">
           <div className="flex justify-between items-center px-6 py-6">
-            {showStatusFilter && onFilterStatus && statusFilter && (
-              <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300 ">
-                <button
-                  onClick={() => onFilterStatus("All")}
-                  className={`text-xs w-[83px] h-10 px-3 ${
-                    statusFilter === "All"
-                      ? "bg-blue-500 text-white font-semibold"
-                      : "hover:bg-gray-100 text-black dark:hover:bg-gray-200 "
-                  }`}
-                >
-                  View All
-                </button>
-                <button
-                  onClick={() => onFilterStatus("ENABLED")}
-                  className={`text-xs w-[83px] h-10 px-3 border-l ${
-                    statusFilter === "ENABLED"
-                      ? "bg-blue-500 text-white font-semibold"
-                      : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-                  }`}
-                >
-                  Active
-                </button>
-                <button
-                  onClick={() => onFilterStatus("DISABLED")}
-                  className={`text-xs w-[83px] h-10 px-3 border-l ${
-                    statusFilter === "DISABLED"
-                      ? "bg-blue-500 text-white font-semibold"
-                      : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-                  }`}
-                >
-                  Inactive
-                </button>
-              </div>
-            )}
+            {showStatusFilter &&
+              onFilterStatus &&
+              statusFilter &&
+              statusFilterOptions && (
+                <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300 ">
+                  {statusFilterOptions.map((option) => (
+                    <button
+                      key={option.key}
+                      onClick={() => onFilterStatus(option.key)}
+                      className={`text-xs w-[83px] h-10 px-3 ${
+                        statusFilter === option.key
+                          ? "bg-blue-500 text-white font-semibold"
+                          : "hover:bg-gray-100 text-black dark:hover:bg-gray-200 "
+                      } ${
+                        option.key !== statusFilterOptions[0].key
+                          ? "border-l"
+                          : ""
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
 
             {/* Search Box aligned right */}
             <div className="flex items-center gap-3">
