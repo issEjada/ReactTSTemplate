@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import type {
   GetScoringRulesInterface,
   GetScoringRulesItemInterface,
+  RuleIdentifierInterface,
 } from "../rulesServices";
 import { scoringRulesService } from "../rulesServices";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
@@ -34,6 +35,47 @@ export const useScoringRulesTable = () => {
   const [filters, setFilters] = useState<ViewRulesFormValues | undefined>(
     undefined
   );
+
+  const handleSearchSubmit = (searchData: ViewRulesFormValues) => {
+    const filteredData = Object.entries(searchData).reduce(
+      (acc, [key, value]) => {
+        if (typeof value === "string" && value.trim() !== "") {
+          (acc as any)[key] = value;
+          setCurrentPage(1);
+        } else if (typeof value === "number" && value !== 0) {
+          (acc as any)[key] = value;
+          setCurrentPage(1);
+        } else if (typeof value === "object" && value !== null) {
+          // Filter nested identifier object
+          const filteredIdentifier = Object.entries(value).reduce(
+            (idAcc, [idKey, idValue]) => {
+              if (
+                idKey === "scoring_scheme" &&
+                typeof idValue === "string" &&
+                idValue.trim() !== ""
+              ) {
+                (idAcc as any)["scheme"] = idValue; // Move scoring_scheme to scheme
+              } else if (typeof idValue === "string" && idValue.trim() !== "") {
+                (idAcc as any)[idKey] = idValue;
+              }
+              return idAcc;
+            },
+            {} as Partial<RuleIdentifierInterface>
+          );
+
+          // Only set identifier if it has values
+          if (Object.keys(filteredIdentifier).length > 0) {
+            (acc as any)[key] = filteredIdentifier;
+            setCurrentPage(1);
+          }
+        }
+
+        return acc;
+      },
+      {} as ViewRulesFormValues
+    );
+    setFilters(filteredData);
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -80,5 +122,6 @@ export const useScoringRulesTable = () => {
     setFilters,
     refetch: fetchData,
     deleteRule,
+    handleSearchSubmit,
   };
 };

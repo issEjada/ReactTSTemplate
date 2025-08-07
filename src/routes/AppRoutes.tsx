@@ -5,6 +5,7 @@ export const AppRoutes = {
   rules: "/rules",
   addRule: "/rules/add",
   viewRule: "/rules/view",
+  editRule: "/rules/edit",
   events: "/events",
   systemConfiguration: "/system-configuration",
   monitoring: "/monitoring",

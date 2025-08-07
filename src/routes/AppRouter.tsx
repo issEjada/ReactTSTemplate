@@ -9,7 +9,7 @@ import AboutUs from "../pages/AboutUs";
 import { RulesTable } from "../pages/Rules/RulesTable/RulesTable";
 import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringTable";
 import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
-// import RuleForm from "../pages/Rules/RulesForm/RuleForm";
+import RuleForm from "../pages/Rules/RulesForm/RuleForm";
  
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -110,24 +110,34 @@ export const AppRouter = createBrowserRouter([
         ),
         errorElement: <></>,
       },
-      // {
-      //   path: AppRoutes.addRule,
-      //   element: (
-      //     <ProtectedRoute>
-      //       <RuleForm />
-      //     </ProtectedRoute>
-      //   ),
-      //   errorElement: <></>,
-      // },
-      // {
-      //   path: AppRoutes.viewRule,
-      //   element: (
-      //     <ProtectedRoute>
-      //       <RuleForm />
-      //     </ProtectedRoute>
-      //   ),
-      //   errorElement: <></>,
-      // },
+      {
+        path: AppRoutes.addRule,
+        element: (
+          <ProtectedRoute>
+            <RuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.viewRule,
+        element: (
+          <ProtectedRoute>
+            <RuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.editRule,
+        element: (
+          <ProtectedRoute>
+            <RuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+
       {
         path: AppRoutes.events,
         element: (
