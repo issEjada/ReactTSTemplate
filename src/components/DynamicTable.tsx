@@ -247,7 +247,7 @@ export function DynamicTable<TData extends object>({
 
           <div
             className={`w-full ${
-              totalCount === 0 ? "h-[388px] overflow-hidden" : ""
+              totalCount === 0 ? "h-[388px] overflow-hidden" : "h-[680px]"
             } overflow-auto`}
           >
             <table className="w-full table-auto text-sm text-center ">
