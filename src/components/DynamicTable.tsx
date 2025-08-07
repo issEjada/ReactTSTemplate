@@ -184,9 +184,17 @@ export function DynamicTable<TData extends object>({
             {/* Search Box aligned right */}
             <div className="flex items-center gap-3">
               <div className="relative w-[400px] h-[44px]">
-                <Suspense>
-                  <SearchIcon className="absolute left-[14px] top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 w-5 h-5 pointer-events-none" />
-                </Suspense>
+                {/* Search Button (left icon) */}
+                <button
+                  type="button"
+                  title="Search"
+                  onClick={applyFilters}
+                  className="absolute left-[14px] top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <SearchIcon className="w-5 h-5" />
+                </button>
+
+                {/* Input */}
                 <input
                   type="text"
                   value={searchText}
@@ -197,8 +205,18 @@ export function DynamicTable<TData extends object>({
                     }
                   }}
                   placeholder={searchPlaceholder}
-                  className="w-full h-full pl-[40px] pr-[14px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800"
+                  className="w-full h-full pl-[40px] pr-[40px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800"
                 />
+
+                {/* Clear ("X") Button */}
+                {searchText && (
+                  <button
+                    onClick={() => setSearchText("")}
+                    className="absolute right-[14px] top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    &#10005;
+                  </button>
+                )}
               </div>
 
               {/* Filter Button */}

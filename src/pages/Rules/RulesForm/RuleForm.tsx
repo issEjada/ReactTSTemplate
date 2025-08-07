@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import Edit from "../../../assets/svg/Edit.svg";
-import Ignore from "../../../assets/svg/ignore.svg";
-import Submit from "../../../assets/svg/Submit.svg";
+import React from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
@@ -39,8 +36,6 @@ const RuleForm = () => {
     setIsPopupOpen,
   } = useViewScoringRules();
 
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [error, setError] = useState(false);
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
 
