@@ -235,7 +235,7 @@ const RuleForm = () => {
         setEditorContent={setEditorContent}
       />
       {/* {isEditing && ( */}
-      <div className="flex justify-end">
+      <div className="flex justify-end pb-6 pr-6">
         <div className="flex gap-4">
           <button
             type="submit"
