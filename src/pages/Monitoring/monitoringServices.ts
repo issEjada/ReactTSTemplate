@@ -2,7 +2,7 @@ import { httpClient, getHeaders } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
  
 export interface GetSessionItemInterface {
-  id: string
+  id: number
   sessionId: string;
   deviceId: string;
   channel: string;

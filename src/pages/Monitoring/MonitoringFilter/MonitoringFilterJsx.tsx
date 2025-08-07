@@ -3,43 +3,46 @@ import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
 import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
 import { Controller } from "react-hook-form";
-import { useRulesFilter, type ViewRulesFormValues } from "./useMonitoringFilter";
- 
-export interface RulesFilterProps {
+import {
+  useMonitoringFilter,
+  type ViewSessionsFormValues,
+} from "./useMonitoringFilter";
+
+export interface SessionsFilterProps {
   isOpen: boolean;
   closeDrawer: () => void;
-  handleSearchSubmit: (searchData: ViewRulesFormValues) => void;
-  filterData: ViewRulesFormValues | undefined;
+  handleSearchSubmit: (searchData: ViewSessionsFormValues) => void;
+  filterData: ViewSessionsFormValues | undefined;
 }
- 
-export const RulesFilterForm = ({
+
+export const MonitoringFilterForm = ({
   isOpen,
   closeDrawer,
   filterData,
   handleSearchSubmit,
-}: RulesFilterProps) => {
+}: SessionsFilterProps) => {
   const {
     onSubmit,
     handleClear,
     control,
-    asapectValues,
-    controlValues,
-    platfromValues,
-    riskLevelValues,
-    schemeValues,
-    statusValues,
+    channelValues,
     eventSourceDeviceValues,
-  } = useRulesFilter(closeDrawer, filterData, handleSearchSubmit);
- 
+    schemeValues,
+    eventNameValues,
+    countryValues,
+    cityValues,
+    statusValues,
+  } = useMonitoringFilter(closeDrawer, filterData, handleSearchSubmit);
+
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit();
     closeDrawer();
   };
- 
+
   return (
     <FilterLayout
-      title="Filter Scoring Rules"
+      title="Filter Monitoring Sessions"
       isOpen={isOpen}
       onClose={closeDrawer}
     >
@@ -48,20 +51,20 @@ export const RulesFilterForm = ({
         onSubmit={onFormSubmit}
       >
         <div className="relative flex flex-col mt-12">
-          <label className="text-sm font-medium">Rule Name</label>
+          <label className="text-sm font-medium">Session ID</label>
           <Controller
             control={control}
-            name="name"
+            name="sessionId"
             render={({ field }) => (
               <input
                 {...field}
                 type="text"
-                placeholder="Enter Rule Name"
+                placeholder="Enter Session ID"
                 className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
               />
             )}
           />
- 
+
           <div className="absolute top-[40px] left-[calc(95%-32px)] group">
             <img
               src={ToolTipQuestionMark}
@@ -69,54 +72,57 @@ export const RulesFilterForm = ({
               alt="Tooltip"
             />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-              Enter Rule Name.
+              Enter Session ID.
             </div>
           </div>
         </div>
- 
+
         <div>
-          <label className="text-sm font-medium">Description</label>
+          <label className="text-sm font-medium">Device ID</label>
           <Controller
             control={control}
-            name="description"
+            name="deviceId"
             render={({ field }) => (
               <input
                 {...field}
                 type="text"
-                placeholder="Type Description"
+                placeholder="Enter Device ID"
                 className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
               />
             )}
           />
         </div>
- 
-        <div className="flex gap-2">
-          <DropdownMenu<ViewRulesFormValues>
+
+        <DropdownMenu<ViewSessionsFormValues>
+          control={control}
+          name="channel"
+          label="Channel"
+          options={channelValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[95%] mt-1 rounded-md text-sm"
+        />
+
+        <div>
+          <label className="text-sm font-medium">Identity</label>
+          <Controller
             control={control}
-            name="status"
-            label="Status"
-            options={statusValues.map((item) => ({
-              key: item.key,
-              node: item.valueEn,
-            }))}
-            className="w-[47%]"
-          />
- 
-          <DropdownMenu<ViewRulesFormValues>
-            control={control}
-            name="riskLevel"
-            label="Risk Level"
-            options={riskLevelValues.map((item) => ({
-              key: item.key,
-              node: item.valueEn,
-            }))}
-            className="w-[47%]"
+            name="customerIdentity"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                placeholder="Enter Customer Identity"
+                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+              />
+            )}
           />
         </div>
- 
-        <DropdownMenu<ViewRulesFormValues>
+
+        <DropdownMenu<ViewSessionsFormValues>
           control={control}
-          name="identifier.eventSourceDevice"
+          name="eventSourceDevice"
           label="Event Source Device"
           options={eventSourceDeviceValues.map((item) => ({
             key: item.key,
@@ -124,10 +130,10 @@ export const RulesFilterForm = ({
           }))}
           className="w-[95%]"
         />
- 
-        <DropdownMenu<ViewRulesFormValues>
+
+        <DropdownMenu<ViewSessionsFormValues>
           control={control}
-          name="identifier.scheme"
+          name="scheme"
           label="Scheme"
           options={schemeValues.map((item) => ({
             key: item.key,
@@ -135,40 +141,67 @@ export const RulesFilterForm = ({
           }))}
           className="w-[95%]"
         />
- 
-        <DropdownMenu<ViewRulesFormValues>
+
+        <DropdownMenu<ViewSessionsFormValues>
           control={control}
-          name="identifier.aspectCode"
-          label="Aspect"
-          options={asapectValues.map((item) => ({
+          name="eventName"
+          label="Event Name"
+          options={eventNameValues.map((item) => ({
             key: item.key,
             node: item.valueEn,
           }))}
           className="w-[95%]"
         />
- 
-        <DropdownMenu<ViewRulesFormValues>
+
+        <DropdownMenu<ViewSessionsFormValues>
           control={control}
-          name="identifier.controlCode"
-          label="Control"
-          options={controlValues.map((item) => ({
+          name="country"
+          label="Country"
+          options={countryValues.map((item) => ({
             key: item.key,
             node: item.valueEn,
           }))}
           className="w-[95%]"
         />
- 
-        <DropdownMenu<ViewRulesFormValues>
+
+        <DropdownMenu<ViewSessionsFormValues>
           control={control}
-          name="identifier.platform"
-          label="Platform"
-          options={platfromValues.map((item) => ({
+          name="city"
+          label="City"
+          options={cityValues.map((item) => ({
             key: item.key,
             node: item.valueEn,
           }))}
           className="w-[95%]"
         />
- 
+
+        <DropdownMenu<ViewSessionsFormValues>
+          control={control}
+          name="status"
+          label="Status"
+          options={statusValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[95%]"
+        />
+
+        <div>
+          <label className="text-sm font-medium">IP Address</label>
+          <Controller
+            control={control}
+            name="ip"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                placeholder="Enter IP Address"
+                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+              />
+            )}
+          />
+        </div>
+
         <div className="flex gap-4 mb-4">
           <div className="w-[47%]">
             <label className="text-sm font-medium">Date From</label>
@@ -199,7 +232,7 @@ export const RulesFilterForm = ({
             />
           </div>
         </div>
- 
+
         <div className="flex justify-end gap-2 mb-8 w-[95%]">
           <button
             type="submit"

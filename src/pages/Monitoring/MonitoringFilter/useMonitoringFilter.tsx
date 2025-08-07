@@ -8,125 +8,126 @@ import type {
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
  
-export interface ViewRulesFormValues {
-  id?: number;
-  name?: string;
-  description?: string;
-  status?: string;
-  condition?: string;
-  riskLevel?: string;
-  creationTimestamp?: string;
-  lastUpdatedTimestamp?: string;
+export interface DecisionRulesIdentifier {
+  eventSourceDevice: string;
+  scheme: string;
+}
+export interface GetEventDropDownsPayload {
+  identifier: DecisionRulesIdentifier;
+  status: string | null;
+}
+
+export interface ViewSessionsFormValues {
+  id: number
+  sessionId: string;
+  deviceId: string;
+  channel: string;
+  industry: string;
+  ip: string;
+  country: string;
+  city: string;
+  status?: "VIEWED" | "NOT_VIEWED" | "";
   fromCreationTimestamp?: string;
   toCreationTimestamp?: string;
+  scheme: "",
+  eventSourceDevice: "",
+  eventName: "",
+  customerIdentity:""
 }
  
-export const useRulesFilter = (
+export const useMonitoringFilter = (
   closeDrawer: () => void,
-  filterData: ViewRulesFormValues | undefined,
-  handleSearchSubmit: (searchData: ViewRulesFormValues) => void
+  filterData: ViewSessionsFormValues | undefined,
+  handleSearchSubmit: (searchData: ViewSessionsFormValues) => void
 ) => {
+  const [channelValues, setChannelValues] = useState<DropDownValue[]>([]);
+  const [eventSourceDeviceValues, setEventSourceDeviceValues] = useState<DropDownValue[]>([]);
   const [schemeValues, setSchemeValues] = useState<DropDownValue[]>([]);
-  const [asapectValues, setAspectValues] = useState<DropDownValue[]>([]);
-  const [controlValues, setControleValues] = useState<DropDownValue[]>([]);
-  const [platfromValues, setPlatformValues] = useState<DropDownValue[]>([]);
+  const [eventNameValues, setEventNameValues] = useState<DropDownValue[]>([]);
+  const [countryValues, setCountryValues] = useState<DropDownValue[]>([]);
+  const [cityValues, setCityValues] = useState<DropDownValue[]>([]);
   const [statusValues, setStatusValues] = useState<DropDownValue[]>([]);
-  const [riskLevelValues, setRiskLevelValues] = useState<DropDownValue[]>([]);
-  const [eventSourceDeviceValues, seteventSourceDeviceValues] = useState<
-    DropDownValue[]
-  >([]);
  
-  const defaultValues: ViewRulesFormValues = {
-    id: 0,
-    name: "",
-    description: "",
-    status: "",
-    condition: "",
-    riskLevel: "",
-    creationTimestamp: "",
-    lastUpdatedTimestamp: "",
-    fromCreationTimestamp: "",
-    toCreationTimestamp: "",
+  const defaultValues: ViewSessionsFormValues = {
+  id: 0,
+  sessionId: "",
+  deviceId: "",
+  channel: "",
+  industry: "",
+  ip: "",
+  country: "",
+  city: "",
+  status: "",
+  fromCreationTimestamp: "",
+  toCreationTimestamp: "",
+  eventSourceDevice: "",
+  eventName: "",
+  scheme:"",
+  customerIdentity:""
   };
  
   const { control, handleSubmit, formState, reset, watch, setValue } =
-    useForm<ViewRulesFormValues>({
+    useForm<ViewSessionsFormValues>({
       mode: "onTouched",
       defaultValues: filterData ?? defaultValues,
     });
 
-  const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
+const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
-      code: "scoring_rule_identifier",
+      code: "user_sessions_filters",
       attributes,
     };
     await getDropDownsValue(data)
       .then((value) => {
         const dropDownValues = value.values as DropDownCategory[];
  
+        const countryCategory = dropDownValues.find(
+          (item) => item.code === "country"
+        );
+ 
         const schemeCategory = dropDownValues.find(
-          (item) => item.code === "scoring_scheme"
+          (item) => item.code === "scheme"
         );
-        const platformCategory = dropDownValues.find(
-          (item) => item.code === "platform"
+ 
+        const cityCategory = dropDownValues.find(
+          (item) => item.code === "city"
         );
+ 
+        const channelCategory = dropDownValues.find(
+          (item) => item.code === "channel"
+        );
+ 
         const eventSourceDeviceCategory = dropDownValues.find(
           (item) => item.code === "event_source_device"
         );
  
+        const statusCategory = dropDownValues.find(
+          (item) => item.code === "user_session_status"
+        );
+ 
+        const eventNameCategory = dropDownValues.find(
+          (item) => item.code === "user_session_platform"
+        );
+ 
         setSchemeValues(schemeCategory ? schemeCategory.values : []);
-        setPlatformValues(platformCategory ? platformCategory.values : []);
-        seteventSourceDeviceValues(
+        setCountryValues(countryCategory ? countryCategory.values : []);
+        setEventSourceDeviceValues(
           eventSourceDeviceCategory ? eventSourceDeviceCategory.values : []
         );
- 
-        const aspectCategory = dropDownValues.find(
-          (item) => item.code === "aspect"
+        setCityValues(cityCategory ? cityCategory.values : []);
+        setChannelValues(channelCategory ? channelCategory.values : []);
+        setStatusValues(statusCategory ? statusCategory.values : []);
+        setEventNameValues(
+          eventNameCategory ? eventNameCategory.values : []
         );
-        setAspectValues(aspectCategory ? aspectCategory.values : []);
- 
-        const controlCategory = dropDownValues.find(
-          (item) => item.code === "control"
-        );
-        setControleValues(controlCategory ? controlCategory.values : []);
       })
       .catch((error) => {
         console.log(error);
       });
   };
- 
-  const fetchRiskLevelAndStatus = async () => {
-    await getDropDownsValue({
-      code: "risk_level",
-      attributes: [],
-    })
-      .then((value) => {
-        if ("values" in value) {
-          const category = value as DropDownCategory;
-          setRiskLevelValues(category.values);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
- 
-    await getDropDownsValue({
-      code: "scoring_rule_status",
-      attributes: [],
-    })
-      .then((value) => {
-        if ("values" in value) {
-          const category = value as DropDownCategory;
-          setStatusValues(category.values);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+
  
   useEffect(() => {
-    fetchRiskLevelAndStatus();
     fetchDropDownsValues([]);
   }, []);
  ;
@@ -155,9 +156,9 @@ export const useRulesFilter = (
     return newObj;
   };
  
-  const onSubmit = (data: ViewRulesFormValues) => {
+  const onSubmit = (data: ViewSessionsFormValues) => {
     const filteredData = cleanObject(data);
-    handleSearchSubmit(filteredData as ViewRulesFormValues);
+    handleSearchSubmit(filteredData as ViewSessionsFormValues);
     closeDrawer();
   };
  
@@ -182,12 +183,12 @@ export const useRulesFilter = (
     onSubmit: handleSubmit(onSubmit),
     watch,
     setValue,
-    schemeValues,
+    channelValues,
     eventSourceDeviceValues,
-    riskLevelValues,
-    asapectValues,
-    controlValues,
-    platfromValues,
+    schemeValues,
+    eventNameValues,
+    countryValues,
+    cityValues,
     statusValues,
   };
 };

@@ -6,9 +6,9 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { RulesFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
+import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
-import type { ViewRulesFormValues } from "../MonitoringFilter/useMonitoringFilter";
+import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import HomeWidgetGroup from "../../../components/HomeWidget";
 import NoSessions from "./NoSessions";
@@ -26,7 +26,7 @@ const FilterIcon = React.lazy(
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 export type Session = {
-  id: string,
+  id: number,
   sessionId: string;
   deviceId: string;
   channel: string;
@@ -203,7 +203,7 @@ export const MonitoringTable = () => {
   const onFilterStatus = (status: "All" | "VIEWED" | "NOT_VIEWED") => {
     setStatusFilter(status);
 
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewSessionsFormValues = {
       ...filters,
     };
 
@@ -260,7 +260,7 @@ export const MonitoringTable = () => {
     data: sessionsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getRowId: (row) => row.id,
+    getRowId: (row) => row.id.toString(),
   });
 
   const navigate = useNavigate();
@@ -395,12 +395,12 @@ export const MonitoringTable = () => {
               </div>
             </div>
 
-            <RulesFilterForm
+            <MonitoringFilterForm
               isOpen={isFilterOpen}
               closeDrawer={closeFilterModal}
               filterData={filters as any}
-              handleSearchSubmit={(searchData: ViewRulesFormValues) => {
-                const combinedFilters: ViewRulesFormValues = {
+              handleSearchSubmit={(searchData: ViewSessionsFormValues) => {
+                const combinedFilters: ViewSessionsFormValues = {
                   ...searchData, // directly use searchData object
                 };
 
