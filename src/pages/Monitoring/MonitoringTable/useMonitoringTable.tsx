@@ -12,6 +12,7 @@ const formatTableData = (
 ): GetSessionItemInterface[] => {
   return data.sessions?.map((item) => ({
     ...item,
+    id: item.id,
     sessionId: item.sessionId,
     deviceId: item.deviceId,
     channel: item.channel,

@@ -8,6 +8,7 @@ export const AppRoutes = {
   events: "/events",
   systemConfiguration: "/system-configuration",
   monitoring: "/monitoring",
+  monitoringView: "/monitoring/view",
   organizations: "/organizations",
   users: "/users",
   analytics: "/analytics",
