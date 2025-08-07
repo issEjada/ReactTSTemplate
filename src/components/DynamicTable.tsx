@@ -10,7 +10,10 @@ import FullScreenSpinner from "./FullScreenSpinner";
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
 const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
-
+const LockIcon = React.lazy(() => import("../assets/svg/LockIcon.svg?react"));
+const BackgroundCircle = React.lazy(
+  () => import("../assets/svg/BackgroundCircle.svg?react")
+);
 interface DynamicTableProps<TData extends object> {
   data: TData[];
   columns: ColumnDef<TData>[];
@@ -106,9 +109,10 @@ export function DynamicTable<TData extends object>({
           {totalCount !== 0 && (
             <button
               onClick={onAddNewItem}
-              className="w-[155px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
+              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
             >
-              + Add New {title.includes("Rules") ? "Rule" : "Item"}
+              <PlusIcon className="w-[20px] h-[20px]" />
+              Add New {title.includes("Rules") ? "Rule" : "Item"}
             </button>
           )}
         </div>
@@ -117,32 +121,45 @@ export function DynamicTable<TData extends object>({
       </div>
 
       {totalCount === 0 && !isFilterActive ? (
-        <div className="w-full h-[75vh] flex flex-col items-center justify-center bg-gray-50 rounded-md border border-dashed">
-          <div className="bg-white shadow-md rounded-full p-4 mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2h-1V7a5 5 0 00-10 0v3H6a2 2 0 00-2 2v7a2 2 0 002 2z"
+        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
+          {/* Wrapper for icon + background */}
+          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
+            {/* Background Circle positioned behind */}
+            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
+              <BackgroundCircle
+                className="
+            absolute
+            left-1/2 top-[28%]
+            -translate-x-1/2 -translate-y-1/2
+            w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
+            h-[400px]
+            pointer-events-none select-none
+            z-0
+          "
               />
-            </svg>
+            </div>
+
+            {/* Lock Icon in styled border */}
+            <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
+              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
+                <LockIcon className="sm:w-[28px] sm:h-[28px]" />
+              </div>
+            </div>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+
+          {/* Title & Description */}
+          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px]">
             {emptyStateMessage}
           </h3>
           <p className="text-sm text-gray-500 mb-6">{emptyStateDescription}</p>
+
+          {/* Add Button */}
           <button
             onClick={onAddNewItem}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
+            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[352px] h-10 flex items-center justify-center gap-2"
           >
-            + Add New {title.includes("Rules") ? "Rule" : "Item"}
+            <PlusIcon className="w-[20px] h-[20px]" />
+            Add New {title.includes("Rules") ? "Rule" : "Item"}
           </button>
         </div>
       ) : (
@@ -159,7 +176,7 @@ export function DynamicTable<TData extends object>({
                       onClick={() => onFilterStatus(option.key)}
                       className={`text-xs w-[83px] h-10 px-3 ${
                         statusFilter === option.key
-                          ? "bg-blue-500 text-white font-semibold"
+                          ? "bg-[#FAFAFA] text-black font-semibold"
                           : "hover:bg-gray-100 text-black dark:hover:bg-gray-200 "
                       } ${
                         option.key !== statusFilterOptions[0].key
@@ -230,10 +247,10 @@ export function DynamicTable<TData extends object>({
 
           <div
             className={`w-full ${
-              totalCount === 0 ? "h-[388px] overflow-hidden" : "h-[680px]"
+              totalCount === 0 ? "h-[388px] overflow-hidden" : ""
             } overflow-auto`}
           >
-            <table className="w-full table-auto h-full text-sm text-center ">
+            <table className="w-full table-auto text-sm text-center ">
               <thead className="bg-gray-50 text-gray-600  dark:bg-[#121418] dark:border-gray-800 dark:text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr
@@ -253,7 +270,7 @@ export function DynamicTable<TData extends object>({
                   </tr>
                 ))}
               </thead>
-              <tbody className="w-[1144px] h-[548px]">
+              <tbody className="w-[1144px]">
                 {table.getRowModel().rows.length > 0 ? (
                   table.getRowModel().rows.map((row) => (
                     <tr
@@ -314,7 +331,7 @@ export function DynamicTable<TData extends object>({
                               </button>
                               <button
                                 type="button"
-                                className="w-[170px] h-[40px] bg-blue-600 text-white px-[16px] py-[10px] border border-blue-600 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-[8px] hover:bg-blue-700"
+                                className="w-[170px] h-[40px] bg-blue-700 text-white px-[16px] py-[10px] border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-[8px] hover:bg-blue-800"
                                 onClick={onAddNewItem}
                               >
                                 <Suspense>
