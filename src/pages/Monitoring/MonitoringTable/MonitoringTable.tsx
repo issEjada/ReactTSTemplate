@@ -14,6 +14,7 @@ import HomeWidgetGroup from "../../../components/HomeWidget";
 import NoSessions from "./NoSessions";
 import SessionActivity from "./SessionActivity";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import { useSessionActivity } from "./useSessionActivity";
 
 //Icons Imports
 const SearchIcon = React.lazy(
@@ -132,16 +133,23 @@ const getColumns = (): ColumnDef<Session>[] => [
     header: "Status",
     accessorKey: "status",
     cell: (info) => {
+      return(
       <span
-        className={`flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap dark:text-white dark:hover:text-black overflow-hidden ${
+        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "VIEWED"
             ? "bg-green-100 text-green-700"
             : "bg-gray-200 text-gray-700"
         }`}
       >
-        kkkk
+        <div className={`rounded-full bg-black w-[6px] h-[6px] ${
+          info.getValue() === "VIEWED"
+            ? "bg-green-500"
+            : "bg-gray-500"
+        }`}></div>
         {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
-      </span>;
+      </span>
+      )
+
     },
   },
   {
@@ -192,6 +200,10 @@ export const MonitoringTable = () => {
     filters,
     setFilters,
   } = useMonitoringTable();
+
+  const {
+    sessionActivityData
+  } = useSessionActivity();
 
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -553,7 +565,7 @@ export const MonitoringTable = () => {
               </div>
             </div>
           </div>
-          <SessionActivity />
+          <SessionActivity data={sessionActivityData}/>
         </>
       )}
     </div>

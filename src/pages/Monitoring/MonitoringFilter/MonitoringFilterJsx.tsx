@@ -47,10 +47,10 @@ export const MonitoringFilterForm = ({
       onClose={closeDrawer}
     >
       <form
-        className="flex flex-col justify-between h-full"
+        className="flex flex-col justify-between gap-3"
         onSubmit={onFormSubmit}
       >
-        <div className="relative flex flex-col mt-12">
+        <div className="relative flex flex-col mt-6 gap-[6px]">
           <label className="text-sm font-medium">Session ID</label>
           <Controller
             control={control}
@@ -60,12 +60,12 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Session ID"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
               />
             )}
           />
 
-          <div className="absolute top-[40px] left-[calc(95%-32px)] group">
+          <div className="absolute top-[40px] left-[calc(100%-32px)] group">
             <img
               src={ToolTipQuestionMark}
               className="w-4 h-4 cursor-pointer"
@@ -77,7 +77,7 @@ export const MonitoringFilterForm = ({
           </div>
         </div>
 
-        <div>
+        <div className="relative flex flex-col gap-[6px]">
           <label className="text-sm font-medium">Device ID</label>
           <Controller
             control={control}
@@ -87,7 +87,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Device ID"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
               />
             )}
           />
@@ -101,10 +101,10 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%] mt-1 rounded-md text-sm"
+          className="w-full mt-1 rounded-md text-sm"
         />
 
-        <div>
+        <div className="relative flex flex-col gap-[6px]">
           <label className="text-sm font-medium">Identity</label>
           <Controller
             control={control}
@@ -114,7 +114,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Customer Identity"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
               />
             )}
           />
@@ -128,7 +128,7 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-full"
         />
 
         <DropdownMenu<ViewSessionsFormValues>
@@ -139,7 +139,7 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-full"
         />
 
         <DropdownMenu<ViewSessionsFormValues>
@@ -150,7 +150,7 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-full"
         />
 
         <DropdownMenu<ViewSessionsFormValues>
@@ -161,7 +161,7 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-full"
         />
 
         <DropdownMenu<ViewSessionsFormValues>
@@ -172,7 +172,7 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-full"
         />
 
         <DropdownMenu<ViewSessionsFormValues>
@@ -183,10 +183,10 @@ export const MonitoringFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-full"
         />
 
-        <div>
+        <div className="relative flex flex-col gap-[6px]">
           <label className="text-sm font-medium">IP Address</label>
           <Controller
             control={control}
@@ -196,14 +196,14 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter IP Address"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
               />
             )}
           />
         </div>
 
         <div className="flex gap-4 mb-4">
-          <div className="w-[47%]">
+          <div className="w-[49.4%]">
             <label className="text-sm font-medium">Date From</label>
             <Controller
               control={control}
@@ -217,7 +217,7 @@ export const MonitoringFilterForm = ({
               )}
             />
           </div>
-          <div className="w-[45.5%]">
+          <div className="w-[49.4%]">
             <label className="text-sm font-medium">Date To</label>
             <Controller
               control={control}
@@ -233,7 +233,7 @@ export const MonitoringFilterForm = ({
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 mb-8 w-[95%]">
+        <div className="flex justify-end gap-2 w-full">
           <button
             type="submit"
             className="bg-blue-700 hover:bg-primary-700 text-white text-sm px-4 py-2 rounded-md"

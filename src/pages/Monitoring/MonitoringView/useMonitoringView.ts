@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { monitoringService, type GetSessionResponse } from "../monitoringServices";
-import type { ViewRulesFormValues } from "../MonitoringFilter/useMonitoringFilter";
+import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 
 export function useMonitoringView() {
 
@@ -10,7 +10,7 @@ export function useMonitoringView() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(7);
-  const [filters, setFilters] = useState<ViewRulesFormValues | undefined>(undefined);
+  const [filters, setFilters] = useState<ViewSessionsFormValues | undefined>(undefined);
 
   const location = useLocation();
   const { id } = location.state || {

@@ -4,7 +4,7 @@ import type {
   GetSessionItemInterface,
 } from "../monitoringServices";
 import { monitoringService } from "../monitoringServices";
-import type { ViewRulesFormValues } from "../MonitoringFilter/useMonitoringFilter";
+import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 
 // 🟨 Format for table
 const formatTableData = (
@@ -33,7 +33,7 @@ export const useMonitoringTable = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(7);
-  const [filters, setFilters] = useState<ViewRulesFormValues | undefined>(undefined);
+  const [filters, setFilters] = useState<ViewSessionsFormValues | undefined>(undefined);
 
   const fetchData = async () => {
     setIsLoading(true);
