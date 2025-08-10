@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import Edit from "../../../assets/svg/Edit.svg";
-import Ignore from "../../../assets/svg/ignore.svg";
-import Submit from "../../../assets/svg/Submit.svg";
+import React from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
@@ -39,8 +36,6 @@ const RuleForm = () => {
     setIsPopupOpen,
   } = useViewScoringRules();
 
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [error, setError] = useState(false);
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
 
@@ -60,86 +55,24 @@ const RuleForm = () => {
           name="name"
           control={control}
           defaultValue={ruleName ?? ""}
-          rules={{ required: true }}
+          rules={{ required: "Rule name is required." }}
           render={({ field, fieldState }) => (
-            <div className="flex items-center gap-2 h-[28px]">
-              {isEditingName ? (
-                <>
-                  <div className="flex flex-col relative">
-                    <input
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        if (fieldState.error) setError(false);
-                      }}
-                      placeholder="New Rule Name.."
-                      className={`w-[320px] h-[44px] font-medium text-[#252B37] rounded-[8px] px-[14px] py-[10px] focus:outline-none ${
-                        fieldState.error
-                          ? "border border-red-500 bg-red-50 placeholder-red-400"
-                          : "border border-[#2E90FA] bg-[#EFF8FF]"
-                      }`}
-                    />
-                    {(fieldState.error || error) && (
-                      <p className="text-red-500 text-sm mt-1">
-                        Rule name is required.
-                      </p>
-                    )}
-                  </div>
-
-                  <button
-                    type="button"
-                    className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#12B76A] border border-[#12B76A]"
-                    onClick={() => {
-                      if (!field.value?.trim()) {
-                        setError(true);
-                        return;
-                      }
-                      setIsEditingName(false);
-                    }}
-                  >
-                    <img
-                      src={Submit}
-                      alt="Save"
-                      className="w-[13.33px] h-[9.17px] object-contain"
-                    />
-                  </button>
-
-                  <button
-                    type="button"
-                    className="w-[48px] h-[44px] flex items-center justify-center rounded-[8px] bg-[#F04438] border border-[#F04438]"
-                    onClick={() => {
-                      setIsEditingName(false);
-                      setError(false);
-                      field.onChange(ruleName ?? ""); // revert to original
-                    }}
-                  >
-                    <img
-                      src={Ignore}
-                      alt="Cancel"
-                      className="w-[10px] h-[10px] object-contain"
-                    />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <h1 className="font-medium text-[#181D27]">
-                    {field.value?.trim() || "New Rule Name"}
-                  </h1>
-
-                  {screenAction !== "view" && (
-                    <button
-                      type="button"
-                      onClick={() => setIsEditingName(true)}
-                      className="w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
-                    >
-                      <img
-                        src={Edit}
-                        alt="Edit"
-                        className="w-[12px] h-[12px] object-contain"
-                      />
-                    </button>
-                  )}
-                </>
+            <div className="flex flex-col">
+              <input
+                {...field}
+                placeholder="Rule Name"
+                className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer
+          focus:outline-none focus:ring-2
+          ${
+            fieldState.error
+              ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+              : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+          }`}
+              />
+              {fieldState.error && (
+                <p className="text-red-500 text-sm mt-1">
+                  {fieldState.error.message}
+                </p>
               )}
             </div>
           )}
@@ -302,7 +235,7 @@ const RuleForm = () => {
         setEditorContent={setEditorContent}
       />
       {/* {isEditing && ( */}
-      <div className="flex justify-end">
+      <div className="flex justify-end pb-6 pr-6">
         <div className="flex gap-4">
           <button
             type="submit"

@@ -7,11 +7,7 @@ import PopupLayout from "./Popup/LayoutPopup";
 import FullScreenSpinner from "./FullScreenSpinner";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 
-// import SideBarIcon from "../assets/svg/Sidebar.svg?react";
-// import SearchIcon from "../assets/svg/Search.svg?react";
-// import SettingsIcon from "../assets/svg/settings.svg?react";
-// import ProfileIcon from "../assets/svg/profile.svg?react";
-// import LogoutIcon from "../assets/svg/logout.svg?react";
+import { ThemeContext } from "../context/Context";
 
 const SideBarIcon = React.lazy(
   () => import(`/src/assets/svg/Sidebar.svg?react`)
@@ -24,6 +20,8 @@ const ProfileIcon = React.lazy(
   () => import(`/src/assets/svg/profile.svg?react`)
 );
 const LogoutIcon = React.lazy(() => import(`/src/assets/svg/logout.svg?react`));
+const MoonIcon = React.lazy(() => import(`/src/assets/svg/darkMode.svg?react`));
+const SunIcon = React.lazy(() => import(`/src/assets/svg/Sun.svg?react`));
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
@@ -34,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setIsAuthenticated] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
 
   const handleLogout = () => {
     setIsPopupOpen(false);
@@ -53,24 +52,6 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
     <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
       {isLoading && <FullScreenSpinner />}
       {/* Left: Breadcrumbs */}
-      {/* <div
-        className={`
-          absolute top-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
-          shadow-lg px-7 py-7 z-10 text-sm text-gray-500 dark:text-gray-400 
-          transition-all duration-300 ease-in-out overflow-hidden 
-          ${showDropdown.search ? "opacity-100 w-full h-[80px] left-0" : "opacity-0 h-0 right-0"}
-        `}
-      >
-          <div className="flex items-center mb-2">
-          <SearchIcon className="text-gray-800 dark:text-gray-400 cursor-pointer " />
-          <input
-            type="text"
-            placeholder="Search"
-            className="ml-3 rounded-lg text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
-
-            />
-          </div>
-      </div> */}
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
       <div className="flex items-start gap-5">
@@ -89,10 +70,17 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
         </div>
 
         <div className="p-1">
-          <SideBarIcon
-            className="text-black dark:text-white cursor-pointer"
-            onClick={onSidebarIconClick}
-          />
+          {isDarkMode ? (
+            <SunIcon
+              className="text-black dark:text-white cursor-pointer"
+              onClick={toggleDarkMode}
+            />
+          ) : (
+            <MoonIcon
+              className="text-black dark:text-white cursor-pointer"
+              onClick={toggleDarkMode}
+            />
+          )}
         </div>
         {/* Icons */}
         <div ref={headerRef} className="relative flex items-center space-x-4">

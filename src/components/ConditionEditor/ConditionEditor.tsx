@@ -52,6 +52,13 @@ export const ConditionEditor = ({
     event.preventDefault();
   };
 
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(editorContent).then(() => {
+      // alert("Condition copied to clipboard!");
+      console.log("Condition copied to clipboard!");
+    });
+  };
+
   const sourceParams =
     parametersData?.sourceParameters?.map((item) => item.name) ?? [];
 
@@ -108,9 +115,12 @@ export const ConditionEditor = ({
         <div className="border-b border-gray-300">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700">Output</h2>
-            <span className="text-sm text-gray-400 hover:text-gray-700">
-              Copy code
-            </span>
+            <button
+              className="text-sm text-gray-400 hover:text-gray-700"
+              onClick={handleCopyCode}
+            >
+              Copy Condition
+            </button>
           </div>
         </div>
 
