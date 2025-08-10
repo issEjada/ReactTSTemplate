@@ -274,6 +274,7 @@ const RuleForm = () => {
         editorContent={editorContent}
         parametersData={parametersData}
         setEditorContent={setEditorContent}
+        isReadOnly={screenAction === "view"} // Pass isReadOnly prop
       />
       {/* {isEditing && ( */}
       <div className="flex justify-end pb-6 pr-6">

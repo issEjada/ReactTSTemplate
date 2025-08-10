@@ -2,24 +2,34 @@ import ConditionItem from "./ConditionItem";
 import SourceDocumentIcon from "../../assets/svg/sourceDocument.svg?react";
 import ScaleComparisonIcon from "../../assets/svg/scaleComparison.svg?react";
 import SmartphoneARIcon from "../../assets/svg/smartphoneAR.svg?react";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import type { GetRulesParameterResponse } from "../../pages/ScoringRules/rulesServices";
+
+const DragDropIcon = React.lazy(
+  () => import("../../assets/svg/DragDrop.svg?react")
+);
 
 interface ConditionsEditorsProps {
   editorContent: string;
   setEditorContent: React.Dispatch<React.SetStateAction<string>>;
   parametersData: GetRulesParameterResponse | undefined;
+  isReadOnly: boolean; // New prop to control read-only mode
 }
 
 export const ConditionEditor = ({
   editorContent,
   parametersData,
   setEditorContent,
+  isReadOnly,
 }: ConditionsEditorsProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
   const handleDrop = (event: React.DragEvent<HTMLTextAreaElement>) => {
+    if (isReadOnly) {
+      event.preventDefault();
+      return;
+    }
     event.preventDefault();
 
     const textarea = textareaRef.current;
@@ -51,6 +61,10 @@ export const ConditionEditor = ({
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLTextAreaElement>) => {
+    if (isReadOnly) {
+      event.preventDefault();
+      return;
+    }
     event.preventDefault();
   };
 
@@ -87,9 +101,12 @@ export const ConditionEditor = ({
         <div className="border-b border-gray-300 shadow-md">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700">Components</h2>
-            <span className="text-sm text-gray-400 hover:text-gray-700">
-              Drag & Drop
-            </span>
+            {!isReadOnly && ( // Conditionally render "Drag & Drop"
+              <span className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700">
+                <DragDropIcon className="text-gray-600" />
+                Drag & Drop
+              </span>
+            )}
           </div>
         </div>
         <div className="p-4 flex flex-col gap-4 h-full overflow-y-auto ">
@@ -97,21 +114,25 @@ export const ConditionEditor = ({
             label="Source"
             icon={SourceDocumentIcon}
             data={staticData.Source}
+            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
           ></ConditionItem>
           <ConditionItem
             label="Comparison Operator"
             icon={ScaleComparisonIcon}
             data={staticData.Comparison}
+            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
           ></ConditionItem>
           <ConditionItem
             label="Target"
             icon={SmartphoneARIcon}
             data={staticData.Target}
+            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
           ></ConditionItem>
           <ConditionItem
             label="Logic Operator"
             icon={SmartphoneARIcon}
             data={staticData.Logic}
+            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
           ></ConditionItem>
         </div>
       </div>
@@ -137,10 +158,18 @@ export const ConditionEditor = ({
         <textarea
           ref={textareaRef}
           value={editorContent}
-          onChange={(e) => setEditorContent(e.target.value)}
+          onChange={(e) => {
+            if (!isReadOnly) {
+              // Only allow change if not in read-only mode
+              setEditorContent(e.target.value);
+            }
+          }}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="bg-gray-50 overflow-y-scroll border border-transparent flex-1 p-4 resize-none rounded-lg focus:outline-none"
+          readOnly={isReadOnly} // Make textarea read-only in view mode
+          className={`bg-gray-50 overflow-y-scroll border border-transparent flex-1 p-4 resize-none rounded-lg focus:outline-none ${
+            isReadOnly ? "cursor-not-allowed" : ""
+          }`}
           placeholder="Drop items here..."
           spellCheck={false}
         />

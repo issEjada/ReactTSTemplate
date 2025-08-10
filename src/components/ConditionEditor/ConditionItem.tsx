@@ -3,13 +3,14 @@ type ConditionItemProps = {
   label: string;
   data?: string[];
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  isViewing?: boolean;
+  isReadOnly: boolean; // New prop to control read-only mode
 };
 
 export default function ConditionItem({
   label,
   data,
   icon: Icon,
+  isReadOnly,
 }: ConditionItemProps) {
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
@@ -18,6 +19,10 @@ export default function ConditionItem({
     item: string,
     index: number
   ) => {
+    if (isReadOnly) {
+      e.preventDefault();
+      return;
+    }
     e.dataTransfer.setData("text/plain", JSON.stringify({ value: item }));
     e.dataTransfer.effectAllowed = "move";
 
@@ -35,12 +40,14 @@ export default function ConditionItem({
         {data?.map((item, index) => (
           <div
             key={index}
-            draggable
+            draggable={!isReadOnly} // Disable draggable when in read-only mode
             onDragStart={(e) => handleDragStart(e, item, index)}
             onDragEnd={handleDragEnd}
             role="button"
             tabIndex={0}
-            className={`flex flex-col items-center rounded-lg w-[5rem] gap-1 cursor-grab ${
+            className={`flex flex-col items-center rounded-lg w-[5rem] gap-1 ${
+              isReadOnly ? "cursor-not-allowed" : "cursor-grab"
+            } ${
               draggingIndex === index
                 ? "scale-105 text-black opacity-100 shadow-md "
                 : "hover:bg-gray-50"
