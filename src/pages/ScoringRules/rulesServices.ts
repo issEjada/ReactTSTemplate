@@ -1,12 +1,10 @@
 import { httpClient, getHeaders } from "../../services/api/httpClient";
 
 import { API, ConstantKeys } from "../../constants/ConstantKeys.constants";
-import SecureStorage from "react-secure-storage";
 import type {
   DropDownCategory,
   GetDropDownsResponse,
 } from "../../services/dropdownServices";
-// import { formatTime } from "../../helpers";
 
 export interface RuleIdentifierInterface {
   eventSourceDevice: string;
@@ -132,8 +130,7 @@ export interface UpdateRulesPayload {
   description: string;
 }
 
-// 🟩 API Methods
-export const scoringRulesService = {
+export const ScoringRulesServices = {
   getScoringRulesList: async (
     data: GetScoringRulesListPayload
   ): Promise<GetScoringRulesListResponse> => {
@@ -170,22 +167,18 @@ export const scoringRulesService = {
       { headers: getHeaders() }
     );
   },
-};
 
-class ScoringRulesSdks {
-  private static accessToken: string | undefined = SecureStorage.getItem(
-    ConstantKeys.accessToken
-  )?.toString();
-
-  // Helper function to get headers
-  private static getHeaders() {
+  getHeaders() {
+    const accessToken =
+      sessionStorage.getItem(ConstantKeys.accessToken) ||
+      localStorage.getItem(ConstantKeys.accessToken);
     return {
-      Authorization: `Bearer ${this.accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     };
-  }
+  },
 
-  static getDropDownsValue(
+  getDropDownsValue(
     data: DropDownsPayload
   ): Promise<GetDropDownsResponse | DropDownCategory> {
     return httpClient
@@ -193,7 +186,7 @@ class ScoringRulesSdks {
         `${import.meta.env.VITE_API_BASE_URL}${API.getDropDownsValue}`,
         data,
         {
-          headers: this.getHeaders(),
+          headers: getHeaders(),
           params: { code: data.code },
         }
       )
@@ -202,34 +195,26 @@ class ScoringRulesSdks {
       )
       .catch((error) => {
         throw new Error(
-          error.response?.data.message +
-            "\n" +
-            error.response?.data.descriptionEn
+          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
         );
       });
-  }
+  },
 
-  static getRulesById(data: GetRuleByIdPayload): Promise<GetRuleByIdResponse> {
+  getRulesById(data: GetRuleByIdPayload): Promise<GetRuleByIdResponse> {
     return httpClient
       .get(
         `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${data.id}`,
-        {
-          headers: this.getHeaders(),
-        }
+        { headers: getHeaders() }
       )
-      .then((response) => {
-        return response.data;
-      })
+      .then((response) => response.data)
       .catch((error) => {
         throw new Error(
-          error.response?.data.message +
-            "\n" +
-            error.response?.data.descriptionEn
+          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
         );
       });
-  }
+  },
 
-  static deleteRulesById(data: DeleteRuleByIdPayload): Promise<void> {
+  deleteRulesById(data: DeleteRuleByIdPayload): Promise<void> {
     return httpClient
       .delete(
         `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${data.id}`,
@@ -247,67 +232,52 @@ class ScoringRulesSdks {
             error.response?.data.descriptionEn
         );
       });
-  }
+  },
 
-  static getRulesParameters(
+  getRulesParameters(
     data: GetRulesParametersPayload
   ): Promise<GetRulesParameterResponse> {
     return httpClient
       .post(
         `${import.meta.env.VITE_API_BASE_URL}${API.getRuleParameter}`,
         data,
-        {
-          headers: this.getHeaders(),
-        }
+        { headers: getHeaders() }
       )
-      .then((response) => {
-        return response.data;
-      })
+      .then((response) => response.data)
       .catch((error) => {
         throw new Error(
-          error.response?.data.message +
-            "\n" +
-            error.response?.data.descriptionEn
+          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
         );
       });
-  }
+  },
 
-  static createRule(data: CreateRulesPayload): Promise<void> {
+  createRule(data: CreateRulesPayload): Promise<void> {
     return httpClient
       .post(`${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}`, data, {
-        headers: this.getHeaders(),
+        headers: getHeaders(),
       })
-      .then((response) => {
-        return response.data;
-      })
+      .then(() => {})
       .catch((error) => {
         throw new Error(
-          error.response?.data.message +
-            "\n" +
-            error.response?.data.descriptionEn
+          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
         );
       });
-  }
+  },
 
-  static updateRule(data: UpdateRulesPayload, ruleId: number): Promise<void> {
+  updateRule(data: UpdateRulesPayload, ruleId: number): Promise<void> {
     return httpClient
       .patch(
         `${import.meta.env.VITE_API_BASE_URL}${API.getRulesById}/${ruleId}`,
         data,
-        {
-          headers: this.getHeaders(),
-        }
+        { headers: getHeaders() }
       )
-      .then((response) => {
-        return response.data;
-      })
+      .then(() => {})
       .catch((error) => {
         throw new Error(
-          error.response?.data.message +
-            "\n" +
-            error.response?.data.descriptionEn
+          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
         );
       });
-  }
-}
-export default ScoringRulesSdks;
+  },
+};
+
+export default ScoringRulesServices;

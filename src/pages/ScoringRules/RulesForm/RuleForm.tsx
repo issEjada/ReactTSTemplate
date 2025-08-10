@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
@@ -7,6 +7,7 @@ import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEd
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopup from "./RulesPopupJsx";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -31,26 +32,44 @@ const RuleForm = () => {
     editorContent,
     setEditorContent,
     isAdding,
-    isPopupOpen,
     isEditing,
-    setIsPopupOpen,
+    popupType,
+    popupMessage,
+    loadingState, // Add loadingState here
   } = useViewScoringRules();
 
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
   const handleCancel = () => {
     reset(); // Clear form values
     navigate("/rules"); // Navigate back to rules table
   };
 
+  React.useEffect(() => {
+    if (popupType === "successModal" && loadingState === "success") {
+      setIsPopupOpen(true);
+    } else if (popupType === "errorModal" && loadingState === "error") {
+      setIsPopupOpen(true);
+    }
+  }, [popupType, loadingState]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
+      {loadingState === "loading" && <FullScreenSpinner />}
       {/* Rule name editable area */}
-      <div className="h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+      <div className="h-auto flex flex-col px-6 py-5 gap-2">
+        <label
+          htmlFor="ruleName"
+          className="block text-md font-medium text-[#414651] mb-2"
+          style={{ display: "block", alignItems: "normal", gap: 0 }}
+        >
+          Rule Name
+        </label>
         <Controller
           name="name"
           control={control}
@@ -62,12 +81,12 @@ const RuleForm = () => {
                 {...field}
                 placeholder="Rule Name"
                 className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer
-          focus:outline-none focus:ring-2
-          ${
-            fieldState.error
-              ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
-              : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
-          }`}
+            focus:outline-none focus:ring-2
+            ${
+              fieldState.error
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+            }`}
               />
               {fieldState.error && (
                 <p className="text-red-500 text-sm mt-1">
@@ -175,7 +194,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[47%]"
+            className="w-[50%]"
             disabled={screenAction == "view" || statusValues.length === 0}
           />
           <DropdownMenu<ViewRulesFormValues>
@@ -256,7 +275,7 @@ const RuleForm = () => {
       {isPopupOpen && (
         <div>
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
-            {isAdding && (
+            {isAdding && popupType === "successModal" && (
               <RulesPopup
                 isAdding
                 onConfirm={() => {
@@ -269,7 +288,7 @@ const RuleForm = () => {
                 }}
               />
             )}
-            {isEditing && (
+            {isEditing && popupType === "successModal" && (
               <RulesPopup
                 isEditing
                 onConfirm={() => {
@@ -280,6 +299,14 @@ const RuleForm = () => {
                   setIsPopupOpen(false); // Close popup
                   navigate("/rules"); // Navigate to /rules/add
                 }}
+              />
+            )}
+            {popupType === "errorModal" && (
+              <RulesPopup
+                isError
+                errorMessage={popupMessage}
+                onConfirm={() => setIsPopupOpen(false)} // No confirm action for error
+                onCancel={() => setIsPopupOpen(false)} // Close popup on cancel
               />
             )}
           </PopupLayout>

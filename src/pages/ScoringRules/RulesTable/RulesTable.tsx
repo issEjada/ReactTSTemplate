@@ -11,6 +11,8 @@ import { RulesFilterForm } from "../RulesFilter/RulesFilterJsx";
 import { useScoringRulesTable } from "./useRulesTable";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
 import { DynamicTable } from "../../../components/DynamicTable";
+import PopupLayout from "../../../components/Popup/LayoutPopup";
+import RulesPopupJsx from "../RulesForm/RulesPopupJsx";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -34,6 +36,8 @@ const RuleMenu = ({
   onDelete: (id: number) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [ruleToDeleteId, setRuleToDeleteId] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -80,7 +84,21 @@ const RuleMenu = ({
 
   const handleDelete = () => {
     setOpen(false);
-    onDelete(rule.id);
+    setRuleToDeleteId(rule.id);
+    setIsDeletePopupOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (ruleToDeleteId !== null) {
+      onDelete(ruleToDeleteId);
+      setIsDeletePopupOpen(false);
+      setRuleToDeleteId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeletePopupOpen(false);
+    setRuleToDeleteId(null);
   };
 
   return (
@@ -132,6 +150,16 @@ const RuleMenu = ({
           </button>
         </div>
       )}
+
+      {isDeletePopupOpen && (
+        <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
+          <RulesPopupJsx
+            isDeleting={true}
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+          />
+        </PopupLayout>
+      )}
     </div>
   );
 };
@@ -151,7 +179,7 @@ export const RulesTable = () => {
     handleSearchSubmit,
     deleteRule,
   } = useScoringRulesTable();
-
+  console.log(totalCount);
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<

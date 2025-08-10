@@ -2,8 +2,8 @@ import ConditionItem from "./ConditionItem";
 import SourceDocumentIcon from "../../assets/svg/sourceDocument.svg?react";
 import ScaleComparisonIcon from "../../assets/svg/scaleComparison.svg?react";
 import SmartphoneARIcon from "../../assets/svg/smartphoneAR.svg?react";
-import { useRef } from "react";
-import type { GetRulesParameterResponse } from "../../pages/Rules/rulesServices";
+import { useRef, useState } from "react";
+import type { GetRulesParameterResponse } from "../../pages/ScoringRules/rulesServices";
 
 interface ConditionsEditorsProps {
   editorContent: string;
@@ -17,6 +17,8 @@ export const ConditionEditor = ({
   setEditorContent,
 }: ConditionsEditorsProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+
   const handleDrop = (event: React.DragEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
 
@@ -54,8 +56,10 @@ export const ConditionEditor = ({
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(editorContent).then(() => {
-      // alert("Condition copied to clipboard!");
-      console.log("Condition copied to clipboard!");
+      setShowCopiedMessage(true);
+      setTimeout(() => {
+        setShowCopiedMessage(false);
+      }, 2000); // Hide after 2 seconds
     });
   };
 
@@ -111,20 +115,25 @@ export const ConditionEditor = ({
           ></ConditionItem>
         </div>
       </div>
-      <div className="w-[728px]  border-gray-300 border rounded-lg flex flex-col ">
+      <div className="w-[680px]  border-gray-300 border rounded-lg flex flex-col ">
         <div className="border-b border-gray-300">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700">Output</h2>
-            <button
-              className="text-sm text-gray-400 hover:text-gray-700"
-              onClick={handleCopyCode}
-            >
-              Copy Condition
-            </button>
+            <div className="flex flex-col items-end">
+              <button
+                className="text-sm text-gray-400 hover:text-gray-700"
+                onClick={handleCopyCode}
+              >
+                Copy Condition
+              </button>
+              {showCopiedMessage && (
+                <span className="text-xs text-green-500">
+                  Copied Condition Successfully
+                </span>
+              )}
+            </div>
           </div>
         </div>
-
-        {/* <div className="bg-gray-50 overflow-y-scroll border border-transparent flex-1 p-4 rounded-lg"></div> */}
         <textarea
           ref={textareaRef}
           value={editorContent}

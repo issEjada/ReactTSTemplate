@@ -1,22 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { SideBarItemsGroup } from "./SideBarItem";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
-import { ThemeContext } from "../../context/Context";
+import { ThemeModeIcon } from "../../context/ThemeProvider";
 
 const LogoWithTextIcon = React.lazy(
   () => import("../../assets/svg/logo_with_text.svg?react")
 );
-const TablerIconMoon = React.lazy(
-  () => import("../../assets/svg/darkMode.svg?react")
-);
-const TablerIconSun = React.lazy(
-  () => import("../../assets/svg/Sun.svg?react")
-);
 
 export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
-  const { isDarkMode } = useContext(ThemeContext);
-
   return (
     <>
       <div
@@ -135,11 +127,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 }`}
               >
                 <span className="m-1">
-                  {isDarkMode ? (
-                    <TablerIconSun className="text-gray-900 dark:text-gray-500" />
-                  ) : (
-                    <TablerIconMoon className="text-gray-900 dark:text-gray-500" />
-                  )}
+                  <ThemeModeIcon className="text-gray-900 dark:text-gray-500" />
                 </span>
 
                 <span

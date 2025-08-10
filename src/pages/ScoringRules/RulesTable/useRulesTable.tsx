@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import type {
-  GetScoringRulesInterface,
-  GetScoringRulesItemInterface,
-  RuleIdentifierInterface,
+import {
+  ScoringRulesServices,
+  type GetScoringRulesInterface,
+  type GetScoringRulesItemInterface,
+  type RuleIdentifierInterface,
 } from "../rulesServices";
-import { scoringRulesService } from "../rulesServices";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
 
 // 🟨 Format for table
@@ -81,7 +81,7 @@ export const useScoringRulesTable = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await scoringRulesService.getScoringRulesList({
+      const result = await ScoringRulesServices.getScoringRulesList({
         page: currentPage,
         maxPageSize: itemsPerPage,
         ...filters,
@@ -98,7 +98,7 @@ export const useScoringRulesTable = () => {
 
   const deleteRule = async (id: number) => {
     try {
-      await scoringRulesService.deleteRuleById(id);
+      await ScoringRulesServices.deleteRuleById(id);
       fetchData();
     } catch (err) {
       console.error("Delete error:", err);

@@ -8,6 +8,7 @@ import FullScreenSpinner from "./FullScreenSpinner";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 
 import { ThemeContext } from "../context/Context";
+import { ThemeModeIcon } from "../context/ThemeProvider";
 
 const SideBarIcon = React.lazy(
   () => import(`/src/assets/svg/Sidebar.svg?react`)
@@ -20,8 +21,6 @@ const ProfileIcon = React.lazy(
   () => import(`/src/assets/svg/profile.svg?react`)
 );
 const LogoutIcon = React.lazy(() => import(`/src/assets/svg/logout.svg?react`));
-const MoonIcon = React.lazy(() => import(`/src/assets/svg/darkMode.svg?react`));
-const SunIcon = React.lazy(() => import(`/src/assets/svg/Sun.svg?react`));
 interface HeaderProps {
   onSidebarIconClick: () => void;
 }
@@ -32,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setIsAuthenticated] = useState(false);
-  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
+  const { toggleDarkMode } = useContext(ThemeContext);
 
   const handleLogout = () => {
     setIsPopupOpen(false);
@@ -69,18 +68,8 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           <kbd className="absolute right-2 text-xs text-black/20">⌘/</kbd>
         </div>
 
-        <div className="p-1">
-          {isDarkMode ? (
-            <SunIcon
-              className="text-black dark:text-white cursor-pointer"
-              onClick={toggleDarkMode}
-            />
-          ) : (
-            <MoonIcon
-              className="text-black dark:text-white cursor-pointer"
-              onClick={toggleDarkMode}
-            />
-          )}
+        <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
+          <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
         <div ref={headerRef} className="relative flex items-center space-x-4">
