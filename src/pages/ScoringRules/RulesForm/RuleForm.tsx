@@ -12,6 +12,7 @@ import FullScreenSpinner from "../../../components/FullScreenSpinner";
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
+const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
 const RuleForm = () => {
   const {
@@ -35,6 +36,7 @@ const RuleForm = () => {
     isEditing,
     popupType,
     popupMessage,
+    setScreenAction,
     loadingState, // Add loadingState here
   } = useViewScoringRules();
 
@@ -45,6 +47,11 @@ const RuleForm = () => {
   const handleCancel = () => {
     reset(); // Clear form values
     navigate("/rules"); // Navigate back to rules table
+  };
+
+  const handleEditClick = () => {
+    setScreenAction("edit");
+    navigate("/rules/edit"); // Navigate to the edit page
   };
 
   React.useEffect(() => {
@@ -66,9 +73,17 @@ const RuleForm = () => {
         <label
           htmlFor="ruleName"
           className="block text-md font-medium text-[#414651] mb-2"
-          style={{ display: "block", alignItems: "normal", gap: 0 }}
+          style={{ display: "flex", alignItems: "center", gap: "8px" }}
         >
           Rule Name
+          {screenAction === "view" && (
+            <div
+              className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
+              onClick={handleEditClick}
+            >
+              <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
+            </div>
+          )}
         </label>
         <Controller
           name="name"
@@ -80,13 +95,20 @@ const RuleForm = () => {
               <input
                 {...field}
                 placeholder="Rule Name"
+                disabled={screenAction === "view"}
                 className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer
             focus:outline-none focus:ring-2
             ${
               fieldState.error
                 ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
                 : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
-            }`}
+            }
+            ${
+              screenAction === "view"
+                ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
+                : ""
+            }
+            `}
               />
               {fieldState.error && (
                 <p className="text-red-500 text-sm mt-1">
@@ -195,7 +217,7 @@ const RuleForm = () => {
               node: item.valueEn,
             }))}
             className="w-[50%]"
-            disabled={screenAction == "view" || statusValues.length === 0}
+            disabled={screenAction === "view" || statusValues.length === 0}
           />
           <DropdownMenu<ViewRulesFormValues>
             control={control}
