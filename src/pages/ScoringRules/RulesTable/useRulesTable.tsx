@@ -1,28 +1,11 @@
 import { useState, useEffect } from "react";
 import {
   ScoringRulesServices,
-  type GetScoringRulesInterface,
   type GetScoringRulesItemInterface,
   type RuleIdentifierInterface,
+  type GetScoringRulesListResponse,
 } from "../rulesServices";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
-
-// 🟨 Format for table
-const formatTableData = (
-  data: GetScoringRulesInterface
-): GetScoringRulesItemInterface[] => {
-  return data.scoringRules?.map((item) => ({
-    ...item, // Include all properties from the original item
-    id: item.id,
-    name: item.name,
-    description: item.description,
-    status: item.status,
-    riskLevel: item.riskLevel,
-    identifier: item.identifier, // Ensure identifier is included
-    creationTimestamp: item.creationTimestamp,
-    lastUpdatedTimestamp: item.lastUpdatedTimestamp,
-  }));
-};
 
 export const useScoringRulesTable = () => {
   const [data, setData] = useState<GetScoringRulesItemInterface[]>([]);
@@ -37,42 +20,46 @@ export const useScoringRulesTable = () => {
   );
 
   const handleSearchSubmit = (searchData: ViewRulesFormValues) => {
-    const filteredData = Object.entries(searchData).reduce(
-      (acc, [key, value]) => {
+    const filteredData: ViewRulesFormValues = Object.entries(searchData).reduce(
+      (acc: ViewRulesFormValues, [key, value]) => {
         if (typeof value === "string" && value.trim() !== "") {
-          (acc as any)[key] = value;
+          acc[key] = value;
           setCurrentPage(1);
         } else if (typeof value === "number" && value !== 0) {
-          (acc as any)[key] = value;
+          acc[key] = value;
           setCurrentPage(1);
         } else if (typeof value === "object" && value !== null) {
           // Filter nested identifier object
-          const filteredIdentifier = Object.entries(value).reduce(
-            (idAcc, [idKey, idValue]) => {
-              if (
-                idKey === "scoring_scheme" &&
-                typeof idValue === "string" &&
-                idValue.trim() !== ""
-              ) {
-                (idAcc as any)["scheme"] = idValue; // Move scoring_scheme to scheme
-              } else if (typeof idValue === "string" && idValue.trim() !== "") {
-                (idAcc as any)[idKey] = idValue;
-              }
-              return idAcc;
-            },
-            {} as Partial<RuleIdentifierInterface>
-          );
+          const filteredIdentifier: Partial<RuleIdentifierInterface> =
+            Object.entries(value).reduce(
+              (idAcc: Partial<RuleIdentifierInterface>, [idKey, idValue]) => {
+                if (
+                  idKey === "scoring_scheme" &&
+                  typeof idValue === "string" &&
+                  idValue.trim() !== ""
+                ) {
+                  (idAcc as any)["scheme"] = idValue; // Move scoring_scheme to scheme
+                } else if (
+                  typeof idValue === "string" &&
+                  idValue.trim() !== ""
+                ) {
+                  idAcc[idKey as keyof RuleIdentifierInterface] = idValue;
+                }
+                return idAcc;
+              },
+              {}
+            );
 
           // Only set identifier if it has values
           if (Object.keys(filteredIdentifier).length > 0) {
-            (acc as any)[key] = filteredIdentifier;
+            acc[key as keyof ViewRulesFormValues] = filteredIdentifier as any;
             setCurrentPage(1);
           }
         }
 
         return acc;
       },
-      {} as ViewRulesFormValues
+      {}
     );
     setFilters(filteredData);
   };
@@ -80,29 +67,33 @@ export const useScoringRulesTable = () => {
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
-    try {
-      const result = await ScoringRulesServices.getScoringRulesList({
-        page: currentPage,
-        maxPageSize: itemsPerPage,
-        ...filters,
+
+    await ScoringRulesServices.getScoringRulesList({
+      page: currentPage,
+      maxPageSize: itemsPerPage,
+      ...filters,
+    })
+      .then((result: GetScoringRulesListResponse) => {
+        setData(result.data.scoringRules || []);
+        setTotalCount(result.data.meta?.totalItems || 0);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch scoring rules:", err);
+        setError("Error:");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-      setData(formatTableData(result.data));
-      setTotalCount(result.data.meta?.totalItems || 0);
-    } catch (err: unknown) {
-      console.error("Failed to fetch scoring rules:", err);
-      setError("Error loading rules");
-    } finally {
-      setIsLoading(false);
-    }
   };
 
-  const deleteRule = async (id: number) => {
-    try {
-      await ScoringRulesServices.deleteRuleById(id);
-      fetchData();
-    } catch (err) {
-      console.error("Delete error:", err);
-    }
+  const deleteRule = (id: number) => {
+    ScoringRulesServices.deleteRuleById(id)
+      .then(() => {
+        fetchData();
+      })
+      .catch((err) => {
+        console.error("Delete error:", err);
+      });
   };
 
   useEffect(() => {

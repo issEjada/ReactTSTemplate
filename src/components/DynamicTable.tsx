@@ -25,7 +25,7 @@ interface DynamicTableProps<TData extends object> {
   onFilterStatus?: (status: string) => void;
   statusFilter?: string;
   onClearSearch: () => void;
-  onAddNewItem: () => void;
+  onAddNewItem?: () => void;
   isLoading: boolean;
   error: string | null;
   title: string;

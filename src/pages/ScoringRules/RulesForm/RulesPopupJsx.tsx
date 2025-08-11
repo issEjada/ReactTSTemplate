@@ -30,7 +30,7 @@ const RulesPopupJsx = ({
     : isEditing
     ? "Updated Successfully"
     : isDeleting
-    ? "Delete Rule"
+    ? "Delete Scoring Rule?"
     : "";
 
   const message = isError
@@ -40,7 +40,7 @@ const RulesPopupJsx = ({
     : isEditing
     ? "The scoring rule details has been updated successfully."
     : isDeleting
-    ? "Are you sure you want to delete this rule? This action cannot be undone."
+    ? "Are you sure you want to delete this scoring rule?"
     : "";
 
   const icon =
@@ -78,13 +78,13 @@ const RulesPopupJsx = ({
           <>
             <button
               onClick={onCancel}
-              className="flex-1 px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
+              className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Back
             </button>
             <button
               onClick={onConfirm}
-              className="flex-1 px-4 py-2 rounded-md bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
+              className="flex-1 px-4 py-2 rounded-[8px] bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
             >
               Create New Rule
             </button>
@@ -94,7 +94,7 @@ const RulesPopupJsx = ({
         {(isEditing || isError) && (
           <button
             onClick={onCancel}
-            className="px-6 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
+            className="px-6 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
           >
             Back
           </button>
@@ -104,13 +104,13 @@ const RulesPopupJsx = ({
           <>
             <button
               onClick={onCancel}
-              className="flex-1 px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
+              className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="flex-1 px-4 py-2 rounded-md bg-red-600 text-white font-medium hover:bg-red-700 transition-colors"
+              className="flex-1 px-4 py-2 bg-red-800 rounded-[8px] text-white font-medium hover:bg-red-700 transition-colors"
             >
               Confirm Delete
             </button>

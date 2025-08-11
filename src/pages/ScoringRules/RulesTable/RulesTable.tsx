@@ -240,18 +240,6 @@ export const RulesTable = () => {
     []
   );
 
-  const rulesData: Rule[] = useMemo(
-    () =>
-      data.map((item) => ({
-        id: item.id,
-        name: item.name ?? "",
-        description: item.description ?? "",
-        status: item.status as "ENABLED" | "DISABLED",
-        riskLevel: item.riskLevel as "Low" | "Medium" | "High",
-      })),
-    [data]
-  );
-
   const navigate = useNavigate();
 
   const handleAddNewRule = () => {
@@ -267,7 +255,13 @@ export const RulesTable = () => {
 
   return (
     <DynamicTable<Rule>
-      data={rulesData}
+      data={data.map((item) => ({
+        id: item.id,
+        name: item.name ?? "",
+        description: item.description ?? "",
+        status: item.status as "ENABLED" | "DISABLED",
+        riskLevel: item.riskLevel as "Low" | "Medium" | "High",
+      }))}
       columns={columns}
       filterComponent={
         <RulesFilterForm
