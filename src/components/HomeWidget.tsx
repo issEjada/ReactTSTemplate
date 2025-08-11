@@ -22,7 +22,8 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
   arrowIcon,
 }) => {
   return (
-    <div className="w-full sm:w-[265px] h-[112px] bg-[#FDFDFD] dark:bg-[#121418] dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
+    <div className="w-full h-[112px] bg-[#FDFDFD] dark:bg-[#121418] dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
+      {" "}
       {/* Top Row */}
       <div className="flex justify-between items-center">
         <p className="text-sm font-semibold leading-[20px]">{title}</p>
@@ -30,7 +31,6 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
           <img src={icon} alt="Icon" className="w-[28px] h-[28px]" />
         </div>
       </div>
-
       {/* Bottom Row */}
       <div className="flex justify-between items-center mt-2">
         <h2 className="text-[24px] leading-[36px] font-semibold">{value}</h2>
@@ -62,7 +62,8 @@ const HomeWidgetGroup: React.FC = () => {
   ];
 
   return (
-    <div className="w-full flex flex-wrap gap-4 sm:justify-start px-4">
+    <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[24px]">
+      {" "}
       {valueData.map((item, index) => {
         const arrowIcon = item.percentage.startsWith("-")
           ? ArrowDown
