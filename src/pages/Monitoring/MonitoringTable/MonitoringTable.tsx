@@ -15,6 +15,7 @@ import NoSessions from "./NoSessions";
 import SessionActivity from "./SessionActivity";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import { useSessionActivity } from "./useSessionActivity";
+import { DynamicTable } from "../../../components/DynamicTable";
 
 //Icons Imports
 const SearchIcon = React.lazy(
@@ -27,7 +28,7 @@ const FilterIcon = React.lazy(
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 export type Session = {
-  id: number,
+  id: number;
   sessionId: string;
   deviceId: string;
   channel: string;
@@ -133,23 +134,22 @@ const getColumns = (): ColumnDef<Session>[] => [
     header: "Status",
     accessorKey: "status",
     cell: (info) => {
-      return(
-      <span
-        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
-          info.getValue() === "VIEWED"
-            ? "bg-green-100 text-green-700"
-            : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        <div className={`rounded-full bg-black w-[6px] h-[6px] ${
-          info.getValue() === "VIEWED"
-            ? "bg-green-500"
-            : "bg-gray-500"
-        }`}></div>
-        {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
-      </span>
-      )
-
+      return (
+        <span
+          className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
+            info.getValue() === "VIEWED"
+              ? "bg-green-100 text-green-700"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          <div
+            className={`rounded-full bg-black w-[6px] h-[6px] ${
+              info.getValue() === "VIEWED" ? "bg-green-500" : "bg-gray-500"
+            }`}
+          ></div>
+          {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
+        </span>
+      );
     },
   },
   {
@@ -199,11 +199,10 @@ export const MonitoringTable = () => {
     // setItemsPerPage,
     filters,
     setFilters,
+    handleSearchSubmit,
   } = useMonitoringTable();
 
-  const {
-    sessionActivityData
-  } = useSessionActivity();
+  const { sessionActivityData } = useSessionActivity();
 
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -339,6 +338,44 @@ export const MonitoringTable = () => {
       ) : (
         <>
           <HomeWidgetGroup />
+          <DynamicTable<Session>
+            data={sessionsData}
+            columns={columns}
+            filterComponent={
+              <MonitoringFilterForm
+                isOpen={isFilterOpen}
+                closeDrawer={closeFilterModal}
+                filterData={filters}
+                handleSearchSubmit={handleSearchSubmit}
+              />
+            }
+            totalCount={totalCount}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            setCurrentPage={setCurrentPage}
+            onFilterStatus={onFilterStatus as (status: string) => void}
+            statusFilter={statusFilter}
+            onClearSearch={handleClearSearch}
+            onAddNewItem={()=>{}}
+            isLoading={isLoading}
+            error={error}
+            title="Monitor Activity Sessions"
+            description="Keep track of customers and their security levels."
+            searchText={searchText}
+            setSearchText={setSearchText}
+            openFilterModal={openFilterModal}
+            applyFilters={applyFilters}
+            emptyStateMessage="Start adding new sessions"
+            emptyStateDescription="You don’t have any sessions yet.Start monitoring by adding new sessions now."
+            searchPlaceholder="Search"
+            showStatusFilter={true}
+            filters={filters ?? {}}
+            statusFilterOptions={[
+              { key: "All", label: "View All" },
+              { key: "VIEWED", label: "Viewed" },
+              { key: "NOT_VIEWED", label: "Not Viewed" },
+            ]}
+          />
           <div className="overflow-x-auto border rounded-lg ">
             <div className="flex justify-between items-center px-6 py-6">
               <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300">
@@ -500,8 +537,8 @@ export const MonitoringTable = () => {
                                   </h1>
                                   <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-[4px]">
                                     Your search “Keyword” did not match any
-                                    sessions. Please try again or create and add a
-                                    new session.
+                                    sessions. Please try again or create and add
+                                    a new session.
                                   </p>
                                 </div>
                               </div>
@@ -565,7 +602,7 @@ export const MonitoringTable = () => {
               </div>
             </div>
           </div>
-          <SessionActivity data={sessionActivityData}/>
+          <SessionActivity data={sessionActivityData} />
         </>
       )}
     </div>
