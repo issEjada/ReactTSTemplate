@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import {
   ScoringRulesServices,
   type GetScoringRulesItemInterface,
-  type RuleIdentifierInterface,
   type GetScoringRulesListResponse,
 } from "../rulesServices";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+import { cleanObject } from "../../../utils/helpers";
 
 export const useScoringRulesTable = () => {
   const [data, setData] = useState<GetScoringRulesItemInterface[]>([]);
@@ -20,46 +20,10 @@ export const useScoringRulesTable = () => {
   );
 
   const handleSearchSubmit = (searchData: ViewRulesFormValues) => {
-    const filteredData = Object.entries(searchData).reduce(
-      (acc, [key, value]) => {
-        if (typeof value === "string" && value.trim() !== "") {
-          (acc as any)[key] = value;
-          setCurrentPage(1);
-        } else if (typeof value === "number" && value !== 0) {
-          (acc as any)[key] = value;
-          setCurrentPage(1);
-        } else if (typeof value === "object" && value !== null) {
-          // Filter nested identifier object
-          const filteredIdentifier = Object.entries(value).reduce(
-            (idAcc, [idKey, idValue]) => {
-              if (
-                idKey === "scoring_scheme" &&
-                typeof idValue === "string" &&
-                idValue.trim() !== ""
-              ) {
-                (idAcc as any)["scheme"] = idValue; // Move scoring_scheme to scheme
-              } else if (typeof idValue === "string" && idValue.trim() !== "") {
-                (idAcc as any)[idKey] = idValue;
-              }
-              return idAcc;
-            },
-            {} as Partial<RuleIdentifierInterface>
-          );
-
-          // Only set identifier if it has values
-          if (Object.keys(filteredIdentifier).length > 0) {
-            (acc as any)[key] = filteredIdentifier;
-            setCurrentPage(1);
-          }
-        }
-
-        return acc;
-      },
-      {} as ViewRulesFormValues
-    );
-    setFilters(filteredData);
+    const filteredData = cleanObject(searchData);
+    setFilters(filteredData as ViewRulesFormValues);
+    setCurrentPage(1);
   };
-
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
