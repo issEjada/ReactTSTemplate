@@ -20,46 +20,42 @@ export const useScoringRulesTable = () => {
   );
 
   const handleSearchSubmit = (searchData: ViewRulesFormValues) => {
-    const filteredData: ViewRulesFormValues = Object.entries(searchData).reduce(
-      (acc: ViewRulesFormValues, [key, value]) => {
+    const filteredData = Object.entries(searchData).reduce(
+      (acc, [key, value]) => {
         if (typeof value === "string" && value.trim() !== "") {
-          acc[key] = value;
+          (acc as any)[key] = value;
           setCurrentPage(1);
         } else if (typeof value === "number" && value !== 0) {
-          acc[key] = value;
+          (acc as any)[key] = value;
           setCurrentPage(1);
         } else if (typeof value === "object" && value !== null) {
           // Filter nested identifier object
-          const filteredIdentifier: Partial<RuleIdentifierInterface> =
-            Object.entries(value).reduce(
-              (idAcc: Partial<RuleIdentifierInterface>, [idKey, idValue]) => {
-                if (
-                  idKey === "scoring_scheme" &&
-                  typeof idValue === "string" &&
-                  idValue.trim() !== ""
-                ) {
-                  (idAcc as any)["scheme"] = idValue; // Move scoring_scheme to scheme
-                } else if (
-                  typeof idValue === "string" &&
-                  idValue.trim() !== ""
-                ) {
-                  idAcc[idKey as keyof RuleIdentifierInterface] = idValue;
-                }
-                return idAcc;
-              },
-              {}
-            );
+          const filteredIdentifier = Object.entries(value).reduce(
+            (idAcc, [idKey, idValue]) => {
+              if (
+                idKey === "scoring_scheme" &&
+                typeof idValue === "string" &&
+                idValue.trim() !== ""
+              ) {
+                (idAcc as any)["scheme"] = idValue; // Move scoring_scheme to scheme
+              } else if (typeof idValue === "string" && idValue.trim() !== "") {
+                (idAcc as any)[idKey] = idValue;
+              }
+              return idAcc;
+            },
+            {} as Partial<RuleIdentifierInterface>
+          );
 
           // Only set identifier if it has values
           if (Object.keys(filteredIdentifier).length > 0) {
-            acc[key as keyof ViewRulesFormValues] = filteredIdentifier as any;
+            (acc as any)[key] = filteredIdentifier;
             setCurrentPage(1);
           }
         }
 
         return acc;
       },
-      {}
+      {} as ViewRulesFormValues
     );
     setFilters(filteredData);
   };
