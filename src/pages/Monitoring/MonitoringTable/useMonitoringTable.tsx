@@ -60,6 +60,38 @@ export const useMonitoringTable = () => {
 
   console.log("Monitoring Data:", data);
 
+const handleSearchSubmit = (searchData: ViewSessionsFormValues) => {
+    const filteredData = Object.entries(searchData).reduce(
+      (acc, [key, value]) => {
+        if (typeof value === "string" && value.trim() !== "") {
+          (acc as any)[key] = value;
+          setCurrentPage(1);
+        } else if (typeof value === "number" && value !== 0) {
+          (acc as any)[key] = value;
+          setCurrentPage(1);
+        } else if (typeof value === "object" && value !== null) {
+          const filteredIdentifier = Object.entries(value).reduce(
+            (idAcc, [idKey, idValue]) => {
+              if (typeof idValue === "string" && idValue.trim() !== "") {
+                (idAcc as any)[idKey] = idValue;
+              }
+              return idAcc;
+            },
+            {}
+          );
+ 
+          if (Object.keys(filteredIdentifier).length > 0) {
+            (acc as any)[key] = filteredIdentifier;
+            setCurrentPage(1);
+          }
+        }
+        return acc;
+      },
+      {} as GetSessionItemInterface[]
+    );
+    setData(filteredData);
+  };
+
   return {
     data,
     isLoading,
@@ -72,5 +104,6 @@ export const useMonitoringTable = () => {
     filters,
     setFilters,
     refetch: fetchData,
+    handleSearchSubmit
   };
 };

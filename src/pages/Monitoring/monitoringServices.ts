@@ -111,10 +111,10 @@ export interface GetSessionResponse {
   deviceId: string;
   globalId: string;
   channel: string;
-  ip: string;
+  ip: string[];
   isp: string[];
-  country: string;
-  city: string;
+  country: string[];
+  city: string[];
   coordinates: string[];
   locationGeohash: string[];
   userPlugins: string[];
