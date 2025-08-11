@@ -97,10 +97,12 @@ export const ConditionEditor = ({
 
   return (
     <div className="flex h-[766px] gap-2 pl-6">
-      <div className="w-[400px]  border-gray-300 border rounded-lg flex flex-col">
-        <div className="border-b border-gray-300 shadow-md">
+      <div className="w-[400px]  border-gray-300 border rounded-lg flex flex-col dark:bg-[#121418] dark:border-gray-800">
+        <div className="border-b border-gray-300 shadow-md dark:bg-[#121418] dark:border-gray-800">
           <div className="flex justify-between items-center p-4">
-            <h2 className="text-lg font-medium text-gray-700">Components</h2>
+            <h2 className="text-lg font-medium text-gray-700 dark:text-white">
+              Components
+            </h2>
             {!isReadOnly && ( // Conditionally render "Drag & Drop"
               <span className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700">
                 <DragDropIcon className="text-gray-600" />
@@ -136,10 +138,12 @@ export const ConditionEditor = ({
           ></ConditionItem>
         </div>
       </div>
-      <div className="w-[680px]  border-gray-300 border rounded-lg flex flex-col ">
-        <div className="border-b border-gray-300">
+      <div className="w-[680px]  border-gray-300 border rounded-lg flex flex-col dark:bg-[#121418] dark:border-gray-800">
+        <div className="border-b border-gray-300  dark:bg-[#121418] dark:border-gray-800">
           <div className="flex justify-between items-center p-4">
-            <h2 className="text-lg font-medium text-gray-700">Output</h2>
+            <h2 className="text-lg font-medium text-gray-700 dark:text-white">
+              Output
+            </h2>
             <div className="flex flex-col items-end">
               <button
                 className="text-sm text-gray-400 hover:text-gray-700"
@@ -167,7 +171,7 @@ export const ConditionEditor = ({
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           readOnly={isReadOnly} // Make textarea read-only in view mode
-          className={`bg-gray-50 overflow-y-scroll border border-transparent flex-1 p-4 resize-none rounded-lg focus:outline-none ${
+          className={`bg-gray-50 overflow-y-scroll border border-transparent flex-1 p-4 resize-none rounded-lg focus:outline-none dark:text-white dark:bg-[#121418] dark:border-gray-800 ${
             isReadOnly ? "cursor-not-allowed" : ""
           }`}
           placeholder="Drop items here..."

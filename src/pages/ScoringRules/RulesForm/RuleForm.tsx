@@ -78,7 +78,7 @@ const RuleForm = () => {
         <div className="flex flex-col gap-2">
           <label
             htmlFor="ruleName"
-            className="block text-md font-medium text-[#414651] mb-2"
+            className="block text-md font-medium text-[#414651] mb-2 dark:text-white"
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Rule Name
@@ -102,7 +102,7 @@ const RuleForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
@@ -111,7 +111,7 @@ const RuleForm = () => {
             }
             ${
               screenAction === "view"
-                ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
+                ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
                 : ""
             }
             `}
@@ -267,7 +267,7 @@ const RuleForm = () => {
                   id="description"
                   placeholder="Enter a description..."
                   disabled={isDisabled}
-                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none ${
+                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
                     isDisabled
                       ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
                       : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
@@ -280,10 +280,10 @@ const RuleForm = () => {
       </div>
 
       <div className="flex items-center gap-2 pl-6 pt-6">
-        <div className="flex  justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full ">
-          <ConditionIcon className="object-contain text-blue-700" />{" "}
+        <div className="flex  justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full dark:bg-[#121418] dark:border-gray-800">
+          <ConditionIcon className="object-contain text-blue-700 dark:text-white" />{" "}
         </div>
-        <h3 className="text-[1.2rem]   ">Condition Editor</h3>
+        <h3 className="text-[1.2rem]">Condition Editor</h3>
       </div>
 
       <ConditionEditor

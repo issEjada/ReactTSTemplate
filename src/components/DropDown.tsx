@@ -61,8 +61,8 @@ const DropdownMenu = <T extends FieldValues>({
           const { error } = fieldState;
 
           return (
-            <div className="flex flex-col gap-[6px] relative dark:bg-[#121418] dark:border-gray-800">
-              <label className="text-sm font-medium text-[#414651] flex items-center gap-1">
+            <div className="flex flex-col gap-[6px] relative  dark:border-gray-800">
+              <label className="text-sm font-medium text-[#414651] flex items-center gap-1 dark:text-white">
                 {label}
                 {required && <span className="text-red-500">*</span>}
               </label>
@@ -81,7 +81,7 @@ const DropdownMenu = <T extends FieldValues>({
                   ${
                     disabled
                       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "cursor-pointer"
+                      : "cursor-pointer dark:text-white"
                   }
                 `}
                 onClick={toggleDropdown}
