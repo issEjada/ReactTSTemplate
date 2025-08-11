@@ -4,35 +4,30 @@ import backgroundCircle from "../../../assets/svg/BackgroundCircle.svg";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../routes/AppRoutes";
 
-const PlusIcon = React.lazy(
-  () => import("../../../assets/svg/plus.svg?react")
-);
+const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 const ShieldIcon = React.lazy(
   () => import("../../../assets/svg/shieldG.svg?react")
 );
 
-
 const NoSessions = () => {
-
   const navigate = useNavigate();
 
   const handleAddNewSession = () => {
-    // To be changed
-    // navigate(AppRoutes.monitoringView);
+    navigate(AppRoutes.monitoringView);
   };
-
 
   return (
     <div className="w-full max-w-[1148px] mx-auto p-4 sm:p-6 bg-white rounded-[18px] flex flex-col">
- 
       {/* Card (background fills whole card area!) */}
-      <div className="
+      <div
+        className="
         flex items-center justify-center border border-[#E9EAEB] rounded-[18px] bg-white
         w-full relative
         min-h-[780px] sm:min-h-[780px] md:min-h-[780px] lg:min-h-[780px]
         p-4 sm:p-10
         overflow-hidden
-      ">
+      "
+      >
         {/* SVG background fills/centers card */}
         <img
           src={backgroundCircle}
@@ -76,7 +71,7 @@ const NoSessions = () => {
             "
             onClick={handleAddNewSession}
           >
-            <PlusIcon className="w-[11px] sm:w-[12px] h-[11px] sm:h-[12px]"/>
+            <PlusIcon className="w-[11px] sm:w-[12px] h-[11px] sm:h-[12px]" />
             Add New Sessions
           </button>
         </div>

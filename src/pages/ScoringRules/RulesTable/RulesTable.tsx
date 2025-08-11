@@ -218,7 +218,7 @@ export const RulesTable = () => {
       delete newFilters.status;
     }
 
-    handleSearchSubmit(newFilters);
+    setFilters(newFilters);
     setCurrentPage(1);
   };
 

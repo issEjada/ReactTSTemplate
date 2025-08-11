@@ -1,10 +1,6 @@
-import React, { useState, useMemo, Suspense, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-} from "@tanstack/react-table";
+import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
@@ -16,16 +12,6 @@ import SessionActivity from "./SessionActivity";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
-
-//Icons Imports
-const SearchIcon = React.lazy(
-  () => import("../../../assets/svg/Search.svg?react")
-);
-const FilterIcon = React.lazy(
-  () => import("../../../assets/svg/Filters.svg?react")
-);
-
-const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 export type Session = {
   id: number;
@@ -232,14 +218,13 @@ export const MonitoringTable = () => {
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
-    const newFilters: Record<string, string> = {};
+    const newFilters: ViewSessionsFormValues = {
+      ...filters,
+      sessionId: searchText.trim(),
+    };
 
     if (statusFilter !== "All") {
       newFilters.status = statusFilter;
-    }
-
-    if (searchText.trim() !== "") {
-      newFilters.filter = searchText.trim();
     }
 
     setFilters(newFilters);
@@ -278,7 +263,7 @@ export const MonitoringTable = () => {
 
   const handleAddNewSession = () => {
     // To be changed
-    // navigate(AppRoutes.monitoringView);
+    navigate(AppRoutes.monitoringView);
   };
 
   const isFilterActive = useMemo(
@@ -288,7 +273,7 @@ export const MonitoringTable = () => {
 
   const handleClearSearch = () => {
     setSearchText("");
-    setFilters({});
+    setFilters(undefined); // Changed from {} to undefined to match type
     setStatusFilter("All");
     setCurrentPage(1);
   };
