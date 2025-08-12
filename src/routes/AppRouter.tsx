@@ -6,8 +6,10 @@ import LoginForm from "../pages/Login/Login";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
 import AboutUs from "../pages/AboutUs";
-import { RulesTable } from "../pages/Rules/RulesTable/RulesTable";
-import RuleForm from "../pages/Rules/RulesForm/RuleForm";
+import { RulesTable } from "../pages/ScoringRules/RulesTable/RulesTable";
+import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringTable";
+import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
+import RuleForm from "../pages/ScoringRules/RulesForm/RuleForm";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -76,7 +78,16 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.monitoring,
         element: (
           <ProtectedRoute>
-            <div>MONITORING</div>
+            <MonitoringTable />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.monitoringView,
+        element: (
+          <ProtectedRoute>
+            <MonitoringView />
           </ProtectedRoute>
         ),
         errorElement: <></>,

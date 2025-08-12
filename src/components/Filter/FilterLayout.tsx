@@ -28,7 +28,7 @@ export default function FilterLayout({
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <div className="flex justify-between items-center w-[95%]">
+        <div className="flex justify-between items-center w-full">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button
             onClick={onClose}

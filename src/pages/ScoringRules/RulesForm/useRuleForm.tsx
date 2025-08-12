@@ -5,21 +5,21 @@ import type {
   DropDownCategory,
   DropDownValue,
 } from "../../../services/dropdownServices";
-import type {
-  CreateRulesPayload,
-  DeleteRuleByIdPayload,
-  DropDownsAttributes,
-  DropDownsPayload,
-  GetRuleByIdPayload,
-  GetRulesParametersPayload,
-  UpdateRulesPayload,
-  GetRuleByIdResponse,
-  GetRulesParameterResponse,
+import {
+  type CreateRulesPayload,
+  type DeleteRuleByIdPayload,
+  type DropDownsAttributes,
+  type DropDownsPayload,
+  type GetRuleByIdPayload,
+  type GetRulesParametersPayload,
+  type UpdateRulesPayload,
+  type GetRuleByIdResponse,
+  type GetRulesParameterResponse,
+  ScoringRulesServices,
 } from "../rulesServices";
 import { useLocation } from "react-router-dom";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { LoadingState } from "../../../types/types";
-import ScoringRulesSdks from "../rulesServices";
 
 function useViewScoringRules() {
   const [editorContent, setEditorContent] = useState("");
@@ -35,12 +35,9 @@ function useViewScoringRules() {
   const [ruleData, setRuleData] = useState<GetRuleByIdResponse>();
   const [parametersData, setParametersData] =
     useState<GetRulesParameterResponse>();
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [popupType, setPopupType] = useState<string>("");
   const [popupMessage, setPopupMessage] = useState<string>("");
-  const [loadingState, setloadingState] = useState<LoadingState>(
-    LoadingState.Loading
-  );
+  const [loadingState, setloadingState] = useState<LoadingState>();
 
   const ruleName = ruleData?.name;
 
@@ -136,7 +133,7 @@ function useViewScoringRules() {
     const data: GetRuleByIdPayload = {
       id: id,
     };
-    await ScoringRulesSdks.getRulesById(data)
+    await ScoringRulesServices.getRulesById(data)
       .then((value) => {
         setloadingState(LoadingState.Success);
         console.log("test Rule by Id", value);
@@ -145,8 +142,7 @@ function useViewScoringRules() {
       .catch((error) => {
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
-        setPopupMessage(error);
-        setIsPopupOpen(true);
+        setPopupMessage(error.message);
       });
   };
 
@@ -184,7 +180,7 @@ function useViewScoringRules() {
       identifier: watch().identifier!,
     };
 
-    await ScoringRulesSdks.getRulesParameters(data)
+    await ScoringRulesServices.getRulesParameters(data)
       .then((value) => {
         setParametersData(value);
       })
@@ -329,20 +325,14 @@ function useViewScoringRules() {
         condition: editorContent,
         riskLevel: data.riskLevel ?? "",
       };
-      ScoringRulesSdks.createRule(body)
+      ScoringRulesServices.createRule(body)
         .then(() => {
           setloadingState(LoadingState.Success);
-          setPopupType("successModal");
-          setIsPopupOpen(true);
-          setPopupMessage(
-            "The Scoring Rule Details have been successfully Created."
-          );
         })
         .catch((error) => {
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
-          setPopupMessage(error);
-          setIsPopupOpen(true);
+          setPopupMessage(error.message);
           console.log(error);
         });
     }
@@ -355,21 +345,15 @@ function useViewScoringRules() {
         status: data.status?.toUpperCase() ?? "",
         description: data.description ?? "",
       };
-      ScoringRulesSdks.updateRule(updateBody, id)
+      ScoringRulesServices.updateRule(updateBody, id)
         .then(() => {
           setloadingState(LoadingState.Success);
-          setPopupType("successModal");
-          setIsPopupOpen(true);
-          setPopupMessage(
-            "The Scoring Rule Details have been successfully updated."
-          );
         })
         .catch((error) => {
           setloadingState(LoadingState.Error);
           console.log(error);
           setPopupType("errorModal");
-          setPopupMessage(error);
-          setIsPopupOpen(true);
+          setPopupMessage(error.message);
         });
     }
   };
@@ -379,20 +363,14 @@ function useViewScoringRules() {
     const data: DeleteRuleByIdPayload = {
       id: ruleId ?? id,
     };
-    await ScoringRulesSdks.deleteRulesById(data)
+    await ScoringRulesServices.deleteRulesById(data)
       .then(() => {
         setloadingState(LoadingState.Success);
-        setPopupType("successModal");
-        setIsPopupOpen(true);
-        setPopupMessage(
-          "The Scoring Rule Details have been successfully deleted."
-        );
       })
       .catch((error) => {
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
-        setPopupMessage(error);
-        setIsPopupOpen(true);
+        setPopupMessage(error.message);
       });
   };
 
@@ -427,9 +405,7 @@ function useViewScoringRules() {
     setScreenAction,
     isEditing,
     screenAction,
-    isPopupOpen,
     reset,
-    setIsPopupOpen,
     popupType,
     setPopupType,
     popupMessage,

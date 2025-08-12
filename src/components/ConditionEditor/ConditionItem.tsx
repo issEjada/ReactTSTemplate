@@ -3,13 +3,14 @@ type ConditionItemProps = {
   label: string;
   data?: string[];
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
-  isViewing?: boolean;
+  isReadOnly: boolean; // New prop to control read-only mode
 };
 
 export default function ConditionItem({
   label,
   data,
   icon: Icon,
+  isReadOnly,
 }: ConditionItemProps) {
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
@@ -18,6 +19,10 @@ export default function ConditionItem({
     item: string,
     index: number
   ) => {
+    if (isReadOnly) {
+      e.preventDefault();
+      return;
+    }
     e.dataTransfer.setData("text/plain", JSON.stringify({ value: item }));
     e.dataTransfer.effectAllowed = "move";
 
@@ -27,7 +32,7 @@ export default function ConditionItem({
     setDraggingIndex(null);
   };
   return (
-    <div className="border-[1px] border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md ">
+    <div className="border-[1px] border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md dark:bg-[#121418] dark:border-gray-800">
       <div className="mb-2">
         <h2>{label}</h2>
       </div>
@@ -35,24 +40,26 @@ export default function ConditionItem({
         {data?.map((item, index) => (
           <div
             key={index}
-            draggable
+            draggable={!isReadOnly} // Disable draggable when in read-only mode
             onDragStart={(e) => handleDragStart(e, item, index)}
             onDragEnd={handleDragEnd}
             role="button"
             tabIndex={0}
-            className={`flex flex-col items-center rounded-lg w-[5rem] gap-1 cursor-grab ${
+            className={`flex flex-col items-center rounded-lg w-[5rem] gap-1 ${
+              isReadOnly ? "cursor-not-allowed" : "cursor-grab"
+            } ${
               draggingIndex === index
                 ? "scale-105 text-black opacity-100 shadow-md "
-                : "hover:bg-gray-50"
+                : "hover:bg-gray-50 dark:hover:bg-[#121418]"
             }`}
           >
             <div
-              className={`w-[100%] h-[4rem]  border border-gray-300 rounded-md flex items-center justify-center shadow
+              className={`w-[100%] h-[4rem]  border border-gray-300 rounded-md flex items-center justify-center shadow dark:bg-[#121418] dark:border-gray-800
                 ${draggingIndex === index ? "bg-blue-900" : "bg-gray-100"}`}
             >
               <Icon
                 className={`w-8 h-8 object-contain ${
-                  draggingIndex === index ? "text-white" : ""
+                  draggingIndex === index ? "text-white  " : ""
                 }`}
               />
             </div>
@@ -61,7 +68,7 @@ export default function ConditionItem({
               ${
                 draggingIndex === index
                   ? "text-black font-medium "
-                  : "text-gray-600"
+                  : "text-gray-600 dark:text-white"
               }`}
             >
               {item}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
@@ -7,10 +7,12 @@ import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEd
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopup from "./RulesPopupJsx";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
+const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
 const RuleForm = () => {
   const {
@@ -31,52 +33,107 @@ const RuleForm = () => {
     editorContent,
     setEditorContent,
     isAdding,
-    isPopupOpen,
     isEditing,
-    setIsPopupOpen,
+    popupType,
+    popupMessage,
+    setScreenAction,
+    loadingState, // Add loadingState here
   } = useViewScoringRules();
 
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
 
   const handleCancel = () => {
     reset(); // Clear form values
     navigate("/rules"); // Navigate back to rules table
   };
 
+  const handleEditClick = () => {
+    setScreenAction("edit");
+    navigate("/rules/edit"); // Navigate to the edit page
+  };
+
+  const handleDeleteClick = () => {
+    setIsDeletePopupOpen(true);
+  };
+
+  React.useEffect(() => {
+    if (popupType === "successModal" && loadingState === "success") {
+      setIsPopupOpen(true);
+    } else if (popupType === "errorModal" && loadingState === "error") {
+      setIsPopupOpen(true);
+    }
+  }, [popupType, loadingState]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
+      {loadingState === "loading" && <FullScreenSpinner />}
       {/* Rule name editable area */}
-      <div className="h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
-        <Controller
-          name="name"
-          control={control}
-          defaultValue={ruleName ?? ""}
-          rules={{ required: "Rule name is required." }}
-          render={({ field, fieldState }) => (
-            <div className="flex flex-col">
-              <input
-                {...field}
-                placeholder="Rule Name"
-                className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer
-          focus:outline-none focus:ring-2
-          ${
-            fieldState.error
-              ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
-              : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
-          }`}
-              />
-              {fieldState.error && (
-                <p className="text-red-500 text-sm mt-1">
-                  {fieldState.error.message}
-                </p>
-              )}
-            </div>
-          )}
-        />
+      <div className="h-auto flex flex-row items-start px-6 py-5">
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="ruleName"
+            className="block text-md font-medium text-[#414651] mb-2 dark:text-white"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            Rule Name
+            {screenAction === "view" && (
+              <div
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
+                onClick={handleEditClick}
+              >
+                <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
+              </div>
+            )}
+          </label>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue={ruleName ?? ""}
+            rules={{ required: "Rule name is required." }}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <input
+                  {...field}
+                  placeholder="Rule Name"
+                  disabled={screenAction === "view"}
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+            focus:outline-none focus:ring-2
+            ${
+              fieldState.error
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+            }
+            ${
+              screenAction === "view"
+                ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
+                : ""
+            }
+            `}
+                />
+                {fieldState.error && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+        {(screenAction === "view" || screenAction === "edit") && (
+          <button
+            type="button"
+            onClick={handleDeleteClick}
+            className="ml-auto mr-12  flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
+          >
+            Delete Rule
+          </button>
+        )}
       </div>
 
       {/* Form Body */}
@@ -175,8 +232,8 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[47%]"
-            disabled={screenAction == "view" || statusValues.length === 0}
+            className="w-[50%]"
+            disabled={screenAction === "view" || statusValues.length === 0}
           />
           <DropdownMenu<ViewRulesFormValues>
             control={control}
@@ -210,7 +267,7 @@ const RuleForm = () => {
                   id="description"
                   placeholder="Enter a description..."
                   disabled={isDisabled}
-                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none ${
+                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
                     isDisabled
                       ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
                       : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
@@ -223,19 +280,20 @@ const RuleForm = () => {
       </div>
 
       <div className="flex items-center gap-2 pl-6 pt-6">
-        <div className="flex  justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full ">
-          <ConditionIcon className="object-contain text-blue-700" />{" "}
+        <div className="flex  justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full dark:bg-[#121418] dark:border-gray-800">
+          <ConditionIcon className="object-contain text-blue-700 dark:text-white" />{" "}
         </div>
-        <h3 className="text-[1.2rem]   ">Condition Editor</h3>
+        <h3 className="text-[1.2rem]">Condition Editor</h3>
       </div>
 
       <ConditionEditor
         editorContent={editorContent}
         parametersData={parametersData}
         setEditorContent={setEditorContent}
+        isReadOnly={screenAction === "view"} // Pass isReadOnly prop
       />
       {/* {isEditing && ( */}
-      <div className="flex justify-end pb-6 pr-6">
+      <div className="flex justify-end pb-6 pr-[80px]">
         <div className="flex gap-4">
           <button
             type="submit"
@@ -256,7 +314,7 @@ const RuleForm = () => {
       {isPopupOpen && (
         <div>
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
-            {isAdding && (
+            {isAdding && popupType === "successModal" && (
               <RulesPopup
                 isAdding
                 onConfirm={() => {
@@ -269,7 +327,7 @@ const RuleForm = () => {
                 }}
               />
             )}
-            {isEditing && (
+            {isEditing && popupType === "successModal" && (
               <RulesPopup
                 isEditing
                 onConfirm={() => {
@@ -282,6 +340,31 @@ const RuleForm = () => {
                 }}
               />
             )}
+            {popupType === "errorModal" && (
+              <RulesPopup
+                isError
+                errorMessage={popupMessage}
+                onConfirm={() => setIsPopupOpen(false)} // No confirm action for error
+                onCancel={() => setIsPopupOpen(false)} // Close popup on cancel
+              />
+            )}
+          </PopupLayout>
+        </div>
+      )}
+      {isDeletePopupOpen && (
+        <div>
+          <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
+            <RulesPopup
+              isDeleting
+              onConfirm={() => {
+                // Handle delete logic here
+                setIsDeletePopupOpen(false); // Close popup after delete
+                navigate("/rules"); // Navigate back to rules table after deletion
+              }}
+              onCancel={() => {
+                setIsDeletePopupOpen(false); // Close popup
+              }}
+            />
           </PopupLayout>
         </div>
       )}
