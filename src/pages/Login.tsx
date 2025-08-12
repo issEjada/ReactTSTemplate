@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/Context";
 import { useNavigate } from "react-router-dom";
-import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import FullScreenSpinner from "../components/FullScreenSpinner";
+import { AuthContext } from "../context/Context";
+import type { FormLoginValues } from "../types/types";
 
 const SupportIcon = React.lazy(
   () => import(`/src/assets/svg/support.svg?react`)
@@ -15,7 +15,7 @@ const LogoWithText = React.lazy(
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const context = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const LoginForm = () => {
     setIsLoading(true);
     console.log("Submitting login form", data, data.remember);
     try {
-      await context.login(data.name, data.password, data.remember);
+      await authContext.login(data.name, data.password, data.remember);
       await delay(1000);
       navigate("/");
     } catch (error) {
