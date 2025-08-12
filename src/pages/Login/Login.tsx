@@ -5,10 +5,12 @@ import type { FormLoginValues } from "../../types/types";
 import { Controller, useForm } from "react-hook-form";
 import FullScreenSpinner from "../../components/FullScreenSpinner";
 
-// import SupportIcon from "/src/assets/svg/support.svg?react";
-// import LogoWithText from "/src/assets/svg/logo_with_text.svg?react";
-const SupportIcon = React.lazy(() => import(`/src/assets/svg/support.svg?react`));
-const LogoWithText = React.lazy(() => import(`/src/assets/svg/logo_with_text.svg?react`));
+const SupportIcon = React.lazy(
+  () => import(`/src/assets/svg/support.svg?react`)
+);
+const LogoWithText = React.lazy(
+  () => import(`/src/assets/svg/logo_with_text.svg?react`)
+);
 
 const LoginForm = () => {
   const { handleSubmit, register, control } = useForm<FormLoginValues>();
