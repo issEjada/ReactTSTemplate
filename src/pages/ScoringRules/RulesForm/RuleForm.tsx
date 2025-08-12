@@ -46,13 +46,13 @@ const RuleForm = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
 
   const handleCancel = () => {
-    reset(); // Clear form values
-    navigate("/rules"); // Navigate back to rules table
+    reset();
+    navigate("/scoring-rules");
   };
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/rules/edit"); // Navigate to the edit page
+    navigate("/scoring-rules/edit");
   };
 
   const handleDeleteClick = () => {
@@ -318,12 +318,12 @@ const RuleForm = () => {
               <RulesPopup
                 isAdding
                 onConfirm={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules/add"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules/add");
                 }}
                 onCancel={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules");
                 }}
               />
             )}
@@ -331,12 +331,12 @@ const RuleForm = () => {
               <RulesPopup
                 isEditing
                 onConfirm={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules/add"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules/add");
                 }}
                 onCancel={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules");
                 }}
               />
             )}
@@ -344,8 +344,8 @@ const RuleForm = () => {
               <RulesPopup
                 isError
                 errorMessage={popupMessage}
-                onConfirm={() => setIsPopupOpen(false)} // No confirm action for error
-                onCancel={() => setIsPopupOpen(false)} // Close popup on cancel
+                onConfirm={() => setIsPopupOpen(false)}
+                onCancel={() => setIsPopupOpen(false)}
               />
             )}
           </PopupLayout>
@@ -357,12 +357,11 @@ const RuleForm = () => {
             <RulesPopup
               isDeleting
               onConfirm={() => {
-                // Handle delete logic here
-                setIsDeletePopupOpen(false); // Close popup after delete
-                navigate("/rules"); // Navigate back to rules table after deletion
+                setIsDeletePopupOpen(false);
+                navigate("/scoring-rules");
               }}
               onCancel={() => {
-                setIsDeletePopupOpen(false); // Close popup
+                setIsDeletePopupOpen(false);
               }}
             />
           </PopupLayout>

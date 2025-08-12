@@ -102,7 +102,7 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.rules,
+        path: AppRoutes.scoringRules,
         element: (
           <ProtectedRoute>
             <RulesTable />
@@ -111,7 +111,7 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.addRule,
+        path: AppRoutes.addScoringRule,
         element: (
           <ProtectedRoute>
             <RuleForm />
@@ -120,7 +120,7 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.viewRule,
+        path: AppRoutes.viewScoringRule,
         element: (
           <ProtectedRoute>
             <RuleForm />
@@ -129,7 +129,7 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.editRule,
+        path: AppRoutes.editScoringRule,
         element: (
           <ProtectedRoute>
             <RuleForm />

@@ -59,7 +59,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                   pageTitle: "Rules",
                   text: "Rules",
                   icon: "rules",
-                  url: AppRoutes.rules,
+                  url: AppRoutes.scoringRules,
                 },
                 {
                   pageTitle: "Events",
