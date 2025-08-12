@@ -1,10 +1,11 @@
-import React, { useMemo, Suspense } from "react";
+import React, { useMemo, Suspense, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
+  getSortedRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import FullScreenSpinner from "./FullScreenSpinner";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
@@ -14,6 +15,7 @@ const LockIcon = React.lazy(() => import("../assets/svg/LockIcon.svg?react"));
 const BackgroundCircle = React.lazy(
   () => import("../assets/svg/BackgroundCircle.svg?react")
 );
+const ArrowIcon = React.lazy(() => import("../assets/svg/ArrowUp.svg?react"));
 interface DynamicTableProps<TData extends object> {
   data: TData[];
   columns: ColumnDef<TData>[];
@@ -66,12 +68,16 @@ export function DynamicTable<TData extends object>({
   emptyStateDescription,
   searchPlaceholder = "Search",
   showStatusFilter = true,
-  filters, // Destructure filters prop
-  statusFilterOptions, // Destructure statusFilterOptions prop
+  filters,
+  statusFilterOptions,
 }: DynamicTableProps<TData>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
     data,
     columns,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getRowId: (originalRow: any, index) =>
       originalRow.id ? `${originalRow.id}-${index}` : `${index}`,
@@ -93,6 +99,15 @@ export function DynamicTable<TData extends object>({
   if (isLoading) {
     return <FullScreenSpinner />;
   }
+
+  console.log("myData I am looking for is ", table.getHeaderGroups());
+
+  const onArrowClick = (columnId: string) => {
+    const col = table.getColumn(columnId);
+    if (!col) return;
+    // toggle between asc and desc
+    col.toggleSorting(col.getIsSorted() === "asc");
+  };
 
   return (
     <div className="p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800">
@@ -259,12 +274,32 @@ export function DynamicTable<TData extends object>({
                   >
                     {headerGroup.headers.map((header) => (
                       <th key={header.id} className="px-4 h-[72px] font-medium">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                        <div className="flex items-center justify-start gap-2">
+                          <span>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                          </span>
+                          {(header.id === "deviceId" ||
+                            header.id === "sessionId") && (
+                            <button
+                              onClick={() => onArrowClick(header.column.id)}
+                            >
+                              <ArrowIcon
+                                className={
+                                  header.column.getIsSorted() === "asc"
+                                    ? "transform rotate-180 transition-transform"
+                                    : header.column.getIsSorted() === "desc"
+                                    ? "transform rotate-0 transition-transform"
+                                    : "opacity-50"
+                                }
+                              />
+                            </button>
+                          )}
+                        </div>
                       </th>
                     ))}
                   </tr>

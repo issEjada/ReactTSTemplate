@@ -27,6 +27,7 @@ const FilterIcon = React.lazy(
 
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
+
 export type Session = {
   id: number;
   sessionId: string;
