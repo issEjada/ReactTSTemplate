@@ -309,29 +309,22 @@ export const MonitoringTable = () => {
   console.log("Monitoring Table Data:", table);
 
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800 dark:text-white">
-      <div className="pt-5 px-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Monitor Activity Sessions{" "}
-            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Active Session{totalCount !== 1 && "s"}
-            </span>
-          </h2>
-
-          {totalCount !== 0 && (
-            <button
-              onClick={handleAddNewSession}
-              className="w-[179px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
-            >
-              + Add New Session
-            </button>
-          )}
+    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#000000] dark:border-gray-800 dark:text-white">
+      <div className="pt-5 px-6 pb-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
+          <div>
+            <h2 className="text-lg text-gray-900 dark:text-white">
+              Monitor Activity Sessions{" "}
+              <span className="ml-2 text-blue-700 bg-blue-50 px-[8px] py-[2px] rounded-full text-[12px]">
+                {totalCount} Active Session{totalCount !== 1 && "s"}
+              </span>
+            </h2>
+ 
+            <p className="text-sm text-gray-500 mt-1">
+              Keep track of customers and their security levels.
+            </p>
+          </div>
         </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
       </div>
       {/* Add Cards Here */}
       {totalCount === 0 && !isFilterActive ? (
