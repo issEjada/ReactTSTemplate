@@ -4,10 +4,8 @@ import { useMonitoringView } from "./useMonitoringView";
 const MonitoringView = () => {
   const { data, isLoading } = useMonitoringView();
 
-  console.log("data", data);
-
   const date = new Date(data?.lastUpdatedTimestamp || "");
-  const formattedDate = date.toLocaleDateString("en-GB"); 
+  const formattedDate = date.toLocaleDateString("en-GB");
 
   const formattedTime = date.toLocaleTimeString("en-US", {
     hour12: true,

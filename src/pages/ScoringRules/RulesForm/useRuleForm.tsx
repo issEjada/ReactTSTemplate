@@ -37,9 +37,7 @@ function useViewScoringRules() {
     useState<GetRulesParameterResponse>();
   const [popupType, setPopupType] = useState<string>("");
   const [popupMessage, setPopupMessage] = useState<string>("");
-  const [loadingState, setloadingState] = useState<LoadingState>(
-    LoadingState.Loading
-  );
+  const [loadingState, setloadingState] = useState<LoadingState>();
 
   const ruleName = ruleData?.name;
 

@@ -61,7 +61,6 @@ const RuleMenu = ({
   }, [handleClickOutside]);
 
   const handleView = () => {
-    console.log("View rule:", rule);
     setOpen(false);
     navigate("/rules/view", {
       state: {
@@ -72,7 +71,6 @@ const RuleMenu = ({
   };
 
   const handleEdit = () => {
-    console.log("Edit rule:", rule);
     setOpen(false);
     navigate("/rules/edit", {
       state: {
@@ -179,7 +177,6 @@ export const RulesTable = () => {
     handleSearchSubmit,
     deleteRule,
   } = useScoringRulesTable();
-  console.log(totalCount);
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<

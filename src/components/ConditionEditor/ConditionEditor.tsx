@@ -80,11 +80,8 @@ export const ConditionEditor = ({
   const sourceParams =
     parametersData?.sourceParameters?.map((item) => item.name) ?? [];
 
-  console.log("source: ", sourceParams);
   const targetParams =
     parametersData?.targetParameters?.map((item) => item.name) ?? [];
-
-  console.log("target: ", targetParams);
 
   const staticData = {
     Source: sourceParams,
@@ -92,8 +89,6 @@ export const ConditionEditor = ({
     Target: targetParams,
     Logic: parametersData?.logicalOperators ?? [],
   };
-
-  console.log("static data: ", staticData);
 
   return (
     <div className="flex h-[766px] gap-2 pl-6">
