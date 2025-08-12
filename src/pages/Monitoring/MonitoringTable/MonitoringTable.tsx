@@ -342,19 +342,14 @@ export const MonitoringTable = () => {
             statusFilter={statusFilter}
             onClearSearch={handleClearSearch}
             onAddNewItem={() => {}}
-            isLoading={isLoading}
             error={error}
             title="Monitor Activity Sessions"
-            description="Keep track of customers and their security levels."
             searchText={searchText}
             setSearchText={setSearchText}
             openFilterModal={openFilterModal}
             applyFilters={applyFilters}
-            emptyStateMessage="Start adding new sessions"
-            emptyStateDescription="You don’t have any sessions yet.Start monitoring by adding new sessions now."
             searchPlaceholder="Search"
             showStatusFilter={true}
-            filters={filters ?? {}}
             statusFilterOptions={[
               { key: "All", label: "View All" },
               { key: "VIEWED", label: "Viewed" },
