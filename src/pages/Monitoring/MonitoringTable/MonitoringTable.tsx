@@ -47,7 +47,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "sessionId",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 dark:text-white dark:hover:text-black">
+        <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue())}
         </span>
       </div>
@@ -58,10 +58,10 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "deviceId",
     cell: (info) => (
       <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white dark:hover:text-black ">
+        <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">
           {String(info.getValue())}
         </span>
-        <span className="text-xs text-gray-500 h-[20px] overflow-hidden dark:hover:text-gray-900">
+        <span className="text-xs text-gray-500 h-[20px] overflow-hidden">
           category
         </span>
       </div>
@@ -72,7 +72,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "channel",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 dark:text-white dark:hover:text-black">
+        <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue())}
         </span>
       </div>
@@ -83,7 +83,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "industry",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 dark:text-white dark:hover:text-black">
+        <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue())}
         </span>
       </div>
@@ -95,7 +95,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     cell: (info) => {
       const value = String(info.getValue());
       return (
-        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black overflow-hidden">
+        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white  overflow-hidden">
           {value}
         </span>
       );
@@ -110,7 +110,7 @@ const getColumns = (): ColumnDef<Session>[] => [
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
-        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black overflow-hidden">
+        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white  overflow-hidden">
           {display}
         </span>
       );
@@ -176,10 +176,10 @@ const getColumns = (): ColumnDef<Session>[] => [
       }:00 ${formattedTime.split(" ")[1]}`;
       return (
         <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black">
+          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
             {formattedDate}
           </span>
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black">
+          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
             {trimmedTime}
           </span>
         </div>
@@ -385,7 +385,7 @@ export const MonitoringTable = () => {
                   className={`text-xs w-[83px] h-10 px-3 ${
                     statusFilter === "All"
                       ? "bg-blue-500 text-white font-semibold dark:text-black dark:bg-white"
-                      : "hover:bg-gray-100 text-black dark:text-white dark:hover:text-black"
+                      : "hover:bg-gray-100 text-black dark:text-white "
                   }`}
                 >
                   View All
@@ -395,7 +395,7 @@ export const MonitoringTable = () => {
                   className={`text-xs w-[81px] h-10 px-3 border-l ${
                     statusFilter === "VIEWED"
                       ? "bg-blue-500 text-white font-semibold dark:text-black dark:bg-white"
-                      : "hover:bg-gray-100 text-black dark:text-white dark:hover:text-black"
+                      : "hover:bg-gray-100 text-black dark:text-white "
                   }`}
                 >
                   Viewed
@@ -405,7 +405,7 @@ export const MonitoringTable = () => {
                   className={`text-xs w-[107px] h-10 px-3 border-l ${
                     statusFilter === "NOT_VIEWED"
                       ? "bg-blue-500 text-white font-semibold dark:text-black dark:bg-white"
-                      : "hover:bg-gray-100 text-black dark:text-white dark:hover:text-black"
+                      : "hover:bg-gray-100 text-black dark:text-white "
                   }`}
                 >
                   Not Viewed
@@ -492,7 +492,7 @@ export const MonitoringTable = () => {
                     table.getRowModel().rows.map((row) => (
                       <tr
                         key={row.id}
-                        className="border-t hover:bg-gray-50 dark:hover:text-black"
+                        className="border-t hover:bg-gray-50 "
                         onClick={() => {
                           navigate(AppRoutes.monitoringView, {
                             state: {
