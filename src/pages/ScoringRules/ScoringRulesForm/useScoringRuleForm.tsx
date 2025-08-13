@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import type {
   DropDownCategory,
   DropDownValue,
@@ -16,7 +16,7 @@ import {
   type GetRuleByIdResponse,
   type GetRulesParameterResponse,
   ScoringRulesServices,
-} from "../rulesServices";
+} from "../scoringRulesServices";
 import { useLocation } from "react-router-dom";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { LoadingState } from "../../../types/types";

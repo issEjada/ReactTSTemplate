@@ -3,8 +3,8 @@ import {
   ScoringRulesServices,
   type GetScoringRulesItemInterface,
   type GetScoringRulesListResponse,
-} from "../rulesServices";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+} from "../scoringRulesServices";
+import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { cleanObject } from "../../../utils/helpers";
 import { LoadingState } from "../../../types/types";
 
@@ -40,7 +40,7 @@ export const useScoringRulesTable = () => {
       })
       .catch((err) => {
         console.error("Failed to fetch scoring rules:", err);
-        setError("Error:");
+        setError(err);
         setloadingState(LoadingState.Error);
       })
       .finally(() => {

@@ -3,7 +3,7 @@ import SourceDocumentIcon from "../../assets/svg/sourceDocument.svg?react";
 import ScaleComparisonIcon from "../../assets/svg/scaleComparison.svg?react";
 import SmartphoneARIcon from "../../assets/svg/smartphoneAR.svg?react";
 import React, { useRef, useState } from "react";
-import type { GetRulesParameterResponse } from "../../pages/ScoringRules/rulesServices";
+import type { GetRulesParameterResponse } from "../../pages/ScoringRules/scoringRulesServices";
 
 const DragDropIcon = React.lazy(
   () => import("../../assets/svg/DragDrop.svg?react")

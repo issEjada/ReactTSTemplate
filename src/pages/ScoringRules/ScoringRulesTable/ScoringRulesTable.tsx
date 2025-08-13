@@ -7,12 +7,12 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
-import { RulesFilterForm } from "../RulesFilter/RulesFilterJsx";
-import { useScoringRulesTable } from "./useRulesTable";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
+import { useScoringRulesTable } from "./useScoringRulesTable";
+import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../RulesForm/RulesPopupJsx";
+import RulesPopupJsx from "../ScoringRulesForm/ScoringRulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
@@ -170,7 +170,7 @@ const RuleMenu = ({
   );
 };
 
-export const RulesTable = () => {
+export const ScoringRulesTable = () => {
   const {
     data = [],
     loadingState,
@@ -350,7 +350,7 @@ export const RulesTable = () => {
           }))}
           columns={columns}
           filterComponent={
-            <RulesFilterForm
+            <ScoringRulesFilterForm
               isOpen={isFilterOpen}
               closeDrawer={closeFilterModal}
               filterData={filters}

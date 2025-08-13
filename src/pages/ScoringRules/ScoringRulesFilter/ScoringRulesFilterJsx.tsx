@@ -3,7 +3,10 @@ import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
 import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
 import { Controller } from "react-hook-form";
-import { useRulesFilter, type ViewRulesFormValues } from "./useRulesFilter";
+import {
+  useScoringRulesFilter,
+  type ViewRulesFormValues,
+} from "./useScoringRulesFilter";
 
 export interface RulesFilterProps {
   isOpen: boolean;
@@ -12,7 +15,7 @@ export interface RulesFilterProps {
   filterData: ViewRulesFormValues | undefined;
 }
 
-export const RulesFilterForm = ({
+export const ScoringRulesFilterForm = ({
   isOpen,
   closeDrawer,
   filterData,
@@ -29,7 +32,7 @@ export const RulesFilterForm = ({
     schemeValues,
     statusValues,
     eventSourceDeviceValues,
-  } = useRulesFilter(closeDrawer, filterData, handleSearchSubmit);
+  } = useScoringRulesFilter(closeDrawer, filterData, handleSearchSubmit);
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

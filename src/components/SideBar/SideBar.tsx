@@ -56,10 +56,16 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             <SideBarItemsGroup
               items={[
                 {
-                  pageTitle: "Rules",
-                  text: "Rules",
+                  pageTitle: "Scoring Rules",
+                  text: "Scoring Rules",
                   icon: "rules",
                   url: AppRoutes.scoringRules,
+                },
+                {
+                  pageTitle: "Decision Rules",
+                  text: "Decision Rules",
+                  icon: "rules",
+                  url: AppRoutes.decisionRules,
                 },
                 {
                   pageTitle: "Events",

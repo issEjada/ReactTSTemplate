@@ -3,6 +3,7 @@ export const AppRoutes = {
   testing: "/testing",
   login: "/login",
   scoringRules: "/scoring-rules",
+  decisionRules: "/decision-rules",
   addScoringRule: "/scoring-rules/add",
   viewScoringRule: "/scoring-rules/view",
   editScoringRule: "/scoring-rules/edit",

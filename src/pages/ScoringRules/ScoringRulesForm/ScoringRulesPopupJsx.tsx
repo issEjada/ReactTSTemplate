@@ -14,7 +14,7 @@ interface RulesPopupProps {
   onCancel: () => void;
 }
 
-const RulesPopupJsx = ({
+const ScoringRulesPopupJsx = ({
   isAdding = false,
   isEditing = false,
   isDeleting = false,
@@ -121,4 +121,4 @@ const RulesPopupJsx = ({
   );
 };
 
-export default RulesPopupJsx;
+export default ScoringRulesPopupJsx;

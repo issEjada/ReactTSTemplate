@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
-import useViewScoringRules from "./useRuleForm";
+import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
+import useViewScoringRules from "./useScoringRuleForm";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopup from "./RulesPopupJsx";
+import RulesPopup from "./ScoringRulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const ConditionIcon = React.lazy(
@@ -14,7 +14,7 @@ const ConditionIcon = React.lazy(
 );
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
-const RuleForm = () => {
+const ScoringRuleForm = () => {
   const {
     handleSubmit,
     onSubmit,
@@ -138,7 +138,7 @@ const RuleForm = () => {
 
       {/* Form Body */}
       <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-full flex items-start px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="identifier.eventSourceDevice"
@@ -147,7 +147,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[320px]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -164,7 +164,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[320px]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -180,7 +180,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[320px]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -189,7 +189,7 @@ const RuleForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-full flex items-start px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="identifier.controlCode"
@@ -198,7 +198,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[105%]"
+            className="w-[320px]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -214,7 +214,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[105%]"
+            className="w-[320px]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -223,7 +223,7 @@ const RuleForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-full flex items-start px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="status"
@@ -232,7 +232,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-[320px]"
             disabled={screenAction === "view" || statusValues.length === 0}
           />
           <DropdownMenu<ViewRulesFormValues>
@@ -243,7 +243,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[47%]"
+            className="w-[320px]"
             disabled={screenAction === "view" || riskLevelValues.length === 0}
           />
         </div>
@@ -371,4 +371,4 @@ const RuleForm = () => {
   );
 };
 
-export default RuleForm;
+export default ScoringRuleForm;
