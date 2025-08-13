@@ -159,7 +159,7 @@ export function DynamicTable<TData extends object>({
 
       {/* Empty state */}
       {totalCount === 0 && !isFilterActive ? (
-        <span>No Musaab</span>
+        <span>No Sessions</span>
       ) : (
       <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418]">
         <div className="px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
@@ -256,13 +256,13 @@ export function DynamicTable<TData extends object>({
                         {(header.id === "deviceId" || header.id === "sessionId") && (
                           <button onClick={() => onArrowClick(header.column.id)}>
                             <ArrowIcon
-                              className={
+                              className={`stroke-gray-600 dark:stroke-white   ${
                                 header.column.getIsSorted() === "asc"
                                   ? "transform rotate-180 transition-transform"
                                   : header.column.getIsSorted() === "desc"
-                                  ? "transform rotate-0 transition-transform"
-                                  : "opacity-50"
+                                  && "transform rotate-0 transition-transform"
                               }
+                              `}
                             />
                           </button>
                         )}
