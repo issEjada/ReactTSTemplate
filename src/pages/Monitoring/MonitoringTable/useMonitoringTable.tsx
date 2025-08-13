@@ -33,7 +33,22 @@ export const useMonitoringTable = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(7);
-  const [filters, setFilters] = useState<ViewSessionsFormValues | undefined>(undefined);
+  const [filters, setFilters] = useState<ViewSessionsFormValues>({
+    id: 0,
+    sessionId: "",
+    deviceId: "",
+    channel: "",
+    industry: "",
+    ip: "",
+    country: "",
+    city: "",
+    fromCreationTimestamp: "",
+    toCreationTimestamp: "",
+    scheme: "",
+    eventSourceDevice: "",
+    eventName: "",
+    customerIdentity: "",
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -60,7 +75,7 @@ export const useMonitoringTable = () => {
 
   console.log("Monitoring Data:", data);
 
-const handleSearchSubmit = (searchData: ViewSessionsFormValues) => {
+  const handleSearchSubmit = (searchData: ViewSessionsFormValues) => {
     const filteredData = Object.entries(searchData).reduce(
       (acc, [key, value]) => {
         if (typeof value === "string" && value.trim() !== "") {
@@ -79,7 +94,7 @@ const handleSearchSubmit = (searchData: ViewSessionsFormValues) => {
             },
             {}
           );
- 
+
           if (Object.keys(filteredIdentifier).length > 0) {
             (acc as any)[key] = filteredIdentifier;
             setCurrentPage(1);
@@ -104,6 +119,6 @@ const handleSearchSubmit = (searchData: ViewSessionsFormValues) => {
     filters,
     setFilters,
     refetch: fetchData,
-    handleSearchSubmit
+    handleSearchSubmit,
   };
 };
