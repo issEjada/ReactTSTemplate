@@ -91,28 +91,28 @@ export function DynamicTable<TData extends object>({
   };
 
   return (
-    <div className="overflow-x-auto border rounded-lg dark:border-gray-800 ">
-      <div className="flex justify-between items-center px-6 py-6">
+    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418]">
+      <div className="px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
         {showStatusFilter &&
           onFilterStatus &&
           statusFilter &&
           statusFilterOptions && (
-            <div className="flex space-x-0 rounded-lg overflow-hidden border border-gray-300 ">
-              {statusFilterOptions.map((option) => (
-                <button
-                  key={option.key}
-                  onClick={() => onFilterStatus(option.key)}
-                  className={`text-xs w-[83px] h-10 px-3 ${
-                    statusFilter === option.key
-                      ? "bg-[#FAFAFA] text-black font-semibold"
-                      : "hover:bg-gray-100 text-black dark:hover:bg-gray-200 "
-                  } ${
-                    option.key !== statusFilterOptions[0].key ? "border-l" : ""
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
+            <div className="w-full sm:w-auto">
+              <div className="rounded-lg overflow-hidden border border-gray-300 sm:divide-y-0 divide-y divide-gray-300 sm:flex sm:space-x-0">
+                {statusFilterOptions.map((option, idx) => (
+                  <button
+                    key={option.key}
+                    onClick={() => onFilterStatus(option.key)}
+                    className={`text-xs h-9 sm:h-10 px-3 w-full sm:w-[90px] ${
+                      statusFilter === option.key
+                        ? "bg-[#FAFAFA] text-black"
+                        : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
+                    } ${idx > 0 ? "sm:border-l" : ""}`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
@@ -167,13 +167,9 @@ export function DynamicTable<TData extends object>({
 
       {filterComponent}
 
-      <div
-        className={`w-full ${
-          totalCount === 0 ? "h-[388px] overflow-hidden" : "h-[680px]"
-        } overflow-auto`}
-      >
-        <table className="w-full table-auto text-sm text-center ">
-          <thead className="bg-gray-50 text-gray-600  dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+      <div className="overflow-x-auto">
+        <table className="min-w-[900px] w-full table-auto text-sm text-center">
+          <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}
