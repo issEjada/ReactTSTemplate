@@ -61,8 +61,8 @@ const DropdownMenu = <T extends FieldValues>({
           const { error } = fieldState;
 
           return (
-            <div className="flex flex-col gap-[6px] relative  dark:border-gray-800">
-              <label className="text-sm font-medium text-[#414651] flex items-center gap-1 dark:text-white">
+            <div className="flex flex-col gap-[6px] relative dark:bg-[#121418] dark:border-gray-800">
+              <label className="text-sm font-medium text-gray-700 dark:text-white flex items-center gap-1">
                 {label}
                 {required && <span className="text-red-500">*</span>}
               </label>
@@ -86,7 +86,7 @@ const DropdownMenu = <T extends FieldValues>({
                 `}
                 onClick={toggleDropdown}
               >
-                <span>
+                <span className="text-gray-700 dark:text-white">
                   {options.find((opt) => opt.key === value)?.node ||
                     `Choose ${label}`}
                 </span>

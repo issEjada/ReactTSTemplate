@@ -1,15 +1,12 @@
 import { useState, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
 import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
-import HomeWidgetGroup from "../../../components/HomeWidget";
 import NoSessions from "./NoSessions";
 import SessionActivity from "./SessionActivity";
-import { AppRoutes } from "../../../routes/AppRoutes";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
 
@@ -32,7 +29,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "sessionId",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 dark:text-white dark:hover:text-black">
+        <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue())}
         </span>
       </div>
@@ -43,10 +40,10 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "deviceId",
     cell: (info) => (
       <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white dark:hover:text-black ">
+        <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">
           {String(info.getValue())}
         </span>
-        <span className="text-xs text-gray-500 h-[20px] overflow-hidden dark:hover:text-gray-900">
+        <span className="text-xs text-gray-500 h-[20px] overflow-hidden">
           category
         </span>
       </div>
@@ -57,7 +54,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "channel",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 dark:text-white dark:hover:text-black">
+        <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue())}
         </span>
       </div>
@@ -68,7 +65,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "industry",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
-        <span className="font-medium text-gray-900 dark:text-white dark:hover:text-black">
+        <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue())}
         </span>
       </div>
@@ -80,7 +77,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     cell: (info) => {
       const value = String(info.getValue());
       return (
-        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black overflow-hidden">
+        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white  overflow-hidden">
           {value}
         </span>
       );
@@ -95,7 +92,7 @@ const getColumns = (): ColumnDef<Session>[] => [
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
-        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black overflow-hidden">
+        <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white  overflow-hidden">
           {display}
         </span>
       );
@@ -161,10 +158,10 @@ const getColumns = (): ColumnDef<Session>[] => [
       }:00 ${formattedTime.split(" ")[1]}`;
       return (
         <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black">
+          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
             {formattedDate}
           </span>
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white dark:hover:text-black">
+          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
             {trimmedTime}
           </span>
         </div>
@@ -182,7 +179,6 @@ export const MonitoringTable = () => {
     currentPage,
     itemsPerPage,
     setCurrentPage,
-    // setItemsPerPage,
     filters,
     setFilters,
     handleSearchSubmit,
@@ -196,7 +192,6 @@ export const MonitoringTable = () => {
     "All" | "VIEWED" | "NOT_VIEWED"
   >("All");
 
-  // When user clicks a status button, update statusFilter with backend values
   const onFilterStatus = (status: "All" | "VIEWED" | "NOT_VIEWED") => {
     setStatusFilter(status);
 
@@ -250,21 +245,12 @@ export const MonitoringTable = () => {
     [data]
   );
 
-  console.log("Sessions Data:", sessionsData);
-
   const table = useReactTable<Session>({
     data: sessionsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getRowId: (row) => row.id.toString(),
   });
-
-  const navigate = useNavigate();
-
-  const handleAddNewSession = () => {
-    // To be changed
-    navigate(AppRoutes.monitoringView);
-  };
 
   const isFilterActive = useMemo(
     () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
@@ -293,36 +279,27 @@ export const MonitoringTable = () => {
   console.log("Monitoring Table Data:", table);
 
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800 dark:text-white">
-      <div className="pt-5 px-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Monitor Activity Sessions{" "}
-            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Active Session{totalCount !== 1 && "s"}
-            </span>
-          </h2>
+    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#000000] dark:border-gray-800 dark:text-white">
+      <div className="pt-5 px-6 pb-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
+          <div>
+            <h2 className="text-lg text-gray-900 dark:text-white">
+              Monitor Activity Sessions{" "}
+              <span className="ml-2 text-blue-700 bg-blue-50 px-[8px] py-[2px] rounded-full text-[12px]">
+                {totalCount} Active Session{totalCount !== 1 && "s"}
+              </span>
+            </h2>
 
-          {totalCount !== 0 && (
-            <button
-              onClick={handleAddNewSession}
-              className="w-[179px] h-[40px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm font-medium"
-            >
-              + Add New Session
-            </button>
-          )}
+            <p className="text-sm text-gray-500 mt-1">
+              Keep track of customers and their security levels.
+            </p>
+          </div>
         </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
       </div>
-      {/* Add Cards Here */}
       {totalCount === 0 && !isFilterActive ? (
         <NoSessions />
       ) : (
         <>
-          <HomeWidgetGroup />
           <DynamicTable<Session>
             data={sessionsData}
             columns={columns}

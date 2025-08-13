@@ -1,14 +1,21 @@
-import React, { Suspense } from "react";
+import React, { useMemo, Suspense, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
+  getSortedRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
+import FullScreenSpinner from "./FullScreenSpinner";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../routes/AppRoutes";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
 const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
+
+const ArrowIcon = React.lazy(() => import("../assets/svg/ArrowUp.svg?react"));
+
 interface DynamicTableProps<TData extends object> {
   data: TData[];
   columns: ColumnDef<TData>[];
@@ -29,7 +36,7 @@ interface DynamicTableProps<TData extends object> {
   applyFilters: () => void;
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
-  statusFilterOptions?: { key: string; label: string }[]; // Add statusFilterOptions prop
+  statusFilterOptions?: { key: string; label: string }[];
 }
 
 export function DynamicTable<TData extends object>({
@@ -44,23 +51,32 @@ export function DynamicTable<TData extends object>({
   statusFilter,
   onClearSearch,
   onAddNewItem,
+  isLoading,
   error,
   title,
+  description,
   searchText,
   setSearchText,
   openFilterModal,
   applyFilters,
   searchPlaceholder = "Search",
   showStatusFilter = true,
-  statusFilterOptions, // Destructure statusFilterOptions prop
+  filters,
+  statusFilterOptions,
+  showHeader = true,
 }: DynamicTableProps<TData>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
     data,
     columns,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getRowId: (originalRow: any, index) =>
-      originalRow.id ? `${originalRow.id}-${index}` : `${index}`,
+      originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
+  const navigate = useNavigate();
 
   if (error) {
     return (
@@ -69,6 +85,12 @@ export function DynamicTable<TData extends object>({
       </div>
     );
   }
+
+  const onArrowClick = (columnId: string) => {
+    const col = table.getColumn(columnId);
+    if (!col) return;
+    col.toggleSorting(col.getIsSorted() === "asc");
+  };
 
   return (
     <div className="overflow-x-auto border rounded-lg dark:border-gray-800 ">
@@ -96,54 +118,50 @@ export function DynamicTable<TData extends object>({
             </div>
           )}
 
-        {/* Search Box aligned right */}
-        <div className="flex items-center gap-3">
-          <div className="relative w-[400px] h-[44px]">
-            {/* Search Button (left icon) */}
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+          <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
             <button
               type="button"
               title="Search"
               onClick={applyFilters}
-              className="absolute left-[14px] top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
             >
-              <SearchIcon className="w-5 h-5" />
+              <Suspense>
+                <SearchIcon className="w-5 h-5" />
+              </Suspense>
             </button>
 
-            {/* Input */}
             <input
               type="text"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  applyFilters();
-                }
+                if (e.key === "Enter") applyFilters();
               }}
               placeholder={searchPlaceholder}
-              className="w-full h-full pl-[40px] pr-[40px] py-[10px] text-gray-500 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800"
+              className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800"
             />
 
-            {/* Clear ("X") Button */}
             {searchText && (
               <button
                 onClick={() => setSearchText("")}
-                className="absolute right-[14px] top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                aria-label="Clear search"
               >
                 &#10005;
               </button>
             )}
           </div>
 
-          {/* Filter Button */}
           {filterComponent && (
             <button
-              className="flex items-center gap-2 w-[100px] h-[40px] px-4 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+              className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
               onClick={openFilterModal}
             >
               <Suspense>
                 <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
               </Suspense>
-              Filter
+              <span className="hidden sm:inline">Filter</span>
             </button>
           )}
         </div>
@@ -164,27 +182,57 @@ export function DynamicTable<TData extends object>({
                 className="border-b dark:border-gray-800"
               >
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="px-4 h-[72px] font-medium">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                  <th
+                    key={header.id}
+                    className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap"
+                  >
+                    <div className="flex items-center justify-start gap-2">
+                      <span>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </span>
+                      {(header.id === "deviceId" ||
+                        header.id === "sessionId") && (
+                        <button onClick={() => onArrowClick(header.column.id)}>
+                          <ArrowIcon
+                            className={`stroke-gray-600 dark:stroke-white   ${
+                              header.column.getIsSorted() === "asc"
+                                ? "transform rotate-180 transition-transform"
+                                : header.column.getIsSorted() === "desc" &&
+                                  "transform rotate-0 transition-transform"
+                            }
+                              `}
+                          />
+                        </button>
+                      )}
+                    </div>
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
-          <tbody className="w-[1144px]">
+
+          <tbody>
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800"
+                  onClick={() =>
+                    navigate(AppRoutes.monitoringView, {
+                      state: { id: row.original.id!.toString() },
+                    })
+                  }
+                  className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800 cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 h-[72px] align-middle">
+                    <td
+                      key={cell.id}
+                      className="px-4 h-[56px] sm:h-[72px] align-middle text-left whitespace-nowrap"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -194,25 +242,22 @@ export function DynamicTable<TData extends object>({
                 </tr>
               ))
             ) : (
-              <tr className="h-full">
-                <td colSpan={columns.length} className="h-full p-0 align-top">
-                  <div className="flex items-center justify-center w-[1144px] h-[244px] border-[#E9EAEB]">
-                    <div className="w-[512px] h-[196px] flex items-center justify-center pt-[24px] pb-[24px]">
-                      <div className="w-[352px] h-[196px] gap-[24px]">
-                        {/*Top Section*/}
-                        <div className="w-[352px] h-[132px] flex flex-col items-center gap-[16px]">
-                          {/* Icon */}
-                          <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center">
+              <tr>
+                <td colSpan={columns.length} className="p-0">
+                  <div className="min-w-[900px] h-[220px] sm:h-[244px] flex items-center justify-center border-[#E9EAEB]">
+                    <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
+                      <div className="w-[352px] h-[196px] gap-6">
+                        <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
+                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center">
                             <Suspense>
                               <SearchIcon className="text-blue-700" />
                             </Suspense>
                           </div>
-                          {/* Text */}
-                          <div className="w-[352px] h-[68px] flex flex-col items-center gap-[4px]">
+                          <div className="w-[352px] h-[68px] flex flex-col items-center gap-1">
                             <h1 className="text-[#181D27] text-[16px] leading-[24px] font-semibold text-center h-[24px]">
                               No {title} found
                             </h1>
-                            <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-[4px]">
+                            <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-1">
                               Your search “Keyword” did not match any{" "}
                               {title.toLowerCase()}. Please try again or create
                               and add a new{" "}
@@ -220,19 +265,18 @@ export function DynamicTable<TData extends object>({
                             </p>
                           </div>
                         </div>
-                        {/*bottom Section*/}
-                        <div className="w-[352px] flex flex-row gap-[12px] pt-[24px] ">
+                        <div className="w-[352px] flex flex-row gap-3 pt-6">
                           <button
                             type="button"
                             onClick={onClearSearch}
-                            className="w-[170px] h-[40px] border border-[#D5D7DA] rounded-[8px] px-[16px] py-[10px] text-[#414651] text-[14px] font-semibold flex items-center justify-center  hover:bg-gray-100"
+                            className="w-[170px] h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100"
                           >
                             Clear search
                           </button>
                           <button
                             type="button"
-                            className="w-[170px] h-[40px] bg-blue-700 text-white px-[16px] py-[10px] border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-[8px] hover:bg-blue-800"
                             onClick={onAddNewItem}
+                            className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
                           >
                             <Suspense>
                               <PlusIcon />
@@ -249,20 +293,19 @@ export function DynamicTable<TData extends object>({
           </tbody>
         </table>
       </div>
-      {/* Pagination */}
-      <div className="flex justify-between items-center px-4 py-3 border-t dark:border-gray-800 text-sm text-gray-600 w-[1144px] h-[64px]">
-        <div className="pl-6">
+
+      <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
+        <div className="text-center sm:text-left">
           Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
         </div>
-        <div className="space-x-2 pr-6 text-gray-700">
+        <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className="px-3 py-2 w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 dark:text-white"
+            className="px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
           >
             Previous
           </button>
-
           <button
             onClick={() =>
               setCurrentPage((p) =>
@@ -270,7 +313,7 @@ export function DynamicTable<TData extends object>({
               )
             }
             disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-            className="px-3 py-2 w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 dark:text-white"
+            className="px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
           >
             Next
           </button>
