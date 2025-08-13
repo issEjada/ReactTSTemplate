@@ -19,7 +19,7 @@ const DecisionForm = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
-  const previousValues = useRef({ eventSourceDevice: "", scheme: "" });
+  // const previousValues = useRef({ eventSourceDevice: "", scheme: "" });
   const navigate = useNavigate();
 
   const {
