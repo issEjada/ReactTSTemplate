@@ -1,4 +1,4 @@
-import React, { useMemo, Suspense, useState } from "react";
+import React, { Suspense, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -6,9 +6,9 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import FullScreenSpinner from "./FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
+import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
@@ -37,6 +37,7 @@ interface DynamicTableProps<TData extends object> {
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
+  isMonitoringTable?: boolean;
 }
 
 export function DynamicTable<TData extends object>({
@@ -51,19 +52,16 @@ export function DynamicTable<TData extends object>({
   statusFilter,
   onClearSearch,
   onAddNewItem,
-  isLoading,
   error,
   title,
-  description,
   searchText,
   setSearchText,
   openFilterModal,
   applyFilters,
   searchPlaceholder = "Search",
   showStatusFilter = true,
-  filters,
   statusFilterOptions,
-  showHeader = true,
+  isMonitoringTable = false,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -73,7 +71,7 @@ export function DynamicTable<TData extends object>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    getRowId: (originalRow: any, index) =>
+    getRowId: (originalRow: ViewSessionsFormValues, index) =>
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
   const navigate = useNavigate();
@@ -221,11 +219,14 @@ export function DynamicTable<TData extends object>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  onClick={() =>
-                    navigate(AppRoutes.monitoringView, {
-                      state: { id: row.original.id!.toString() },
-                    })
-                  }
+                  {...(isMonitoringTable && {
+                    onClick: () => {
+                      const { id } = row.original as { id: string | number };
+                      navigate(AppRoutes.monitoringView, {
+                        state: { id: id.toString() },
+                      });
+                    },
+                  })}
                   className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800 cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (

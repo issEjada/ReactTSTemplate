@@ -327,6 +327,7 @@ export const MonitoringTable = () => {
             applyFilters={applyFilters}
             searchPlaceholder="Search"
             showStatusFilter={true}
+            isMonitoringTable={true}
             statusFilterOptions={[
               { key: "All", label: "View All" },
               { key: "VIEWED", label: "Viewed" },

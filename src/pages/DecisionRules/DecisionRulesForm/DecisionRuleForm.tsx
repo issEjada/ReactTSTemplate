@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, lazy } from "react";
+import { useEffect, useRef, useState, lazy } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useViewDecisionRules } from "./useDecisionRuleForm";
@@ -48,27 +48,27 @@ const DecisionForm = () => {
   } = useViewDecisionRules();
 
   // Track changes for confirm clear
-  useEffect(() => {
-    if (!editorContent) {
-      previousValues.current = {
-        scheme: formValues!.scheme!,
-        eventSourceDevice: formValues!.eventSourceDevice,
-      };
-      return;
-    }
-    const hasChanged = (
-      Object.keys(previousValues.current) as Array<
-        keyof typeof previousValues.current
-      >
-    ).some((key) => {
-      if (previousValues.current[key] === "") return false;
-      return previousValues.current[key] !== formValues![key];
-    });
+  // useEffect(() => {
+  //   if (!editorContent) {
+  //     previousValues.current = {
+  //       scheme: formValues!.scheme!,
+  //       eventSourceDevice: formValues!.eventSourceDevice,
+  //     };
+  //     return;
+  //   }
+  //   const hasChanged = (
+  //     Object.keys(previousValues.current) as Array<
+  //       keyof typeof previousValues.current
+  //     >
+  //   ).some((key) => {
+  //     if (previousValues.current[key] === "") return false;
+  //     return previousValues.current[key] !== formValues![key];
+  //   });
 
-    // if (isAdding && hasChanged) {
-    //   setShowConfirmModal(true);
-    // }
-  }, [editorContent, isAdding, formValues]);
+  //   // if (isAdding && hasChanged) {
+  //   //   setShowConfirmModal(true);
+  //   // }
+  // }, [editorContent, isAdding, formValues]);
 
   const handleCancel = () => {
     reset();
@@ -83,10 +83,10 @@ const DecisionForm = () => {
     setIsDeletePopupOpen(true);
   };
 
-  const handleConfirmClear = () => {
-    setEditorContent("");
-    // setShowConfirmModal(false);
-  };
+  // const handleConfirmClear = () => {
+  //   setEditorContent("");
+  //   // setShowConfirmModal(false);
+  // };
 
   useEffect(() => {
     if (popupType === "successModal" && loadingState === LoadingState.Success) {
@@ -361,7 +361,7 @@ const DecisionForm = () => {
       {isPopupOpen && (
         <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
           {isAdding && popupType === "successModal" && (
-            <RulesPopupJsx
+            <ScoringRulesPopupJsx
               isAdding
               onConfirm={() => {
                 setIsPopupOpen(false);
