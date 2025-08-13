@@ -313,7 +313,10 @@ const ScoringRuleForm = () => {
       </div>
       {isPopupOpen && (
         <div>
-          <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
+          <PopupLayout
+            isOpen={isPopupOpen}
+            className="md:w-[30%] lg:w-[35%] w-[90%]"
+          >
             {isAdding && popupType === "successModal" && (
               <RulesPopup
                 isAdding

@@ -158,7 +158,10 @@ const RuleMenu = ({
       )}
 
       {isDeletePopupOpen && (
-        <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
+        <PopupLayout
+          isOpen={isDeletePopupOpen}
+          className="md:w-[30%] lg:w-[35%] w-[90%]"
+        >
           <RulesPopupJsx
             isDeleting={true}
             onConfirm={handleConfirmDelete}

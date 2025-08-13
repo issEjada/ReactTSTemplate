@@ -212,7 +212,13 @@ export const MonitoringFilterForm = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                  className="
+                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    border border-gray-300 text-gray-900
+                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    placeholder:text-gray-400 dark:placeholder:text-gray-500
+                    [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
+                  "
                 />
               )}
             />
@@ -226,7 +232,13 @@ export const MonitoringFilterForm = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                  className="
+                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    border border-gray-300 text-gray-900
+                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    placeholder:text-gray-400 dark:placeholder:text-gray-500
+                    [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
+                  "
                 />
               )}
             />
