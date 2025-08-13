@@ -11,7 +11,7 @@ import { DecisionRulesFilter } from "../DecisionRulesFilter/DecisionRulesFilterJ
 import { useDecisionRulesTable } from "./useDecisionRulesTable";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import ScoringRulesPopupJsx from "../../ScoringRules/ScoringRulesForm/ScoringRulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 
@@ -163,7 +163,7 @@ const RuleMenu = ({
           isOpen={isDeletePopupOpen}
           className="md:w-[30%] lg:w-[35%] w-[90%]"
         >
-          <ScoringRulesPopupJsx
+          <RulesPopupJsx
             isDeleting={true}
             onConfirm={handleConfirmDelete}
             onCancel={handleCancelDelete}

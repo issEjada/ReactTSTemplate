@@ -5,7 +5,7 @@ import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesF
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import ScoringRulesPopupJsx from "./ScoringRulesPopupJsx";
+import ScoringRulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
 
@@ -315,7 +315,7 @@ const RuleForm = () => {
         <div>
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
             {isAdding && popupType === "successModal" && (
-              <RulesPopup
+              <ScoringRulesPopupJsx
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);

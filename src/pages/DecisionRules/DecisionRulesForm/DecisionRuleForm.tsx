@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, lazy } from "react";
+import { useEffect, useState, lazy } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useViewDecisionRules } from "./useDecisionRuleForm";
@@ -8,7 +8,7 @@ import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { LoadingState } from "../../../types/types";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import LayoutPopup from "../../../components/Popup/LayoutPopup";
-import ScoringRulesPopupJsx from "../../ScoringRules/ScoringRulesForm/ScoringRulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -361,7 +361,7 @@ const DecisionForm = () => {
       {isPopupOpen && (
         <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
           {isAdding && popupType === "successModal" && (
-            <ScoringRulesPopupJsx
+            <RulesPopupJsx
               isAdding
               onConfirm={() => {
                 setIsPopupOpen(false);
@@ -374,7 +374,7 @@ const DecisionForm = () => {
             />
           )}
           {isEditing && popupType === "successModal" && (
-            <ScoringRulesPopupJsx
+            <RulesPopupJsx
               isEditing
               onConfirm={() => {
                 setIsPopupOpen(false);
@@ -387,7 +387,7 @@ const DecisionForm = () => {
             />
           )}
           {popupType === "errorModal" && (
-            <ScoringRulesPopupJsx
+            <RulesPopupJsx
               isError
               errorMessage={popupMessage}
               onConfirm={() => setIsPopupOpen(false)}
@@ -400,7 +400,7 @@ const DecisionForm = () => {
       {/* Delete Popup */}
       {isDeletePopupOpen && (
         <LayoutPopup isOpen={isDeletePopupOpen} className="w-[30%]">
-          <ScoringRulesPopupJsx
+          <RulesPopupJsx
             isDeleting
             onConfirm={() => {
               setIsDeletePopupOpen(false);

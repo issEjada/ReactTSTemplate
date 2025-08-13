@@ -12,7 +12,7 @@ import { useScoringRulesTable } from "./useScoringRulesTable";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../ScoringRulesForm/ScoringRulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
