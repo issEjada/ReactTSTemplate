@@ -33,22 +33,7 @@ export const useMonitoringTable = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(7);
-  const [filters, setFilters] = useState<ViewSessionsFormValues>({
-    id: 0,
-    sessionId: "",
-    deviceId: "",
-    channel: "",
-    industry: "",
-    ip: "",
-    country: "",
-    city: "",
-    fromCreationTimestamp: "",
-    toCreationTimestamp: "",
-    scheme: "",
-    eventSourceDevice: "",
-    eventName: "",
-    customerIdentity: "",
-  });
+  const [filters, setFilters] = useState<ViewSessionsFormValues | object>({});
 
   const fetchData = async () => {
     setIsLoading(true);
