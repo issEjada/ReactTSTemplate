@@ -10,5 +10,9 @@ export const API = {
   getRuleParameter: "/rules-parameters/v1/scoring-rules-parameters",
   getHomeStatistics: "/homepage/v1/statistics",
   monitoring: "/user-sessions/v1/search",
-  viewMonitoring: "/user-sessions/v1"
+  viewMonitoring: "/user-sessions/v1",
+  decisionRules: "/decision-rules-management/v1/decision-rules/search",
+  getDecisionRuleById: "/decision-rules-management/v1/decision-rules",
+  getDecisionParameter: "/rules-parameters/v1/decision-rules-parameters",
+  getEventDropDownsValues: "/v1/events/lov",
 };

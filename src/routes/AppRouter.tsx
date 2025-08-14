@@ -2,14 +2,16 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import App from "../App";
 import Home from "../pages/Home";
-import LoginForm from "../pages/Login/Login";
+import LoginForm from "../pages/Login";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
 import AboutUs from "../pages/AboutUs";
-import { RulesTable } from "../pages/ScoringRules/RulesTable/RulesTable";
+import { ScoringRulesTable } from "../pages/ScoringRules/ScoringRulesTable/ScoringRulesTable";
 import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringTable";
 import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
-import RuleForm from "../pages/ScoringRules/RulesForm/RuleForm";
+import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
+import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
+import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -102,16 +104,16 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.rules,
+        path: AppRoutes.scoringRules,
         element: (
           <ProtectedRoute>
-            <RulesTable />
+            <ScoringRulesTable />
           </ProtectedRoute>
         ),
         errorElement: <></>,
       },
       {
-        path: AppRoutes.addRule,
+        path: AppRoutes.addScoringRule,
         element: (
           <ProtectedRoute>
             <RuleForm />
@@ -120,7 +122,7 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.viewRule,
+        path: AppRoutes.viewScoringRule,
         element: (
           <ProtectedRoute>
             <RuleForm />
@@ -129,10 +131,46 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.editRule,
+        path: AppRoutes.editScoringRule,
         element: (
           <ProtectedRoute>
             <RuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.decisionRules,
+        element: (
+          <ProtectedRoute>
+            <DecisionRulesTable />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.addDecisionRule,
+        element: (
+          <ProtectedRoute>
+            <DecisionRuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.viewDecisionRule,
+        element: (
+          <ProtectedRoute>
+            <DecisionRuleForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.editDecisionRule,
+        element: (
+          <ProtectedRoute>
+            <DecisionRuleForm />
           </ProtectedRoute>
         ),
         errorElement: <></>,

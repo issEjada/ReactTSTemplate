@@ -3,13 +3,14 @@ import {
   ScoringRulesServices,
   type GetScoringRulesItemInterface,
   type GetScoringRulesListResponse,
-} from "../rulesServices";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
+} from "../scoringRulesServices";
+import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { cleanObject } from "../../../utils/helpers";
+import { LoadingState } from "../../../types/types";
 
 export const useScoringRulesTable = () => {
   const [data, setData] = useState<GetScoringRulesItemInterface[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingState, setloadingState] = useState<LoadingState>();
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -25,7 +26,7 @@ export const useScoringRulesTable = () => {
     setCurrentPage(1);
   };
   const fetchData = async () => {
-    setIsLoading(true);
+    setloadingState(LoadingState.Loading);
     setError(null);
 
     await ScoringRulesServices.getScoringRulesList({
@@ -39,20 +40,24 @@ export const useScoringRulesTable = () => {
       })
       .catch((err) => {
         console.error("Failed to fetch scoring rules:", err);
-        setError("Error:");
+        setError(err);
+        setloadingState(LoadingState.Error);
       })
       .finally(() => {
-        setIsLoading(false);
+        setloadingState(LoadingState.Success);
       });
   };
 
   const deleteRule = (id: number) => {
+    setloadingState(LoadingState.Loading);
     ScoringRulesServices.deleteRuleById(id)
       .then(() => {
         fetchData();
+        setloadingState(LoadingState.Success);
       })
       .catch((err) => {
         console.error("Delete error:", err);
+        setloadingState(LoadingState.Error);
       });
   };
 
@@ -62,7 +67,7 @@ export const useScoringRulesTable = () => {
 
   return {
     data,
-    isLoading,
+    loadingState,
     error,
     totalCount,
     currentPage,

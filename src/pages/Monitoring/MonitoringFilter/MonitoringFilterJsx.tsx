@@ -60,7 +60,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Session ID"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px]"
               />
             )}
           />
@@ -71,7 +71,7 @@ export const MonitoringFilterForm = ({
               className="w-4 h-4 cursor-pointer"
               alt="Tooltip"
             />
-            <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+            <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 ">
               Enter Session ID.
             </div>
           </div>
@@ -87,7 +87,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Device ID"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px] "
               />
             )}
           />
@@ -114,7 +114,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Customer Identity"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px]"
               />
             )}
           />
@@ -196,7 +196,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter IP Address"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px]"
               />
             )}
           />
@@ -212,7 +212,13 @@ export const MonitoringFilterForm = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                  className="
+                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    border border-gray-300 text-gray-900
+                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    placeholder:text-gray-400 dark:placeholder:text-gray-500
+                    [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
+                  "
                 />
               )}
             />
@@ -226,7 +232,13 @@ export const MonitoringFilterForm = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm"
+                  className="
+                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    border border-gray-300 text-gray-900
+                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    placeholder:text-gray-400 dark:placeholder:text-gray-500
+                    [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
+                  "
                 />
               )}
             />

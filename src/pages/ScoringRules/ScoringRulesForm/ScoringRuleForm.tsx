@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
-import type { ViewRulesFormValues } from "../RulesFilter/useRulesFilter";
-import useViewScoringRules from "./useRuleForm";
+import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopup from "./RulesPopupJsx";
+import ScoringRulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import useViewScoringRules from "./useScoringRuleForm";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -46,13 +46,13 @@ const RuleForm = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
 
   const handleCancel = () => {
-    reset(); // Clear form values
-    navigate("/rules"); // Navigate back to rules table
+    reset();
+    navigate("/scoring-rules");
   };
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/rules/edit"); // Navigate to the edit page
+    navigate("/scoring-rules/edit");
   };
 
   const handleDeleteClick = () => {
@@ -315,37 +315,37 @@ const RuleForm = () => {
         <div>
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
             {isAdding && popupType === "successModal" && (
-              <RulesPopup
+              <ScoringRulesPopupJsx
                 isAdding
                 onConfirm={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules/add"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules/add");
                 }}
                 onCancel={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules");
                 }}
               />
             )}
             {isEditing && popupType === "successModal" && (
-              <RulesPopup
+              <ScoringRulesPopupJsx
                 isEditing
                 onConfirm={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules/add"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules/add");
                 }}
                 onCancel={() => {
-                  setIsPopupOpen(false); // Close popup
-                  navigate("/rules"); // Navigate to /rules/add
+                  setIsPopupOpen(false);
+                  navigate("/scoring-rules");
                 }}
               />
             )}
             {popupType === "errorModal" && (
-              <RulesPopup
+              <ScoringRulesPopupJsx
                 isError
                 errorMessage={popupMessage}
-                onConfirm={() => setIsPopupOpen(false)} // No confirm action for error
-                onCancel={() => setIsPopupOpen(false)} // Close popup on cancel
+                onConfirm={() => setIsPopupOpen(false)}
+                onCancel={() => setIsPopupOpen(false)}
               />
             )}
           </PopupLayout>
@@ -354,15 +354,14 @@ const RuleForm = () => {
       {isDeletePopupOpen && (
         <div>
           <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
-            <RulesPopup
+            <ScoringRulesPopupJsx
               isDeleting
               onConfirm={() => {
-                // Handle delete logic here
-                setIsDeletePopupOpen(false); // Close popup after delete
-                navigate("/rules"); // Navigate back to rules table after deletion
+                setIsDeletePopupOpen(false);
+                navigate("/scoring-rules");
               }}
               onCancel={() => {
-                setIsDeletePopupOpen(false); // Close popup
+                setIsDeletePopupOpen(false);
               }}
             />
           </PopupLayout>
