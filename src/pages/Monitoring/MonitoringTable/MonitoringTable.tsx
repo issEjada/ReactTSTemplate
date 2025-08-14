@@ -30,7 +30,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
       </div>
     ),
@@ -41,7 +41,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     cell: (info) => (
       <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 h-[20px] overflow-hidden">
           category
@@ -55,7 +55,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
       </div>
     ),
@@ -66,7 +66,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
       </div>
     ),

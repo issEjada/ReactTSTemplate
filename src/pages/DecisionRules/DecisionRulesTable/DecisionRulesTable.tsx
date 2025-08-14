@@ -431,7 +431,7 @@ const getColumns = (
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>
@@ -462,7 +462,7 @@ const getColumns = (
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>
@@ -474,7 +474,7 @@ const getColumns = (
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>
