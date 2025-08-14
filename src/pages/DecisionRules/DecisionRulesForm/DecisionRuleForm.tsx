@@ -368,7 +368,7 @@ const DecisionForm = () => {
               isAdding
               onConfirm={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules/add");
+                navigate("/decision-rules/new-rule");
               }}
               onCancel={() => {
                 setIsPopupOpen(false);

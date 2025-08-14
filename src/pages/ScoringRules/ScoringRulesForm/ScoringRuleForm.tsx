@@ -52,7 +52,7 @@ const RuleForm = () => {
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/scoring-rules/edit");
+    navigate("/scoring-rules/edit-rule");
   };
 
   const handleDeleteClick = () => {
@@ -325,7 +325,7 @@ const RuleForm = () => {
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules/add");
+                  navigate("/scoring-rules/new-rule");
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
@@ -338,7 +338,7 @@ const RuleForm = () => {
                 isEditing
                 onConfirm={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules/add");
+                  navigate("/scoring-rules/new-rule");
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);

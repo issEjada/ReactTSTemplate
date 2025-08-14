@@ -70,7 +70,7 @@ const RuleMenu = ({
 
   const handleView = () => {
     setOpen(false);
-    navigate("/scoring-rules/view", {
+    navigate("/scoring-rules/view-rule", {
       state: {
         id: rule.id,
         action: "view",
@@ -80,7 +80,7 @@ const RuleMenu = ({
 
   const handleEdit = () => {
     setOpen(false);
-    navigate("/scoring-rules/edit", {
+    navigate("/scoring-rules/edit-rule", {
       state: {
         id: rule.id,
         action: "edit",
@@ -250,7 +250,7 @@ export const ScoringRulesTable = () => {
   const navigate = useNavigate();
 
   const handleAddNewRule = () => {
-    navigate("/scoring-rules/add");
+    navigate("/scoring-rules/new-rule");
   };
 
   const handleClearSearch = () => {

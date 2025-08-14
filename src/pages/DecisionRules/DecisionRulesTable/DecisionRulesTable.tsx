@@ -71,7 +71,7 @@ const RuleMenu = ({
 
   const handleView = () => {
     setOpen(false);
-    navigate("/decision-rules/view", {
+    navigate("/decision-rules/view-rule", {
       state: {
         id: rule.id,
         action: "view",
@@ -81,7 +81,7 @@ const RuleMenu = ({
 
   const handleEdit = () => {
     setOpen(false);
-    navigate("/decision-rules/edit", {
+    navigate("/decision-rules/edit-rule", {
       state: {
         id: rule.id,
         action: "edit",
@@ -257,7 +257,7 @@ export const DecisionRulesTable = () => {
   const navigate = useNavigate();
 
   const handleAddNewRule = () => {
-    navigate("/decision-rules/add");
+    navigate("/decision-rules/new-rule");
   };
 
   const handleClearSearch = () => {
@@ -281,7 +281,7 @@ export const DecisionRulesTable = () => {
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Decision Rule{" "}
+            Decision Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
               {totalCount} Rule
               {totalCount !== 1 && "s"}
@@ -446,13 +446,18 @@ const getColumns = (
     accessorKey: "status",
     cell: (info) => (
       <span
-        className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
             ? "bg-green-100 text-green-700"
             : "bg-gray-200 text-gray-700"
         }`}
       >
-        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        <div
+          className={`rounded-full bg-black w-[6px] h-[6px] ${
+            info.getValue() === "ENABLED" ? "bg-green-500" : "bg-gray-500"
+          }`}
+        ></div>
+        {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
       </span>
     ),
   },
