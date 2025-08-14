@@ -106,7 +106,7 @@ const RuleForm = () => {
             focus:outline-none focus:ring-2
             ${
               fieldState.error
-                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
                 : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
             }
             ${
@@ -137,8 +137,8 @@ const RuleForm = () => {
       </div>
 
       {/* Form Body */}
-      <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+      <div className="flex flex-col gap-[12px] h-[412px] w-[1440px] gap-y-[24px] mb-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="identifier.eventSourceDevice"
@@ -147,7 +147,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -164,12 +164,13 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               schemeValues.length === 0
             }
+            required
           />
 
           <DropdownMenu<ViewRulesFormValues>
@@ -180,16 +181,17 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               asapectValues.length === 0
             }
+            required
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="identifier.controlCode"
@@ -198,12 +200,13 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[105%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               controlValues.length === 0
             }
+            required
           />
 
           <DropdownMenu<ViewRulesFormValues>
@@ -214,16 +217,17 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[105%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               platfromValues.length === 0
             }
+            required
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="status"
@@ -234,6 +238,7 @@ const RuleForm = () => {
             }))}
             className="w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
+            required
           />
           <DropdownMenu<ViewRulesFormValues>
             control={control}
@@ -243,8 +248,9 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[47%]"
+            className="w-[50%]"
             disabled={screenAction === "view" || riskLevelValues.length === 0}
+            required
           />
         </div>
 
@@ -252,7 +258,7 @@ const RuleForm = () => {
         <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
-            className="text-sm font-medium text-[#414651] mb-[14px]"
+            className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white"
           >
             Description
           </label>

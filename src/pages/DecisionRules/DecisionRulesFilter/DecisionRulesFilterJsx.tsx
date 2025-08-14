@@ -173,7 +173,13 @@ export const DecisionRulesFilter = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                  className="
+                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    border border-gray-300 text-gray-900
+                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    placeholder:text-gray-400 dark:placeholder:text-gray-500
+                    [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
+                  "
                 />
               )}
             />
@@ -187,7 +193,13 @@ export const DecisionRulesFilter = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                  className="
+                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    border border-gray-300 text-gray-900
+                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    placeholder:text-gray-400 dark:placeholder:text-gray-500
+                    [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
+                  "
                 />
               )}
             />
@@ -203,7 +215,7 @@ export const DecisionRulesFilter = ({
           </button>
           <button
             type="button"
-            className="text-sm text-gray-700 hover:underline hover:bg-gray-100 border border-gray-200 rounded-md px-4 py-2"
+            className="text-sm text-gray-700 hover:underline hover:bg-gray-100 dark:text-white dark:hover:bg-white dark:hover:text-black border border-gray-200 rounded-md px-4 py-2"
             onClick={handleClear}
           >
             Clear

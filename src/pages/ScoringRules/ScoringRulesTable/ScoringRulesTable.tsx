@@ -128,18 +128,17 @@ const RuleMenu = ({
         <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white">
           <button
             type="button"
-            className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"
+            className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
             onClick={handleView}
           >
-            <div className="w-[16px] h-[16px] flex items-center justify-center">
-              <ViewIcon />
-            </div>
+            <ViewIcon />
+
             <span className="text-[14px] whitespace-nowrap">View Details</span>
           </button>
           <div className="border-t border-gray-200" />
           <button
             type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
+            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
             onClick={handleEdit}
           >
             <EditIcon />
@@ -148,7 +147,7 @@ const RuleMenu = ({
           <div className="border-t border-gray-200" />
           <button
             type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
+            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
             onClick={handleDelete}
           >
             <DeleteIcon />
