@@ -14,6 +14,7 @@ import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { createPortal } from "react-dom";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -44,22 +45,21 @@ const RuleMenu = ({
   onDelete: (id: number) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [ruleToDeleteId, setRuleToDeleteId] = useState<number | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    },
-    [dropdownRef]
-  );
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (!buttonRef.current) return;
+    if (
+      !buttonRef.current.contains(event.target as Node) &&
+      !(event.target as HTMLElement).closest(".rule-menu-portal")
+    ) {
+      setOpen(false);
+    }
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -68,23 +68,28 @@ const RuleMenu = ({
     };
   }, [handleClickOutside]);
 
+  const toggleMenu = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY, // below button
+        left: rect.right - 143 + window.scrollX, // align right
+      });
+    }
+    setOpen((prev) => !prev);
+  };
+
   const handleView = () => {
     setOpen(false);
     navigate("/scoring-rules/view-rule", {
-      state: {
-        id: rule.id,
-        action: "view",
-      },
+      state: { id: rule.id, action: "view" },
     });
   };
 
   const handleEdit = () => {
     setOpen(false);
     navigate("/scoring-rules/edit-rule", {
-      state: {
-        id: rule.id,
-        action: "edit",
-      },
+      state: { id: rule.id, action: "edit" },
     });
   };
 
@@ -108,13 +113,11 @@ const RuleMenu = ({
   };
 
   return (
-    <div
-      ref={dropdownRef}
-      className="relative inline-flex items-center justify-center "
-    >
+    <>
       <button
+        ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={() => setOpen(!open)}
+        onClick={toggleMenu}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -124,37 +127,46 @@ const RuleMenu = ({
         </span>
       </button>
 
-      {open && (
-        <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white">
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-            onClick={handleView}
+      {open &&
+        createPortal(
+          <div
+            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            style={{
+              top: coords.top,
+              left: coords.left,
+            }}
           >
-            <ViewIcon />
-
-            <span className="text-[14px] whitespace-nowrap">View Details</span>
-          </button>
-          <div className="border-t border-gray-200" />
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-            onClick={handleEdit}
-          >
-            <EditIcon />
-            <span className="text-[14px]">Edit Rule</span>
-          </button>
-          <div className="border-t border-gray-200" />
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-            onClick={handleDelete}
-          >
-            <DeleteIcon />
-            <span className="text-[14px]">Delete</span>
-          </button>
-        </div>
-      )}
+            <button
+              type="button"
+              className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
+              onClick={handleView}
+            >
+              <ViewIcon />
+              <span className="text-[14px] whitespace-nowrap">
+                View Details
+              </span>
+            </button>
+            <div className="border-t border-gray-200" />
+            <button
+              type="button"
+              className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
+              onClick={handleEdit}
+            >
+              <EditIcon />
+              <span className="text-[14px]">Edit Rule</span>
+            </button>
+            <div className="border-t border-gray-200" />
+            <button
+              type="button"
+              className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
+              onClick={handleDelete}
+            >
+              <DeleteIcon />
+              <span className="text-[14px]">Delete</span>
+            </button>
+          </div>,
+          document.body
+        )}
 
       {isDeletePopupOpen && (
         <PopupLayout
@@ -168,7 +180,7 @@ const RuleMenu = ({
           />
         </PopupLayout>
       )}
-    </div>
+    </>
   );
 };
 
