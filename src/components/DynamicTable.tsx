@@ -192,7 +192,9 @@ export function DynamicTable<TData extends object>({
                             )}
                       </span>
                       {(header.id === "deviceId" ||
-                        header.id === "sessionId") && (
+                        header.id === "sessionId" ||
+                        header.id === "name" ||
+                        header.id === "id") && (
                         <button onClick={() => onArrowClick(header.column.id)}>
                           <ArrowIcon
                             className={`stroke-gray-600 dark:stroke-white   ${
