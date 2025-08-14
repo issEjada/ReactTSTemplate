@@ -22,9 +22,10 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
-const LockIcon = React.lazy(
-  () => import("../../../assets/svg/LockIcon.svg?react")
+const RuleIcon = React.lazy(
+  () => import("../../../assets/svg/EmptyDecisions.svg?react")
 );
+
 const BackgroundCircle = React.lazy(
   () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
@@ -337,7 +338,7 @@ export const DecisionRulesTable = () => {
             {/* Lock Icon in styled border */}
             <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
               <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <LockIcon className="sm:w-[28px] sm:h-[28px]" />
+                <RuleIcon className="sm:w-[28px] sm:h-[28px]" />
               </div>
             </div>
           </div>
