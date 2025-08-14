@@ -270,7 +270,7 @@ export const ScoringRulesTable = () => {
   }
 
   return (
-    <div className="p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800">
+    <div className="p-6 bg-white shadow-sm dark:bg-black">
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -325,7 +325,7 @@ export const ScoringRulesTable = () => {
           </div>
 
           {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px]">
+          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
             Start adding new rules
           </h3>
           <p className="text-sm text-gray-500 mb-6">

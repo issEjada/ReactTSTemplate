@@ -41,7 +41,7 @@ const NoSessions = () => {
             </div>
           </div>
           {/* Title & Description */}
-          <div className="flex flex-col items-center w-full gap-1 mt-[36px] sm:mt-[48px]">
+          <div className="flex flex-col items-center w-full gap-1 mt-[36px] sm:mt-[48px] dark:text-white">
             <span className="sm:text-[16px] leading-[22px] sm:leading-[24px] font-semibold text-gray-900 text-center">
               Start adding new sessions
             </span>

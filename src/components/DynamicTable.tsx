@@ -245,13 +245,13 @@ export function DynamicTable<TData extends object>({
                     <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
-                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center  dark:border-gray-700 ">
                             <Suspense>
                               <SearchIcon className="text-blue-700" />
                             </Suspense>
                           </div>
                           <div className="w-[352px] h-[68px] flex flex-col items-center gap-1">
-                            <h1 className="text-[#181D27] text-[16px] leading-[24px] font-semibold text-center h-[24px]">
+                            <h1 className="text-[#181D27] text-[16px] leading-[24px] font-semibold text-center h-[24px] dark:text-white">
                               No {title} found
                             </h1>
                             <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-1">
@@ -266,7 +266,7 @@ export function DynamicTable<TData extends object>({
                           <button
                             type="button"
                             onClick={onClearSearch}
-                            className="w-[170px] h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100"
+                            className="w-[170px] h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black"
                           >
                             Clear search
                           </button>
