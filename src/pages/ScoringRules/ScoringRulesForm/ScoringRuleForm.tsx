@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
@@ -59,7 +59,7 @@ const RuleForm = () => {
     setIsDeletePopupOpen(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (popupType === "successModal" && loadingState === "success") {
       setIsPopupOpen(true);
     } else if (popupType === "errorModal" && loadingState === "error") {
@@ -303,6 +303,7 @@ const RuleForm = () => {
         <div className="flex gap-4">
           <button
             type="submit"
+            onClick={() => setIsPopupOpen(true)}
             className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto mt-10 hover:bg-blue-900 transition duration-100"
           >
             Save Rule

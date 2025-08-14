@@ -346,6 +346,7 @@ const DecisionForm = () => {
       <div className="flex justify-end gap-4 px-6 pb-6">
         <button
           type="submit"
+          onClick={() => setIsPopupOpen(true)}
           disabled={isViewing}
           className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-900 transition duration-100 disabled:opacity-50"
         >
