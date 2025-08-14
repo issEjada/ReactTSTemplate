@@ -118,7 +118,7 @@ const DecisionForm = () => {
             Decision Rule
             {isViewing && (
               <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px]"
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px"
                 onClick={handleEditClick}
               >
                 <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
@@ -138,7 +138,7 @@ const DecisionForm = () => {
                   className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium focus:outline-none focus:ring-2
                     ${
                       fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
                         : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
                     }
                     ${
@@ -177,12 +177,11 @@ const DecisionForm = () => {
 
       {/* Dropdowns */}
       <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <div className="">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
+          <div className="w-[368px] h-[70px]">
             <label
               htmlFor="criteriaName"
-              className="block text-sm font-medium text-[#414651] mb-2 dark:text-white"
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              className="block text-sm font-medium text-[#414651] mb-[0.8px]  dark:text-white"
             >
               Criteria Name
             </label>
@@ -195,7 +194,7 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Criteria Name"
                   disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium focus:outline-none focus:ring-2
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] w-[320px] h-[44px] focus:outline-none focus:ring-2
                     ${
                       fieldState.error
                         ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
@@ -234,10 +233,11 @@ const DecisionForm = () => {
             }))}
             className="w-[102%]"
             disabled={isViewing || isEditing || schemeValues.length === 0}
+            required
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center px-6 py-5 gap-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center px-6 py-5 gap-[16px]">
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
             name="decision"
@@ -248,6 +248,7 @@ const DecisionForm = () => {
             }))}
             className="w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
+            required
           />
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
@@ -257,12 +258,13 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[47%]"
+            className="w-[50%]"
             disabled={isViewing || isEditing || eventNameValues.length === 0}
+            required
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center px-6 py-5 gap-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center px-6 py-5 gap-[16px]">
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
             name="status"
@@ -271,15 +273,16 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-[49.3%]"
             disabled={screenAction === "view" || statusValues.length === 0}
+            required
           />
         </div>
 
         <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
-            className="text-sm font-medium text-[#414651] mb-[14px]"
+            className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white"
           >
             Description
           </label>
@@ -294,7 +297,7 @@ const DecisionForm = () => {
                   id="description"
                   placeholder="Enter a description..."
                   disabled={isDisabled}
-                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
+                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white  ${
                     isDisabled
                       ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
                       : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
@@ -307,7 +310,7 @@ const DecisionForm = () => {
       </div>
 
       {/* Conditions Editor */}
-      <div className="flex items-center gap-2 pl-6 pt-6">
+      <div className="flex items-center gap-2 pl-6 pt-[36px]">
         <div className="flex justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full">
           <ConditionIcon className="object-contain text-blue-700" />
         </div>
