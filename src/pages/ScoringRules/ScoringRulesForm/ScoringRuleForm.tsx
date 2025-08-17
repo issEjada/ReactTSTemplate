@@ -38,6 +38,8 @@ const RuleForm = () => {
     popupMessage,
     setScreenAction,
     loadingState, // Add loadingState here
+    isFormValid,
+    formValues
   } = useViewScoringRules();
 
   // const [isLoading, setIsLoading] = useState();
@@ -291,13 +293,32 @@ const RuleForm = () => {
         </div>
         <h3 className="text-[1.2rem]">Condition Editor</h3>
       </div>
-
+      
+      {isFormValid ? (
       <ConditionEditor
         editorContent={editorContent}
         parametersData={parametersData}
         setEditorContent={setEditorContent}
         isReadOnly={screenAction === "view"} // Pass isReadOnly prop
       />
+      ) : (
+        <div className="px-6 py-4 text-red-500">
+          Please complete all required fields to enable the Conditions.
+          <ul className="mt-4">
+            {Object.entries(formValues!).map(([field, isValid]) =>
+              !isValid ? (
+                <li
+                  key={field}
+                  className="text-sm text-red-600 list-disc list-inside"
+                >
+                  {field} is required.
+                </li>
+              ) : null
+            )}
+          </ul>
+        </div>
+      )}
+
       {/* {isEditing && ( */}
       <div className="flex justify-end pb-6 pr-[80px]">
         <div className="flex gap-4">
