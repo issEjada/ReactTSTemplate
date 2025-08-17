@@ -51,7 +51,7 @@ export const ScoringRulesFilterForm = ({
         onSubmit={onFormSubmit}
       >
         <div className="relative flex flex-col mt-6">
-          <label className="text-sm font-medium dark:text-gray-600">
+          <label className="text-sm font-medium dark:text-white">
             Rule Name
           </label>
           <Controller

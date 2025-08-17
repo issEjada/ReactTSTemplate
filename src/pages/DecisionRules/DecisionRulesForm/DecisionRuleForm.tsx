@@ -178,12 +178,21 @@ const DecisionForm = () => {
       {/* Dropdowns */}
       <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
         <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <div className="w-[368px] h-[70px]">
+          <div className="w-[368px] h-[120px]">
             <label
               htmlFor="criteriaName"
-              className="block text-sm font-medium text-[#414651] mb-[0.8px]  dark:text-white"
+              className="block text-sm font-medium text-[#414651] mb-[6px] mt-[20.8px] dark:text-white"
             >
               Criteria Name
+              {isAdding && (
+                <span
+                  className="text-red-500 ml-1"
+                  aria-hidden="true"
+                  title="Required"
+                >
+                  *
+                </span>
+              )}
             </label>
             <Controller
               name="criteriaName"

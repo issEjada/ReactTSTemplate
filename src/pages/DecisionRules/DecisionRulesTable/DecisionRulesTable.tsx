@@ -83,14 +83,14 @@ const RuleMenu = ({
 
   const handleView = () => {
     setOpen(false);
-    navigate("/scoring-rules/view-rule", {
+    navigate("/decision-rules/view-rule", {
       state: { id: rule.id, action: "view" },
     });
   };
 
   const handleEdit = () => {
     setOpen(false);
-    navigate("/scoring-rules/edit-rule", {
+    navigate("/decision-rules/edit-rule", {
       state: { id: rule.id, action: "edit" },
     });
   };
