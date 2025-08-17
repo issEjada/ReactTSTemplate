@@ -449,14 +449,19 @@ const getColumns = (
     header: "Status",
     accessorKey: "status",
     cell: (info) => (
-      <span
-        className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+       <span
+        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
             ? "bg-green-100 text-green-700"
             : "bg-gray-200 text-gray-700"
         }`}
       >
-        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        <div
+          className={`rounded-full bg-black w-[6px] h-[6px] ${
+            info.getValue() === "ENABLED" ? "bg-green-500" : "bg-gray-500"
+          }`}
+        ></div>
+        {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
       </span>
     ),
   },
