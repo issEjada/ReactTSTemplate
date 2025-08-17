@@ -152,7 +152,7 @@ const RuleMenu = ({
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
               onClick={handleEdit}
             >
-              <EditIcon />
+              <EditIcon className="h-4 w-4"/>
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
