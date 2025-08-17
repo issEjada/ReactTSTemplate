@@ -263,7 +263,7 @@ export function DynamicTable<TData extends object>({
                               No {title} found
                             </h1>
                             <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-1">
-                              Your search “Keyword” did not match any{" "}
+                              Your search "{searchText}" did not match any{" "}
                               {title.toLowerCase()}. Please try again or create
                               and add a new{" "}
                               {title.includes("Rules") ? "rule" : "item"}.
