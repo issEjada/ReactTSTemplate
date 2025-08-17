@@ -328,6 +328,7 @@ function useViewScoringRules() {
       ScoringRulesServices.createRule(body)
         .then(() => {
           setloadingState(LoadingState.Success);
+          setPopupType("successModal");
         })
         .catch((error) => {
           setloadingState(LoadingState.Error);
@@ -348,6 +349,7 @@ function useViewScoringRules() {
       ScoringRulesServices.updateRule(updateBody, id)
         .then(() => {
           setloadingState(LoadingState.Success);
+          setPopupType("successModal");
         })
         .catch((error) => {
           setloadingState(LoadingState.Error);
@@ -366,6 +368,7 @@ function useViewScoringRules() {
     await ScoringRulesServices.deleteRulesById(data)
       .then(() => {
         setloadingState(LoadingState.Success);
+        setPopupType("successModal");
       })
       .catch((error) => {
         setloadingState(LoadingState.Error);
