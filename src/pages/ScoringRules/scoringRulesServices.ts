@@ -123,11 +123,11 @@ export interface CreateRulesPayload {
 }
 
 export interface UpdateRulesPayload {
-  name: string;
-  riskLevel: string;
-  condition: string;
-  status: string;
-  description: string;
+  name?: string;
+  riskLevel?: string;
+  condition?: string;
+  status?: string;
+  description?: string;
 }
 
 export const ScoringRulesServices = {

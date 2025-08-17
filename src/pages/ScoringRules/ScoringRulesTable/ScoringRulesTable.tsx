@@ -22,7 +22,9 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
-const PlusIconBlue = React.lazy(() => import("../../../assets/svg/PlusIconBlue.svg?react"));
+const PlusIconBlue = React.lazy(
+  () => import("../../../assets/svg/PlusIconBlue.svg?react")
+);
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
@@ -154,7 +156,7 @@ const RuleMenu = ({
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
               onClick={handleEdit}
             >
-              <EditIcon className="h-4 w-4"/>
+              <EditIcon className="h-4 w-4" />
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -202,6 +204,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     refetch,
     handleSearchSubmit,
     deleteRule,
+    handleToggleStatus, // Destructure handleToggleStatus from the hook
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -245,10 +248,6 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     setCurrentPage(1);
   };
 
-  const handleToggleStatus = async () => {
-    await refetch();
-  };
-
   const handleDeleteRule = async (id: number) => {
     try {
       await deleteRule(id);
@@ -260,8 +259,8 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   // const showHeaderAddButton = fromDashboard ? true : totalCount !== 0;
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule),
-    []
+    () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
+    [handleToggleStatus, handleDeleteRule] // Add dependencies
   );
 
   const navigate = useNavigate();
@@ -287,11 +286,13 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   }
 
   return (
-<div
-  className={`p-6 bg-white shadow-sm dark:bg-black ${
-    fromDashboard ? "w-[700px]" : "w-full"
-  }`}
->      <div className="mb-6 flex justify-between">
+    <div
+      className={`p-6 bg-white shadow-sm dark:bg-black ${
+        fromDashboard ? "w-[700px]" : "w-full"
+      }`}
+    >
+      {" "}
+      <div className="mb-6 flex justify-between">
         <div className="flex  flex-col pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Scoring Rules{" "}
@@ -301,9 +302,9 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             </span>
           </h2>
 
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
+          <p className="text-sm text-gray-500 mt-1">
+            Keep track of customers and their security levels.
+          </p>
           {totalCount !== 0 && (
             <button
               onClick={handleAddNewRule}
@@ -315,18 +316,18 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           )}
         </div>
 
-            <div>{fromDashboard && (
-      <button
-        onClick={handleAddNewRule}
-        className="h-10 w-10 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
-        aria-label="Add New Rule"
-      >
-        <PlusIconBlue className="w-[20px] h-[20px]" />
-      </button>
-    )}
-    </div>
+        <div>
+          {fromDashboard && (
+            <button
+              onClick={handleAddNewRule}
+              className="h-10 w-10 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+              aria-label="Add New Rule"
+            >
+              <PlusIconBlue className="w-[20px] h-[20px]" />
+            </button>
+          )}
+        </div>
       </div>
-
       {totalCount === 0 && !isFilterActive ? (
         <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
           {/* Wrapper for icon + background */}
@@ -382,20 +383,22 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           }))}
           columns={columns}
           filterComponent={
-              !fromDashboard ? (
-                <ScoringRulesFilterForm
-                  isOpen={isFilterOpen}
-                  closeDrawer={closeFilterModal}
-                  filterData={filters}
-                  handleSearchSubmit={handleSearchSubmit}
-                />
-              ) : undefined
-            }
+            !fromDashboard ? (
+              <ScoringRulesFilterForm
+                isOpen={isFilterOpen}
+                closeDrawer={closeFilterModal}
+                filterData={filters}
+                handleSearchSubmit={handleSearchSubmit}
+              />
+            ) : undefined
+          }
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
-          onFilterStatus={!fromDashboard ? (onFilterStatus as (s: string) => void) : undefined}
+          onFilterStatus={
+            !fromDashboard ? (onFilterStatus as (s: string) => void) : undefined
+          }
           statusFilter={!fromDashboard ? statusFilter : undefined}
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
@@ -423,7 +426,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 };
 
 const getColumns = (
-  onToggleStatus: (id: number) => void,
+  onToggleStatus: (id: number, currentStatus: string) => void, // Update signature
   onDelete: (id: number) => void
 ): ColumnDef<Rule>[] => [
   {
@@ -435,7 +438,7 @@ const getColumns = (
       return (
         <div className="flex justify-center">
           <button
-            onClick={() => onToggleStatus(row.original.id)}
+            onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"
@@ -473,7 +476,7 @@ const getColumns = (
     header: "Status",
     accessorKey: "status",
     cell: (info) => (
-       <span
+      <span
         className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
             ? "bg-green-100 text-green-700"
