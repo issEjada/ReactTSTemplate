@@ -1,6 +1,7 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/Context";
+import { useSessionActivity } from "../../pages/Monitoring/MonitoringTable/useSessionActivity";
 
 //temporary static data
 const data = [
@@ -33,6 +34,7 @@ const CustomTooltip = ({ viewed, payload }: CustomTooltipProps) => {
 
 export default function PieChartComponent() {
   const { isDarkMode } = useContext(ThemeContext);
+  const { statisticsData } = useSessionActivity();
   const COLORS = isDarkMode
     ? ["#1637C4", "#252B37"] // blue + gray for dark mode
     : ["#1637C4", "#e5e7eb"]; // original light mode colors
@@ -72,7 +74,9 @@ export default function PieChartComponent() {
             <span className="w-2 h-2 rounded-full bg-blue-600" />
             <span className="font-light">Viewed Sessions</span>
           </div>
-          <span className="text-blue-700">223</span>
+          <span className="text-blue-700">
+            {statisticsData?.viewedSessions || 0}
+          </span>
         </div>
 
         <div className="flex justify-between items-center">
@@ -80,7 +84,7 @@ export default function PieChartComponent() {
             <span className="w-2 h-2 rounded-full bg-gray-300" />
             <span className="font-light">Not Viewed Sessions</span>
           </div>
-          <span>1243</span>
+          <span>{statisticsData?.notViewedSessions || 0}</span>
         </div>
       </div>
     </div>
