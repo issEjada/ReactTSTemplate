@@ -1,9 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { AppRoutes } from "../routes/AppRoutes";
 
-// import ActivityIcon from "../assets/svg/activity.svg?react";
-// import Plus from "../assets/svg/plus.svg";
 const ActivityIcon = React.lazy(() => import(`/src/assets/svg/activity.svg?react`));
-const Plus = React.lazy(() => import(`/src/assets/svg/plus.svg?react`));
 
 const Top: React.FC = () => {
   return (
@@ -20,18 +19,20 @@ const Top: React.FC = () => {
 
       {/* Right: Buttons */}
       <div className="flex flex-row items-center gap-[8px]">
-        <button className="flex items-center gap-[8px] h-[36px] px-[14px] rounded-[8px] bg-gradient-to-br from-gray-900 to-gray-600 shadow-[0_1px_2px_#0A0D120D] dark:bg-none dark:from-transparent dark:to-transparent dark:bg-blue-700 ">
-          <ActivityIcon className="w-[16px] h-[16px] text-[#FFFFFF]" />
-
-          <span className="text-[#FFFFFF] text-[12px] font-medium">
-            Live Monitoring
-          </span>
-        </button>
-
-        <div className="w-[36px] h-[36px] p-[8px] border-[1.5px] border-blue-700 rounded-[8px] bg-[#1637C4] flex items-center justify-center dark:bg-gray-800">
-          <Plus />
-         
-        </div>
+              <Link
+          to={AppRoutes.monitoring}
+          className="flex items-center gap-[8px] h-[36px] px-[14px] rounded-[8px] 
+                    bg-gradient-to-br from-gray-900 to-gray-600 
+                    shadow-[0_1px_2px_#0A0D120D] 
+                    dark:bg-blue-700 
+                    text-white text-[12px] font-medium
+                    transition-all duration-200 ease-in-out
+                    hover:from-gray-1000 hover:to-gray-700 hover:shadow-md 
+                    dark:hover:bg-blue-800"
+        >
+          <ActivityIcon className="w-[16px] h-[16px] text-white" />
+          <span>Live Monitoring</span>
+        </Link>
       </div>
     </div>
   );

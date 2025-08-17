@@ -1,44 +1,60 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { AppRoutes } from "../routes/AppRoutes";
+
 import ShieldIcon from "../assets/svg/ShieldIcon.svg";
-import ArrowRise from "../assets/svg/ArrowRise.svg";
-import ActiveAlerts from "../assets/svg/ActiveAlerts.svg";
 import Threatblock from "../assets/svg/Threatblock.svg";
-import ResponseTime from "../assets/svg/ResponseTime.svg";
-import ArrowDown from "../assets/svg/ArrowDown.svg";
+import ActiveAlerts from "../assets/svg/ActiveAlerts.svg";
 
 interface HomeWidgetProps {
   title: string;
-  value: number | string;
-  percentage: string;
   icon: string;
-  arrowIcon: string;
+  active: number;
+  inactive: number;
+  total: number;
 }
 
 const HomeWidget: React.FC<HomeWidgetProps> = ({
   title,
-  value,
-  percentage,
   icon,
-  arrowIcon,
+  active,
+  inactive,
+  total,
 }) => {
+  const routeMap: Record<string, string> = {
+    "Scoring Rules": AppRoutes.scoringRules,
+    "Decision Rules": AppRoutes.decisionRules,
+    Events: AppRoutes.events,
+  };
+
+  const route = routeMap[title] ?? "#";
+
   return (
     <div className="w-full h-[112px] bg-[#FDFDFD] dark:bg-[#121418] dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
-      {" "}
-      {/* Top Row */}
       <div className="flex justify-between items-center">
-        <p className="text-sm font-semibold leading-[20px]">{title}</p>
+        <Link
+          to={route}
+          className="text-sm font-semibold leading-[20px] text-black dark:text-white hover:underline"
+        >
+          {title}
+        </Link>
         <div className="w-[36px] h-[36px] p-[4px] bg-[#1C1C1C0D] dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
           <img src={icon} alt="Icon" className="w-[28px] h-[28px]" />
         </div>
       </div>
-      {/* Bottom Row */}
-      <div className="flex justify-between items-center mt-2">
-        <h2 className="text-[24px] leading-[36px] font-semibold">{value}</h2>
-        <div className="flex items-center gap-[4px]">
-          <span className="text-[12px] font-normal leading-[18px]">
-            {percentage}
-          </span>
-          <img src={arrowIcon} alt="Arrow Icon" className="w-[16px] h-[16px]" />
+
+      <div className="flex justify-between items-center mt-2 text-sm">
+        <div className="flex flex-col">
+          <span className="opacity-70">Active</span>
+          <span className="font-semibold">{active}</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="opacity-70">Inactive</span>
+          <span className="font-semibold">{inactive}</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="opacity-70">Total</span>
+          <span className="font-semibold">{total}</span>
         </div>
       </div>
     </div>
@@ -46,40 +62,42 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
 };
 
 const HomeWidgetGroup: React.FC = () => {
-  const titles = [
-    "Active Rules",
-    "Threat Blocked",
-    "Active Alerts",
-    "Response Time",
-  ];
-  const icons = [ShieldIcon, Threatblock, ActiveAlerts, ResponseTime];
-
-  const valueData = [
-    { value: 378, percentage: "+11.01%" },
-    { value: 18, percentage: "+15.03%" },
-    { value: "1,219", percentage: "-0.03%" },
-    { value: "0.8S", percentage: "+6.08%" },
+  const widgetData: HomeWidgetProps[] = [
+    {
+      title: "Scoring Rules",
+      icon: ShieldIcon,
+      active: 120,
+      inactive: 35,
+      total: 155,
+    },
+    {
+      title: "Decision Rules",
+      icon: Threatblock,
+      active: 80,
+      inactive: 20,
+      total: 100,
+    },
+    {
+      title: "Events",
+      icon: ActiveAlerts,
+      active: 900,
+      inactive: 50,
+      total: 950,
+    },
   ];
 
   return (
-    <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[24px]">
-      {" "}
-      {valueData.map((item, index) => {
-        const arrowIcon = item.percentage.startsWith("-")
-          ? ArrowDown
-          : ArrowRise;
-
-        return (
-          <HomeWidget
-            key={index}
-            title={titles[index]}
-            value={item.value}
-            percentage={item.percentage}
-            icon={icons[index]}
-            arrowIcon={arrowIcon}
-          />
-        );
-      })}
+    <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
+      {widgetData.map((item, index) => (
+        <HomeWidget
+          key={index}
+          title={item.title}
+          icon={item.icon}
+          active={item.active}
+          inactive={item.inactive}
+          total={item.total}
+        />
+      ))}
     </div>
   );
 };

@@ -22,6 +22,8 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
+const PlusIconBlue = React.lazy(() => import("../../../assets/svg/PlusIconBlue.svg?react"));
+
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
 );
@@ -184,7 +186,9 @@ const RuleMenu = ({
   );
 };
 
-export const ScoringRulesTable = () => {
+export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
+  fromDashboard = false,
+}) => {
   const {
     data = [],
     loadingState,
@@ -253,6 +257,7 @@ export const ScoringRulesTable = () => {
       console.error("Error deleting rule:", err);
     }
   };
+  // const showHeaderAddButton = fromDashboard ? true : totalCount !== 0;
 
   const columns = useMemo(
     () => getColumns(handleToggleStatus, handleDeleteRule),
@@ -282,9 +287,12 @@ export const ScoringRulesTable = () => {
   }
 
   return (
-    <div className="p-6 bg-white shadow-sm dark:bg-black">
-      <div className="mb-6">
-        <div className="flex items-center justify-between pt-5">
+<div
+  className={`p-6 bg-white shadow-sm dark:bg-black ${
+    fromDashboard ? "w-[700px]" : "w-full"
+  }`}
+>      <div className="mb-6 flex justify-between">
+        <div className="flex  flex-col pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Scoring Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
@@ -293,6 +301,9 @@ export const ScoringRulesTable = () => {
             </span>
           </h2>
 
+        <p className="text-sm text-gray-500 mt-1">
+          Keep track of customers and their security levels.
+        </p>
           {totalCount !== 0 && (
             <button
               onClick={handleAddNewRule}
@@ -304,9 +315,16 @@ export const ScoringRulesTable = () => {
           )}
         </div>
 
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
+            <div>{fromDashboard && (
+      <button
+        onClick={handleAddNewRule}
+        className="h-10 w-10 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+        aria-label="Add New Rule"
+      >
+        <PlusIconBlue className="w-[20px] h-[20px]" />
+      </button>
+    )}
+    </div>
       </div>
 
       {totalCount === 0 && !isFilterActive ? (
@@ -364,34 +382,40 @@ export const ScoringRulesTable = () => {
           }))}
           columns={columns}
           filterComponent={
-            <ScoringRulesFilterForm
-              isOpen={isFilterOpen}
-              closeDrawer={closeFilterModal}
-              filterData={filters}
-              handleSearchSubmit={handleSearchSubmit}
-            />
-          }
+              !fromDashboard ? (
+                <ScoringRulesFilterForm
+                  isOpen={isFilterOpen}
+                  closeDrawer={closeFilterModal}
+                  filterData={filters}
+                  handleSearchSubmit={handleSearchSubmit}
+                />
+              ) : undefined
+            }
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
-          onFilterStatus={onFilterStatus as (status: string) => void}
-          statusFilter={statusFilter}
+          onFilterStatus={!fromDashboard ? (onFilterStatus as (s: string) => void) : undefined}
+          statusFilter={!fromDashboard ? statusFilter : undefined}
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
           title="Scoring Rules"
           error={error}
-          searchText={searchText}
-          setSearchText={setSearchText}
-          openFilterModal={openFilterModal}
-          applyFilters={applyFilters}
+          searchText={!fromDashboard ? searchText : ""}
+          setSearchText={!fromDashboard ? setSearchText : () => {}}
+          openFilterModal={!fromDashboard ? openFilterModal : () => {}}
+          applyFilters={!fromDashboard ? applyFilters : () => {}}
           searchPlaceholder="Search rules"
-          showStatusFilter={true}
-          statusFilterOptions={[
-            { key: "All", label: "View All" },
-            { key: "ENABLED", label: "Active" },
-            { key: "DISABLED", label: "Inactive" },
-          ]}
+          showStatusFilter={!fromDashboard}
+          statusFilterOptions={
+            !fromDashboard
+              ? [
+                  { key: "All", label: "View All" },
+                  { key: "ENABLED", label: "Active" },
+                  { key: "DISABLED", label: "Inactive" },
+                ]
+              : undefined
+          }
         />
       )}
     </div>

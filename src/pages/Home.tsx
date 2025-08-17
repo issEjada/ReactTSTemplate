@@ -1,7 +1,5 @@
 import HomeWidgetGroup from "../components/HomeWidget";
-import Chart from "../components/Charts/Chart.js";
-import RecentActivityTable from "../components/RecentActivityTable";
-import GlobalThreatMap from "../components/Charts/GlobalThreatMap.js";
+import { ScoringRulesTable } from "./ScoringRules/ScoringRulesTable/ScoringRulesTable.js";
 import DashboardOperations from "../components/DashboardOperations.js";
 const Home = () => {
   return (
@@ -13,20 +11,21 @@ const Home = () => {
       {/* Widgets */}
 
       <HomeWidgetGroup />
-
+    <ScoringRulesTable fromDashboard />
+      
       {/* Line Chart */}
-      <div className="flex flex-col-1 lg:flex-row mx-4 w-full gap-6">
+      {/* <div className="flex flex-col-1 lg:flex-row mx-4 w-full gap-6">
         <Chart chartType="line" />
         <GlobalThreatMap />
-      </div>
+      </div> */}
 
-      <div className="flex flex-col lg:flex-row w-full gap-6"></div>
+      {/* <div className="flex flex-col lg:flex-row w-full gap-6"></div> */}
 
       {/* Table + Pie Chart */}
-      <div className="flex flex-col lg:flex-row mx-4 w-full gap-6">
+      {/* <div className="flex flex-col lg:flex-row mx-4 w-full gap-6">
         <RecentActivityTable />
         <Chart chartType="pie" />
-      </div>
+      </div> */}
     </div>
   );
 };

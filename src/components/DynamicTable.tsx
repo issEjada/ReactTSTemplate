@@ -38,6 +38,8 @@ interface DynamicTableProps<TData extends object> {
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
+  minimal?: boolean;
+
 }
 
 export function DynamicTable<TData extends object>({
@@ -62,6 +64,7 @@ export function DynamicTable<TData extends object>({
   showStatusFilter = true,
   statusFilterOptions,
   isMonitoringTable = false,
+   minimal = false,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -92,7 +95,7 @@ export function DynamicTable<TData extends object>({
 
   return (
     <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418]">
-      <div className="px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
+      {!minimal && (<div className="px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
         {showStatusFilter &&
           onFilterStatus &&
           statusFilter &&
@@ -163,9 +166,9 @@ export function DynamicTable<TData extends object>({
             </button>
           )}
         </div>
-      </div>
+      </div>)}
 
-      {filterComponent}
+      { !minimal && filterComponent}
 
       <div className="overflow-x-auto">
         <table className="min-w-[900px] w-full table-auto text-sm text-center">
@@ -298,8 +301,8 @@ export function DynamicTable<TData extends object>({
           </tbody>
         </table>
       </div>
-
-      <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
+      {!minimal && 
+        (<div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
         <div className="text-center sm:text-left">
           Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
         </div>
@@ -323,7 +326,7 @@ export function DynamicTable<TData extends object>({
             Next
           </button>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 }
