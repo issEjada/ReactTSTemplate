@@ -473,7 +473,9 @@ const getColumns = (
       const colorMap: Record<string, string> = {
         Low: "text-gray-700 bg-gray-100",
         Moderate: "text-warning-700 bg-warning-50",
+        Medium: "text-warning-700 bg-warning-50",
         High: "text-red-700 bg-red-50",
+        Extreme: "text-red-700 bg-red-50",
       };
       // Capitalize first letter, rest lowercase
       const display =
