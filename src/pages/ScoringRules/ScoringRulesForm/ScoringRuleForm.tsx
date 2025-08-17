@@ -5,7 +5,7 @@ import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesF
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import ScoringRulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
 
@@ -39,7 +39,7 @@ const RuleForm = () => {
     setScreenAction,
     loadingState, // Add loadingState here
     isFormValid,
-    formValues
+    formValues,
   } = useViewScoringRules();
 
   // const [isLoading, setIsLoading] = useState();
@@ -293,14 +293,14 @@ const RuleForm = () => {
         </div>
         <h3 className="text-[1.2rem]">Condition Editor</h3>
       </div>
-      
+
       {isFormValid ? (
-      <ConditionEditor
-        editorContent={editorContent}
-        parametersData={parametersData}
-        setEditorContent={setEditorContent}
-        isReadOnly={screenAction === "view"} // Pass isReadOnly prop
-      />
+        <ConditionEditor
+          editorContent={editorContent}
+          parametersData={parametersData}
+          setEditorContent={setEditorContent}
+          isReadOnly={screenAction === "view"} // Pass isReadOnly prop
+        />
       ) : (
         <div className="px-6 py-4 text-red-500">
           Please complete all required fields to enable the Conditions.
@@ -343,7 +343,7 @@ const RuleForm = () => {
         <div>
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
             {isAdding && popupType === "successModal" && (
-              <ScoringRulesPopupJsx
+              <RulesPopupJsx
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);
@@ -356,7 +356,7 @@ const RuleForm = () => {
               />
             )}
             {isEditing && popupType === "successModal" && (
-              <ScoringRulesPopupJsx
+              <RulesPopupJsx
                 isEditing
                 onConfirm={() => {
                   setIsPopupOpen(false);
@@ -369,7 +369,7 @@ const RuleForm = () => {
               />
             )}
             {popupType === "errorModal" && (
-              <ScoringRulesPopupJsx
+              <RulesPopupJsx
                 isError
                 errorMessage={popupMessage}
                 onConfirm={() => setIsPopupOpen(false)}
@@ -382,7 +382,7 @@ const RuleForm = () => {
       {isDeletePopupOpen && (
         <div>
           <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
-            <ScoringRulesPopupJsx
+            <RulesPopupJsx
               isDeleting
               onConfirm={() => {
                 setIsDeletePopupOpen(false);

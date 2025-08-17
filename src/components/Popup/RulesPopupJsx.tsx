@@ -9,12 +9,17 @@ interface RulesPopupProps {
   isEditing?: boolean;
   isDeleting?: boolean;
   isError?: boolean;
-  errorMessage?: string;
+  errorMessage?: string | ApiError;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-const ScoringRulesPopupJsx = ({
+interface ApiError {
+  message?: string;
+  descriptionEn?: string;
+}
+
+const RulesPopupJsx = ({
   isAdding = false,
   isEditing = false,
   isDeleting = false,
@@ -34,7 +39,13 @@ const ScoringRulesPopupJsx = ({
     : "";
 
   const message = isError
-    ? errorMessage
+    ? typeof errorMessage === "object" && errorMessage !== null
+      ? `${(errorMessage as ApiError).message || ""}${
+          (errorMessage as ApiError).descriptionEn
+            ? `\n${(errorMessage as ApiError).descriptionEn}`
+            : ""
+        }`
+      : String(errorMessage)
     : isAdding
     ? "Congratulations, your new rule is created successfully."
     : isEditing
@@ -69,7 +80,9 @@ const ScoringRulesPopupJsx = ({
       </h2>
 
       {/* Description */}
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{message}</p>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 whitespace-pre-wrap">
+        {message}
+      </p>
 
       {/* Buttons */}
       <div className="mt-6 w-full flex justify-center gap-3">
@@ -121,4 +134,4 @@ const ScoringRulesPopupJsx = ({
   );
 };
 
-export default ScoringRulesPopupJsx;
+export default RulesPopupJsx;

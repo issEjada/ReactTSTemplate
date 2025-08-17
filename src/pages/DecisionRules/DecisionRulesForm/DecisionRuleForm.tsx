@@ -44,6 +44,7 @@ const DecisionForm = () => {
     formValues,
     statusValues,
     screenAction,
+    eventSourceDeviceValues,
     reset,
   } = useViewDecisionRules();
 
@@ -102,6 +103,8 @@ const DecisionForm = () => {
   if (loadingState === LoadingState.Loading && !isAdding) {
     return <FullScreenSpinner />;
   }
+
+  console.log(eventSourceDeviceValues);
 
   return (
     <form
@@ -224,12 +227,14 @@ const DecisionForm = () => {
             control={control}
             name="identifier.eventSourceDevice"
             label="Event Source Device"
-            options={eventNameValues.map((item) => ({
+            options={eventSourceDeviceValues.map((item) => ({
               key: item.key,
               node: item.valueEn,
             }))}
             className="w-[102%]"
-            disabled={isViewing || isEditing || eventNameValues.length === 0}
+            disabled={
+              isViewing || isEditing || eventSourceDeviceValues.length === 0
+            }
             required
           />
           <DropdownMenu<DecisionRulesFormValues>
@@ -391,11 +396,9 @@ const DecisionForm = () => {
               isEditing
               onConfirm={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules");
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules");
               }}
             />
           )}

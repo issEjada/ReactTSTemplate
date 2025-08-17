@@ -157,6 +157,9 @@ export const useViewDecisionRules = () => {
       })
       .catch((error) => {
         console.log("fetch rule Data", error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error);
       });
   };
 
