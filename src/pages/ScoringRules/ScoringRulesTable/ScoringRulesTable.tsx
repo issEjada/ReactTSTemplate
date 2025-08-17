@@ -292,8 +292,8 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       }`}
     >
       {" "}
-      <div className="mb-6 flex justify-between">
-        <div className="flex  flex-col pt-5">
+      <div className="mb-6 ">
+        <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Scoring Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
@@ -302,10 +302,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             </span>
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
-            Keep track of customers and their security levels.
-          </p>
-          {totalCount !== 0 && (
+          {totalCount !== 0 && !fromDashboard && (
             <button
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
@@ -315,6 +312,10 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             </button>
           )}
         </div>
+
+        <p className="text-sm text-gray-500 mt-1">
+          Keep track of customers and their security levels.
+        </p>
 
         <div>
           {fromDashboard && (

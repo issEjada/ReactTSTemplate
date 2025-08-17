@@ -201,6 +201,7 @@ export const DecisionRulesTable = () => {
     refetch,
     totalCount,
     error,
+    handleToggleStatus, // Destructure handleToggleStatus from the hook
   } = useDecisionRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -244,12 +245,6 @@ export const DecisionRulesTable = () => {
     setCurrentPage(1);
   };
 
-  const handleToggleStatus = async () => {
-    if (refetch) {
-      await refetch();
-    }
-  };
-
   const handleDeleteRule = async (id: number) => {
     try {
       await deleteDecisionRule(id);
@@ -262,8 +257,8 @@ export const DecisionRulesTable = () => {
   };
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule),
-    []
+    () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
+    [handleToggleStatus, handleDeleteRule] // Add dependencies
   );
 
   const navigate = useNavigate();
@@ -407,7 +402,7 @@ export const DecisionRulesTable = () => {
 };
 
 const getColumns = (
-  onToggleStatus: (id: number) => void,
+  onToggleStatus: (id: number, currentStatus: string) => void, // Update signature
   onDelete: (id: number) => void
 ): ColumnDef<DecisionRule>[] => [
   {
@@ -419,7 +414,7 @@ const getColumns = (
       return (
         <div className="flex justify-center">
           <button
-            onClick={() => onToggleStatus(row.original.id)}
+            onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"
