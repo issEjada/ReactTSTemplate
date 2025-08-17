@@ -466,16 +466,16 @@ const getColumns = (
     cell: (info) => {
       const value = String(info.getValue());
       const colorMap: Record<string, string> = {
-        Low: "text-gray-700",
-        Medium: "text-warning-700",
-        High: "text-red-700",
+        Low: "text-gray-700 bg-gray-100",
+        Moderate: "text-warning-700 bg-warning-50",
+        High: "text-red-700 bg-red-50",
       };
       // Capitalize first letter, rest lowercase
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span
-          className={`text-xs font-medium px-2 py-1  whitespace-nowrap ${
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
             colorMap[display] || "text-gray-700"
           }`}
         >
