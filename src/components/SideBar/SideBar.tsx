@@ -80,6 +80,12 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                   url: AppRoutes.systemConfiguration,
                 },
                 {
+                  pageTitle: "Customer Profile",
+                  text: "Customer Profile",
+                  icon: "systemConfiguration",
+                  url: AppRoutes.customerProfile,
+                },
+                {
                   pageTitle: "Monitoring",
                   text: "Monitoring",
                   icon: "monitoring",

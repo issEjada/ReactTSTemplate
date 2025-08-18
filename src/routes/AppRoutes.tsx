@@ -20,4 +20,5 @@ export const AppRoutes = {
   myAccount: "/my-account",
   aboutUs: "/about-us",
   support: "/support",
+  customerProfile : "/customer-profile",
 };

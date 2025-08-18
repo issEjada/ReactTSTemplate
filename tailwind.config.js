@@ -13,6 +13,11 @@ module.exports = {
     },
     extend: {
       colors: {
+        blueGray:{
+          50: "#F8F9FC",
+          100: "#EAECF5",
+          200: "#D5D9EB"
+        },
         gray: {
           50: "#FAFAFA",
           100: "#F5F5F5",

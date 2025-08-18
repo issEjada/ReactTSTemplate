@@ -12,6 +12,7 @@ import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
 import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
 import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
+import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -54,6 +55,15 @@ export const AppRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <div>TESTING</div>
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+            {
+        path: AppRoutes.customerProfile,
+        element: (
+          <ProtectedRoute>
+            <CustomerProfile />
           </ProtectedRoute>
         ),
         errorElement: <></>,
