@@ -34,7 +34,9 @@ const EventView = () => {
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/events/edit-event");
+    navigate("/events/edit-event", {
+      state: { id: eventData!.id, action: "edit" },
+    });
   };
 
   if (loadingState === LoadingState.Loading && !isAdding) {
