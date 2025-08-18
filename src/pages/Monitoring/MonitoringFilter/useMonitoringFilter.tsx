@@ -7,6 +7,7 @@ import type {
 } from "../../../services/dropdownServices";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
+import { cleanObject } from "../../../utils/helpers";
 
 export interface DecisionRulesIdentifier {
   eventSourceDevice: string;
@@ -129,29 +130,6 @@ export const useMonitoringFilter = (
   useEffect(() => {
     fetchDropDownsValues([]);
   }, []);
-  const cleanObject = <T extends object>(obj: T): Partial<T> => {
-    const newObj: Partial<T> = {};
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const value = obj[key];
-        if (typeof value === "string" && value !== "") {
-          newObj[key] = value;
-        } else if (typeof value === "number" && value !== 0) {
-          newObj[key] = value;
-        } else if (
-          typeof value === "object" &&
-          value !== null &&
-          !Array.isArray(value)
-        ) {
-          const cleanedSubObject = cleanObject(value as object);
-          if (Object.keys(cleanedSubObject).length > 0) {
-            newObj[key] = cleanedSubObject as T[Extract<keyof T, string>];
-          }
-        }
-      }
-    }
-    return newObj;
-  };
 
   const onSubmit = (data: ViewSessionsFormValues) => {
     const filteredData = cleanObject(data);
@@ -162,7 +140,7 @@ export const useMonitoringFilter = (
   const handleCancel = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     reset();
-    closeDrawer(); // Ensure closeDrawer is called to update the isOpen state in the parent component
+    closeDrawer();
   };
 
   const handleClear = (e: { preventDefault: () => void }) => {

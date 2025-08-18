@@ -256,11 +256,10 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       console.error("Error deleting rule:", err);
     }
   };
-  // const showHeaderAddButton = fromDashboard ? true : totalCount !== 0;
 
   const columns = useMemo(
     () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
-    [handleToggleStatus, handleDeleteRule] // Add dependencies
+    [handleToggleStatus, handleDeleteRule]
   );
 
   const navigate = useNavigate();
