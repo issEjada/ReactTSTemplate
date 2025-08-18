@@ -30,7 +30,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             <BackgroundCircle
               className="
                 absolute
-                left-1/2 top-[60%]
+                left-1/2 top-[28%]
                 -translate-x-1/2 -translate-y-1/2
                 w-[400px] h-[400px]
                 pointer-events-none select-none
