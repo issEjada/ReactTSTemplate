@@ -207,7 +207,7 @@ export const MonitoringFilterForm = ({
             <label className="text-sm font-medium">Date From</label>
             <Controller
               control={control}
-              name="fromCreationTimestamp"
+              name="fromDate"
               render={({ field }) => (
                 <input
                   {...field}
@@ -227,7 +227,7 @@ export const MonitoringFilterForm = ({
             <label className="text-sm font-medium">Date To</label>
             <Controller
               control={control}
-              name="toCreationTimestamp"
+              name="toDate"
               render={({ field }) => (
                 <input
                   {...field}
