@@ -32,12 +32,13 @@ interface DynamicTableProps<TData extends object> {
   title: string;
   searchText: string;
   setSearchText: (text: string) => void;
-  openFilterModal: () => void;
+  openFilterModal?: () => void;
   applyFilters: () => void;
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
+  isAddNewItem?: boolean;
 }
 
 export function DynamicTable<TData extends object>({
@@ -62,6 +63,7 @@ export function DynamicTable<TData extends object>({
   showStatusFilter = true,
   statusFilterOptions,
   isMonitoringTable = false,
+  isAddNewItem = true,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -274,20 +276,25 @@ export function DynamicTable<TData extends object>({
                           <button
                             type="button"
                             onClick={onClearSearch}
-                            className="w-[170px] h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black"
+                            className={`${
+                              isAddNewItem ? "w-[170px]" : "w-full"
+                            } h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
                           >
                             Clear search
                           </button>
-                          <button
-                            type="button"
-                            onClick={onAddNewItem}
-                            className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
-                          >
-                            <Suspense>
-                              <PlusIcon />
-                            </Suspense>
-                            Add New {title.includes("Rules") ? "Rule" : "Item"}
-                          </button>
+                          {isAddNewItem && (
+                            <button
+                              type="button"
+                              onClick={onAddNewItem}
+                              className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
+                            >
+                              <Suspense>
+                                <PlusIcon />
+                              </Suspense>
+                              Add New{" "}
+                              {title.includes("Rules") ? "Rule" : "Item"}
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
