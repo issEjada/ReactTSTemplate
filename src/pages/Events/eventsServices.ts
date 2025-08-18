@@ -80,20 +80,6 @@ export interface GetEventsResponse {
   meta: PaginationMeta;
 }
 
-export interface GetEventByIdResponse {
-  id: number;
-  name: string;
-  description: string;
-  identifier: EventIdentifier;
-  eventName: string;
-  criteriaName: string;
-  condition: string;
-  decision: string;
-  status: string;
-  creationTimestamp: string;
-  lastUpdatedTimestamp: string;
-}
-
 export interface PaginationMeta {
   totalPages: number;
   totalItems: number;
@@ -123,9 +109,7 @@ export class EventsServices {
       });
   }
 
-  static getEventById(
-    data: GetEventByIdPayload
-  ): Promise<GetEventByIdResponse> {
+  static getEventById(data: GetEventByIdPayload): Promise<EventFormValues> {
     return httpClient
       .get(
         `${import.meta.env.VITE_API_BASE_URL}${API.getEventeById}/${data.id}`,

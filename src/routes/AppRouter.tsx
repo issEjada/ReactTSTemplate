@@ -235,6 +235,15 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
+        path: AppRoutes.editEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
         path: AppRoutes.analytics,
         element: (
           <ProtectedRoute>

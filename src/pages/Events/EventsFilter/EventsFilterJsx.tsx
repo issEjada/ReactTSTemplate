@@ -4,7 +4,7 @@ import DropdownMenu from "../../../components/DropDown";
 import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
 import { Controller } from "react-hook-form";
 import { useEventFilterForm } from "./useEventFilterForm";
-import type { EventFormValues } from "../eventsService";
+import type { EventFormValues } from "../eventsServices";
 
 interface EventsFilterFormProps {
   isOpen: boolean;

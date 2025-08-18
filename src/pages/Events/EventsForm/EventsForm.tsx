@@ -1,51 +1,37 @@
 import { useState, lazy } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../../../components/DropDown";
 import LayoutPopup from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import { useViewEvents } from "./useEventForm";
+import type { EventFormValues } from "../eventsServices";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
-type EventFormValues = {
-  name: string;
-  eventSourceDevice: string;
-  scheme: string;
-  description: string;
-};
-
 const EventsForm = () => {
+  const {
+    control,
+    onSubmit,
+    isAdding,
+    isEditing,
+    isViewing,
+    setScreenAction,
+    screenAction,
+    popupType,
+    popupMessage,
+    loadingState,
+    eventSourceDeviceValues,
+    schemeValues,
+    statusValues,
+    handleSubmit,
+    reset,
+  } = useViewEvents();
+
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-  const [isViewing, setIsViewing] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isAdding] = useState(true);
-
-  const { control, handleSubmit, reset } = useForm<EventFormValues>({
-    defaultValues: {
-      name: "",
-      eventSourceDevice: "",
-      scheme: "",
-      description: "",
-    },
-  });
-
-  const eventSourceDeviceValues = [
-    { key: "MOBILE", valueEn: "Mobile App" },
-    { key: "WEB", valueEn: "Web App" },
-    { key: "BACKEND", valueEn: "Backend Service" },
-  ];
-  const schemeValues = [
-    { key: "KYC", valueEn: "KYC" },
-    { key: "AML", valueEn: "AML" },
-    { key: "TX", valueEn: "Transaction Monitoring" },
-  ];
-
-  const onSubmit = (data: EventFormValues) => {
-    console.log("Submitted Event:", data);
-    setIsPopupOpen(true);
-  };
 
   const handleCancel = () => {
     reset();
@@ -53,8 +39,7 @@ const EventsForm = () => {
   };
 
   const handleEditClick = () => {
-    setIsEditing(true);
-    setIsViewing(false);
+    setScreenAction("edit");
   };
 
   const handleDeleteClick = () => {
@@ -66,6 +51,8 @@ const EventsForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
+      {loadingState === "loading" && <FullScreenSpinner />}
+
       <div className="h-auto flex flex-row items-start px-6 py-5">
         <div className="flex flex-col gap-2">
           <label
@@ -129,18 +116,18 @@ const EventsForm = () => {
       <div className="flex gap-6 px-6">
         <DropdownMenu<EventFormValues>
           control={control}
-          name="eventSourceDevice"
+          name="identifier.eventSourceDevice"
           label="Event Source Device"
-          options={eventSourceDeviceValues.map((i) => ({
-            key: i.key,
-            node: i.valueEn,
+          options={eventSourceDeviceValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
           }))}
           disabled={isViewing || isEditing}
           required
         />
         <DropdownMenu<EventFormValues>
           control={control}
-          name="scheme"
+          name="identifier.scheme"
           label="Scheme"
           options={schemeValues.map((i) => ({
             key: i.key,

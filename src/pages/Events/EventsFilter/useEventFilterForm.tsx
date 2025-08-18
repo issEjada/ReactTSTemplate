@@ -8,7 +8,7 @@ import type {
 } from "../../../services/dropdownServices";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 
-import type { EventFormValues } from "../eventsService";
+import type { EventFormValues } from "../eventsServices";
 
 interface useEventFilterFormProps {
   handleSearchSubmit: (searchData: EventFormValues) => void;

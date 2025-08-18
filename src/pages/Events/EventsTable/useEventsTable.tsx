@@ -6,7 +6,7 @@ import {
   EventsServices,
   type GetEventsItem,
   type GetEventsResponse,
-} from "../eventsService";
+} from "../eventsServices";
 import { cleanObject } from "../../../utils/helpers";
 // import { formatTime } from "../../../helpers";
 
