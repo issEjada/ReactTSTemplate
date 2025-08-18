@@ -81,34 +81,66 @@ export const CustomerProfile = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4">
-          <div className="w-full flex rounded-lg overflow-hidden border border-blueGray-300">
+          <div className="w-full flex rounded-lg overflow-hidden border border-blueGray-300 shadow-[0px_1px_2px_0px_#0A0D120D]">
             <div
-              className="flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg"
+              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg ${
+                currentSection === "customerInsights" && "bg-blueGray-100"
+              }`}
               onClick={() => setCurrentSection("customerInsights")}
             >
-              <CustomerInsightsIcon className="text-gray-500"/>
-              <div>Customer Insights</div>
+              <CustomerInsightsIcon className="text-gray-500" />
+              <div
+                className={`font-bold text-[14px] leading-[20px] tracking-normal ${
+                  currentSection === "customerInsights" ? "text-blueGray-700" : "text-gray-700 "
+                }`}
+              >
+                Customer Insights
+              </div>
             </div>
             <div
-              className="flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 "
+              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
+                currentSection === "actionAnalytics" && "bg-blueGray-100"
+              }`}
               onClick={() => setCurrentSection("actionAnalytics")}
             >
-              <ActionAnalyticsIcon className="text-gray-500"/>
-              <div>Action Analytics</div>
+              <ActionAnalyticsIcon className="text-gray-500" />
+              <div
+                className={`font-bold text-[14px] leading-[20px] tracking-normal ${
+                  currentSection === "actionAnalytics" ? "text-blueGray-700" : "text-gray-700 "
+                }`}
+              >
+                Action Analytics
+              </div>
             </div>
             <div
-              className="flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 "
+              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
+                currentSection === "customerDevices" && "bg-blueGray-100"
+              }`}
               onClick={() => setCurrentSection("customerDevices")}
             >
-              <CustomerDevicesIcon className="text-gray-500"/>
-              <div>Customer Devices</div>
+              <CustomerDevicesIcon className="text-gray-500" />
+              <div
+                className={`font-bold text-[14px] leading-[20px] tracking-normal ${
+                  currentSection === "customerDevices" ? "text-blueGray-700"  : "text-gray-700 "
+                }`}
+              >
+                Customer Devices
+              </div>
             </div>
             <div
-              className="flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center "
+              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg ${
+                currentSection === "devicesHealthChecks" && "bg-blueGray-100"
+              }`}
               onClick={() => setCurrentSection("devicesHealthChecks")}
             >
-              <DevicesHealthChecksIcon className="text-gray-500"/>
-              <div>Devices Health Checks</div>
+              <DevicesHealthChecksIcon className="text-gray-500" />
+              <div
+                className={`font-bold text-[14px] leading-[20px] tracking-normal ${
+                  currentSection === "devicesHealthChecks" ? "text-blueGray-700"  : "text-gray-700 "
+                }`}
+              >
+                Devices Health Checks
+              </div>
             </div>
           </div>
           {currentSection === "customerInsights" && <CustomerInsights />}
