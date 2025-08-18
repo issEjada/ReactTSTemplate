@@ -13,10 +13,17 @@ module.exports = {
     },
     extend: {
       colors: {
+        blueLight:{
+          50: "#F0F9FF",
+          100:"#E0F2FE",
+        },
         blueGray:{
           50: "#F8F9FC",
           100: "#EAECF5",
-          200: "#D5D9EB"
+          200: "#D5D9EB",
+          300: "#AFB5D9",
+          600: "#535862",
+          700: "#363F72",
         },
         gray: {
           50: "#FAFAFA",
