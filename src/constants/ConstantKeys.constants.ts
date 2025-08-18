@@ -16,4 +16,7 @@ export const API = {
   getDecisionRuleById: "/decision-rules-management/v1/decision-rules",
   getDecisionParameter: "/rules-parameters/v1/decision-rules-parameters",
   getEventDropDownsValues: "/v1/events/lov",
+  events: "/events-management/v1/events/search",
+  getEventeById: "/events-management/v1/events",
+  getEventParameter: "/v1/events/lov",
 };

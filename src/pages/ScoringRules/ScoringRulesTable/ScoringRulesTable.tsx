@@ -15,7 +15,6 @@ import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
-import { TableFallback } from "../../../components/TableFallBack";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -23,14 +22,13 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
-const PlusIconBlue = React.lazy(
-  () => import("../../../assets/svg/PlusIconBlue.svg?react")
-);
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
 );
-
+const BackgroundCircle = React.lazy(
+  () => import("../../../assets/svg/BackgroundCircle.svg?react")
+);
 
 type Rule = {
   id: number;
@@ -301,42 +299,78 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           </h2>
 
           {totalCount !== 0 && !fromDashboard && (
-            <button
-              onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
-            >
-              <PlusIcon className="w-[20px] h-[20px]" />
-              Add New Rule
-            </button>
+            <div className="ml-auto">
+              <button
+                onClick={handleAddNewRule}
+                className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
+              >
+                <PlusIcon className="w-[20px] h-[20px]" />
+                Add New Rule
+              </button>
+            </div>
           )}
-                  <div>
-          {fromDashboard && (
-            <button
-              onClick={handleAddNewRule}
-              className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
-              aria-label="Add New Rule"
-            >
-              <PlusIconBlue className="w-[20px] h-[20px]" />
-            </button>
-          )}
-        </div>
+
+          <div>
+            {fromDashboard && (
+              <button
+                onClick={handleAddNewRule}
+                className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+                aria-label="Add New Rule"
+              >
+                <PlusIcon className="w-[20px] h-[20px]" />
+              </button>
+            )}
+          </div>
         </div>
 
         <p className="text-sm text-gray-500 mt-1">
           Keep track of customers and their security levels.
         </p>
-
-
       </div>
       {totalCount === 0 && !isFilterActive ? (
-        <TableFallback
-  icon={<LockIcon className="sm:w-[28px] sm:h-[28px]" />}
-  title="Start adding new rules"
-  description="You don’t have any rule yet. Start securing by adding new rules now."
-  buttonText="Add New Rule"
-  buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
-  onButtonClick={handleAddNewRule}
-/>
+        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
+          {/* Wrapper for icon + background */}
+          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
+            {/* Background Circle positioned behind */}
+            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
+              <BackgroundCircle
+                className="
+            absolute
+            left-1/2 top-[28%]
+            -translate-x-1/2 -translate-y-1/2
+            w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
+            h-[400px]
+            pointer-events-none select-none
+            z-0
+          "
+              />
+            </div>
+
+            {/* Lock Icon in styled border */}
+            <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
+              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
+                <LockIcon className="sm:w-[28px] sm:h-[28px]" />
+              </div>
+            </div>
+          </div>
+
+          {/* Title & Description */}
+          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
+            Start adding new rules
+          </h3>
+          <p className="text-sm text-gray-500 mb-6">
+            You don’t have any rule yet. Start securing by adding new rules now.
+          </p>
+
+          {/* Add Button */}
+          <button
+            onClick={handleAddNewRule}
+            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[352px] h-10 flex items-center justify-center gap-2"
+          >
+            <PlusIcon className="w-[20px] h-[20px]" />
+            Add New Rule
+          </button>
+        </div>
       ) : (
         <DynamicTable<Rule>
           data={data.map((item) => ({
@@ -348,12 +382,12 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           }))}
           columns={columns}
           filterComponent={
-              <ScoringRulesFilterForm
-                isOpen={isFilterOpen}
-                closeDrawer={closeFilterModal}
-                filterData={filters}
-                handleSearchSubmit={handleSearchSubmit}
-              />
+            <ScoringRulesFilterForm
+              isOpen={isFilterOpen}
+              closeDrawer={closeFilterModal}
+              filterData={filters}
+              handleSearchSubmit={handleSearchSubmit}
+            />
           }
           totalCount={totalCount}
           currentPage={currentPage}
@@ -382,7 +416,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 ]
               : undefined
           }
-          minimal = {fromDashboard}
+          minimal={fromDashboard}
         />
       )}
     </div>

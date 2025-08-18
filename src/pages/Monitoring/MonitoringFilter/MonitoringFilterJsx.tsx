@@ -180,7 +180,7 @@ export const MonitoringFilterForm = ({
           name="status"
           label="Status"
           options={statusValues.map((item) => ({
-            key: item.key.toUpperCase().replace(/\s+/g, "_"),
+            key: item.key,
             node: item.valueEn,
           }))}
           className="w-full"
