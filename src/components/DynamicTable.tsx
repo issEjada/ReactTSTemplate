@@ -174,7 +174,7 @@ export function DynamicTable<TData extends object>({
         <table className="min-w-[900px] w-full table-auto text-sm text-center">
           {table.getRowModel().rows.length > 0 ?
           (
-          <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+          <thead className="bg-white  dark:bg-[#121418] dark:border-gray-800 dark:text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}

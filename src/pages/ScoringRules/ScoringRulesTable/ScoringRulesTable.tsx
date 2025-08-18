@@ -310,23 +310,24 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
               Add New Rule
             </button>
           )}
-        </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
-
-        <div>
+                  <div>
           {fromDashboard && (
             <button
               onClick={handleAddNewRule}
-              className="h-10 w-10 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+              className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
               aria-label="Add New Rule"
             >
               <PlusIconBlue className="w-[20px] h-[20px]" />
             </button>
           )}
         </div>
+        </div>
+
+        <p className="text-sm text-gray-500 mt-1">
+          Keep track of customers and their security levels.
+        </p>
+
+
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
@@ -383,14 +384,12 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           }))}
           columns={columns}
           filterComponent={
-            !fromDashboard ? (
               <ScoringRulesFilterForm
                 isOpen={isFilterOpen}
                 closeDrawer={closeFilterModal}
                 filterData={filters}
                 handleSearchSubmit={handleSearchSubmit}
               />
-            ) : undefined
           }
           totalCount={totalCount}
           currentPage={currentPage}
@@ -419,6 +418,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 ]
               : undefined
           }
+          minimal = {fromDashboard}
         />
       )}
     </div>
