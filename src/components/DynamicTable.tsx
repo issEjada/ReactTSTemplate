@@ -94,8 +94,8 @@ export function DynamicTable<TData extends object>({
   };
 
   return (
-    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418]">
-      {!minimal && (<div className="px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
+    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418] ">
+      {!minimal && (<div className="px-4  sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
         {showStatusFilter &&
           onFilterStatus &&
           statusFilter &&
