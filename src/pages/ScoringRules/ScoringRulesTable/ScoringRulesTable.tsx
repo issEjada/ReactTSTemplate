@@ -15,7 +15,7 @@ import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
-import { TableFallback } from "../../../components/TableFallBack";
+import { TableFallback } from "../../../components/TableFallback";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -23,14 +23,10 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
-const PlusIconBlue = React.lazy(
-  () => import("../../../assets/svg/PlusIconBlue.svg?react")
-);
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
 );
-
 
 type Rule = {
   id: number;
@@ -263,10 +259,6 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 
   const navigate = useNavigate();
 
-  const handleAddNewRule = () => {
-    navigate("/scoring-rules/new-rule");
-  };
-
   const handleClearSearch = () => {
     setSearchText("");
     setFilters({});
@@ -282,7 +274,9 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   if (loadingState === "loading") {
     return <FullScreenSpinner />;
   }
-
+  const handleAddNewRule = () => {
+    navigate("/scoring-rules/new-rule");
+  };
   return (
     <div
       className={`p-6 bg-white shadow-sm dark:bg-black ${
@@ -301,42 +295,49 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           </h2>
 
           {totalCount !== 0 && !fromDashboard && (
-            <button
-              onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
-            >
-              <PlusIcon className="w-[20px] h-[20px]" />
-              Add New Rule
-            </button>
+            <div className="ml-auto">
+              <button
+                onClick={handleAddNewRule}
+                className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
+              >
+                <PlusIcon className="w-[20px] h-[20px]" />
+                Add New Rule
+              </button>
+            </div>
           )}
-                  <div>
-          {fromDashboard && (
-            <button
-              onClick={handleAddNewRule}
-              className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
-              aria-label="Add New Rule"
-            >
-              <PlusIconBlue className="w-[20px] h-[20px]" />
-            </button>
-          )}
-        </div>
+
+          <div>
+            {fromDashboard && (
+              <button
+                onClick={handleAddNewRule}
+                className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+                aria-label="Add New Rule"
+              >
+                <PlusIcon className="w-[20px] h-[20px] text-blue-700" />
+              </button>
+            )}
+          </div>
         </div>
 
         <p className="text-sm text-gray-500 mt-1">
           Keep track of customers and their security levels.
         </p>
-
-
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-  icon={<LockIcon className="sm:w-[28px] sm:h-[28px]" />}
-  title="Start adding new rules"
-  description="You don’t have any rule yet. Start securing by adding new rules now."
-  buttonText="Add New Rule"
-  buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
-  onButtonClick={handleAddNewRule}
-/>
+          icon={<LockIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding scoring rules"
+          description={
+            <>
+              You don’t have any scoring rules yet.
+              <br />
+              Start securing by adding new rules now.
+            </>
+          }
+          buttonText="Add New Scoring Rule"
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
+          onButtonClick={handleAddNewRule}
+        />
       ) : (
         <DynamicTable<Rule>
           data={data.map((item) => ({
@@ -348,12 +349,12 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           }))}
           columns={columns}
           filterComponent={
-              <ScoringRulesFilterForm
-                isOpen={isFilterOpen}
-                closeDrawer={closeFilterModal}
-                filterData={filters}
-                handleSearchSubmit={handleSearchSubmit}
-              />
+            <ScoringRulesFilterForm
+              isOpen={isFilterOpen}
+              closeDrawer={closeFilterModal}
+              filterData={filters}
+              handleSearchSubmit={handleSearchSubmit}
+            />
           }
           totalCount={totalCount}
           currentPage={currentPage}
@@ -366,12 +367,13 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
           title="Scoring Rules"
+          loadingState={loadingState}
           error={error}
           searchText={!fromDashboard ? searchText : ""}
           setSearchText={!fromDashboard ? setSearchText : () => {}}
           openFilterModal={!fromDashboard ? openFilterModal : () => {}}
           applyFilters={!fromDashboard ? applyFilters : () => {}}
-          searchPlaceholder="Search rules"
+          searchPlaceholder="Search Rule Name"
           showStatusFilter={!fromDashboard}
           statusFilterOptions={
             !fromDashboard
@@ -382,7 +384,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 ]
               : undefined
           }
-          minimal = {fromDashboard}
+          minimal={fromDashboard}
         />
       )}
     </div>
@@ -400,7 +402,7 @@ const getColumns = (
 
       const isActive = status === "ENABLED";
       return (
-        <div className="flex justify-center">
+        <div className="flex justify-content flex-start">
           <button
             onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 

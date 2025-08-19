@@ -1,0 +1,297 @@
+import { useState, lazy } from "react";
+import { Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import DropdownMenu from "../../../components/DropDown";
+import LayoutPopup from "../../../components/Popup/LayoutPopup";
+import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import { useViewEvents } from "./useEventForm";
+import type { EventFormValues } from "../eventsServices";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
+
+const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
+
+const EventsForm = () => {
+  const {
+    control,
+    onSubmit,
+    isAdding,
+    isEditing,
+    isViewing,
+    setScreenAction,
+    loadingState,
+    eventSourceDeviceValues,
+    schemeValues,
+    statusValues,
+    handleSubmit,
+    reset,
+  } = useViewEvents();
+
+  const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleCancel = () => {
+    reset();
+    navigate("/events");
+  };
+
+  const handleEditClick = () => {
+    setScreenAction("edit");
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-[16px]"
+    >
+      {loadingState === "loading" && <FullScreenSpinner />}
+
+      {/* Header / Title + Edit / Delete */}
+      <div className="h-[130px] flex flex-row items-start px-6 py-[44px] gap-6">
+        <div className="flex flex-col">
+          <label
+            htmlFor="name"
+            className="text-sm font-medium text-[#414651] mb-[14px] dark:text-white"
+          >
+            Event Name
+            {isViewing && (
+              <div
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-[#EFF8FF] p-[8px]"
+                onClick={handleEditClick}
+              >
+                <EditIcon className="w-[12px] h-[12px] text-blue-700" />
+              </div>
+            )}
+          </label>
+
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: "Event name is required." }}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <input
+                  {...field}
+                  placeholder="Event Name"
+                  disabled={isViewing}
+                  className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2
+                    ${
+                      fieldState.error
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                        : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                    }
+                    ${isViewing ? "bg-[#F9FAFB] text-[#A0A0A0]" : ""}
+                  `}
+                />
+                {fieldState.error && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+        <div className="flex flex-col ">
+          <label
+            htmlFor="name"
+            className="text-sm font-medium text-[#414651] mb-[14px] dark:text-white"
+          >
+            Event Description
+            {isViewing && (
+              <div
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-[#EFF8FF] p-[8px]"
+                onClick={handleEditClick}
+              >
+                <EditIcon className="w-[12px] h-[12px] text-blue-700" />
+              </div>
+            )}
+          </label>
+
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <div className="flex flex-col">
+                <input
+                  {...field}
+                  placeholder="Enter Description"
+                  disabled={isViewing}
+                  className="text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                />
+              </div>
+            )}
+          />
+        </div>
+      </div>
+
+      {/* Row: Event Code + Event Source Device */}
+      <div className="flex gap-6 px-6">
+        {/* Event Code */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white">
+            Event Code<span className="text-red-500"> *</span>
+          </label>
+          <Controller
+            name="code"
+            control={control}
+            rules={{ required: "Event code is required." }}
+            render={({ field, fieldState }) => (
+              <>
+                <input
+                  {...field}
+                  placeholder="Enter event code"
+                  disabled={isViewing}
+                  className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2
+                    ${
+                      fieldState.error
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                        : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                    }
+                    ${isViewing ? "bg-[#F9FAFB] text-[#A0A0A0]" : ""}
+                  `}
+                />
+                {fieldState.error && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </>
+            )}
+          />
+        </div>
+
+        {/* Event Source Device */}
+        <DropdownMenu<EventFormValues>
+          control={control}
+          name="identifier.eventSourceDevice"
+          label="Event Source Device"
+          options={eventSourceDeviceValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[556px]"
+          disabled={isViewing || isEditing}
+          required
+        />
+      </div>
+
+      {/* Row: Scheme + Status (as dropdown) */}
+      <div className="flex gap-6 px-6">
+        <DropdownMenu<EventFormValues>
+          control={control}
+          name="identifier.scheme"
+          label="Scheme"
+          options={schemeValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[556px]"
+          disabled={isViewing || isEditing}
+          required
+        />
+
+        {/* Status dropdown */}
+        <DropdownMenu<EventFormValues>
+          control={control}
+          name="status"
+          label="Status"
+          options={statusValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[556px]"
+          disabled={isViewing}
+          required
+        />
+      </div>
+
+      {/* Row: Creation Time + Last Update Time */}
+      <div className="flex gap-6 px-6">
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white">
+            Creation Time
+          </label>
+          <Controller
+            name="creationTimestamp"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                placeholder="Enter creation time"
+                disabled={isViewing}
+                className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border
+                  ${
+                    isViewing
+                      ? "border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0]"
+                      : "border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                  }
+                `}
+              />
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white">
+            Last Update Time
+          </label>
+          <Controller
+            name="lastUpdatedTimestamp"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                placeholder="Enter last update time"
+                disabled={isViewing}
+                className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border
+                  ${
+                    isViewing
+                      ? "border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0]"
+                      : "border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                  }
+                `}
+              />
+            )}
+          />
+        </div>
+      </div>
+
+      {/* Footer Buttons */}
+      <div className="flex justify-end gap-4 px-6 pt-6">
+        <button
+          type="submit"
+          disabled={isViewing}
+          className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-900 disabled:opacity-50"
+        >
+          Save Event
+        </button>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] hover:bg-gray-100 dark:hover:text-black"
+        >
+          Cancel
+        </button>
+      </div>
+
+      {/* Confirm / Delete Popups */}
+      {isPopupOpen && (
+        <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+          <RulesPopupJsx
+            isAdding={isAdding}
+            isEditing={isEditing}
+            onConfirm={() => {
+              setIsPopupOpen(false);
+              navigate("/EventsManagement");
+            }}
+            onCancel={() => setIsPopupOpen(false)}
+          />
+        </LayoutPopup>
+      )}
+    </form>
+  );
+};
+
+export default EventsForm;

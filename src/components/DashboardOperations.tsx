@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
 
-const ActivityIcon = React.lazy(() => import(`/src/assets/svg/activity.svg?react`));
+const ActivityIcon = React.lazy(
+  () => import(`/src/assets/svg/activity.svg?react`)
+);
 
 const Top: React.FC = () => {
   return (
@@ -19,15 +21,16 @@ const Top: React.FC = () => {
 
       {/* Right: Buttons */}
       <div className="flex flex-row items-center gap-[8px]">
-              <Link
+        <Link
           to={AppRoutes.monitoring}
-          className="flex items-center gap-[8px] h-[36px] px-[14px] rounded-[8px] 
-                    bg-gradient-to-br from-gray-900 to-gray-600 
-                    shadow-[0_1px_2px_#0A0D120D] 
-                    text-white text-[12px] font-medium
-                    transition-all duration-200 ease-in-out
-                    hover:from-gray-1000 hover:to-gray-700 hover:shadow-md 
-                    dark:bg-blue-700 dark:hover:bg-blue-800 dark:shadow-sm"
+          className="flex items-center gap-[8px] h-[36px] px-[14px] rounded-[8px]
+                    bg-gradient-to-br from-gray-900 to-gray-600
+                  dark:bg-blue-700 dark:from-blue-700 dark:to-blue-700
+                  text-white text-[12px] font-medium
+                   transition-all duration-200 ease-in-out
+                   hover:from-gray-1000 hover:to-gray-700 hover:shadow-md
+                  dark:hover:bg-blue-800 shadow-[0_1px_2px_#0A0D120D]
+"
         >
           <ActivityIcon className="w-[16px] h-[16px] text-white" />
           <span>Live Monitoring</span>

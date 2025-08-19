@@ -1,101 +1,120 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { ThemeContext } from "../../context/Context";
 import { useSessionActivity } from "../../pages/Monitoring/MonitoringTable/useSessionActivity";
 import type { GetStatisticsResponse } from "../../pages/Monitoring/monitoringServices";
 
-interface PayloadType {
-  name: string;
-  value: number;
-}
+type RCTooltipProps = {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  total: number;
+};
 
-interface CustomTooltipProps {
-  viewed?: boolean;
-  payload?: PayloadType[];
-  statisticsData? : GetStatisticsResponse;
-}
-
-const CustomTooltip = ({ viewed, payload, statisticsData }: CustomTooltipProps) => {
-  if (viewed && payload && payload.length) {
-    const total = statisticsData?.totalSessions || 0
-    const percent = ((payload[0].value / total) * 100).toFixed(1);
-    console.log("Total:", total);
-    console.log("Percent:", percent);
-    return (
-      <div className="px-2 py-1 bg-black text-white text-xs rounded-md shadow">
-        {percent}%
-      </div>
-    );
-  }
-  return null;
+const DonutTooltip = ({ active, payload, total }: RCTooltipProps) => {
+  if (!active || !payload?.length || total <= 0) return null;
+  const pct = ((payload[0].value / total) * 100).toFixed(1);
+  return (
+    <div className="px-2 py-[2px] rounded-md bg-[#111827] text-white text-[11px] shadow">
+      {pct}%
+    </div>
+  );
 };
 
 export default function PieChartComponent() {
   const { isDarkMode } = useContext(ThemeContext);
   const { statisticsData } = useSessionActivity();
+
+  const COLORS = useMemo(
+    () =>
+      isDarkMode
+        ? { viewed: "#1E40D1", notViewed: "#F04438", all: "#98A2B3" }
+        : { viewed: "#1637C4", notViewed: "#F04438", all: "#98A2B3" },
+    [isDarkMode]
+  );
+
+  const total = statisticsData?.totalSessions ?? 100;
+  const viewed = statisticsData?.viewedSessions ?? 50;
+  const notViewed = statisticsData?.notViewedSessions ?? 50;
+
   const data = [
-    { name: "Viewed", value: statisticsData?.viewedSessions || 0 },
-    { name: "Not Viewed", value: statisticsData?.notViewedSessions || 0 },
+    { name: "Viewed", value: viewed },
+    { name: "Not Viewed", value: notViewed },
   ];
 
-  const COLORS = isDarkMode
-    ? ["#1637C4", "#F04438"] // blue + gray for dark mode
-    : ["#1637C4", "#F04438"]; // original light mode colors
-
   return (
-    <div className="flex w-[410px] h-[232px] p-6 bg-white rounded-2xl shadow w-64 dark:bg-[#121418] dark:border-gray-800">
-
-      <div className="flex justify-center">
-        <ResponsiveContainer width={183} height={183}>
+    <div className="flex w-[410px] h-[232px] p-6 bg-white rounded-2xl shadow-sm   dark:bg-[#121418]">
+      <div className="flex items-center justify-center w-[183px] h-[183px]">
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={70}
+              innerRadius={52}
+              outerRadius={80}
               startAngle={90}
               endAngle={-270}
               dataKey="value"
               stroke="none"
             >
-              {data.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]} />
-              ))}
+              <Cell fill={COLORS.viewed} />
+              <Cell fill={COLORS.notViewed} />
             </Pie>
-            <Tooltip content={<CustomTooltip viewed payload={data} statisticsData={statisticsData}/>} />
+
+            <Tooltip
+              cursor={false}
+              content={({ active, payload }) => (
+                <DonutTooltip active={active} payload={payload as any} total={total} />
+              )}
+              wrapperStyle={{ outline: "none" }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="flex flex-col justify-center mt-4 space-y-2 text-sm text-black font-medium dark:text-white">
-        <div className="flex justify-between items-center w-[162px]">
-          <div className="flex items-center space-x-2">
-            <span className={`w-2 h-2 rounded-full bg-gray-400`} />
-            <span className="text-gray-900 dark:text-gray-400 font-inter font-normal text-[12px] leading-[18px] tracking-[0] text-right">All Events</span>
+      <div className="flex flex-col justify-center ml-6 space-y-3 text-sm dark:text-white">
+        <div className="flex justify-between items-center w-[170px]">
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: COLORS.all }}
+            />
+            <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+              All Events
+            </span>
           </div>
-          <span className="text-gray-900 dark:text-gray-400 font-inter font-normal text-[12px] leading-[18px] tracking-[0] text-right">
-            {statisticsData?.totalSessions || 0}
+          <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+            {total}
           </span>
         </div>
 
-        <div className="flex justify-between items-center w-[162px]">
-          <div className="flex items-center space-x-2">
-            <span className={`w-2 h-2 rounded-full bg-[${COLORS[0]}]`} />
-            <span className="text-gray-900 dark:text-gray-400 font-inter font-normal text-[12px] leading-[18px] tracking-[0] text-right">Viewed</span>
+        <div className="flex justify-between items-center w-[170px]">
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: COLORS.viewed }}
+            />
+            <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+              Viewed
+            </span>
           </div>
-          <span className="text-gray-900 dark:text-gray-400 font-inter font-normal text-[12px] leading-[18px] tracking-[0] text-right">
-            {statisticsData?.viewedSessions || 0}
+          <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+            {viewed}
           </span>
         </div>
 
-        <div className="flex justify-between items-center w-[162px]">
-          <div className="flex items-center space-x-2">
-            <span className={`w-2 h-2 rounded-full bg-[${COLORS[1]}]`} />
-            <span className="text-gray-900 dark:text-gray-400 font-inter font-normal text-[12px] leading-[18px] tracking-[0] text-right">Not Viewed</span>
+        <div className="flex justify-between items-center w-[170px]">
+          <div className="flex items-center gap-2">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: COLORS.notViewed }}
+            />
+            <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+              Not Viewed
+            </span>
           </div>
-          <span className="text-gray-900 dark:text-gray-400 font-inter font-normal text-[12px] leading-[18px] tracking-[0] text-right">
-            {statisticsData?.notViewedSessions || 0}
+          <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+            {notViewed}
           </span>
         </div>
       </div>

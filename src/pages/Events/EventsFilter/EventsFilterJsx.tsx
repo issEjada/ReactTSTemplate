@@ -2,25 +2,25 @@ import React from "react";
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
-import { useDecisionRulesFilter } from "./useDecisionRulesFilter";
-import type { DecisionRulesFormValues } from "../decisionRulesServices";
+import { useEventFilterForm } from "./useEventFilterForm";
+import type { EventFormValues } from "../eventsServices";
 
 const ToolTipQuestionMark = React.lazy(
   () => import("../../../assets/svg/toolTipQuestionMark.svg?react")
 );
-
-interface DecisionFilterFormProps {
+interface EventsFilterFormProps {
   isOpen: boolean;
   closeDrawer: () => void;
-  handleSearchSubmit: (searchData: DecisionRulesFormValues) => void;
-  filterData: DecisionRulesFormValues | undefined;
+  handleSearchSubmit: (searchData: EventFormValues) => void;
+  filterData?: EventFormValues | undefined;
 }
-export const DecisionRulesFilter = ({
+
+export const EventFilterForm = ({
   isOpen,
   closeDrawer,
   handleSearchSubmit,
   filterData,
-}: DecisionFilterFormProps) => {
+}: EventsFilterFormProps) => {
   const {
     onSubmit,
     handleClear,
@@ -28,9 +28,7 @@ export const DecisionRulesFilter = ({
     schemeValues,
     statusValues,
     eventSourceDeviceValues,
-    decisionValues,
-    eventNameValues,
-  } = useDecisionRulesFilter(closeDrawer, filterData, handleSearchSubmit);
+  } = useEventFilterForm({ closeDrawer, handleSearchSubmit, filterData });
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,19 +37,14 @@ export const DecisionRulesFilter = ({
   };
 
   return (
-    <FilterLayout
-      title="Filter Decision Rules"
-      isOpen={isOpen}
-      onClose={closeDrawer}
-    >
+    <FilterLayout title="Filter Events" isOpen={isOpen} onClose={closeDrawer}>
       <form
-        className="flex flex-col justify-between h-[950px]"
+        className="flex flex-col justify-between h-[672px]"
         onSubmit={onFormSubmit}
       >
+        {/* Rule/Event Name */}
         <div className="relative flex flex-col mt-6">
-          <label className="text-sm font-medium dark:text-white">
-            Rule Name
-          </label>
+          <label className="text-sm font-medium ">Event Name</label>
           <Controller
             control={control}
             name="name"
@@ -59,20 +52,20 @@ export const DecisionRulesFilter = ({
               <input
                 {...field}
                 type="text"
-                placeholder="Enter Rule Name"
+                placeholder="Enter Event Name"
                 className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
-
           <div className="absolute top-[40px] left-[calc(100%-32px)] group">
             <ToolTipQuestionMark className="w-4 h-4 cursor-pointer" />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-              Enter Rule Name.
+              Enter Event Name.
             </div>
           </div>
         </div>
 
+        {/* Description */}
         <div>
           <label className="text-sm font-medium">Description</label>
           <Controller
@@ -89,23 +82,24 @@ export const DecisionRulesFilter = ({
           />
         </div>
 
+        {/* Event Code */}
         <div>
-          <label className="text-sm font-medium">Criteria Name</label>
+          <label className="text-sm font-medium">Event Code</label>
           <Controller
             control={control}
-            name="criteriaName"
+            name="code"
             render={({ field }) => (
               <input
                 {...field}
                 type="text"
-                placeholder="Enter Criteria Name"
+                placeholder="Enter Event Code"
                 className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
         </div>
 
-        <DropdownMenu<DecisionRulesFormValues>
+        <DropdownMenu<EventFormValues>
           control={control}
           name="status"
           label="Status"
@@ -116,7 +110,7 @@ export const DecisionRulesFilter = ({
           className="w-[100%]"
         />
 
-        <DropdownMenu<DecisionRulesFormValues>
+        <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.eventSourceDevice"
           label="Event Source Device"
@@ -127,7 +121,7 @@ export const DecisionRulesFilter = ({
           className="w-[100%]"
         />
 
-        <DropdownMenu<DecisionRulesFormValues>
+        <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.scheme"
           label="Scheme"
@@ -137,29 +131,7 @@ export const DecisionRulesFilter = ({
           }))}
           className="w-[100%]"
         />
-
-        <DropdownMenu<DecisionRulesFormValues>
-          control={control}
-          name="eventName"
-          label="Event Name"
-          options={eventNameValues.map((item) => ({
-            key: item.key,
-            node: item.valueEn,
-          }))}
-          className="w-[100%]"
-        />
-
-        <DropdownMenu<DecisionRulesFormValues>
-          control={control}
-          name="decision"
-          label="Decision"
-          options={decisionValues.map((item) => ({
-            key: item.key,
-            node: item.valueEn,
-          }))}
-          className="w-[100%]"
-        />
-
+        {/* Dates */}
         <div className="flex gap-4 mb-4">
           <div className="w-[50%]">
             <label className="text-sm font-medium">Date From</label>
@@ -203,6 +175,7 @@ export const DecisionRulesFilter = ({
           </div>
         </div>
 
+        {/* Actions */}
         <div className="flex justify-end gap-2 mb-8 w-[100%]">
           <button
             type="submit"
@@ -222,3 +195,4 @@ export const DecisionRulesFilter = ({
     </FilterLayout>
   );
 };
+export default EventFilterForm;

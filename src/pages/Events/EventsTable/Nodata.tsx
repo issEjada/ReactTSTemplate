@@ -1,11 +1,11 @@
 import React from "react";
 
 import backgroundCircle from "../../../assets/svg/BackgroundCircle.svg";
-const ShieldIcon = React.lazy(
-  () => import("../../../assets/svg/shieldG.svg?react")
+const Vector = React.lazy(
+  () => import("../../../assets/svg/Vector (1).svg?react")
 );
 
-const NoSessions = () => {
+const Nodata = () => {
   return (
     <div className="w-full max-w-[1148px] mx-auto p-4 sm:p-6 bg-white rounded-[18px] flex flex-col">
       {/* Card (background fills whole card area!) */}
@@ -37,17 +37,17 @@ const NoSessions = () => {
           {/* Icon in rounded box */}
           <div className="flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px] mb-6 sm:w-[60px] sm:h-[60px]">
             <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-              <ShieldIcon className="w-[24px] h-[24px] sm:w-[28px] sm:h-[28px] text-gray" />
+              <Vector className="w-[24px] h-[24px] sm:w-[28px] sm:h-[28px] text-gray" />
             </div>
           </div>
           {/* Title & Description */}
           <div className="flex flex-col items-center w-full gap-1 mt-[36px] sm:mt-[48px] dark:text-white">
             <span className="sm:text-[16px] leading-[22px] sm:leading-[24px] font-semibold text-gray-900 text-center">
-              Start adding new sessions
+              Start adding new events
             </span>
             <span className="sm:text-[14px] sm:leading-[20px] font-normal text-gray-600 text-center pt-[4px] w-[304px]">
-              <h1>You don’t have any sessions yet.</h1>
-              <p>Start monitoring by adding new sessions now.</p>
+              <h1>You don’t have any event yet.</h1>
+              <p>Start monitoring by adding new events now.</p>
             </span>
           </div>
         </div>
@@ -56,4 +56,4 @@ const NoSessions = () => {
   );
 };
 
-export default NoSessions;
+export default Nodata;

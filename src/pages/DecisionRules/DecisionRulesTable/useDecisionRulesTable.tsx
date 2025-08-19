@@ -34,8 +34,6 @@ export const useDecisionRulesTable = () => {
   const [popupType, setPopupType] = useState<string>("");
   const [popupMessage, setPopupMessage] = useState<string>("");
 
-  const [refetch, setRefetch] = useState<(() => void) | undefined>();
-
   const handleOpenDrawer = () => {
     setIsFilterOpen(true);
   };
@@ -163,7 +161,7 @@ export const useDecisionRulesTable = () => {
     isPopupOpen,
     popupType,
     deleteDecisionRule,
-    refetch: fetchDecisionData, // Export fetchDecisionData as refetch
+    refetch: fetchDecisionData,
     totalCount,
     data,
     error,

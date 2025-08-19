@@ -12,6 +12,9 @@ import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
 import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
 import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
+import EventsTable from "../pages/Events/EventsTable/EventsTable";
+import EventsForm from "../pages/Events/EventsForm/EventsForm";
+import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 
 interface ProtectedRouteProps {
@@ -59,7 +62,16 @@ export const AppRouter = createBrowserRouter([
         ),
         errorElement: <></>,
       },
-            {
+      {
+        path: AppRoutes.customerProfile,
+        element: (
+          <ProtectedRoute>
+            <CustomerProfile />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
         path: AppRoutes.customerProfile,
         element: (
           <ProtectedRoute>
@@ -190,7 +202,43 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.events,
         element: (
           <ProtectedRoute>
-            <div>EVENTS</div>
+            <EventsTable />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.addEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.editDecisionRule,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.viewEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsView />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.editEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
           </ProtectedRoute>
         ),
         errorElement: <></>,

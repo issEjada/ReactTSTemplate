@@ -1,17 +1,21 @@
 import HomeWidgetGroup from "../components/HomeWidget";
 import { ScoringRulesTable } from "./ScoringRules/ScoringRulesTable/ScoringRulesTable.js";
 import DashboardOperations from "../components/DashboardOperations.js";
+import DashboardEvents from "../components/DashboardEvents.js";
 const Home = () => {
   return (
     <div className="flex flex-col gap-[28px] px-4 pb-4 w-full">
       <div className="mt-[24px]">
         <DashboardOperations />
       </div>
-
       {/* Widgets */}
 
       <HomeWidgetGroup />
-    <ScoringRulesTable fromDashboard />
+      <div className="flex">
+        <ScoringRulesTable fromDashboard={true} />
+        <DashboardEvents/>
+      </div>
+  
       
       {/* Line Chart */}
       {/* <div className="flex flex-col-1 lg:flex-row mx-4 w-full gap-6">

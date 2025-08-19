@@ -21,4 +21,7 @@ export const API = {
   customerDevices: "/users/sdks/search",
   unBlockDevices: "/users/fpts",
   healthCheck:"/sdks/health-check-records",
+  events: "/events-management/v1/events/search",
+  getEventeById: "/events-management/v1/events",
+  getEventParameter: "/v1/events/lov",
 };
