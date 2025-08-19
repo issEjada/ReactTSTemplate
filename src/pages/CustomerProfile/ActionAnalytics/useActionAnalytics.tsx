@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { CustomerClient, type ActionAnalyticsPayload, type ActionAnalyticsResponse } from "../customerProfileServices";
 
-export const useActionAnalytics = () => {
+export const useActionAnalytics = (userMobileNumber:string, currentPage: number) => {
   const [actionAnalyticsData, setActionAnalyticsData] = useState<ActionAnalyticsResponse>();
-  const [globalFilterData, setGlobalFilterData] =
-    useState<ActionAnalyticsPayload>();
   const [errorValidation, setErrorValidate] = useState<string>();
   const [loadingState, setLoadingState] = useState<
     "loading" | "success" | "error"
   >("success");
 
+    console.log("User Mobile Number:", userMobileNumber);
+
   const fetchActionAnalyticsData = async () => {
     setLoadingState("loading");
     const data: ActionAnalyticsPayload = {
-      ...globalFilterData,
+      userMobileNumber: userMobileNumber,
+      page: currentPage,
     };
     await CustomerClient.getActionsAnalyticsData(data)
       .then((value) => {
@@ -30,14 +31,11 @@ export const useActionAnalytics = () => {
   };
 
   useEffect(() => {
-    if (globalFilterData) {
-      fetchActionAnalyticsData();
-    }
-  }, [globalFilterData]);
+    fetchActionAnalyticsData();
+  }, []);
 
   return {
     actionAnalyticsData,
-    setGlobalFilterData,
     errorValidation,
     loadingState,
   };

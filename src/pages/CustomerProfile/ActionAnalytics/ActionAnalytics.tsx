@@ -208,7 +208,11 @@ const columns: ColumnDef<UserActionRow>[] = [
   },
 ];
 
-export const ActionAnalytics: React.FC = () => {
+type ActionAnalyticsProps = {
+  userMobileNumber: string;
+};
+
+export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({ userMobileNumber }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
@@ -218,7 +222,7 @@ export const ActionAnalytics: React.FC = () => {
     setGlobalFilterData,
     errorValidation,
     loadingState,
-  } = useActionAnalytics();
+  } = useActionAnalytics(userMobileNumber, currentPage);
 
   console.log("Action Analytics Data:", actionAnalyticsData);
 
@@ -286,7 +290,7 @@ export const ActionAnalytics: React.FC = () => {
               columns={columns}
               totalCount={rows.length}
               currentPage={currentPage}
-              itemsPerPage={5}
+              itemsPerPage={10}
               setCurrentPage={setCurrentPage}
               searchText={searchText}
               setSearchText={setSearchText}

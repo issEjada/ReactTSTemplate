@@ -246,7 +246,7 @@ export const CustomerProfile = () => {
             </div>
           </div>
           {currentSection === "customerInsights" && <CustomerInsights {...insightsData} />}
-          {currentSection === "actionAnalytics" && <ActionAnalytics />}
+          {currentSection === "actionAnalytics" && <ActionAnalytics userMobileNumber={insightsData?.userInfo?.mobileNumber}/>}
           {currentSection === "customerDevices" && <CustomerDevices />}
           {currentSection === "devicesHealthChecks" && <DevicesHealthChecks />}
         </div>
