@@ -75,8 +75,8 @@ export interface ActionAnalyticsPayload {
   userId?: string;
   clientUserId?: string;
   userMobileNumber?: string;
-  maxPageSize: number;
-  page: number;
+  maxPageSize?: number;
+  page?: number;
 }
 
 interface ActionsStatistics {

@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
-import { CustomerClient } from "../customerProfileServices";
+import { CustomerClient, type ActionAnalyticsPayload, type ActionAnalyticsResponse } from "../customerProfileServices";
 
 export const useActionAnalytics = () => {
-  const [insightsData, setInsightsData] = useState<CustomerInsightsResponse>();
+  const [actionAnalyticsData, setActionAnalyticsData] = useState<ActionAnalyticsResponse>();
   const [globalFilterData, setGlobalFilterData] =
-    useState<CustomerInsightsPayload>();
+    useState<ActionAnalyticsPayload>();
   const [errorValidation, setErrorValidate] = useState<string>();
   const [loadingState, setLoadingState] = useState<
     "loading" | "success" | "error"
   >("success");
 
-  const fetchCustomerInsightsData = async () => {
+  const fetchActionAnalyticsData = async () => {
     setLoadingState("loading");
-    const data: CustomerInsightsPayload = {
+    const data: ActionAnalyticsPayload = {
       ...globalFilterData,
     };
     await CustomerClient.getActionsAnalyticsData(data)
       .then((value) => {
-        setInsightsData(value);
+        setActionAnalyticsData(value);
         setLoadingState("success");
         setErrorValidate(undefined);
       })
       .catch((error) => {
-        setInsightsData(undefined);
+        setActionAnalyticsData(undefined);
         console.error("Error fetching data:", error.message);
         setErrorValidate(error.message);
         setLoadingState("error");
@@ -31,12 +31,12 @@ export const useActionAnalytics = () => {
 
   useEffect(() => {
     if (globalFilterData) {
-      fetchCustomerInsightsData();
+      fetchActionAnalyticsData();
     }
   }, [globalFilterData]);
 
   return {
-    insightsData,
+    actionAnalyticsData,
     setGlobalFilterData,
     errorValidation,
     loadingState,

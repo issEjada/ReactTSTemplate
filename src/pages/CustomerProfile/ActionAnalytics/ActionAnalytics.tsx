@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ActionIndicator } from "./ActionsIndiccator";
+import { ActionStatistics } from "./ActionStatistics";
 import MetricCard from "./MetricCard";
 import { DynamicTable } from "../../../components/DynamicTable";
+import { useActionAnalytics } from "./useActionAnalytics";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -92,9 +93,8 @@ function RowMenu({
   const toggleMenu = () => {
     if (!buttonRef.current) return;
     const rect = buttonRef.current.getBoundingClientRect();
-    // place the menu just below the button and right-aligned
     const top = rect.bottom + window.scrollY + 8;
-    const left = rect.right + window.scrollX - 237; // 160px = menu width
+    const left = rect.right + window.scrollX - 237;
     setCoords({ top, left });
     setOpen((v) => !v);
   };
@@ -208,11 +208,20 @@ const columns: ColumnDef<UserActionRow>[] = [
   },
 ];
 
-/* ========= Page Component ========= */
 export const ActionAnalytics: React.FC = () => {
-  const [open, setOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+
+  const {
+    actionAnalyticsData,
+    setGlobalFilterData,
+    errorValidation,
+    loadingState,
+  } = useActionAnalytics();
+
+  console.log("Action Analytics Data:", actionAnalyticsData);
+
 
   return (
     <div className="flex flex-col gap-4">
@@ -259,7 +268,7 @@ export const ActionAnalytics: React.FC = () => {
         />
       </div>
 
-      <ActionIndicator isOpen={open} onClose={() => setOpen(false)} />
+      <ActionStatistics isOpen={isOpen} onClose={() => setIsOpen(false)} />
 
       {/* Card (header + table) */}
       <div className="rounded-[12px] border border-gray-200 bg-white overflow-hidden dark:border-blueGray-800 dark:bg-gray-900">

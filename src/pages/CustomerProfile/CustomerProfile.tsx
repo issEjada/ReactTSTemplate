@@ -177,8 +177,8 @@ export const CustomerProfile = () => {
         <div className="flex flex-col gap-4 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4">
           <div className="w-full flex rounded-lg overflow-hidden border border-blueGray-300 shadow-[0px_1px_2px_0px_#0A0D120D]">
             <div
-              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg ${
-                currentSection === "customerInsights" && "bg-blueGray-100"
+              className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg ${
+                currentSection === "customerInsights" ? "bg-blueGray-100" : "bg-white"
               }`}
               onClick={() => setCurrentSection("customerInsights")}
             >
@@ -194,8 +194,8 @@ export const CustomerProfile = () => {
               </div>
             </div>
             <div
-              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
-                currentSection === "actionAnalytics" && "bg-blueGray-100"
+              className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
+                currentSection === "actionAnalytics" ? "bg-blueGray-100" : "bg-white"
               }`}
               onClick={() => setCurrentSection("actionAnalytics")}
             >
@@ -211,8 +211,8 @@ export const CustomerProfile = () => {
               </div>
             </div>
             <div
-              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
-                currentSection === "customerDevices" && "bg-blueGray-100"
+              className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
+                currentSection === "customerDevices"  ? "bg-blueGray-100" : "bg-white"
               }`}
               onClick={() => setCurrentSection("customerDevices")}
             >
@@ -228,8 +228,8 @@ export const CustomerProfile = () => {
               </div>
             </div>
             <div
-              className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg ${
-                currentSection === "devicesHealthChecks" && "bg-blueGray-100"
+              className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg ${
+                currentSection === "devicesHealthChecks"  ? "bg-blueGray-100" : "bg-white"
               }`}
               onClick={() => setCurrentSection("devicesHealthChecks")}
             >
