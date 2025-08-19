@@ -23,7 +23,6 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
-const PlusIconBlue = React.lazy(() => import("../../../assets/svg/PlusIconBlue.svg?react"));
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
@@ -260,8 +259,6 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 
   const navigate = useNavigate();
 
-
-
   const handleClearSearch = () => {
     setSearchText("");
     setFilters({});
@@ -316,7 +313,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
                 aria-label="Add New Rule"
               >
-                <PlusIconBlue className="w-[20px] h-[20px]" />
+                <PlusIcon className="w-[20px] h-[20px] text-blue-700" />
               </button>
             )}
           </div>
@@ -370,6 +367,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
           title="Scoring Rules"
+          loadingState={loadingState}
           error={error}
           searchText={!fromDashboard ? searchText : ""}
           setSearchText={!fromDashboard ? setSearchText : () => {}}

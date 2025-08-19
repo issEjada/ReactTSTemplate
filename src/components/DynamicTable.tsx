@@ -9,6 +9,8 @@ import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
 import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
+import FullScreenSpinner from "./FullScreenSpinner";
+import type { LoadingState } from "../types/types";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
@@ -39,6 +41,8 @@ interface DynamicTableProps<TData extends object> {
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
   minimal?: boolean;
+  minimalWithPagination?: boolean;
+  loadingState?: LoadingState;
 }
 
 export function DynamicTable<TData extends object>({
@@ -64,6 +68,8 @@ export function DynamicTable<TData extends object>({
   statusFilterOptions,
   isMonitoringTable = false,
   minimal = false,
+  minimalWithPagination = false,
+  loadingState,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -90,11 +96,15 @@ export function DynamicTable<TData extends object>({
     const col = table.getColumn(columnId);
     if (!col) return;
     col.toggleSorting(col.getIsSorted() === "asc");
+
+    if (loadingState === "loading") {
+      return <FullScreenSpinner />;
+    }
   };
 
   return (
     <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418] ">
-      {!minimal && (
+      {!(minimal || minimalWithPagination) && (
         <div className="px-4  sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
           {showStatusFilter &&
             onFilterStatus &&
