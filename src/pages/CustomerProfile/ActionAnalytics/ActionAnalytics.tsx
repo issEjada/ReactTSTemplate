@@ -1,12 +1,297 @@
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import type { ColumnDef } from "@tanstack/react-table";
 import { ActionIndicator } from "./ActionsIndiccator";
 import MetricCard from "./MetricCard";
-export const ActionAnalytics = () => {
-  const [open, setOpen] = useState(true);
+import { DynamicTable } from "../../../components/DynamicTable";
+
+const StatisticsIcon = React.lazy(
+  () => import("../../../assets/svg/CInsight.svg?react")
+);
+const IndicatorsIcon = React.lazy(
+  () => import("../../../assets/svg/analytics.svg?react")
+);
+
+const TotalActionIcon = React.lazy(
+  () => import("../../../assets/svg/TAction.svg?react")
+);
+const AuthActionIcon = React.lazy(
+  () => import("../../../assets/svg/shieldG.svg?react")
+);
+const AcceptedIcon = React.lazy(
+  () => import("../../../assets/svg/Check.svg?react")
+);
+const RejectedIcon = React.lazy(
+  () => import("../../../assets/svg/ActiveAlerts.svg?react")
+);
+const MfaIcon = React.lazy(() => import("../../../assets/svg/MFA.svg?react"));
+const ScaIcon = React.lazy(
+  () => import("../../../assets/svg/LockIcon.svg?react")
+);
+
+type UserActionRow = {
+  id: number;
+  eventName: string;
+  totalActions: number;
+  acceptedActions: number;
+  averageAmount: number;
+};
+
+const rows: UserActionRow[] = [
+  {
+    id: 1,
+    eventName: "Event Name",
+    totalActions: 122,
+    acceptedActions: 60,
+    averageAmount: 3013,
+  },
+  {
+    id: 2,
+    eventName: "Event Name",
+    totalActions: 213,
+    acceptedActions: 34,
+    averageAmount: 5200,
+  },
+  {
+    id: 3,
+    eventName: "Event Name",
+    totalActions: 321,
+    acceptedActions: 23,
+    averageAmount: 5400,
+  },
+  {
+    id: 4,
+    eventName: "Event Name",
+    totalActions: 54,
+    acceptedActions: 24,
+    averageAmount: 2200,
+  },
+  {
+    id: 5,
+    eventName: "Event Name",
+    totalActions: 12,
+    acceptedActions: 2,
+    averageAmount: 500,
+  },
+];
+
+function RowMenu({
+  onStatistics,
+  onTrustedIndicators,
+}: {
+  onStatistics: () => void;
+  onTrustedIndicators: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  });
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const toggleMenu = () => {
+    if (!buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    // place the menu just below the button and right-aligned
+    const top = rect.bottom + window.scrollY + 8;
+    const left = rect.right + window.scrollX - 237; // 160px = menu width
+    setCoords({ top, left });
+    setOpen((v) => !v);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e: MouseEvent) => {
+      if (buttonRef.current && buttonRef.current.contains(e.target as Node))
+        return;
+      const menu = document.querySelector(".row-menu-portal");
+      if (menu && menu.contains(e.target as Node)) return;
+      setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("click", onClick);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   return (
-    <div>
-      <MetricCard title="test" value={20} className="w-[50%]" />{" "}
+    <>
+      <button
+        ref={buttonRef}
+        className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100 focus-visible:outline-none dark:hover:bg-gray-800"
+        onClick={toggleMenu}
+        aria-label="More options"
+      >
+        <span className="flex flex-col items-center gap-[3px]">
+          <span className="block w-1 h-1 rounded-full bg-gray-500" />
+          <span className="block w-1 h-1 rounded-full bg-gray-500" />
+          <span className="block w-1 h-1 rounded-full bg-gray-500" />
+        </span>
+      </button>
+
+      {open &&
+        createPortal(
+          <div
+            className="row-menu-portal absolute z-[9999] w-[237px] rounded-lg border border-gray-200 bg-white shadow-lg text-gray-700 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            style={{ top: coords.top, left: coords.left }}
+          >
+            <button
+              type="button"
+              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 text-left dark:hover:bg-gray-800"
+              onClick={() => {
+                onStatistics();
+                setOpen(false);
+              }}
+            >
+              <StatisticsIcon className="w-4 h-4" />
+              <span className="text-sm whitespace-nowrap">
+                Actions Statistics
+              </span>
+            </button>
+            <div className="border-t border-gray-200 dark:border-gray-700" />
+            <button
+              type="button"
+              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 text-left dark:hover:bg-gray-800"
+              onClick={() => {
+                onTrustedIndicators();
+                setOpen(false);
+              }}
+            >
+              <IndicatorsIcon className="w-4 h-4" />
+              <span className="text-sm whitespace-nowrap">
+                Actions Trusted Indicators
+              </span>
+            </button>
+          </div>,
+          document.body
+        )}
+    </>
+  );
+}
+
+const columns: ColumnDef<UserActionRow>[] = [
+  { accessorKey: "eventName", header: "Event Name", cell: (i) => i.getValue() },
+  {
+    accessorKey: "totalActions",
+    header: "Total Actions",
+    cell: (i) => i.getValue() as number,
+  },
+  {
+    accessorKey: "acceptedActions",
+    header: "Accepted Actions",
+    cell: (i) => i.getValue() as number,
+  },
+  {
+    accessorKey: "averageAmount",
+    header: "Average Amount",
+    cell: (i) => i.getValue() as number,
+  },
+  {
+    id: "menu",
+    header: "",
+    enableSorting: false,
+    cell: ({ row }) => (
+      <div className="flex justify-end pr-3">
+        <RowMenu
+          onStatistics={() =>
+            console.log("Actions Statistics for row:", row.original)
+          }
+          onTrustedIndicators={() =>
+            console.log("Actions Trusted Indicators for row:", row.original)
+          }
+        />
+      </div>
+    ),
+  },
+];
+
+/* ========= Page Component ========= */
+export const ActionAnalytics: React.FC = () => {
+  const [open, setOpen] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* KPI Cards */}
+      <div className="flex flex-col md:flex-row gap-4">
+        <MetricCard
+          title="Total Actions"
+          value={221}
+          icon={<TotalActionIcon />}
+          className="w-full md:w-[370px]"
+        />
+        <MetricCard
+          title="Accepted Actions"
+          value={18}
+          icon={<AcceptedIcon />}
+          className="w-full md:w-[370px]"
+        />
+        <MetricCard
+          title="MFA Actions"
+          value={5}
+          icon={<MfaIcon />}
+          className="w-full md:w-[370px]"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4">
+        <MetricCard
+          title="Authenticated Actions"
+          value={378}
+          icon={<AuthActionIcon />}
+          className="w-full md:w-[370px]"
+        />
+        <MetricCard
+          title="Rejected Actions"
+          value={1219}
+          icon={<RejectedIcon />}
+          className="w-full md:w-[370px]"
+        />
+        <MetricCard
+          title="SCA Actions"
+          value={18}
+          icon={<ScaIcon />}
+          className="w-full md:w-[370px]"
+        />
+      </div>
+
       <ActionIndicator isOpen={open} onClose={() => setOpen(false)} />
+
+      {/* Card (header + table) */}
+      <div className="rounded-[12px] border border-gray-200 bg-white overflow-hidden dark:border-blueGray-800 dark:bg-gray-900">
+        <div className="px-5 py-4">
+          <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
+            User Actions Tables
+          </h2>
+        </div>
+
+        <div className="px-5 pb-5 overflow-x-auto">
+          <div className="overflow-x-auto">
+            <DynamicTable<UserActionRow>
+              title="User Actions Table"
+              data={rows}
+              columns={columns}
+              totalCount={rows.length}
+              currentPage={currentPage}
+              itemsPerPage={5}
+              setCurrentPage={setCurrentPage}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              onClearSearch={() => setSearchText("")}
+              openFilterModal={() => {}}
+              applyFilters={() => {}}
+              showStatusFilter={false}
+              filterComponent={null}
+              error={null}
+              minimalWithPagination={true}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
