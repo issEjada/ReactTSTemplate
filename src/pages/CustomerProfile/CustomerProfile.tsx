@@ -7,6 +7,7 @@ import React from "react";
 import CustomerInformationFilter from "./CustomerProfileFilter/CustomerInformationFilter";
 import { useCustomProfile } from "./useCustomProfile";
 import type { CustomerInsightsPayload } from "./customerProfileServices";
+import FullScreenSpinner from "../../components/FullScreenSpinner";
 
 const UserIcon = React.lazy(
   () => import("../../../src/assets/svg/profile.svg?react")
@@ -40,7 +41,7 @@ export const CustomerProfile = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 
-  const {insightsData, setGlobalFilterData} = useCustomProfile();
+  const {insightsData, setGlobalFilterData, errorValidation, loadingState} = useCustomProfile();
 
   const applyFilters = () => {
     const searchData = {
@@ -61,10 +62,14 @@ export const CustomerProfile = () => {
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full pt-6 pb-4 ps-6 pe-4">
-      <div className="flex justify-between">
-        <span>Customer Information</span>
+      <div className="flex justify-between items-center flex-wrap">
+        <span className="font-inter font-medium text-[18px] leading-[28px] tracking-normal text-gray-900">Customer Information</span>
         <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
           <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
             <button
@@ -119,6 +124,9 @@ export const CustomerProfile = () => {
           </button>
         </div>
       </div>
+      {errorValidation && (
+        <div className="text-red-600 px-20 pt-2">{errorValidation}</div>
+      )}
       {insightsData && (
       <div className="flex justify-between gap-4 w-full py-4">
         <div className="flex flex-col justify-start gap-2 bg-blueGray-50 rounded-lg w-[304px] border border-blueGray-200 p-4">
@@ -133,7 +141,7 @@ export const CustomerProfile = () => {
                   Mobile Number
                 </span>
                 <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
-                  {searchText}
+                  {insightsData.userInfo.userMobileNumber || "N/A"}
                 </span>
               </div>
             </div>
