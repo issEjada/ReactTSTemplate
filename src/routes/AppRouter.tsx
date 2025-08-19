@@ -16,6 +16,7 @@ import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import EventsForm from "../pages/Events/EventsForm/EventsForm";
 import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
+import { ActionAnalytics } from "../pages/CustomerProfile/ActionAnalytics/ActionAnalytics";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -247,7 +248,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.analytics,
         element: (
           <ProtectedRoute>
-            <div>ANALYTICS</div>
+            <ActionAnalytics />
           </ProtectedRoute>
         ),
         errorElement: <></>,

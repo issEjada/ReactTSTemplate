@@ -172,47 +172,52 @@ function RowMenu({
   );
 }
 
-const columns: ColumnDef<UserActionRow>[] = [
-  { accessorKey: "eventName", header: "Event Name", cell: (i) => i.getValue() },
-  {
-    accessorKey: "totalActions",
-    header: "Total Actions",
-    cell: (i) => i.getValue() as number,
-  },
-  {
-    accessorKey: "acceptedActions",
-    header: "Accepted Actions",
-    cell: (i) => i.getValue() as number,
-  },
-  {
-    accessorKey: "averageAmount",
-    header: "Average Amount",
-    cell: (i) => i.getValue() as number,
-  },
-  {
-    id: "menu",
-    header: "",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end pr-3">
-        <RowMenu
-          onStatistics={() =>
-            console.log("Actions Statistics for row:", row.original)
-          }
-          onTrustedIndicators={() =>
-            console.log("Actions Trusted Indicators for row:", row.original)
-          }
-        />
-      </div>
-    ),
-  },
-];
-
 /* ========= Page Component ========= */
 export const ActionAnalytics: React.FC = () => {
-  const [open, setOpen] = useState(true);
+  const [isIndicatorOpen, setIsIndicatorOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+
+  const columns: ColumnDef<UserActionRow>[] = [
+    {
+      accessorKey: "eventName",
+      header: "Event Name",
+      cell: (i) => i.getValue(),
+    },
+    {
+      accessorKey: "totalActions",
+      header: "Total Actions",
+      cell: (i) => i.getValue() as number,
+    },
+    {
+      accessorKey: "acceptedActions",
+      header: "Accepted Actions",
+      cell: (i) => i.getValue() as number,
+    },
+    {
+      accessorKey: "averageAmount",
+      header: "Average Amount",
+      cell: (i) => i.getValue() as number,
+    },
+    {
+      id: "menu",
+      header: "",
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end pr-3">
+          <RowMenu
+            onStatistics={() =>
+              console.log("Actions Statistics for row:", row.original)
+            }
+            onTrustedIndicators={() => {
+              console.log("Actions Trusted Indicators for row:", row.original);
+              setIsIndicatorOpen(true);
+            }}
+          />
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="flex flex-col gap-4">
@@ -259,7 +264,10 @@ export const ActionAnalytics: React.FC = () => {
         />
       </div>
 
-      <ActionIndicator isOpen={open} onClose={() => setOpen(false)} />
+      <ActionIndicator
+        isOpen={isIndicatorOpen}
+        onClose={() => setIsIndicatorOpen(false)}
+      />
 
       {/* Card (header + table) */}
       <div className="rounded-[12px] border border-gray-200 bg-white overflow-hidden dark:border-blueGray-800 dark:bg-gray-900">
