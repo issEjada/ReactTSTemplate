@@ -3,7 +3,6 @@ import { CustomerInsights } from "./CustomerInsights/CustomerInsights";
 import { ActionAnalytics } from "./ActionAnalytics/ActionAnalytics";
 import { CustomerDevices } from "./CustomerDevices/CustomerDevices";
 import { DevicesHealthChecks } from "./DevicesHealthChecks/DevicesHealthChecks";
-import { ActionIndicator } from "../../components/Popup/MetricsPopUp/ActionsIndicator";
 import React from "react";
 
 const UserIcon = React.lazy(
@@ -26,13 +25,10 @@ const DevicesHealthChecksIcon = React.lazy(
 );
 
 export const CustomerProfile = () => {
-  const [open, setOpen] = useState(true);
-
   const [currentSection, setCurrentSection] =
     useState<string>("customerInsights");
   return (
     <div className="flex flex-col gap-2 w-full pt-6 pb-4 ps-6 pe-4">
-      <ActionIndicator isOpen={open} onClose={()=>setOpen(false)}/>
       <div className="flex justify-between">
         <span>Customer Information</span>
         <div className="flex justify-between w-[512px] h-[44px]">
