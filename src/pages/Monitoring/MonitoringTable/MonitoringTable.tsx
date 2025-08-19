@@ -15,7 +15,7 @@ export type Session = {
   sessionId: string;
   deviceId: string;
   channel: string;
-  industry: string;
+  customerIdentity: string;
   ip: string;
   country: string;
   city: string;
@@ -61,8 +61,8 @@ const getColumns = (): ColumnDef<Session>[] => [
     ),
   },
   {
-    header: "Industry",
-    accessorKey: "industry",
+    header: "Customer Identity",
+    accessorKey: "customerIdentity",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
@@ -235,7 +235,7 @@ export const MonitoringTable = () => {
         sessionId: item.sessionId,
         deviceId: item.deviceId,
         channel: item.channel,
-        industry: item.industry,
+        customerIdentity: item.customerIdentity,
         ip: item.ip,
         country: item.country,
         city: item.city,

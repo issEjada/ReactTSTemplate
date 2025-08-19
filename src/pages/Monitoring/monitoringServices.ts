@@ -6,7 +6,7 @@ export interface GetSessionItemInterface {
   sessionId: string;
   deviceId: string;
   channel: string;
-  industry: string;
+  customerIdentity: string;
   ip: string;
   country: string;
   city: string;
@@ -104,12 +104,12 @@ export interface EventsData {
   meta: PaginationMeta;
 }
 
-export interface GetStatisticsResponse{
-  totalSessions: number,
-  viewedSessions: number,
-  notViewedSessions: number,
-  viewedPercentage: number,
-  notViewedPercentage: number
+export interface GetStatisticsResponse {
+  totalSessions: number;
+  viewedSessions: number;
+  notViewedSessions: number;
+  viewedPercentage: number;
+  notViewedPercentage: number;
 }
 
 export interface GetSessionResponse {

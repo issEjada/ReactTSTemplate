@@ -199,6 +199,7 @@ export function DynamicTable<TData extends object>({
                           header.id === "name" ||
                           header.id === "id") && (
                           <button
+                            title="sorting"
                             onClick={() => onArrowClick(header.column.id)}
                           >
                             <ArrowIcon
