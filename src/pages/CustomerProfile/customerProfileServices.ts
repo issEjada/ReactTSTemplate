@@ -17,7 +17,7 @@ export interface CustomerInsightsResponse {
   userInfo: {
     userId: string;
     clientUserId: string;
-    userMobileNumber: string;
+    mobileNumber: string;
   };
   userInsights: {
     avgDeviceSpaceUtilization: number;

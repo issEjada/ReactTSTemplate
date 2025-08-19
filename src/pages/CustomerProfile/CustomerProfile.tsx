@@ -111,6 +111,7 @@ export const CustomerProfile = () => {
             handleSearchSubmit={(searchData)=> {
               handleSearchSubmit(searchData);
               closeFilterModal();
+              setCurrentSection("customerInsights");
             }}
           />
           <button
@@ -141,7 +142,7 @@ export const CustomerProfile = () => {
                   Mobile Number
                 </span>
                 <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
-                  {insightsData.userInfo.userMobileNumber || "N/A"}
+                  {insightsData.userInfo.mobileNumber || "N/A"}
                 </span>
               </div>
             </div>
