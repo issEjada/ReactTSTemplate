@@ -42,7 +42,7 @@ export default function PieChartComponent() {
   ];
 
   return (
-    <div className="flex w-[410px] h-[232px] p-6 bg-white rounded-2xl shadow-sm   dark:bg-[#121418]">
+    <div className="flex w-[410px] h-[232px] p-6   dark:bg-[#121418]">
       <div className="flex items-center justify-center w-[183px] h-[183px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -80,7 +80,7 @@ export default function PieChartComponent() {
               style={{ backgroundColor: COLORS.all }}
             />
             <span className="text-[#101828] dark:text-gray-300 text-[12px]">
-              All Events
+              Sessions
             </span>
           </div>
           <span className="text-[#101828] dark:text-gray-300 text-[12px]">

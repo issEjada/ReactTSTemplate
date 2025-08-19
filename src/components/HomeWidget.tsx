@@ -2,13 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
 
-import ShieldIcon from "../assets/svg/ShieldIcon.svg";
-import Threatblock from "../assets/svg/Threatblock.svg";
-import ActiveAlerts from "../assets/svg/ActiveAlerts.svg";
+const ShieldIcon = React.lazy(
+  () => import("../assets/svg/ShieldIcon.svg?react")
+);
+const Threatblock = React.lazy(
+  () => import("../assets/svg/Threatblock.svg?react")
+);
+const ActiveAlerts = React.lazy(
+  () => import("../assets/svg/ActiveAlerts.svg?react")
+);
 
 interface HomeWidgetProps {
   title: string;
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   active: number;
   inactive: number;
   total: number;
@@ -16,7 +22,7 @@ interface HomeWidgetProps {
 
 const HomeWidget: React.FC<HomeWidgetProps> = ({
   title,
-  icon,
+  icon: Icon,
   active,
   inactive,
   total,
@@ -39,7 +45,8 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
           {title}
         </Link>
         <div className="w-[36px] h-[36px] p-[4px] bg-[#1C1C1C0D] dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
-          <img src={icon} alt="Icon" className="w-[28px] h-[28px]" />
+          {/* Render the passed icon as a component */}
+          <Icon className="w-[28px] h-[28px]" />
         </div>
       </div>
 

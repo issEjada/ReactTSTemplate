@@ -22,7 +22,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
   onButtonClick,
 }) => {
   return (
-    <div className="w-full h-[575px] flex flex-col items-center justify-center rounded-md border relative overflow-hidden">
+    <div className="w-full h-[575px] flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden">
       <Suspense>
         <BackgroundCircle
           className="

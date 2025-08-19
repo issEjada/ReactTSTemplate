@@ -19,35 +19,35 @@ const DashboardEvents: React.FC = () => {
   const handleAddNewEvent = () => {
     navigate("/events/new-event", { state: { action: "add" } });
   };
-  useEffect(() => {
-    // TODO: replace with real endpoint
-    (async () => {
-      try {
-        const res = await fetch("/api/events?limit=3"); 
-        const json = await res.json();
-        const top3 =
-          Array.isArray(json?.items) ? json.items.slice(0, 3) : json.slice(0, 3);
-        setEvents(
-          top3.map((e: any, i: number) => ({
-            id: e.id ?? i,
-            name: e.name ?? e.title ?? "Event",
-          }))
-        );
-      } catch {
-        // minimal fallback list while API is not wired
-        setEvents([
-          { id: 1, name: "Login Attempt" },
-          { id: 2, name: "Password Reset" },
-          { id: 3, name: "New Device Registered" },
-        ]);
-      }
-    })();
-  }, []);
+ useEffect(() => {
+  (async () => {
+    try {
+      const res = await fetch("/alphas-backoffice/homepage/v1/statistics");
+      const json = await res.json();
+
+      const eventsTotal = json?.events?.total ?? 0;
+      const activeEvents = json?.events?.active ?? 0;
+      const inactiveEvents = json?.events?.inactive ?? 0;
+
+      setEvents([
+        { id: 1, name: `Total Events: ${eventsTotal}` },
+        { id: 2, name: `Active: ${activeEvents}` },
+        { id: 3, name: `Inactive: ${inactiveEvents}` },
+      ]);
+    } catch {
+      setEvents([
+        { id: 1, name: "Login Attempt" },
+        { id: 2, name: "Password Reset" },
+        { id: 3, name: "New Device Registered" },
+      ]);
+    }
+  })();
+}, []);
 
   return (
     <>
     <div className= "flex flex-col">
-     <div className="flex items-center justify-between  p-6 mb-6">
+     <div className="flex items-center justify-between mb-6 px-5">
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Recent Events
@@ -77,8 +77,8 @@ const DashboardEvents: React.FC = () => {
             className="flex items-center justify-between rounded-lg border-b border-[#E5E7EB] dark:border-gray-800 px-3 py-3"
           >
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
-                <MobileIcon className="w-3 h-3"></MobileIcon>
+              <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
+                <MobileIcon className="w-4 h-4"></MobileIcon>
               </div>
               <span className="text-sm text-[#101828] dark:text-white">
                 {ev.name}
