@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import { CustomerInsights } from "./CustomerInsights/CustomerInsights";
 import { ActionAnalytics } from "./ActionAnalytics/ActionAnalytics";
 import { CustomerDevices } from "./CustomerDevices/CustomerDevices";
 import { DevicesHealthChecks } from "./DevicesHealthChecks/DevicesHealthChecks";
 import React from "react";
+import CustomerInformationFilter from "./CustomerProfileFilter/CustomerInformationFilter";
 
 const UserIcon = React.lazy(
   () => import("../../../src/assets/svg/profile.svg?react")
@@ -23,16 +24,81 @@ const CustomerDevicesIcon = React.lazy(
 const DevicesHealthChecksIcon = React.lazy(
   () => import("../../../src/assets/svg/monitoring.svg?react")
 );
+const SearchIcon = React.lazy(
+  () => import("../../../src/assets/svg/Search.svg?react")
+);
+const FilterIcon = React.lazy(
+  () => import("../../../src/assets/svg/Filters.svg?react")
+);
 
 export const CustomerProfile = () => {
   const [currentSection, setCurrentSection] =
     useState<string>("customerInsights");
+  const [searchText, setSearchText] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const applyFilters = () => {};
+
+  const onClearSearch = () => {
+    setSearchText("");
+  };
+
+  const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
+  const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
+
   return (
     <div className="flex flex-col gap-2 w-full pt-6 pb-4 ps-6 pe-4">
       <div className="flex justify-between">
         <span>Customer Information</span>
-        <div className="flex justify-between w-[512px] h-[44px]">
-          Search & Filter Divs
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+          <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
+            <button
+              type="button"
+              title="Search"
+              onClick={applyFilters}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+            >
+              <Suspense>
+                <SearchIcon className="w-5 h-5" />
+              </Suspense>
+            </button>
+
+            <input
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") applyFilters();
+              }}
+              placeholder={"Search"}
+              className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+            />
+
+            {searchText && (
+              <button
+                onClick={() => onClearSearch()}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                aria-label="Clear search"
+              >
+                &#10005;
+              </button>
+            )}
+          </div>
+          <CustomerInformationFilter
+            isOpen={isFilterOpen}
+            closeDrawer={closeFilterModal}
+            filterData={{ mobileNumber: "", userID: "", clientId: "" }}
+            handleSearchSubmit={() => {}}
+          />
+          <button
+            className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+            onClick={openFilterModal}
+          >
+            <Suspense>
+              <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
+            </Suspense>
+            <span className="hidden sm:inline">Filter</span>
+          </button>
         </div>
       </div>
       <div className="flex justify-between gap-4 w-full py-4">
@@ -91,7 +157,9 @@ export const CustomerProfile = () => {
               <CustomerInsightsIcon className="text-gray-500" />
               <div
                 className={`font-bold text-[14px] leading-[20px] tracking-normal ${
-                  currentSection === "customerInsights" ? "text-blueGray-700" : "text-gray-700 "
+                  currentSection === "customerInsights"
+                    ? "text-blueGray-700"
+                    : "text-gray-700 "
                 }`}
               >
                 Customer Insights
@@ -106,7 +174,9 @@ export const CustomerProfile = () => {
               <ActionAnalyticsIcon className="text-gray-500" />
               <div
                 className={`font-bold text-[14px] leading-[20px] tracking-normal ${
-                  currentSection === "actionAnalytics" ? "text-blueGray-700" : "text-gray-700 "
+                  currentSection === "actionAnalytics"
+                    ? "text-blueGray-700"
+                    : "text-gray-700 "
                 }`}
               >
                 Action Analytics
@@ -121,7 +191,9 @@ export const CustomerProfile = () => {
               <CustomerDevicesIcon className="text-gray-500" />
               <div
                 className={`font-bold text-[14px] leading-[20px] tracking-normal ${
-                  currentSection === "customerDevices" ? "text-blueGray-700"  : "text-gray-700 "
+                  currentSection === "customerDevices"
+                    ? "text-blueGray-700"
+                    : "text-gray-700 "
                 }`}
               >
                 Customer Devices
@@ -136,7 +208,9 @@ export const CustomerProfile = () => {
               <DevicesHealthChecksIcon className="text-gray-500" />
               <div
                 className={`font-bold text-[14px] leading-[20px] tracking-normal ${
-                  currentSection === "devicesHealthChecks" ? "text-blueGray-700"  : "text-gray-700 "
+                  currentSection === "devicesHealthChecks"
+                    ? "text-blueGray-700"
+                    : "text-gray-700 "
                 }`}
               >
                 Devices Health Checks
