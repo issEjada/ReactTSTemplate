@@ -23,6 +23,7 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
+const PlusIconBlue = React.lazy(() => import("../../../assets/svg/PlusIconBlue.svg?react"));
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
@@ -259,9 +260,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 
   const navigate = useNavigate();
 
-  const handleAddNewRule = () => {
-    navigate("/scoring-rules/new-rule");
-  };
+
 
   const handleClearSearch = () => {
     setSearchText("");
@@ -278,7 +277,9 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   if (loadingState === "loading") {
     return <FullScreenSpinner />;
   }
-
+  const handleAddNewRule = () => {
+    navigate("/scoring-rules/new-rule");
+  };
   return (
     <div
       className={`p-6 bg-white shadow-sm dark:bg-black ${
@@ -315,7 +316,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
                 aria-label="Add New Rule"
               >
-                <PlusIcon className="w-[20px] h-[20px]" />
+                <PlusIconBlue className="w-[20px] h-[20px]" />
               </button>
             )}
           </div>
