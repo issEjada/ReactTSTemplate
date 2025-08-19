@@ -17,4 +17,8 @@ export const API = {
   getDecisionParameter: "/rules-parameters/v1/decision-rules-parameters",
   getEventDropDownsValues: "/v1/events/lov",
   customerInsights: "/user-profile/v1/user-insights",
+  actionAnalytics: "/user-profile/v1/actions-analytics",
+  customerDevices: "/users/sdks/search",
+  unBlockDevices: "/users/fpts",
+  healthCheck:"/sdks/health-check-records",
 };
