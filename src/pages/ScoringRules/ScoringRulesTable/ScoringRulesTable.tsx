@@ -329,7 +329,13 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
         <TableFallback
           icon={<LockIcon className="sm:w-[28px] sm:h-[28px]" />}
           title="Start adding scoring rules"
-          description="You don’t have any scoring rules yet. Create rules to automate your decision-making process."
+          description={
+            <>
+              You don’t have any scoring rules yet.
+              <br />
+              Start securing by adding new rules now.
+            </>
+          }
           buttonText="Add New Scoring Rule"
           buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
           onButtonClick={handleAddNewRule}
@@ -368,7 +374,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           setSearchText={!fromDashboard ? setSearchText : () => {}}
           openFilterModal={!fromDashboard ? openFilterModal : () => {}}
           applyFilters={!fromDashboard ? applyFilters : () => {}}
-          searchPlaceholder="Search rules"
+          searchPlaceholder="Search Rule Name"
           showStatusFilter={!fromDashboard}
           statusFilterOptions={
             !fromDashboard

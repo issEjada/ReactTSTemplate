@@ -1,14 +1,18 @@
-import { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
 import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
-import NoSessions from "./NoSessions";
 import SessionActivity from "./SessionActivity";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
+import { TableFallback } from "../../../components/TableFallback";
+
+const ShieldIcon = React.lazy(
+  () => import("../../../assets/svg/shieldG.svg?react")
+);
 
 export type Session = {
   id: number;
@@ -297,7 +301,17 @@ export const MonitoringTable = () => {
         </div>
       </div>
       {totalCount === 0 && !isFilterActive ? (
-        <NoSessions />
+        <TableFallback
+          icon={<ShieldIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding decision rules"
+          description={
+            <>
+              You don’t have any sessions yet.
+              <br />
+              Start monitoring by adding new sessions now"
+            </>
+          }
+        />
       ) : (
         <>
           <DynamicTable<Session>
@@ -325,7 +339,7 @@ export const MonitoringTable = () => {
             setSearchText={setSearchText}
             openFilterModal={openFilterModal}
             applyFilters={applyFilters}
-            searchPlaceholder="Search"
+            searchPlaceholder="Search Session ID"
             showStatusFilter={true}
             isMonitoringTable={true}
             statusFilterOptions={[

@@ -311,7 +311,13 @@ export const DecisionRulesTable = () => {
         <TableFallback
           icon={<RuleIcon className="sm:w-[28px] sm:h-[28px]" />}
           title="Start adding decision rules"
-          description="You don’t have any decision rules yet. Create rules to automate your decision-making process."
+          description={
+            <>
+              You don’t have any decision rules yet.
+              <br />
+              Create rules to automate your decision-making process.
+            </>
+          }
           buttonText="Add New Decision Rule"
           buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
           onButtonClick={handleAddNewRule}
@@ -349,7 +355,7 @@ export const DecisionRulesTable = () => {
           setSearchText={setSearchText}
           openFilterModal={openFilterModal}
           applyFilters={applyFilters}
-          searchPlaceholder="Search rules"
+          searchPlaceholder="Search Rule Name"
           showStatusFilter={true}
           statusFilterOptions={[
             { key: "All", label: "View All" },
