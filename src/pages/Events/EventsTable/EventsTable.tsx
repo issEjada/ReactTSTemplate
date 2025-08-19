@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import EventsFilter from "../EventsFilter/EventsFilterJsx";
 import useEventsTable from "./useEventsTable";
+import { TableFallback } from "../../../components/TableFallback";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const Update = React.lazy(() => import("../../../assets/svg/update.svg?react"));
@@ -23,6 +24,10 @@ const DesktopIcon = React.lazy(
   () => import("../../../assets/svg/Desktop.svg?react")
 );
 const WebIcon = React.lazy(() => import("../../../assets/svg/web.svg?react"));
+
+const EventIcon = React.lazy(
+  () => import("../../../assets/svg/events.svg?react")
+);
 
 type EventRow = {
   id: number;
@@ -245,6 +250,11 @@ export const EventsTable = () => {
     setCurrentPage(1);
   };
 
+  const isFilterActive = useMemo(
+    () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
+    [filters, searchText]
+  );
+
   const handleClearSearch = () => {
     setSearchText("");
     setDeviceFilter("All");
@@ -282,52 +292,65 @@ export const EventsTable = () => {
           </div>
         </div>
       </div>
-
-      <DynamicTable<EventRow>
-        data={data.map((item) => ({
-          id: item.id,
-          name: item.name ?? "",
-          description: item.description ?? "",
-          status: item.status as "ENABLED" | "DISABLED",
-          code: item.code,
-          scheme: item.identifier.scheme,
-          eventSourceDevice: item.identifier.eventSourceDevice,
-          createdAt: item.creationTimestamp,
-        }))}
-        columns={columns}
-        filterComponent={
-          <EventsFilter
-            isOpen={isFilterOpen}
-            closeDrawer={closeFilterModal}
-            filterData={filters}
-            handleSearchSubmit={handleSearchSubmit}
-          />
-        }
-        totalCount={totalCount}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-        setCurrentPage={setCurrentPage}
-        onFilterStatus={(v) =>
-          setDeviceFilter(v as "All" | "Mobile" | "Desktop" | "Web")
-        }
-        statusFilter={deviceFilter}
-        statusFilterOptions={[
-          { key: "All", label: "View all" },
-          { key: "Mobile", label: "Mobile" },
-          { key: "Desktop", label: "Desktop" },
-          { key: "Web", label: "Web" },
-        ]}
-        onClearSearch={handleClearSearch}
-        onAddNewItem={handleAddNewEvent}
-        error={null}
-        title="Events Management"
-        searchText={searchText}
-        setSearchText={setSearchText}
-        openFilterModal={openFilterModal}
-        applyFilters={applyFilters}
-        searchPlaceholder="Search"
-        showStatusFilter={true}
-      />
+      {totalCount === 0 && !isFilterActive ? (
+        <TableFallback
+          icon={<EventIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding decision rules"
+          description={
+            <>
+              You don’t have any sessions yet.
+              <br />
+              Start monitoring by adding new sessions now"
+            </>
+          }
+        />
+      ) : (
+        <DynamicTable<EventRow>
+          data={data.map((item) => ({
+            id: item.id,
+            name: item.name ?? "",
+            description: item.description ?? "",
+            status: item.status as "ENABLED" | "DISABLED",
+            code: item.code,
+            scheme: item.identifier.scheme,
+            eventSourceDevice: item.identifier.eventSourceDevice,
+            createdAt: item.creationTimestamp,
+          }))}
+          columns={columns}
+          filterComponent={
+            <EventsFilter
+              isOpen={isFilterOpen}
+              closeDrawer={closeFilterModal}
+              filterData={filters}
+              handleSearchSubmit={handleSearchSubmit}
+            />
+          }
+          totalCount={totalCount}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          setCurrentPage={setCurrentPage}
+          onFilterStatus={(v) =>
+            setDeviceFilter(v as "All" | "Mobile" | "Desktop" | "Web")
+          }
+          statusFilter={deviceFilter}
+          statusFilterOptions={[
+            { key: "All", label: "View all" },
+            { key: "Mobile", label: "Mobile" },
+            { key: "Desktop", label: "Desktop" },
+            { key: "Web", label: "Web" },
+          ]}
+          onClearSearch={handleClearSearch}
+          onAddNewItem={handleAddNewEvent}
+          error={null}
+          title="Events Management"
+          searchText={searchText}
+          setSearchText={setSearchText}
+          openFilterModal={openFilterModal}
+          applyFilters={applyFilters}
+          searchPlaceholder="Search"
+          showStatusFilter={true}
+        />
+      )}
     </div>
   );
 };
