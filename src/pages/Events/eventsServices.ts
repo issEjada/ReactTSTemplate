@@ -1,7 +1,6 @@
 import { getHeaders, httpClient } from "../../services/api/httpClient";
-import SecureStorage from "react-secure-storage";
 import type { GetRulesParameterResponse } from "../ScoringRules/scoringRulesServices";
-import { API, ConstantKeys } from "../../constants/ConstantKeys.constants";
+import { API } from "../../constants/ConstantKeys.constants";
 
 export interface EventFormValues {
   id: number;
@@ -86,10 +85,6 @@ export interface PaginationMeta {
 }
 
 export class EventsServices {
-  private static accessToken: string | undefined = SecureStorage.getItem(
-    ConstantKeys.accessToken
-  )?.toString();
-
   static getEventData(data: GetEventDataPayload): Promise<GetEventsResponse> {
     const { page, maxPageSize, ...requestBody } = data;
     return httpClient

@@ -89,7 +89,7 @@ export const EventFilterForm = ({
           <label className="text-sm font-medium">Event Code</label>
           <Controller
             control={control}
-            name="eventCode"
+            name="code"
             render={({ field }) => (
               <input
                 {...field}

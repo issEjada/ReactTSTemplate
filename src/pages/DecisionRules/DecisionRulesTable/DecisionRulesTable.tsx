@@ -15,7 +15,7 @@ import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import { createPortal } from "react-dom";
-import { TableFallback } from "../../../components/TableFallBack";
+import { TableFallback } from "../../../components/TableFallback";
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -25,7 +25,6 @@ const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 const RuleIcon = React.lazy(
   () => import("../../../assets/svg/EmptyDecisions.svg?react")
 );
-
 
 type DecisionRule = {
   id: number;
@@ -310,14 +309,13 @@ export const DecisionRulesTable = () => {
 
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-  icon={<RuleIcon className="sm:w-[28px] sm:h-[28px]" />}
-  title="Start adding decision rules"
-  description="You don’t have any decision rules yet. Create rules to automate your decision-making process."
-  buttonText="Add New Decision Rule"
-  buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
-  onButtonClick={handleAddNewRule}
-/>
-
+          icon={<RuleIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding decision rules"
+          description="You don’t have any decision rules yet. Create rules to automate your decision-making process."
+          buttonText="Add New Decision Rule"
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
+          onButtonClick={handleAddNewRule}
+        />
       ) : (
         <DynamicTable<DecisionRule>
           data={data.map((item) => ({
