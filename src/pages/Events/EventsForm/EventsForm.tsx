@@ -55,7 +55,7 @@ const EventsForm = () => {
             Event Name
             {isViewing && (
               <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px]"
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-[#EFF8FF] p-[8px]"
                 onClick={handleEditClick}
               >
                 <EditIcon className="w-[12px] h-[12px] text-blue-700" />
@@ -99,7 +99,7 @@ const EventsForm = () => {
             Event Description
             {isViewing && (
               <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px]"
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-[#EFF8FF] p-[8px]"
                 onClick={handleEditClick}
               >
                 <EditIcon className="w-[12px] h-[12px] text-blue-700" />
@@ -169,7 +169,7 @@ const EventsForm = () => {
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[50%]"
+          className="w-[556px]"
           disabled={isViewing || isEditing}
           required
         />
@@ -185,7 +185,7 @@ const EventsForm = () => {
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[50%]"
+          className="w-[556px]"
           disabled={isViewing || isEditing}
           required
         />
@@ -199,7 +199,7 @@ const EventsForm = () => {
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[50%]"
+          className="w-[556px]"
           disabled={isViewing}
           required
         />

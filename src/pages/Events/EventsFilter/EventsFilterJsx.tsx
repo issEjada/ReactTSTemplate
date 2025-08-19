@@ -1,11 +1,13 @@
 import React from "react";
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
-import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
 import { Controller } from "react-hook-form";
 import { useEventFilterForm } from "./useEventFilterForm";
 import type { EventFormValues } from "../eventsServices";
 
+const ToolTipQuestionMark = React.lazy(
+  () => import("../../../assets/svg/toolTipQuestionMark.svg?react")
+);
 interface EventsFilterFormProps {
   isOpen: boolean;
   closeDrawer: () => void;
@@ -56,11 +58,7 @@ export const EventFilterForm = ({
             )}
           />
           <div className="absolute top-[40px] left-[calc(100%-32px)] group">
-            <img
-              src={ToolTipQuestionMark}
-              className="w-4 h-4 cursor-pointer"
-              alt="Tooltip"
-            />
+            <ToolTipQuestionMark className="w-4 h-4 cursor-pointer" />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
               Enter Event Name.
             </div>
@@ -109,7 +107,7 @@ export const EventFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[47%]"
+          className="w-[100%]"
         />
 
         <DropdownMenu<EventFormValues>
