@@ -1,10 +1,11 @@
 import React from "react";
 import ExpandableCard from "./ExpandableCard";
+import type { CustomerInsightsResponse } from "../customerProfileServices";
 const CustomerInsightsIcon = React.lazy(
   () => import("../../../assets/svg/ArrowUp.svg?react")
 );
 
-export const CustomerInsights = () => {
+export const CustomerInsights = (insightsData : CustomerInsightsResponse) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full gap-3">
@@ -46,7 +47,7 @@ export const CustomerInsights = () => {
           </div>
         </div>
       </div>
-      <ExpandableCard icon={<CustomerInsightsIcon className="text-blue-700"/>} label="Customer Insights" data={['10.10.10.1', '10.10.10.1']}/>
+      <ExpandableCard icon={<CustomerInsightsIcon className="text-blue-700"/>} label="Customer Insights" data={insightsData?.userInsights?.mostUsedDeviceIP}/>
     </div>
   );
 };

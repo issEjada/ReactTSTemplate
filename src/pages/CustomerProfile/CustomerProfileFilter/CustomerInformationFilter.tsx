@@ -2,18 +2,14 @@ import React from "react";
 const ToolTipQuestionMark = React.lazy(() => import("../../../assets/svg/toolTipQuestionMark.svg?react"));
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import { Controller, useForm } from "react-hook-form";
+import type { CustomerInsightsPayload } from "../customerProfileServices";
  
-export type CustomerFilterFormValues = {
-  mobileNumber?: string;
-  userID?: string;
-  clientId?: string;
-};
  
 interface CustomerFilterFormProps {
   isOpen: boolean;
   closeDrawer: () => void;
-  handleSearchSubmit: (searchData: CustomerFilterFormValues) => void;
-  filterData?: CustomerFilterFormValues;
+  handleSearchSubmit: (searchData: CustomerInsightsPayload) => void;
+  filterData?: CustomerInsightsPayload;
 }
  
  
@@ -24,28 +20,28 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
   handleSearchSubmit,
   filterData,
 }) => {
-  const { control, reset, getValues } = useForm<CustomerFilterFormValues>({
+  const { control, reset, getValues } = useForm<CustomerInsightsPayload>({
     defaultValues: {
-      mobileNumber: filterData?.mobileNumber ?? "",
-      userID: filterData?.userID ?? "",
-      clientId: filterData?.clientId ?? "",
+      userMobileNumber: filterData?.userMobileNumber ?? "",
+      userId: filterData?.userId ?? "",
+      clientUserId: filterData?.clientUserId ?? "",
     },
   });
  
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const v = getValues();
-    const cleaned: CustomerFilterFormValues = {
-      mobileNumber: v.mobileNumber?.trim() ? v.mobileNumber.trim() : undefined,
-      userID: v.userID?.trim() ? v.userID.trim() : undefined,
-      clientId: v.clientId || undefined,
+    const cleaned: CustomerInsightsPayload = {
+      userMobileNumber: v.userMobileNumber?.trim() ? v.userMobileNumber.trim() : undefined,
+      userId: v.userId?.trim() ? v.userId.trim() : undefined,
+      clientUserId: v.clientUserId || undefined,
     };
     handleSearchSubmit(cleaned);
     closeDrawer();
   };
  
   const handleClear = () => {
-    reset({ mobileNumber: "", userID: "", clientId: "" });
+    reset({ userMobileNumber: "", userId: "", clientUserId: "" });
     handleSearchSubmit({});
   };
  
@@ -56,7 +52,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
           <label className="text-sm font-medium">Mobile Number</label>
           <Controller
             control={control}
-            name="mobileNumber"
+            name="userMobileNumber"
             render={({ field }) => (
               <input
                 {...field}
@@ -79,7 +75,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
           <label className="text-sm font-medium">User ID</label>
           <Controller
             control={control}
-            name="userID"
+            name="userId"
             render={({ field }) => (
               <input
                 {...field}
@@ -96,7 +92,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
           <label className="text-sm font-medium">Client ID</label>
           <Controller
             control={control}
-            name="clientId"
+            name="clientUserId"
             render={({ field }) => (
               <input
                 {...field}
