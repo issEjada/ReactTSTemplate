@@ -1,53 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PieChartComponent from "./Charts/PieChartComponent";
 
 const MobileIcon = React.lazy(
-  () => import(`/src/assets/svg/Mobile.svg?react`))
+  () => import(`/src/assets/svg/Mobile.svg?react`)
+);
 
 const PlusIcon = React.lazy(
-  () => import(`../assets/svg/PlusIconBlue.svg?react`));
-;type RecentEvent = {
+  () => import(`../assets/svg/PlusIconBlue.svg?react`)
+);
+
+type RecentEvent = {
   id: string | number;
   name: string;
 };
 
 const DashboardEvents: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const [events, setEvents] = useState<RecentEvent[]>([]);
+  const [events] = useState<RecentEvent[]>([
+    { id: 1, name: "Login Attempt" },
+    { id: 2, name: "Password Reset" },
+    { id: 3, name: "New Device Registered" },
+  ]);
+
   const handleAddNewEvent = () => {
     navigate("/events/new-event", { state: { action: "add" } });
   };
- useEffect(() => {
-  (async () => {
-    try {
-      const res = await fetch("/alphas-backoffice/homepage/v1/statistics");
-      const json = await res.json();
-
-      const eventsTotal = json?.events?.total ?? 0;
-      const activeEvents = json?.events?.active ?? 0;
-      const inactiveEvents = json?.events?.inactive ?? 0;
-
-      setEvents([
-        { id: 1, name: `Total Events: ${eventsTotal}` },
-        { id: 2, name: `Active: ${activeEvents}` },
-        { id: 3, name: `Inactive: ${inactiveEvents}` },
-      ]);
-    } catch {
-      setEvents([
-        { id: 1, name: "Login Attempt" },
-        { id: 2, name: "Password Reset" },
-        { id: 3, name: "New Device Registered" },
-      ]);
-    }
-  })();
-}, []);
 
   return (
-    <>
-    <div className= "flex flex-col">
-     <div className="flex items-center justify-between mb-6 px-5">
+    <div className="flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6 px-5">
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Recent Events
@@ -57,50 +41,50 @@ const DashboardEvents: React.FC = () => {
           </p>
         </div>
 
-      <div className="ml-auto">
-                <button
-                onClick ={handleAddNewEvent}
-                className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
-                aria-label="Add New Rule"
+        <div className="ml-auto">
+          <button
+            onClick={handleAddNewEvent}
+            className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+            aria-label="Add New Rule"
+          >
+            <PlusIcon className="w-[20px] h-[20px]" />
+          </button>
+        </div>
+      </div>
+
+      {/* Card */}
+      <div className="rounded-2xl border border-[#E5E7EB] dark:border-gray-800 bg-white dark:bg-[#121418] p-4 shadow-sm">
+        <div className="space-y-3">
+          {events.map((ev) => (
+            <div
+              key={ev.id}
+              className="flex items-center justify-between rounded-lg border-b border-[#E5E7EB] dark:border-gray-800 px-3 py-3"
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
+                  <MobileIcon className="w-4 h-4" />
+                </div>
+                <span className="text-sm text-[#101828] dark:text-white">
+                  {ev.name}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                className="text-[12px] text-[#344054] dark:text-gray-300 hover:underline"
               >
-                <PlusIcon className="w-[20px] h-[20px]" />
+                View Details
               </button>
             </div>
-      </div>
-    <div className="rounded-2xl border border-[#E5E7EB] dark:border-gray-800 bg-white dark:bg-[#121418] p-4 shadow-sm">
-     
+          ))}
+        </div>
 
-      <div className="space-y-3">
-        {events.map((ev) => (
-          <div
-            key={ev.id}
-            className="flex items-center justify-between rounded-lg border-b border-[#E5E7EB] dark:border-gray-800 px-3 py-3"
-          >
-            <div className="flex items-center gap-2">
-              <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
-                <MobileIcon className="w-4 h-4"></MobileIcon>
-              </div>
-              <span className="text-sm text-[#101828] dark:text-white">
-                {ev.name}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              className="text-[12px] text-[#344054] dark:text-gray-300 hover:underline"
-            >
-              View Details
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-4">
-        <PieChartComponent />
+        {/* Pie Chart */}
+        <div className="mt-4">
+          <PieChartComponent />
+        </div>
       </div>
     </div>
-    </div>
-    </>
   );
 };
 

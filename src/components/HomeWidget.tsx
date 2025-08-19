@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
 
@@ -45,8 +45,9 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
           {title}
         </Link>
         <div className="w-[36px] h-[36px] p-[4px] bg-[#1C1C1C0D] dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
-          {/* Render the passed icon as a component */}
-          <Icon className="w-[28px] h-[28px]" />
+          <Suspense fallback={<div className="w-7 h-7 bg-gray-300 rounded" />}>
+            <Icon className="w-[28px] h-[28px]" />
+          </Suspense>
         </div>
       </div>
 
@@ -69,7 +70,8 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
 };
 
 const HomeWidgetGroup: React.FC = () => {
-  const widgetData: HomeWidgetProps[] = [
+  const [widgetData, setWidgetData] = useState<HomeWidgetProps[]>([
+    // fallback static values
     {
       title: "Scoring Rules",
       icon: ShieldIcon,
@@ -91,7 +93,45 @@ const HomeWidgetGroup: React.FC = () => {
       inactive: 50,
       total: 950,
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const [scoring, decision, events] = await Promise.all([
+          fetch("/api/scoring-rules").then((r) => r.json()),
+          fetch("/api/decision-rules").then((r) => r.json()),
+          fetch("/api/events").then((r) => r.json()),
+        ]);
+
+        setWidgetData([
+          {
+            title: "Scoring Rules",
+            icon: ShieldIcon,
+            active: scoring.active ?? 120,
+            inactive: scoring.inactive ?? 35,
+            total: scoring.total ?? 155,
+          },
+          {
+            title: "Decision Rules",
+            icon: Threatblock,
+            active: decision.active ?? 80,
+            inactive: decision.inactive ?? 20,
+            total: decision.total ?? 100,
+          },
+          {
+            title: "Events",
+            icon: ActiveAlerts,
+            active: events.active ?? 900,
+            inactive: events.inactive ?? 50,
+            total: events.total ?? 950,
+          },
+        ]);
+      } catch (err) {
+        console.error("Failed to fetch widget data, using fallback:", err);
+      }
+    })();
+  }, []);
 
   return (
     <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
