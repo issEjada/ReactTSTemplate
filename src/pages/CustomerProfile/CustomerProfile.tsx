@@ -5,6 +5,9 @@ import { CustomerDevices } from "./CustomerDevices/CustomerDevices";
 import { DevicesHealthChecks } from "./DevicesHealthChecks/DevicesHealthChecks";
 import React from "react";
 import CustomerInformationFilter from "./CustomerProfileFilter/CustomerInformationFilter";
+import { useCustomProfile } from "./useCustomProfile";
+import type { CustomerInsightsPayload } from "./customerProfileServices";
+import FullScreenSpinner from "../../components/FullScreenSpinner";
 
 const UserIcon = React.lazy(
   () => import("../../../src/assets/svg/profile.svg?react")
@@ -37,19 +40,36 @@ export const CustomerProfile = () => {
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const applyFilters = () => {};
+
+  const {insightsData, setGlobalFilterData, errorValidation, loadingState} = useCustomProfile();
+
+  const applyFilters = () => {
+    const searchData = {
+      userMobileNumber: searchText.trim() || undefined,
+    };
+    setGlobalFilterData(searchData);
+    setSearchText(""); 
+  };
 
   const onClearSearch = () => {
     setSearchText("");
   };
 
+  const handleSearchSubmit = (searchData: CustomerInsightsPayload) => {
+    setGlobalFilterData(searchData);
+  }
+
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full pt-6 pb-4 ps-6 pe-4">
-      <div className="flex justify-between">
-        <span>Customer Information</span>
+      <div className="flex justify-between items-center flex-wrap">
+        <span className="font-inter font-medium text-[18px] leading-[28px] tracking-normal text-gray-900">Customer Information</span>
         <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
           <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
             <button
@@ -87,8 +107,12 @@ export const CustomerProfile = () => {
           <CustomerInformationFilter
             isOpen={isFilterOpen}
             closeDrawer={closeFilterModal}
-            filterData={{ mobileNumber: "", userID: "", clientId: "" }}
-            handleSearchSubmit={() => {}}
+            filterData={{ userMobileNumber: "", userId: "", clientUserId: "" }}
+            handleSearchSubmit={(searchData)=> {
+              handleSearchSubmit(searchData);
+              closeFilterModal();
+              setCurrentSection("customerInsights");
+            }}
           />
           <button
             className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
@@ -101,6 +125,10 @@ export const CustomerProfile = () => {
           </button>
         </div>
       </div>
+      {errorValidation && (
+        <div className="text-red-600 px-20 pt-2">{errorValidation}</div>
+      )}
+      {insightsData && (
       <div className="flex justify-between gap-4 w-full py-4">
         <div className="flex flex-col justify-start gap-2 bg-blueGray-50 rounded-lg w-[304px] border border-blueGray-200 p-4">
           <span>Customer Information</span>
@@ -114,7 +142,7 @@ export const CustomerProfile = () => {
                   Mobile Number
                 </span>
                 <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
-                  +96572738859
+                  {insightsData.userInfo.mobileNumber || "N/A"}
                 </span>
               </div>
             </div>
@@ -124,10 +152,10 @@ export const CustomerProfile = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700">
-                  Mobile Number
+                  User ID
                 </span>
                 <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
-                  +96572738859
+                  {insightsData.userInfo.userId || "N/A"}
                 </span>
               </div>
             </div>
@@ -137,10 +165,10 @@ export const CustomerProfile = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700">
-                  Mobile Number
+                  Client ID
                 </span>
                 <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
-                  +96572738859
+                  {insightsData.userInfo.clientUserId || "N/A"}
                 </span>
               </div>
             </div>
@@ -217,12 +245,13 @@ export const CustomerProfile = () => {
               </div>
             </div>
           </div>
-          {currentSection === "customerInsights" && <CustomerInsights />}
+          {currentSection === "customerInsights" && <CustomerInsights {...insightsData} />}
           {currentSection === "actionAnalytics" && <ActionAnalytics />}
           {currentSection === "customerDevices" && <CustomerDevices />}
           {currentSection === "devicesHealthChecks" && <DevicesHealthChecks />}
         </div>
       </div>
+      )}
     </div>
   );
 };
