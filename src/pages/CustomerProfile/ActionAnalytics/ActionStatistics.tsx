@@ -22,7 +22,7 @@ const CloseIcon = React.lazy(
   () => import("../../../assets/svg/closeX.svg?react")
 );
 
-type MetricId = "total" | "auth" | "accepted" | "rejected" | "mfa" | "sca";
+type MetricId = "totalActions" | "authenticatedActions" | "acceptedActions" | "rejectedActions" | "mfaActions" | "scaActions";
 
 type PopupProps = {
   isOpen: boolean;
@@ -37,12 +37,12 @@ const METRICS_DEF: Array<{
   title: string;
   Icon: React.ReactNode;
 }> = [
-  { id: "total", title: "Total Actions", Icon: <TotalActionIcon className="w-6 h-6 text-blue-700" /> },
-  { id: "auth", title: "Authenticated Actions", Icon: <AuthActionIcon className="w-6 h-6 text-purple-700" /> },
-  { id: "accepted", title: "Accepted Actions", Icon: <AcceptedIcon className="w-6 h-6 text-success-600" /> },
-  { id: "rejected", title: "Rejected Actions", Icon: <RejectedIcon className="w-6 h-6" /> },
-  { id: "mfa", title: "MFA Actions", Icon: <MfaIcon className="w-6 h-6" /> },
-  { id: "sca", title: "SCA Actions", Icon: <ScaIcon className="w-6 h-6" /> },
+  { id: "totalActions", title: "Total Actions", Icon: <TotalActionIcon className="w-6 h-6 text-blue-700" /> },
+  { id: "authenticatedActions", title: "Authenticated Actions", Icon: <AuthActionIcon className="w-6 h-6 text-purple-700" /> },
+  { id: "acceptedActions", title: "Accepted Actions", Icon: <AcceptedIcon className="w-6 h-6 text-success-600" /> },
+  { id: "rejectedActions", title: "Rejected Actions", Icon: <RejectedIcon className="w-6 h-6" /> },
+  { id: "mfaActions", title: "MFA Actions", Icon: <MfaIcon className="w-6 h-6" /> },
+  { id: "scaActions", title: "SCA Actions", Icon: <ScaIcon className="w-6 h-6" /> },
 ];
 
 export const ActionStatistics: React.FC<PopupProps> = ({

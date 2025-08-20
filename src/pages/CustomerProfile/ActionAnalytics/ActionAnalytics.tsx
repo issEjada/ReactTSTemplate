@@ -13,7 +13,6 @@ const StatisticsIcon = React.lazy(
 const IndicatorsIcon = React.lazy(
   () => import("../../../assets/svg/analytics.svg?react")
 );
-
 const TotalActionIcon = React.lazy(
   () => import("../../../assets/svg/TAction.svg?react")
 );
@@ -150,42 +149,6 @@ function RowMenu({
   );
 }
 
-const columns: ColumnDef<FormattedAnalyticData>[] = [
-  { accessorKey: "eventName", header: "Event Name", cell: (i) => i.getValue() },
-  {
-    accessorKey: "totalActions",
-    header: "Total Actions",
-    cell: (i) => i.getValue() as number,
-  },
-  {
-    accessorKey: "acceptedActions",
-    header: "Accepted Actions",
-    cell: (i) => i.getValue() as number,
-  },
-  {
-    accessorKey: "averageAmount",
-    header: "Average Amount",
-    cell: (i) => i.getValue() as number,
-  },
-  {
-    id: "menu",
-    header: "",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end pr-3">
-        <RowMenu
-          onStatistics={() =>
-            console.log("Actions Statistics for row:", row.original)
-          }
-          onTrustedIndicators={() =>
-            console.log("Actions Trusted Indicators for row:", row.original)
-          }
-        />
-      </div>
-    ),
-  },
-];
-
 type ActionAnalyticsProps = {
   userMobileNumber: string;
 };
@@ -194,13 +157,62 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   userMobileNumber,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [popUpType, setPopUpType] = useState<
+    "actionStatistics" | "trustedIndicators" | null
+  >(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+  const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
 
   const { actionAnalyticsData, errorValidation, loadingState } =
     useActionAnalytics(userMobileNumber, currentPage);
 
   console.log("Action Analytics Data:", actionAnalyticsData);
+
+  const columns: ColumnDef<FormattedAnalyticData>[] = [
+    {
+      accessorKey: "eventName",
+      header: "Event Name",
+      cell: (i) => i.getValue(),
+    },
+    {
+      accessorKey: "totalActions",
+      header: "Total Actions",
+      cell: (i) => i.getValue() as number,
+    },
+    {
+      accessorKey: "acceptedActions",
+      header: "Accepted Actions",
+      cell: (i) => i.getValue() as number,
+    },
+    {
+      accessorKey: "averageAmount",
+      header: "Average Amount",
+      cell: (i) => i.getValue() as number,
+    },
+    {
+      id: "menu",
+      header: "",
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end pr-3">
+          <RowMenu
+            onStatistics={() => {
+              console.log("Actions Statistics for row:", row.original);
+              setIsOpen(true);
+              setPopUpType("actionStatistics");
+              setPopUpData(row.original);
+            }}
+            onTrustedIndicators={() => {
+              console.log("Actions Trusted Indicators for row:", row.original);
+              setIsOpen(true);
+              setPopUpType("trustedIndicators");
+            }}
+          />
+        </div>
+      ),
+    },
+  ];
 
   const formattedAnalyticData: FormattedAnalyticData[] =
     actionAnalyticsData?.actionsAnalytics.userEvents?.map((event, index) => ({
@@ -301,7 +313,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         />
       </div>
 
-      <ActionStatistics isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {isOpen && popUpType === "actionStatistics" && (
+        <ActionStatistics isOpen={isOpen} onClose={() => setIsOpen(false)} values={popUpData}/>
+      )}
 
       {/* Card (header + table) */}
       <div className="rounded-[12px] border border-gray-200 bg-white overflow-hidden dark:border-blueGray-800 dark:bg-gray-900">
