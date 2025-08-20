@@ -108,16 +108,16 @@ const HomeWidgetGroup: React.FC = () => {
           {
             title: "Scoring Rules",
             icon: ShieldIcon,
-            active: scoring.active ?? 120,
-            inactive: scoring.inactive ?? 35,
-            total: scoring.total ?? 155,
+            active: scoring.active ?? "",
+            inactive: scoring.inactive ?? "",
+            total: scoring.total ?? "",
           },
           {
             title: "Decision Rules",
             icon: Threatblock,
-            active: decision.active ?? 80,
-            inactive: decision.inactive ?? 20,
-            total: decision.total ?? 100,
+            active: decision.active ?? 0,
+            inactive: decision.inactive ?? 0,
+            total: decision.total ?? 0,
           },
           {
             title: "Events",

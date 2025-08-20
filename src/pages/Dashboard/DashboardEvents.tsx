@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PieChartComponent from "./Charts/PieChartComponent";
+import PieChartComponent from "../../components/Charts/PieChartComponent";
 
 const MobileIcon = React.lazy(() => import(`/src/assets/svg/Mobile.svg?react`));
 

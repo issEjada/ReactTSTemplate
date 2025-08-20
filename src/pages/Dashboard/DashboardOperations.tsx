@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../routes/AppRoutes";
+import { AppRoutes } from "../../routes/AppRoutes";
 
 const ActivityIcon = React.lazy(
   () => import(`/src/assets/svg/activity.svg?react`)
 );
 
-const Top: React.FC = () => {
+const DashboardOperations: React.FC = () => {
   return (
     <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-[16px] px-6 ">
       {/* Left: Title + Subtitle */}
@@ -40,4 +40,4 @@ const Top: React.FC = () => {
   );
 };
 
-export default Top;
+export default DashboardOperations;

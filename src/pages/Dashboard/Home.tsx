@@ -1,7 +1,7 @@
-import HomeWidgetGroup from "../components/HomeWidget";
-import { ScoringRulesTable } from "./ScoringRules/ScoringRulesTable/ScoringRulesTable.js";
-import DashboardOperations from "../components/DashboardOperations.js";
-import DashboardEvents from "../components/DashboardEvents.js";
+import HomeWidgetGroup from "../../components/HomeWidget.js";
+import { ScoringRulesTable } from "../ScoringRules/ScoringRulesTable/ScoringRulesTable.js";
+import DashboardOperations from "./DashboardOperations.js";
+import DashboardEvents from "./DashboardEvents.js";
 const Home = () => {
   return (
     <div className="flex flex-col gap-[28px] px-6 pb-2">
