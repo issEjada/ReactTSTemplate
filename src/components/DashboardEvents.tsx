@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PieChartComponent from "./Charts/PieChartComponent";
 
-const MobileIcon = React.lazy(
-  () => import(`/src/assets/svg/Mobile.svg?react`)
-);
+const MobileIcon = React.lazy(() => import(`/src/assets/svg/Mobile.svg?react`));
 
-const PlusIcon = React.lazy(
-  () => import(`../assets/svg/PlusIconBlue.svg?react`)
-);
+const PlusIcon = React.lazy(() => import(`../assets/svg/plus.svg?react`));
 
 type RecentEvent = {
   id: string | number;
@@ -29,7 +25,7 @@ const DashboardEvents: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-w-[35%]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 px-5">
         <div>
@@ -41,13 +37,13 @@ const DashboardEvents: React.FC = () => {
           </p>
         </div>
 
-          <button
-            onClick={handleAddNewEvent}
-            className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
-            aria-label="Add New Rule"
-          >
-            <PlusIcon className="w-[20px] h-[20px]" />
-          </button>
+        <button
+          onClick={handleAddNewEvent}
+          className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+          aria-label="Add New Rule"
+        >
+          <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
+        </button>
       </div>
 
       {/* Card */}
@@ -77,7 +73,7 @@ const DashboardEvents: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-4">
+        <div className="mb-2">
           <PieChartComponent />
         </div>
       </div>

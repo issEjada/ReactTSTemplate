@@ -280,7 +280,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   return (
     <div
       className={`bg-white  dark:bg-black ${
-        fromDashboard ? "w-[700px] h-[507px]" : "w-full h-full"
+        fromDashboard ? "w-[60%] h-full" : "w-full h-full"
       }`}
     >
       {" "}
@@ -296,30 +296,28 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           <p className="text-sm text-gray-500 mt-1">
             Keep track of customers and their security levels.
           </p>
+        </div>
+        {totalCount !== 0 && !fromDashboard && (
+          <div className="ml-auto">
+            <button
+              onClick={handleAddNewRule}
+              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
+            >
+              <PlusIcon className="w-[20px] h-[20px]" />
+              Add New Rule
+            </button>
           </div>
-          {totalCount !== 0 && !fromDashboard && (
-            <div className="ml-auto">
-              <button
-                onClick={handleAddNewRule}
-                className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
-              >
-                <PlusIcon className="w-[20px] h-[20px]" />
-                Add New Rule
-              </button>
-            </div>
-          )}
+        )}
 
-          
-            {fromDashboard && (
-              <button
-                onClick={handleAddNewRule}
-                className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
-                aria-label="Add New Rule"
-              >
-                <PlusIcon className="w-[20px] h-[20px] text-blue-700" />
-              </button>
-            )}
-
+        {fromDashboard && (
+          <button
+            onClick={handleAddNewRule}
+            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+            aria-label="Add New Rule"
+          >
+            <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
+          </button>
+        )}
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback

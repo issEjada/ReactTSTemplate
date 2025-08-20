@@ -2,7 +2,6 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { useContext, useMemo } from "react";
 import { ThemeContext } from "../../context/Context";
 import { useSessionActivity } from "../../pages/Monitoring/MonitoringTable/useSessionActivity";
-import type { GetStatisticsResponse } from "../../pages/Monitoring/monitoringServices";
 
 type RCTooltipProps = {
   active?: boolean;
@@ -14,7 +13,7 @@ const DonutTooltip = ({ active, payload, total }: RCTooltipProps) => {
   if (!active || !payload?.length || total <= 0) return null;
   const pct = ((payload[0].value / total) * 100).toFixed(1);
   return (
-    <div className="px-2 py-[2px] rounded-md bg-[#111827] text-white text-[11px] shadow">
+    <div className="px-2 py-[2px] rounded-md bg-[#111827] w-[50%] text-white text-[11px] shadow">
       {pct}%
     </div>
   );
@@ -42,7 +41,7 @@ export default function PieChartComponent() {
   ];
 
   return (
-    <div className="flex w-[410px] h-[232px] p-6   dark:bg-[#121418]">
+    <div className="flex w-full h-[200px] p-6   dark:bg-[#121418]">
       <div className="flex items-center justify-center w-[183px] h-[183px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -64,7 +63,11 @@ export default function PieChartComponent() {
             <Tooltip
               cursor={false}
               content={({ active, payload }) => (
-                <DonutTooltip active={active} payload={payload as any} total={total} />
+                <DonutTooltip
+                  active={active}
+                  payload={payload as any}
+                  total={total}
+                />
               )}
               wrapperStyle={{ outline: "none" }}
             />
@@ -72,8 +75,8 @@ export default function PieChartComponent() {
         </ResponsiveContainer>
       </div>
 
-      <div className="flex flex-col justify-center ml-6 space-y-3 text-sm dark:text-white">
-        <div className="flex justify-between items-center w-[170px]">
+      <div className="flex flex-col justify-center items ml-6 space-y-3 w-[45%] text-sm dark:text-white">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span
               className="w-2 h-2 rounded-full"
@@ -83,12 +86,12 @@ export default function PieChartComponent() {
               Sessions
             </span>
           </div>
-          <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+          <div className="text-[#101828] dark:text-gray-300 ml-auto text-[12px]">
             {total}
-          </span>
+          </div>
         </div>
 
-        <div className="flex justify-between items-center w-[170px]">
+        <div className="flex justify-between items-center ">
           <div className="flex items-center gap-2">
             <span
               className="w-2 h-2 rounded-full"
@@ -103,7 +106,7 @@ export default function PieChartComponent() {
           </span>
         </div>
 
-        <div className="flex justify-between items-center w-[170px]">
+        <div className="flex justify-between items-center ">
           <div className="flex items-center gap-2">
             <span
               className="w-2 h-2 rounded-full"
