@@ -126,6 +126,50 @@ export interface ActionAnalyticsResponse {
   };
 }
 
+export interface CustomerDevicesPayload {
+  maxPageSize?: number;
+  page: number;
+  userMobileNumber?: string;
+  userId?: string;
+  clientUserId?: string;
+  deviceUniqueId?: string;
+  deviceManufacturer?: string;
+  deviceModel?: string;
+  osType?: string;
+  from?: string;
+  to?: string;
+}
+
+export interface SDKCustomerDeviceInfo {
+  sdkId: string;
+  userMobileNumber: string;
+  userId: string;
+  clientUserId: string;
+  deviceUniqueId: string;
+  deviceManufacturer: string;
+  deviceModel: string;
+  osType: string;
+  creationTime: string;
+}
+
+export interface CustomerDeviceResponse {
+  data: {
+    userSdkRecords: SDKCustomerDeviceInfo[];
+  };
+  meta: PaginationMeta;
+}
+
+export interface unBlockFptPayload {
+  fptRef: string;
+  action: string;
+}
+
+export interface HealthCheckPayload {
+  maxPageSize: number;
+  page: number;
+  fromTimestamp: string;
+  toTimestamp: string;
+}
 
 export class CustomerClient {
   static getCustomerInsightsData(
@@ -167,6 +211,35 @@ export class CustomerClient {
           page: data.page,
         },
       })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
+
+  static getCustomerDeviceData(
+    data: CustomerDevicesPayload
+  ): Promise<CustomerDeviceResponse> {
+    const { page, maxPageSize, ...requestBody } = data;
+    return httpClient
+      .post(
+        `${import.meta.env.VITE_API_SDK_URL}${API.customerDevices}`,
+        requestBody,
+        {
+          headers: getHeaders(),
+          params: {
+            // userMobileNumber: userMobileNumber,
+            maxPageSize: maxPageSize,
+            page: page,
+          },
+        }
+      )
       .then((response) => {
         return response.data;
       })

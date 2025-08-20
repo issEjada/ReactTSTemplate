@@ -3,21 +3,13 @@ import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller, useForm } from "react-hook-form";
- 
-export type CustomerFilterFormValues = {
-  deviceID?: string;
-  manufacturer?: string;
-  model?: string;
-  oSType?: string;
-  dateFrom?: string;
-  dateTo?: string;
-};
+import type { CustomerDevicesFilterData } from "../CustomerDevices/useCustomerDevices";
  
 interface CustomerFilterFormProps {
   isOpen: boolean;
   closeDrawer: () => void;
-  handleSearchSubmit: (searchData: CustomerFilterFormValues) => void;
-  filterData?: CustomerFilterFormValues;
+  handleSearchSubmit: (searchData: CustomerDevicesFilterData) => void;
+  filterData?: CustomerDevicesFilterData;
 }
  
 const OS_TYPES = [
@@ -35,12 +27,12 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
   handleSearchSubmit,
   filterData,
 }) => {
-  const { control, reset, getValues } = useForm<CustomerFilterFormValues>({
+  const { control, reset, getValues } = useForm<CustomerDevicesFilterData>({
     defaultValues: {
-      deviceID: filterData?.deviceID ?? "",
-      manufacturer: filterData?.manufacturer ?? "",
-      model: filterData?.model ?? "",
-      oSType: filterData?.oSType ?? "",
+      deviceUniqueId: filterData?.deviceUniqueId ?? "",
+      deviceManufacturer: filterData?.deviceManufacturer ?? "",
+      deviceModel: filterData?.deviceModel ?? "",
+      osType: filterData?.osType ?? "",
       dateFrom: filterData?.dateFrom ?? "",
       dateTo: filterData?.dateTo ?? "",
     },
@@ -49,11 +41,11 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const v = getValues();
-    const cleaned: CustomerFilterFormValues = {
-      deviceID: v.deviceID?.trim() ? v.deviceID.trim() : undefined,
-      manufacturer: v.manufacturer?.trim() ? v.manufacturer.trim() : undefined,
-      model: v.model?.trim() ? v.model.trim() : undefined,
-      oSType: v.oSType || undefined,
+    const cleaned: CustomerDevicesFilterData = {
+      deviceUniqueId: v.deviceUniqueId?.trim() ? v.deviceUniqueId.trim() : undefined,
+      deviceManufacturer: v.deviceManufacturer?.trim() ? v.deviceManufacturer.trim() : undefined,
+      deviceModel: v.deviceModel?.trim() ? v.deviceModel.trim() : undefined,
+      osType: v.osType || undefined,
       dateFrom: v.dateFrom || undefined,
       dateTo: v.dateTo || undefined,
     };
@@ -62,28 +54,20 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
   };
  
   const handleClear = () => {
-    reset({
-      deviceID: "",
-      manufacturer: "",
-      model: "",
-      oSType: "",
-      dateFrom: "",
-      dateTo: "",
-    });
+    reset();
     handleSearchSubmit({});
   };
  
   return (
     <FilterLayout title="Filter Customer Devices" isOpen={isOpen} onClose={closeDrawer}>
       <form className="flex flex-col justify-between h-[672px]" onSubmit={onFormSubmit}>
-        {/* Device ID */}
         <div className="relative flex flex-col mt-6">
           <label className="text-sm font-medium dark:text-white">
             Device ID
           </label>
           <Controller
             control={control}
-            name="deviceID"
+            name="deviceUniqueId"
             render={({ field }) => (
               <input
                 {...field}
@@ -106,51 +90,47 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
           </div>
         </div>
  
-        {/* Manufacturer */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium">Manufacturer</label>
+          <label className="text-sm font-medium">deviceManufacturer</label>
           <Controller
             control={control}
-            name="manufacturer"
+            name="deviceManufacturer"
             render={({ field }) => (
               <input
                 {...field}
                 type="text"
-                placeholder="Enter Manufacturer"
+                placeholder="Enter deviceManufacturer"
                 className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
               />
             )}
           />
         </div>
  
-        {/* Model */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium">Model</label>
+          <label className="text-sm font-medium">deviceModel</label>
           <Controller
             control={control}
-            name="model"
+            name="deviceModel"
             render={({ field }) => (
               <input
                 {...field}
                 type="text"
-                placeholder="Type Model"
+                placeholder="Type deviceModel"
                 className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
               />
             )}
           />
         </div>
  
-        {/* OS Type */}
-        <DropdownMenu<CustomerFilterFormValues>
+        <DropdownMenu<CustomerDevicesFilterData>
           control={control}
-          name="oSType"
+          name="osType"
           label="OS Type"
           options={OS_TYPES}
           placeholder="Choose OS"
           className="w-full"
         />
  
-        {/* Dates */}
         <div className="flex gap-4 mb-4">
           <div className="w-1/2">
             <label className="text-sm font-medium">Date From</label>
@@ -182,7 +162,6 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
           </div>
         </div>
  
-        {/* Actions */}
         <div className="flex justify-end gap-2 mb-8">
           <button
             type="submit"
