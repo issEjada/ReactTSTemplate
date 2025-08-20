@@ -16,6 +16,7 @@ interface DropdownMenuProps<T extends FieldValues> {
   required?: boolean;
   disabled?: boolean;
   className?: string;
+  placeholder?: string;
 }
 
 const DropdownMenu = <T extends FieldValues>({
