@@ -26,19 +26,18 @@ interface DynamicTableProps<TData extends object> {
   setCurrentPage: (page: number | ((prev: number) => number)) => void;
   onFilterStatus?: (status: string) => void;
   statusFilter?: string;
-  onClearSearch: () => void;
+  onClearSearch?: () => void;
   onAddNewItem?: () => void;
   error: string | null;
   title: string;
-  searchText: string;
-  setSearchText: (text: string) => void;
+  searchText?: string;
+  setSearchText?: (text: string) => void;
   openFilterModal?: () => void;
-  applyFilters: () => void;
+  applyFilters?: () => void;
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
-  isAddNewItem?: boolean;
 }
 
 export function DynamicTable<TData extends object>({
@@ -63,7 +62,6 @@ export function DynamicTable<TData extends object>({
   showStatusFilter = true,
   statusFilterOptions,
   isMonitoringTable = false,
-  isAddNewItem = true,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -119,39 +117,43 @@ export function DynamicTable<TData extends object>({
           )}
 
         <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-          <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
-            <button
-              type="button"
-              title="Search"
-              onClick={applyFilters}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-            >
-              <Suspense>
-                <SearchIcon className="w-5 h-5" />
-              </Suspense>
-            </button>
-
-            <input
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") applyFilters();
-              }}
-              placeholder={searchPlaceholder}
-              className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
-            />
-
-            {searchText && (
+          {applyFilters && (
+            <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
               <button
-                onClick={() => onClearSearch()}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-                aria-label="Clear search"
+                type="button"
+                title="Search"
+                onClick={applyFilters}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
               >
-                &#10005;
+                <Suspense>
+                  <SearchIcon className="w-5 h-5" />
+                </Suspense>
               </button>
-            )}
-          </div>
+
+              <input
+                type="text"
+                value={searchText}
+                onChange={(e) =>
+                  setSearchText ? setSearchText(e.target.value) : null
+                }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") applyFilters();
+                }}
+                placeholder={searchPlaceholder}
+                className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+              />
+
+              {searchText && (
+                <button
+                  onClick={() => (onClearSearch ? onClearSearch() : null)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                  aria-label="Clear search"
+                >
+                  &#10005;
+                </button>
+              )}
+            </div>
+          )}
 
           {filterComponent && (
             <button
@@ -171,50 +173,51 @@ export function DynamicTable<TData extends object>({
 
       <div className="overflow-x-auto">
         <table className="min-w-[900px] w-full table-auto text-sm text-center">
-          {table.getRowModel().rows.length > 0 ?
-          (
-          <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr
-                key={headerGroup.id}
-                className="border-b dark:border-gray-800"
-              >
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap"
-                  >
-                    <div className="flex items-center justify-start gap-2">
-                      <span>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </span>
-                      {(header.id === "deviceId" ||
-                        header.id === "sessionId" ||
-                        header.id === "name" ||
-                        header.id === "id") && (
-                        <button onClick={() => onArrowClick(header.column.id)}>
-                          <ArrowIcon
-                            className={`stroke-gray-600 dark:stroke-white   ${
-                              header.column.getIsSorted() === "asc"
-                                ? "transform rotate-180 transition-transform"
-                                : header.column.getIsSorted() === "desc" &&
-                                  "transform rotate-0 transition-transform"
-                            }
+          {table.getRowModel().rows.length > 0 ? (
+            <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="border-b dark:border-gray-800"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap"
+                    >
+                      <div className="flex items-center justify-start gap-2">
+                        <span>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </span>
+                        {(header.id === "deviceId" ||
+                          header.id === "sessionId" ||
+                          header.id === "name" ||
+                          header.id === "id") && (
+                          <button
+                            onClick={() => onArrowClick(header.column.id)}
+                          >
+                            <ArrowIcon
+                              className={`stroke-gray-600 dark:stroke-white   ${
+                                header.column.getIsSorted() === "asc"
+                                  ? "transform rotate-180 transition-transform"
+                                  : header.column.getIsSorted() === "desc" &&
+                                    "transform rotate-0 transition-transform"
+                              }
                               `}
-                          />
-                        </button>
-                      )}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
+                            />
+                          </button>
+                        )}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
           ) : (
             <div className="border-t border-gray-200 dark:border-gray-800 h-[1px] w-full"></div>
           )
@@ -277,12 +280,12 @@ export function DynamicTable<TData extends object>({
                             type="button"
                             onClick={onClearSearch}
                             className={`${
-                              isAddNewItem ? "w-[170px]" : "w-full"
+                              onAddNewItem ? "w-[170px]" : "w-full"
                             } h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
                           >
                             Clear search
                           </button>
-                          {isAddNewItem && (
+                          {onAddNewItem && (
                             <button
                               type="button"
                               onClick={onAddNewItem}

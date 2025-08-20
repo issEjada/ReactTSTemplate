@@ -12,6 +12,7 @@ export const AppRoutes = {
   editDecisionRule: "/decision-rules/edit-rule",
   events: "/events",
   systemConfiguration: "/system-configuration",
+  viewSystemConfiguration: "/system-configuration/view-configuration",
   monitoring: "/monitoring",
   monitoringView: "/monitoring/view",
   organizations: "/organizations",

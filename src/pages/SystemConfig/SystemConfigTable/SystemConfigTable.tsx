@@ -6,6 +6,8 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { DynamicTable } from "../../../components/DynamicTable";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../../routes/AppRoutes";
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/settings.svg?react")
@@ -54,12 +56,17 @@ export const SystemConfigTable = () => {
     setCurrentPage(1);
   };
 
-  const handleAddNewRule = () => {
-    //navigate to create new rule
-    // navigate("/scoring-rules/new-rule");
+  const navigate = useNavigate();
+  const handleViewSystemConfig = (data: {
+    id: number;
+    name: string;
+    desc: string;
+    allowAddRow: boolean;
+  }) => {
+    navigate(AppRoutes.viewSystemConfiguration, { state: data });
   };
 
-  const columns = useMemo(() => getColumns(), []);
+  const columns = useMemo(() => getColumns(handleViewSystemConfig), []);
 
   if (loadingState === "loading") {
     return <FullScreenSpinner />;
@@ -133,7 +140,6 @@ export const SystemConfigTable = () => {
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
           onClearSearch={handleClearSearch}
-          onAddNewItem={handleAddNewRule}
           title="System configurations"
           error={error}
           searchText={searchText}
@@ -144,14 +150,20 @@ export const SystemConfigTable = () => {
           onFilterStatus={() => {}}
           statusFilter={"All"}
           statusFilterOptions={[]}
-          isAddNewItem={false}
         />
       )}
     </div>
   );
 };
 
-const getColumns = (): ColumnDef<SystemConfig>[] => [
+const getColumns = (
+  handleViewSystemConfig: (rowData: {
+    id: number;
+    name: string;
+    desc: string;
+    allowAddRow: boolean;
+  }) => void
+): ColumnDef<SystemConfig>[] => [
   {
     header: "Configuration Name",
     accessorKey: "configName",
@@ -182,11 +194,7 @@ const getColumns = (): ColumnDef<SystemConfig>[] => [
         allowAddRow: rule.allowAddRow,
       };
       return (
-        <div
-          onClick={() => {
-            console.log(rowData);
-          }}
-        >
+        <div onClick={() => handleViewSystemConfig(rowData)}>
           <EditIcon className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE]" />
         </div>
       );
