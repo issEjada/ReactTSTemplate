@@ -4,7 +4,7 @@ import PieChartComponent from "../../components/Charts/PieChartComponent";
 
 const MobileIcon = React.lazy(() => import(`/src/assets/svg/Mobile.svg?react`));
 
-const PlusIcon = React.lazy(() => import(`../assets/svg/plus.svg?react`));
+const PlusIcon = React.lazy(() => import(`/src/assets/svg/plus.svg?react`));
 
 type RecentEvent = {
   id: string | number;

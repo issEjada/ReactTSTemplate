@@ -1,4 +1,4 @@
-import HomeWidgetGroup from "../../components/HomeWidget.js";
+import HomeWidgetGroup from "./HomeWidget.js";
 import { ScoringRulesTable } from "../ScoringRules/ScoringRulesTable/ScoringRulesTable.js";
 import DashboardOperations from "./DashboardOperations.js";
 import DashboardEvents from "./DashboardEvents.js";

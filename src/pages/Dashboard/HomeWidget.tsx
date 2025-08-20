@@ -1,15 +1,17 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../routes/AppRoutes";
+import { AppRoutes } from "../../routes/AppRoutes";
+import { useDashboard } from "./useDashboard";
+import FullScreenSpinner from "../../components/FullScreenSpinner";
 
 const ShieldIcon = React.lazy(
-  () => import("../assets/svg/ShieldIcon.svg?react")
+  () => import("../../assets/svg/ShieldIcon.svg?react")
 );
 const Threatblock = React.lazy(
-  () => import("../assets/svg/Threatblock.svg?react")
+  () => import("../../assets/svg/Threatblock.svg?react")
 );
 const ActiveAlerts = React.lazy(
-  () => import("../assets/svg/ActiveAlerts.svg?react")
+  () => import("../../assets/svg/ActiveAlerts.svg?react")
 );
 
 interface HomeWidgetProps {
@@ -70,68 +72,44 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
 };
 
 const HomeWidgetGroup: React.FC = () => {
-  const [widgetData, setWidgetData] = useState<HomeWidgetProps[]>([
-    // fallback static values
-    {
-      title: "Scoring Rules",
-      icon: ShieldIcon,
-      active: 120,
-      inactive: 35,
-      total: 155,
-    },
-    {
-      title: "Decision Rules",
-      icon: Threatblock,
-      active: 80,
-      inactive: 20,
-      total: 100,
-    },
-    {
-      title: "Events",
-      icon: ActiveAlerts,
-      active: 900,
-      inactive: 50,
-      total: 950,
-    },
-  ]);
+  const { data, loading, error } = useDashboard();
+  const [widgetData, setWidgetData] = useState<HomeWidgetProps[]>([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const [scoring, decision, events] = await Promise.all([
-          fetch("/api/scoring-rules").then((r) => r.json()),
-          fetch("/api/decision-rules").then((r) => r.json()),
-          fetch("/api/events").then((r) => r.json()),
-        ]);
+    if (data) {
+      setWidgetData([
+        {
+          title: "Scoring Rules",
+          icon: ShieldIcon,
+          active: data.scoringRules.activeRules,
+          inactive: data.scoringRules.inactiveRules,
+          total: data.scoringRules.totalRules,
+        },
+        {
+          title: "Decision Rules",
+          icon: Threatblock,
+          active: data.decisionRules.activeRules,
+          inactive: data.decisionRules.inactiveRules,
+          total: data.decisionRules.totalRules,
+        },
+        {
+          title: "Events",
+          icon: ActiveAlerts,
+          active: data.events.activeRules,
+          inactive: data.events.inactiveRules,
+          total: data.events.totalRules,
+        },
+      ]);
+    }
+  }, [data]);
 
-        setWidgetData([
-          {
-            title: "Scoring Rules",
-            icon: ShieldIcon,
-            active: scoring.active ?? "",
-            inactive: scoring.inactive ?? "",
-            total: scoring.total ?? "",
-          },
-          {
-            title: "Decision Rules",
-            icon: Threatblock,
-            active: decision.active ?? 0,
-            inactive: decision.inactive ?? 0,
-            total: decision.total ?? 0,
-          },
-          {
-            title: "Events",
-            icon: ActiveAlerts,
-            active: events.active ?? 900,
-            inactive: events.inactive ?? 50,
-            total: events.total ?? 950,
-          },
-        ]);
-      } catch (err) {
-        console.error("Failed to fetch widget data, using fallback:", err);
-      }
-    })();
-  }, []);
+  if (loading) {
+    return <FullScreenSpinner />;
+  }
+
+  if (error) {
+    return <div>Error loading data</div>;
+  }
 
   return (
     <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
