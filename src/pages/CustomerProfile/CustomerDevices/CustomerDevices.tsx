@@ -1,20 +1,23 @@
-import React, {
-  useMemo,
-  useState,
-} from "react";
+import React, { useMemo, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DynamicTable } from "../../../components/DynamicTable";
 import CustomerDevicesFilter from "../CustomerProfileFilter/CustomerDevicesFilter";
 import { useCustomerDevices } from "./useCustomerDevices";
 import type { SDKCustomerDeviceInfo } from "../customerProfileServices";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 export const CustomerDevices: React.FC = () => {
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchText, setSearchText] = useState<string>("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  
-  const {setCustomerDevicesFilterData, customerDevicesData} = useCustomerDevices();
+
+  const {
+    setCustomerDevicesFilterData,
+    customerDevicesData,
+    currentPage,
+    setCurrentPage,
+    loadingState,
+    errorValidation,
+  } = useCustomerDevices();
 
   console.log("customer devices data", customerDevicesData);
 
@@ -32,14 +35,21 @@ export const CustomerDevices: React.FC = () => {
     []
   );
 
-
   const applyFilters = () => {
     const searchData = {
       deviceUniqueId: searchText.trim() || undefined,
     };
     setCustomerDevicesFilterData(searchData);
-    setSearchText(""); 
+    setSearchText("");
   };
+
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
+
+  if (errorValidation) {
+    return <span className="text-red-500">{errorValidation}</span>;
+  }
 
   return (
     <div className="px-5 pb-5 overflow-x-auto w-[792px]">
@@ -52,17 +62,28 @@ export const CustomerDevices: React.FC = () => {
         }
         data={customerDevicesData?.data.userSdkRecords || []}
         columns={columns}
-        totalCount={customerDevicesData?.data.userSdkRecords.length || 0}
+        totalCount={customerDevicesData?.meta.totalItems || 0}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         searchText={searchText}
         setSearchText={setSearchText}
-        onClearSearch={() => setSearchText("")}
-        filterComponent={<CustomerDevicesFilter isOpen={isFilterOpen} closeDrawer={() => setIsFilterOpen(false)} handleSearchSubmit={(data) => {
-          console.log("Filter Data: My filter", data);
-          setIsFilterOpen(false);
-          setCustomerDevicesFilterData(data);
-        }} />}
+        onClearSearch={() => {
+          setSearchText("");
+          setCustomerDevicesFilterData({});
+          setCurrentPage(1);
+        }}
+        filterComponent={
+          <CustomerDevicesFilter
+            isOpen={isFilterOpen}
+            closeDrawer={() => setIsFilterOpen(false)}
+            handleSearchSubmit={(data) => {
+              setCurrentPage(1);
+              console.log("Filter Data: My filter", data);
+              setIsFilterOpen(false);
+              setCustomerDevicesFilterData(data);
+            }}
+          />
+        }
         openFilterModal={() => setIsFilterOpen(true)}
         applyFilters={applyFilters}
         showStatusFilter={false}

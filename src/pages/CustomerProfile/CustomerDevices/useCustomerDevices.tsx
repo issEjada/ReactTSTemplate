@@ -26,6 +26,7 @@ export const useCustomerDevices = () => {
   const [loadingState, setLoadingState] = useState<
     "loading" | "success" | "error"
   >("success");
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const fetchCustomerDevicesData = async () => {
     
@@ -33,7 +34,8 @@ export const useCustomerDevices = () => {
 
     const data = {
       maxPageSize: 10,
-      page: 1,
+      page: currentPage,
+      ...customerDevicesFilterData,
     };
 
     await CustomerClient.getCustomerDeviceData(data)
@@ -50,7 +52,7 @@ export const useCustomerDevices = () => {
 
   useEffect(() => {
     fetchCustomerDevicesData();
-  }, []);
+  }, [currentPage, customerDevicesFilterData]);
 
   return {
     customerDevicesData,
@@ -58,5 +60,7 @@ export const useCustomerDevices = () => {
     setCustomerDevicesFilterData,
     errorValidation,
     loadingState,
+    currentPage,
+    setCurrentPage,
   };
 };
