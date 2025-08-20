@@ -22,7 +22,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
   onButtonClick,
 }) => {
   return (
-    <div className="w-full h-[575px] flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden">
+    <div className="w-full h-[478px] flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden">
       <Suspense>
         <BackgroundCircle
           className="
@@ -35,9 +35,9 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         />
       </Suspense>
 
-      <div className="relative z-10 flex flex-col items-center">
-        <div className="flex items-center justify-center  mb-6 w-[80px] h-[80px]">
-          <div className="absolute left-1/2 top-[28%] -translate-x-1/2 -translate-y-1/2">
+      <div className="relative z-10 flex flex-col items-center gap-20">
+        <div className="flex items-center justify-center   w-[80px] h-[80px]">
+          <div className="absolute left-1/2 top-[48%] -translate-x-1/2 -translate-y-1/2">
             <div className="flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] p-[4px]">
               <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[2px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
                 {icon}
@@ -45,7 +45,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             </div>
           </div>
         </div>
-
+      <div className="flex flex-col justify-between mt-20 items-center gap-[0.8rem]">
         <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
           {title}
         </h3>
@@ -59,6 +59,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             <span>{buttonText}</span>
           </button>
         )}
+        </div>
       </div>
     </div>
   );

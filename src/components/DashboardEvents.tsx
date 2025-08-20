@@ -41,15 +41,13 @@ const DashboardEvents: React.FC = () => {
           </p>
         </div>
 
-        <div className="ml-auto">
           <button
             onClick={handleAddNewEvent}
-            className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+            className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
             aria-label="Add New Rule"
           >
             <PlusIcon className="w-[20px] h-[20px]" />
           </button>
-        </div>
       </div>
 
       {/* Card */}
@@ -79,7 +77,6 @@ const DashboardEvents: React.FC = () => {
           ))}
         </div>
 
-        {/* Pie Chart */}
         <div className="mt-4">
           <PieChartComponent />
         </div>

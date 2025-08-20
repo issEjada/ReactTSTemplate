@@ -279,13 +279,13 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   };
   return (
     <div
-      className={`p-6 bg-white shadow-sm dark:bg-black ${
-        fromDashboard ? "w-[700px]" : "w-full"
+      className={`bg-white  dark:bg-black ${
+        fromDashboard ? "w-[700px] h-[507px]" : "w-full h-full"
       }`}
     >
       {" "}
-      <div className="mb-6 ">
-        <div className="flex items-center justify-between pt-5">
+      <div className="flex items-center justify-between mb-6 px-5">
+        <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Scoring Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
@@ -293,7 +293,10 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
               {totalCount !== 1 && "s"}
             </span>
           </h2>
-
+          <p className="text-sm text-gray-500 mt-1">
+            Keep track of customers and their security levels.
+          </p>
+          </div>
           {totalCount !== 0 && !fromDashboard && (
             <div className="ml-auto">
               <button
@@ -306,22 +309,17 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             </div>
           )}
 
-          <div>
+          
             {fromDashboard && (
               <button
                 onClick={handleAddNewRule}
-                className="h-10 w-10 rounded-xl ml-auto bg-white border border-gray-200 shadow-sm hover:bg-gray-50 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+                className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
                 aria-label="Add New Rule"
               >
                 <PlusIcon className="w-[20px] h-[20px] text-blue-700" />
               </button>
             )}
-          </div>
-        </div>
 
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
