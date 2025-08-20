@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
-import { CustomerClient, type ActionAnalyticsPayload, type ActionAnalyticsResponse } from "../customerProfileServices";
+import {
+  CustomerClient,
+  type ActionAnalyticsPayload,
+  type ActionAnalyticsResponse,
+} from "../customerProfileServices";
 
-export const useActionAnalytics = (userMobileNumber:string, currentPage: number) => {
-  const [actionAnalyticsData, setActionAnalyticsData] = useState<ActionAnalyticsResponse>();
+export const useActionAnalytics = (
+  userMobileNumber: string,
+  currentPage: number
+) => {
+  const [actionAnalyticsData, setActionAnalyticsData] =
+    useState<ActionAnalyticsResponse>();
   const [errorValidation, setErrorValidate] = useState<string>();
   const [loadingState, setLoadingState] = useState<
     "loading" | "success" | "error"
   >("success");
 
-    console.log("User Mobile Number:", userMobileNumber);
+  console.log("User Mobile Number:", userMobileNumber);
 
   const fetchActionAnalyticsData = async () => {
     setLoadingState("loading");

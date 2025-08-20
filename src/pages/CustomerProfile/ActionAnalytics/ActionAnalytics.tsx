@@ -5,6 +5,7 @@ import { ActionStatistics } from "./ActionStatistics";
 import MetricCard from "./MetricCard";
 import { DynamicTable } from "../../../components/DynamicTable";
 import { useActionAnalytics } from "./useActionAnalytics";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -30,51 +31,28 @@ const ScaIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
 );
 
-type UserActionRow = {
+export interface FormattedAnalyticData {
   id: number;
   eventName: string;
   totalActions: number;
   acceptedActions: number;
+  rejectedActions: number;
+  mfaActions: number;
+  scaActions: number;
+  authenticatedActions: number;
   averageAmount: number;
-};
-
-const rows: UserActionRow[] = [
-  {
-    id: 1,
-    eventName: "Event Name",
-    totalActions: 122,
-    acceptedActions: 60,
-    averageAmount: 3013,
-  },
-  {
-    id: 2,
-    eventName: "Event Name",
-    totalActions: 213,
-    acceptedActions: 34,
-    averageAmount: 5200,
-  },
-  {
-    id: 3,
-    eventName: "Event Name",
-    totalActions: 321,
-    acceptedActions: 23,
-    averageAmount: 5400,
-  },
-  {
-    id: 4,
-    eventName: "Event Name",
-    totalActions: 54,
-    acceptedActions: 24,
-    averageAmount: 2200,
-  },
-  {
-    id: 5,
-    eventName: "Event Name",
-    totalActions: 12,
-    acceptedActions: 2,
-    averageAmount: 500,
-  },
-];
+  maxAmount: number;
+  mostUsedTargetCountry: string[];
+  trustedTargetCountries: string[];
+  mostUsedTargetMerchant: string[];
+  trustedTargetMerchants: string[];
+  mostUsedCreditorAgentIdentifier: string[];
+  trustedCreditorAgentIdentifiers: string[];
+  mostUsedTargetBank: string[];
+  trustedTargetBanks: string[];
+  mostUsedMaskedCard: string[];
+  trustedMaskedCards: string[];
+}
 
 function RowMenu({
   onStatistics,
@@ -172,7 +150,7 @@ function RowMenu({
   );
 }
 
-const columns: ColumnDef<UserActionRow>[] = [
+const columns: ColumnDef<FormattedAnalyticData>[] = [
   { accessorKey: "eventName", header: "Event Name", cell: (i) => i.getValue() },
   {
     accessorKey: "totalActions",
@@ -212,20 +190,62 @@ type ActionAnalyticsProps = {
   userMobileNumber: string;
 };
 
-export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({ userMobileNumber }) => {
+export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
+  userMobileNumber,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
 
-  const {
-    actionAnalyticsData,
-    setGlobalFilterData,
-    errorValidation,
-    loadingState,
-  } = useActionAnalytics(userMobileNumber, currentPage);
+  const { actionAnalyticsData, errorValidation, loadingState } =
+    useActionAnalytics(userMobileNumber, currentPage);
 
   console.log("Action Analytics Data:", actionAnalyticsData);
 
+  const formattedAnalyticData: FormattedAnalyticData[] =
+    actionAnalyticsData?.actionsAnalytics.userEvents?.map((event, index) => ({
+      id: index + 1,
+      eventName: event.eventName,
+
+      // ---- Actions Statistics ----
+      totalActions: event.actionsStatistics.numberOfTotalActions,
+      acceptedActions: event.actionsStatistics.numberOfAcceptedActions,
+      rejectedActions: event.actionsStatistics.numberOfRejectedActions,
+      mfaActions: event.actionsStatistics.numberOfMFAActions,
+      scaActions: event.actionsStatistics.numberOfSCAActions,
+      authenticatedActions:
+        event.actionsStatistics.numberOfAuthenticatedActions,
+
+      // ---- Trusted Indicators ----
+      averageAmount: parseFloat(
+        event.actionsTrustedIndicators.avgAmount ?? "0"
+      ),
+      maxAmount: parseFloat(event.actionsTrustedIndicators.maxAmount ?? "0"),
+      mostUsedTargetCountry:
+        event.actionsTrustedIndicators.mostUsedTargetCountry,
+      trustedTargetCountries:
+        event.actionsTrustedIndicators.trustedTargetCountries,
+      mostUsedTargetMerchant:
+        event.actionsTrustedIndicators.mostUsedTargetMerchant,
+      trustedTargetMerchants:
+        event.actionsTrustedIndicators.trustedTargetMerchants,
+      mostUsedCreditorAgentIdentifier:
+        event.actionsTrustedIndicators.mostUsedCreditorAgentIdentifier,
+      trustedCreditorAgentIdentifiers:
+        event.actionsTrustedIndicators.trustedCreditorAgentIdentifiers,
+      mostUsedTargetBank: event.actionsTrustedIndicators.mostUsedTargetBank,
+      trustedTargetBanks: event.actionsTrustedIndicators.trustedTargetBanks,
+      mostUsedMaskedCard: event.actionsTrustedIndicators.mostUsedMaskedCard,
+      trustedMaskedCards: event.actionsTrustedIndicators.trustedMaskedCards,
+    })) ?? [];
+
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
+
+  if (errorValidation) {
+    return <span className="text-red-500">{errorValidation}</span>;
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -233,19 +253,23 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({ userMobileNumb
       <div className="flex flex-col md:flex-row gap-4">
         <MetricCard
           title="Total Actions"
-          value={221}
+          value={
+            actionAnalyticsData?.actionsAnalytics.numberOfTotalActions || 0
+          }
           icon={<TotalActionIcon />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="Accepted Actions"
-          value={18}
+          value={
+            actionAnalyticsData?.actionsAnalytics.numberOfAcceptedActions || 0
+          }
           icon={<AcceptedIcon />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="MFA Actions"
-          value={5}
+          value={actionAnalyticsData?.actionsAnalytics.numberOfMFAActions || 0}
           icon={<MfaIcon />}
           className="w-full md:w-[370px]"
         />
@@ -254,19 +278,24 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({ userMobileNumb
       <div className="flex flex-col md:flex-row gap-4">
         <MetricCard
           title="Authenticated Actions"
-          value={378}
+          value={
+            actionAnalyticsData?.actionsAnalytics
+              .numberOfAuthenticatedActions || 0
+          }
           icon={<AuthActionIcon />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="Rejected Actions"
-          value={1219}
+          value={
+            actionAnalyticsData?.actionsAnalytics.numberOfRejectedActions || 0
+          }
           icon={<RejectedIcon />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="SCA Actions"
-          value={18}
+          value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
           icon={<ScaIcon />}
           className="w-full md:w-[370px]"
         />
@@ -284,11 +313,11 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({ userMobileNumb
 
         <div className="px-5 pb-5 overflow-x-auto">
           <div className="overflow-x-auto">
-            <DynamicTable<UserActionRow>
+            <DynamicTable<FormattedAnalyticData>
               title="User Actions Table"
-              data={rows}
+              data={formattedAnalyticData}
               columns={columns}
-              totalCount={rows.length}
+              totalCount={formattedAnalyticData?.length || 0}
               currentPage={currentPage}
               itemsPerPage={10}
               setCurrentPage={setCurrentPage}
