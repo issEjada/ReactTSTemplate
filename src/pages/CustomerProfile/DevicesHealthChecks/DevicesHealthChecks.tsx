@@ -157,7 +157,7 @@ export const DevicesHealthChecks: React.FC = () => {
   };
  
   return (
-    <div className="px-5 overflow-x-auto w-[792px]">
+    <div className="px-5 overflow-x-auto">
       <DynamicTable<DeviceRow>
         title="Devices Health Check"
         headerLeft={

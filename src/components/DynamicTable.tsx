@@ -106,7 +106,7 @@ export function DynamicTable<TData extends object>({
   };
 
   return (
-    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418] ">
+    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg bg-white dark:bg-[#121418] ">
       {!(minimal || minimalWithPagination) && (
         <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-3">
           <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -158,9 +158,11 @@ export function DynamicTable<TData extends object>({
                   <span className="hidden sm:inline">Filter</span>
                 </button>
               )}
-            </div>
+            {headerRightExtra && (
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
               {headerRightExtra}
+            </div>
+            )}
             </div>
           </div>
 
@@ -217,7 +219,7 @@ export function DynamicTable<TData extends object>({
                         {(header.id === "deviceId" ||
                           header.id === "sessionId" ||
                           header.id === "name" ||
-                          header.id === "mobile" ||
+                          header.id === "userMobileNumber" ||
                           header.id === "id") && (
                           <button
                             title="sorting"

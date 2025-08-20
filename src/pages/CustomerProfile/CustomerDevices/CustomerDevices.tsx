@@ -52,7 +52,7 @@ export const CustomerDevices: React.FC = () => {
   }
 
   return (
-    <div className="px-5 pb-5 overflow-x-auto w-[792px]">
+    <div className="px-5 pb-5 overflow-x-auto">
       <DynamicTable<SDKCustomerDeviceInfo>
         title="Customer Devices"
         headerLeft={
