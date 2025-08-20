@@ -1,28 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PieChartComponent from "../../components/Charts/PieChartComponent";
+import useEventsTable from "../Events/EventsTable/useEventsTable";
+import FullScreenSpinner from "../../components/FullScreenSpinner";
 
 const MobileIcon = React.lazy(() => import(`/src/assets/svg/Mobile.svg?react`));
 
 const PlusIcon = React.lazy(() => import(`/src/assets/svg/plus.svg?react`));
 
-type RecentEvent = {
-  id: string | number;
+interface RecentEvent {
+  id: number;
   name: string;
-};
+}
 
 const DashboardEvents: React.FC = () => {
   const navigate = useNavigate();
+  const [events, setEvents] = useState<RecentEvent[]>([]);
+  const { data, loadingState } = useEventsTable();
 
-  const [events] = useState<RecentEvent[]>([
-    { id: 1, name: "Login Attempt" },
-    { id: 2, name: "Password Reset" },
-    { id: 3, name: "New Device Registered" },
-  ]);
+  useEffect(() => {
+    const formattedEvents = data.map((e: any) => ({
+      id: e.id,
+      name: e.name,
+    }));
+    setEvents(formattedEvents);
+  }, [data]);
 
   const handleAddNewEvent = () => {
     navigate("/events/new-event", { state: { action: "add" } });
   };
+
+  const handelViewDetails = (event: RecentEvent) => {
+    navigate("/events/view-event", {
+      state: { action: "view", id: event.id, event: event },
+    });
+  };
+
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
 
   return (
     <div className="flex flex-col min-w-[35%]">
@@ -49,7 +65,7 @@ const DashboardEvents: React.FC = () => {
       {/* Card */}
       <div className="rounded-2xl border border-[#E5E7EB] dark:border-gray-800 bg-white dark:bg-[#121418] p-4 shadow-sm">
         <div className="space-y-3">
-          {events.map((ev) => (
+          {events.slice(0, 3).map((ev) => (
             <div
               key={ev.id}
               className="flex items-center justify-between rounded-lg border-b border-[#E5E7EB] dark:border-gray-800 px-3 py-3"
@@ -66,6 +82,7 @@ const DashboardEvents: React.FC = () => {
               <button
                 type="button"
                 className="text-[12px] text-[#344054] dark:text-gray-300 hover:underline"
+                onClick={() => handelViewDetails(ev)}
               >
                 View Details
               </button>
@@ -74,7 +91,8 @@ const DashboardEvents: React.FC = () => {
         </div>
 
         <div className="mb-2">
-          <PieChartComponent />
+          {" "}
+          <PieChartComponent />{" "}
         </div>
       </div>
     </div>

@@ -1,30 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useViewEvents } from "./useEventForm";
-import { LoadingState } from "../../../types/types";
 
 const EventView = () => {
-  const {
-    // control,
-    // formState,
-    // onSubmit,
-    // schemeValues,
-    // statusValues,
-    // eventSourceDeviceValues,
-    // parametersData,
-    isAdding,
-    // isViewing,
-    // isEditing,
-    setScreenAction,
-    // screenAction,
-    // popupType,
-    // isPopupOpen,
-    // setIsPopupOpen,
-    // popupMessage,
-    // setPopupType,
-    loadingState,
-    eventData,
-  } = useViewEvents();
+  const { setScreenAction, loadingState, eventData } = useViewEvents();
 
   const navigate = useNavigate();
 
@@ -38,10 +17,6 @@ const EventView = () => {
       state: { id: eventData!.id, action: "edit" },
     });
   };
-
-  if (loadingState === LoadingState.Loading && !isAdding) {
-    return <FullScreenSpinner />;
-  }
 
   if (loadingState === "loading") {
     return <FullScreenSpinner />;

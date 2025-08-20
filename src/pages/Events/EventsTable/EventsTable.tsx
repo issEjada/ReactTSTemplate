@@ -12,6 +12,7 @@ import { createPortal } from "react-dom";
 import EventsFilter from "../EventsFilter/EventsFilterJsx";
 import useEventsTable from "./useEventsTable";
 import { TableFallback } from "../../../components/TableFallback";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const Update = React.lazy(() => import("../../../assets/svg/update.svg?react"));
@@ -230,6 +231,7 @@ export const EventsTable = () => {
     // setItemsPerPage,
     filters,
     totalCount,
+    loadingState,
   } = useEventsTable();
 
   const navigate = useNavigate();
@@ -264,6 +266,10 @@ export const EventsTable = () => {
   const handleAddNewEvent = () => {
     navigate("/events/new-event", { state: { action: "add" } });
   };
+
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#000000] dark:border-gray-800 dark:text-white">
