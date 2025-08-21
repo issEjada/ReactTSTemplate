@@ -16,6 +16,7 @@ import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
+import { AppRoutes } from "../../../routes/AppRoutes";
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -115,7 +116,10 @@ const RuleMenu = ({
       <button
         ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={toggleMenu}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleMenu();
+        }}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -357,6 +361,12 @@ export const DecisionRulesTable = () => {
           applyFilters={applyFilters}
           searchPlaceholder="Search Rule Name"
           showStatusFilter={true}
+          onRowClick={(rowData) => {
+            const { id } = rowData as { id: string | number };
+            navigate(AppRoutes.viewDecisionRule, {
+              state: { id: id.toString(), action: "view" },
+            });
+          }}
           statusFilterOptions={[
             { key: "All", label: "View All" },
             { key: "ENABLED", label: "Active" },

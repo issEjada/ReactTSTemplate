@@ -9,6 +9,8 @@ import SessionActivity from "./SessionActivity";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
 import { TableFallback } from "../../../components/TableFallback";
+import { AppRoutes } from "../../../routes/AppRoutes";
+import { useNavigate } from "react-router-dom";
 
 const ShieldIcon = React.lazy(
   () => import("../../../assets/svg/shieldG.svg?react")
@@ -189,6 +191,7 @@ export const MonitoringTable = () => {
   } = useMonitoringTable();
 
   const { sessionActivityData } = useSessionActivity();
+  const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -341,7 +344,12 @@ export const MonitoringTable = () => {
             applyFilters={applyFilters}
             searchPlaceholder="Search Session ID"
             showStatusFilter={true}
-            isMonitoringTable={true}
+            onRowClick={(rowData) => {
+              const { id } = rowData as { id: string | number };
+              navigate(AppRoutes.monitoringView, {
+                state: { id: id.toString(), action: "view" },
+              });
+            }}
             statusFilterOptions={[
               { key: "All", label: "View All" },
               { key: "VIEWED", label: "Viewed" },

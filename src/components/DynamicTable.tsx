@@ -6,8 +6,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../routes/AppRoutes";
 import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "./FullScreenSpinner";
 import type { LoadingState } from "../types/types";
@@ -40,6 +38,7 @@ interface DynamicTableProps<TData extends object> {
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
+  onRowClick?: (rowData: TData) => void; // New prop for dynamic row click navigation
   minimal?: boolean;
   minimalWithPagination?: boolean;
   loadingState?: LoadingState;
@@ -66,7 +65,7 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
-  isMonitoringTable = false,
+  onRowClick, // Destructure new prop
   minimal = false,
   minimalWithPagination = false,
   loadingState,
@@ -82,7 +81,6 @@ export function DynamicTable<TData extends object>({
     getRowId: (originalRow: ViewSessionsFormValues, index) =>
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
-  const navigate = useNavigate();
 
   if (error) {
     return (
@@ -238,13 +236,8 @@ export function DynamicTable<TData extends object>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  {...(isMonitoringTable && {
-                    onClick: () => {
-                      const { id } = row.original as { id: string | number };
-                      navigate(AppRoutes.monitoringView, {
-                        state: { id: id.toString() },
-                      });
-                    },
+                  {...(onRowClick && {
+                    onClick: () => onRowClick(row.original),
                   })}
                   className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800 cursor-pointer"
                 >
