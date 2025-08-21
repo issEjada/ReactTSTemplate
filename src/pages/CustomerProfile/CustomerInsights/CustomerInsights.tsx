@@ -5,7 +5,7 @@ const CustomerInsightsIcon = React.lazy(
   () => import("../../../assets/svg/ArrowUp.svg?react")
 );
 
-export const CustomerInsights = (insightsData : CustomerInsightsResponse) => {
+export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full gap-3">
@@ -24,30 +24,16 @@ export const CustomerInsights = (insightsData : CustomerInsightsResponse) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-[18px] p-4 bg-white w-full rounded-lg border border-blueGray-100">
-        <div className="flex justify-start gap-[10px]">
-          <div>Some Icon</div>
-          <span>Trusted Device IPs</span>
-        </div>
-        <div className="flex flex-col gap-2">
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-        </div>
-      </div>
-      <ExpandableCard icon={<CustomerInsightsIcon className="text-blue-700"/>} label="Customer Insights" data={insightsData?.userInsights?.mostUsedDeviceIP}/>
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Truted Device IP's"
+        data={insightsData?.userInsights?.trustedDeviceIPs}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Device IP"
+        data={insightsData?.userInsights?.mostUsedDeviceIP}
+      />
     </div>
   );
 };

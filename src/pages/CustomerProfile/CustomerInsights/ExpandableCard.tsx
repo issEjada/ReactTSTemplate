@@ -3,18 +3,18 @@ import { useState } from "react";
 type ExpandableCardProps = {
   icon: React.ReactNode;
   label: string;
-  data: string[];
+  data: React.ReactNode[];
 };
 
 export default function ExpandableCard({
   icon,
   label,
-  data,
+  data = [],
 }: ExpandableCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const hasMultiple = data.length > 1;
-  const firstItem = data[0];
+  const firstItem = String(data[0]);
 
   return (
     <>
