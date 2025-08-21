@@ -1,5 +1,8 @@
 import React, { Suspense, useMemo } from "react";
-import { useSystemConfigDetails } from "./useSystemConfigDetails";
+import {
+  useSystemConfigDetails,
+  type FieldConfig,
+} from "./useSystemConfigDetails";
 import { DynamicTable } from "../../../components/DynamicTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Attribute } from "../systemConfigService";
@@ -8,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
 import SystemConfigPopup from "../../../components/Popup/SystemConfigPopup";
 import { SystemConfigForm } from "./SystemConfigForm";
+import { ScoringDimensionForm } from "./ScoringDimensionForm";
 
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -48,6 +52,18 @@ export const SystemConfigDetails = () => {
     popupFields,
     popupMode,
     setIsPopupOpen,
+    setPopupFields,
+    setPopupMode,
+    handleSave,
+    dropDownOptions,
+    isSuccessPopupOpen,
+    setIsSuccessPopupOpen,
+    handleDescriptionUpdate,
+    handleUpdateScoring,
+    setData,
+    setIsScoringPopupOpen,
+    isScoringPopupOPen,
+    setError,
   } = useSystemConfigDetails();
 
   const columns = useMemo(
@@ -55,21 +71,23 @@ export const SystemConfigDetails = () => {
       getColumns(
         attributes ?? [],
         rowProps.allowAddRow,
-        [],
+        dropDownOptions ?? [],
         setItemToDelete,
-        setIsDeletePopupOpen
+        setIsDeletePopupOpen,
+        setPopupFields,
+        setPopupMode,
+        setIsPopupOpen
       ),
-    [attributes]
+    [attributes, dropDownOptions]
   );
 
   const navigate = useNavigate();
   if (loadingState === "loading") {
     return <FullScreenSpinner />;
   }
-  console.log("test, isDeletePopupOpen", isDeletePopupOpen);
 
   return (
-    <div className="p-6 bg-white shadow-sm dark:bg-black">
+    <div className="p-6 bg-white shadow-sm dark:bg-black flex flex-col">
       <div className="mb-7">
         <div className="flex items-center pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -102,6 +120,16 @@ export const SystemConfigDetails = () => {
         />
       </div>
 
+      <button
+        type="button"
+        onClick={() => handleDescriptionUpdate(configDesc)}
+        disabled={configDesc === rowProps.desc}
+        className={`my-7 self-end w-[150px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800
+            ${configDesc === rowProps.desc ? " cursor-not-allowed" : ""}`}
+      >
+        Save Changes
+      </button>
+
       <div className="my-7 flex flex-row justify-between items-center">
         <div className="flex items-center">
           <h2 className="text-lg font-medium text-gray-900 dark:text-white">
@@ -109,16 +137,31 @@ export const SystemConfigDetails = () => {
           </h2>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddConfirm}
-          className=" h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
-        >
-          <Suspense>
-            <PlusBorderIcon className="w-4 h-4" />
-          </Suspense>
-          {attributes ? `Add ${attributes[0]?.name}` : "Add New Item"}
-        </button>
+        {rowProps.name === "Scoring Dimensions Weights" ? (
+          <button
+            type="button"
+            onClick={handleUpdateScoring}
+            className=" h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
+          >
+            <Suspense>
+              <EditIcon className="w-4 h-4" />
+            </Suspense>
+            Update Dimantions
+          </button>
+        ) : (
+          rowProps.allowAddRow && (
+            <button
+              type="button"
+              onClick={handleAddConfirm}
+              className=" h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
+            >
+              <Suspense>
+                <PlusBorderIcon className="w-4 h-4" />
+              </Suspense>
+              {attributes ? `Add ${attributes[0]?.name}` : "Add New Item"}
+            </button>
+          )
+        )}
       </div>
 
       {totalCount === 0 ? (
@@ -186,14 +229,6 @@ export const SystemConfigDetails = () => {
         >
           Back
         </button>
-
-        <button
-          type="button"
-          onClick={() => {}}
-          className="w-[150px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
-        >
-          Save Changes
-        </button>
       </div>
 
       <PopupLayout
@@ -201,6 +236,7 @@ export const SystemConfigDetails = () => {
         className="md:w-[30%] lg:w-[35%] w-[90%]"
       >
         <SystemConfigPopup
+          itemTitle={rowProps.name}
           isDeleting={true}
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
@@ -214,9 +250,51 @@ export const SystemConfigDetails = () => {
         <SystemConfigForm
           mode={popupMode}
           fields={popupFields}
-          onSave={() => {}} // handle OnSave method
+          popupTitle={rowProps.name}
+          onSave={handleSave}
           onCancel={() => setIsPopupOpen(false)}
           addRow={rowProps.allowAddRow}
+        />
+      </PopupLayout>
+
+      <PopupLayout
+        isOpen={isScoringPopupOPen}
+        className="md:w-[30%] lg:w-[35%] w-[90%]"
+      >
+        <ScoringDimensionForm
+          popupTitle={rowProps.name}
+          content={data}
+          setContent={setData}
+          onSave={handleSave}
+          onCancel={() => setIsScoringPopupOpen(false)}
+        />
+      </PopupLayout>
+
+      <PopupLayout
+        isOpen={isSuccessPopupOpen}
+        className="md:w-[30%] lg:w-[35%] w-[90%]"
+      >
+        <SystemConfigPopup
+          itemTitle={rowProps.name}
+          isAdding={popupMode === "add" ? true : false}
+          isEditing={popupMode === "update" ? true : false}
+          isError={popupMode === "error" ? true : false}
+          errorMessage={error ? error : ""}
+          onConfirm={() => {
+            if (popupMode === "error") {
+              setPopupMode("update");
+              setError(null);
+            } else {
+              handleAddConfirm();
+              setIsSuccessPopupOpen(false);
+              setPopupMode("update");
+            }
+          }}
+          onCancel={() => {
+            setIsSuccessPopupOpen(false);
+            setPopupMode("update");
+            setError(null);
+          }}
         />
       </PopupLayout>
     </div>
@@ -226,9 +304,14 @@ export const SystemConfigDetails = () => {
 const getColumns = (
   attributes: Attribute[],
   allowAddRow: boolean,
-  dropDownOptions: { key: string; node: string }[] = [],
+  dropDownOptions: { key: string; node: string }[],
   setItemToDelete: React.Dispatch<React.SetStateAction<string | null>>,
-  setIsDeletePopupOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsDeletePopupOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setPopupFields: React.Dispatch<React.SetStateAction<FieldConfig[]>>,
+  setPopupMode: React.Dispatch<
+    React.SetStateAction<"add" | "update" | "error">
+  >,
+  setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>
 ): ColumnDef<{ [key: string]: any }>[] => {
   if (!attributes.length) return [];
 
@@ -271,6 +354,9 @@ const getColumns = (
                       options: attr.hasLov ? dropDownOptions : undefined,
                       disabled: !attr.editable,
                     }));
+                    setPopupFields(fields);
+                    setPopupMode("update");
+                    setIsPopupOpen(true);
                   }}
                   className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE] mr-5"
                 />
@@ -293,6 +379,9 @@ const getColumns = (
                       value: rowData[attr.key] || "",
                       disabled: !attr.editable,
                     }));
+                    setPopupFields(fields);
+                    setPopupMode("update");
+                    setIsPopupOpen(true);
                   }}
                   className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE] mr-5"
                 />

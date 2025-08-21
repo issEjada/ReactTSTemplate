@@ -12,6 +12,7 @@ interface SystemConfigProps {
   errorMessage?: string;
   onConfirm: () => void;
   onCancel: () => void;
+  itemTitle?: string;
 }
 
 const SystemConfigPopup = ({
@@ -22,11 +23,12 @@ const SystemConfigPopup = ({
   errorMessage,
   onConfirm,
   onCancel,
+  itemTitle,
 }: SystemConfigProps) => {
   const title = isError
     ? "Error"
     : isAdding
-    ? "New Rule Created"
+    ? `New ${itemTitle ? itemTitle : "Configuration"} Created`
     : isEditing
     ? "Updated Successfully"
     : isDeleting
@@ -36,9 +38,13 @@ const SystemConfigPopup = ({
   const message = isError
     ? errorMessage
     : isAdding
-    ? "Congratulations, your new rule is created successfully."
+    ? `Congratulations, the ${
+        itemTitle ? itemTitle : "configuration"
+      } created successfully.`
     : isEditing
-    ? "The scoring rule details has been updated successfully."
+    ? `The ${
+        itemTitle ? itemTitle : "configuration"
+      } has been updated successfully.`
     : isDeleting
     ? "Are you sure you want to delete this configuration?"
     : "";

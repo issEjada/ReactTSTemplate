@@ -26,7 +26,7 @@ export const useSystemConfigDetails = () => {
   const [dropDownOptions, setDropDownOptions] = useState<
     { key: string; node: string }[]
   >([]);
-  const [data, setData] = useState<Value[]>();
+  const [data, setData] = useState<Value[]>([]);
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [loadingState, setloadingState] = useState<LoadingState>();
   const [error, setError] = useState<string | null>(null);
@@ -35,8 +35,12 @@ export const useSystemConfigDetails = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState<boolean>(false);
+  const [isScoringPopupOPen, setIsScoringPopupOpen] = useState<boolean>(false);
   const [popupFields, setPopupFields] = useState<FieldConfig[]>([]);
-  const [popupMode, setPopupMode] = useState<"add" | "update">("update");
+  const [popupMode, setPopupMode] = useState<"add" | "update" | "error">(
+    "update"
+  );
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const location = useLocation();
@@ -65,7 +69,6 @@ export const useSystemConfigDetails = () => {
       })
       .catch((err) => {
         console.error("Failed to fetch system Configuration:", err);
-        setError(err);
         setloadingState(LoadingState.Error);
       })
       .finally(() => {
@@ -106,8 +109,6 @@ export const useSystemConfigDetails = () => {
 
   // Handle Delete Actions
   const handleConfirmDelete = async () => {
-    console.log("handleConfirmDelete", itemToDelete);
-
     if (!itemToDelete) return;
     setloadingState(LoadingState.Loading);
     setError(null);
@@ -131,6 +132,8 @@ export const useSystemConfigDetails = () => {
       })
       .catch((error) => {
         console.error("Error deleting configuration:", error);
+        setError(`${error}`);
+        setPopupMode("error");
       })
       .finally(() => {
         setloadingState(LoadingState.Success);
@@ -156,12 +159,109 @@ export const useSystemConfigDetails = () => {
     setIsPopupOpen(true);
   };
 
+  // Handle Save
+  const handleSave = async (formValues: Value | Value[]) => {
+    const action = popupMode === "add" ? "Add" : "Update";
+
+    // Prepare the value objects based on the mode
+    let valueObjects: Array<Record<string, string | number | undefined>>;
+
+    if (popupMode === "add") {
+      // For add, create a new object with all values (converted to strings)
+      valueObjects = [
+        {
+          ...Object.fromEntries(
+            Object.entries(formValues).map(([key, val]) => [key, String(val)])
+          ),
+        },
+      ];
+    } else {
+      // For update, check if popupFields has values
+      if (popupFields.length > 0) {
+        // If popupFields has values, use the ID from the first field
+        valueObjects = [
+          {
+            id: popupFields[0].id,
+            ...Object.fromEntries(
+              Object.entries(formValues)
+                .filter(([key]) => {
+                  const attribute = attributes.find((attr) => attr.key === key);
+                  return attribute?.editable;
+                })
+                .map(([key, val]) => [key, String(val)])
+            ),
+          },
+        ];
+      } else {
+        // If popupFields is empty, use all existing IDs from the stored values (array)
+        valueObjects = data.map((val: Value) => ({
+          id: val.id,
+          ...Object.fromEntries(
+            Object.entries(val)
+              .filter(([key]) => key !== "id")
+              .filter(([key]) => {
+                const attribute = attributes.find((attr) => attr.key === key);
+                return attribute?.editable;
+              })
+              .map(([key, val]) => [key, String(val)])
+          ),
+        }));
+      }
+    }
+
+    const payload = {
+      description: configDesc,
+      properties: {
+        action,
+        values: valueObjects,
+      },
+    };
+    setloadingState(LoadingState.Loading);
+    await SystemConfigServices.updateConfiguration(rowProps.id, payload)
+      .then(() => {
+        fetchData();
+        setIsPopupOpen(false);
+        setIsScoringPopupOpen(false);
+        setIsSuccessPopupOpen(true);
+      })
+      .catch((error) => {
+        setError(`${error}`);
+        setPopupMode("error");
+        setIsSuccessPopupOpen(true);
+      })
+      .finally(() => setloadingState(LoadingState.Success));
+  };
+
+  //handle update Description
+  const handleDescriptionUpdate = async (newDescription: string) => {
+    const payload = {
+      description: newDescription,
+    };
+    setloadingState(LoadingState.Loading);
+    await SystemConfigServices.updateConfiguration(rowProps.id, payload)
+      .then(() => {
+        setConfigDesc(newDescription);
+        setPopupMode("update");
+        setIsSuccessPopupOpen(true);
+      })
+      .catch(() => {
+        setError(`${error}`);
+        setPopupMode("error");
+      })
+      .finally(() => setloadingState(LoadingState.Success));
+  };
+
+  const handleUpdateScoring = () => {
+    setIsScoringPopupOpen(true);
+  };
+
   return {
     rowProps,
     data,
     attributes,
     loadingState,
     error,
+    setError,
     totalCount,
     currentPage,
     itemsPerPage,
@@ -179,6 +279,17 @@ export const useSystemConfigDetails = () => {
     isPopupOpen,
     popupFields,
     popupMode,
-    setIsPopupOpen
+    setIsPopupOpen,
+    setPopupMode,
+    setPopupFields,
+    handleSave,
+    dropDownOptions,
+    isSuccessPopupOpen,
+    setIsSuccessPopupOpen,
+    handleDescriptionUpdate,
+    handleUpdateScoring,
+    setData,
+    setIsScoringPopupOpen,
+    isScoringPopupOPen,
   };
 };

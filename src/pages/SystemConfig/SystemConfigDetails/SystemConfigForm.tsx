@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Value } from "../systemConfigService";
 import type { FieldConfig } from "./useSystemConfigDetails";
 import { validations } from "./ValidationSchema";
 import PopupDropdownMenu from "./PopupDropDownsMenue";
 
+const EditPopupIcon = React.lazy(
+  () => import("../../../assets/svg/EditPopupIcon.svg?react")
+);
+
 interface SystemConfigFormProps {
-  mode: "add" | "update";
+  mode: "add" | "update" | "error";
   fields: FieldConfig[];
   onSave: (values: Value) => void;
   onCancel: () => void;
   addRow: boolean;
+  popupTitle: string;
 }
 interface FieldError {
   isValid: boolean;
@@ -22,17 +27,9 @@ export const SystemConfigForm = ({
   onSave,
   onCancel,
   addRow,
+  popupTitle,
 }: SystemConfigFormProps) => {
-  // Initialize field values with proper typing
-  const initialValues: Value = fields.reduce(
-    (acc, field) => ({
-      ...acc,
-      [field.key]: field.value,
-    }),
-    {} as Record<string, string | number>
-  );
-
-  const [fieldValues, setFieldValues] = useState<Value>(initialValues);
+  const [fieldValues, setFieldValues] = useState<Value>({});
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const [fieldErrors, setFieldErrors] = useState<Record<string, FieldError>>(
     {}
@@ -41,6 +38,19 @@ export const SystemConfigForm = ({
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>(
     {}
   );
+  const [initialValues, setInitialValues] = useState<Value>({});
+
+  useEffect(() => {
+    const initialValues: Value = fields.reduce(
+      (acc, field) => ({
+        ...acc,
+        [field.key]: field.value,
+      }),
+      {} as Record<string, string | number>
+    );
+    setFieldValues(initialValues);
+    setInitialValues(initialValues);
+  }, [fields]);
 
   // Validate when field values change
   useEffect(() => {
@@ -178,6 +188,20 @@ export const SystemConfigForm = ({
 
   return (
     <div>
+      <EditPopupIcon />
+      <div className="mb-6">
+        <div className="flex items-center justify-between pt-5">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            {popupTitle} Config
+          </h2>
+        </div>
+
+        <p className="text-sm text-gray-500 mt-1">
+          Changing this option will clear the Conditions Editor. Do you wont to
+          Proceed ?
+        </p>
+      </div>
+
       {fields.map((field, index) => (
         <div key={field.key} className="mb-4">
           {field.hasLov && field.options ? (
@@ -201,7 +225,7 @@ export const SystemConfigForm = ({
                     ? "number"
                     : "text"
                 }
-                value={fieldValues[field.key]}
+                value={fieldValues[field.key] ?? ""}
                 onChange={(e) => {
                   handleFieldChange(field.key, e.target.value);
                 }}
@@ -243,7 +267,7 @@ export const SystemConfigForm = ({
             isSaveDisabled ? " cursor-not-allowed" : ""
           }`}
         >
-          Confirm
+          Save Changes
         </button>
       </div>
     </div>
