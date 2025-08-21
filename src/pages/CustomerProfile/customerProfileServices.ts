@@ -159,16 +159,20 @@ export interface CustomerDeviceResponse {
   meta: PaginationMeta;
 }
 
-export interface unBlockFptPayload {
-  fptRef: string;
-  action: string;
+export interface DevicesHealthChecksResponse {
+  deviceId: string;
+  manufacturer: string;
+  model: string;
+  appInstallationId: string;
+  checkTimestamp: string;
+  negativeHealthCheck: string;
 }
 
-export interface HealthCheckPayload {
+export interface DevicesHealthChecksPayload {
   maxPageSize: number;
   page: number;
-  fromTimestamp: string;
-  toTimestamp: string;
+  fromTimestamp?: string;
+  toTimestamp?: string;
 }
 
 export class CustomerClient {
@@ -197,7 +201,7 @@ export class CustomerClient {
       });
   }
 
-    static getActionsAnalyticsData(
+  static getActionsAnalyticsData(
     data: ActionAnalyticsPayload
   ): Promise<ActionAnalyticsResponse> {
     return httpClient
@@ -252,4 +256,31 @@ export class CustomerClient {
       });
   }
 
+  static getDevicesHealthChecksData(
+    data: DevicesHealthChecksPayload
+  ): Promise<DevicesHealthChecksResponse[]> {
+    const { page, maxPageSize, ...requestBody } = data;
+    return httpClient
+      .get(
+        `${import.meta.env.VITE_API_SDK_URL}${API.healthCheck}`,
+        {
+          headers: getHeaders(),
+          params: {
+            maxPageSize: maxPageSize,
+            page: page,
+            ...requestBody,
+          },
+        }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(
+          error.response?.data.message +
+            "\n" +
+            error.response?.data.descriptionEn
+        );
+      });
+  }
 }

@@ -2,16 +2,9 @@ import React, { useMemo, useState, useRef, useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
  
 import { DynamicTable } from "../../../components/DynamicTable";
- 
-type DeviceRow = {
-  id: number;
-  deviceId: string;
-  manufacture: string;
-  model: string;
-  appInstallId: string;
-  checkTimestamp: string;
-  negativeHealth: string;
-};
+import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
+import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import type { DevicesHealthChecksResponse } from "../customerProfileServices";
  
 const HealthCheckDateButton: React.FC<{
   onApply: () => void;
@@ -126,39 +119,50 @@ const HealthCheckDateButton: React.FC<{
 };
  
 export const DevicesHealthChecks: React.FC = () => {
-  const rows = useMemo<DeviceRow[]>(
-    () => [
-      { id: 1, deviceId: "eriu3948394", manufacture: "Apple", model: "iPhone 14", appInstallId: "3013", checkTimestamp: "18.1.0", negativeHealth: "Developer Mode" },
-      { id: 2, deviceId: "eriu3948394", manufacture: "Apple", model: "iPhone 14", appInstallId: "2000", checkTimestamp: "18.1.0", negativeHealth: "Developer Mode" },
-      { id: 3, deviceId: "eriu3948394", manufacture: "Apple", model: "iPhone 14", appInstallId: "5400", checkTimestamp: "18.1.0", negativeHealth: "Developer Mode" },
-      { id: 4, deviceId: "eriu3948394", manufacture: "Apple", model: "iPhone 14", appInstallId: "2200", checkTimestamp: "18.1.0", negativeHealth: "Developer Mode" },
-      { id: 5, deviceId: "eriu3948394", manufacture: "Apple", model: "iPhone 14", appInstallId: "500", checkTimestamp: "18.1.0", negativeHealth: "Developer Mode" },
-    ],
-    []
-  );
+
+  const {
+    devicesHealthChecksData,
+    setDevicesHealthChecksFilterData,
+    errorValidation,
+    loadingState,
+    currentPage,
+    setCurrentPage,
+  } = useDevicesHealthChecks();
  
-  const columns = useMemo<ColumnDef<DeviceRow>[]>(
+  const columns = useMemo<ColumnDef<DevicesHealthChecksResponse>[]>(
     () => [
       { header: "Device ID", accessorKey: "deviceId" },
-      { header: "Manufacturers", accessorKey: "manufacture" },
+      { header: "Manufacturers", accessorKey: "manufacturer" },
       { header: "Model", accessorKey: "model" },
-      { header: "App Installation ID", accessorKey: "appInstallId" },
+      { header: "App Installation ID", accessorKey: "appInstallationId" },
       { header: "Check Timestamp", accessorKey: "checkTimestamp" },
-      { header: "Negative Health Check", accessorKey: "negativeHealth" },
+      { header: "Negative Health Check", accessorKey: "negativeHealthCheck" },
     ],
     []
   );
  
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
  
   const applyDateFilter = () => {
-    
+     const searchData = {
+      deviceId: searchText.trim() || undefined,
+    };
+    setDevicesHealthChecksFilterData(searchData);
+    setSearchText("");   
   };
  
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
+
+  if (errorValidation) {
+    return <span className="text-red-500">{errorValidation}</span>;
+  }
+
+
   return (
     <div className="px-5 overflow-x-auto">
-      <DynamicTable<DeviceRow>
+      <DynamicTable<DevicesHealthChecksResponse>
         title="Devices Health Check"
         headerLeft={
           <h2 className="text-[#181D27] dark:text-white text-[18px] font-semibold">
@@ -171,9 +175,9 @@ export const DevicesHealthChecks: React.FC = () => {
           />
         }
         minimalWithPagination={false}
-        data={rows}
+        data={devicesHealthChecksData || []}
         columns={columns}
-        totalCount={rows.length}
+        totalCount={devicesHealthChecksData?.length || 0}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         searchText={searchText}
