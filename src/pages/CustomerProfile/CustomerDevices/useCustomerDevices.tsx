@@ -17,7 +17,7 @@ export interface CustomerDevicesFilterData {
   dateTo?: string;
 }
 
-export const useCustomerDevices = () => {
+export const useCustomerDevices = (userMobileNumber: string) => {
   const [customerDevicesData, setCustomerDevicesData] =
     useState<CustomerDeviceResponse>(); 
   const [customerDevicesFilterData, setCustomerDevicesFilterData] =
@@ -35,6 +35,7 @@ export const useCustomerDevices = () => {
     const data = {
       maxPageSize: 10,
       page: currentPage,
+      userMobileNumber: userMobileNumber,
       ...customerDevicesFilterData,
     };
 

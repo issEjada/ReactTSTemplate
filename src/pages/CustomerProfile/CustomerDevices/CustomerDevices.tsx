@@ -6,7 +6,11 @@ import { useCustomerDevices } from "./useCustomerDevices";
 import type { SDKCustomerDeviceInfo } from "../customerProfileServices";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
-export const CustomerDevices: React.FC = () => {
+type CustomerDevicesProps = {
+  userMobileNumber: string;
+};
+
+export const CustomerDevices: React.FC<CustomerDevicesProps> = ({userMobileNumber}) => {
   const [searchText, setSearchText] = useState<string>("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -17,7 +21,7 @@ export const CustomerDevices: React.FC = () => {
     setCurrentPage,
     loadingState,
     errorValidation,
-  } = useCustomerDevices();
+  } = useCustomerDevices(userMobileNumber);
 
   console.log("customer devices data", customerDevicesData);
 
