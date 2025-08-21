@@ -285,9 +285,9 @@ export const SystemConfigDetails = () => {
               setPopupMode("update");
               setError(null);
             } else {
-              handleAddConfirm();
+              setIsPopupOpen(false)
               setIsSuccessPopupOpen(false);
-              setPopupMode("update");
+              handleAddConfirm();
             }
           }}
           onCancel={() => {
