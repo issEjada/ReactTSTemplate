@@ -6,8 +6,13 @@ import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DevicesHealthChecksResponse } from "../customerProfileServices";
  
+export type DateTimeRange = {
+  fromTimestamp: string; 
+  toTimestamp: string
+}
+
 const HealthCheckDateButton: React.FC<{
-  onApply: () => void;
+  onApply: (date : DateTimeRange) => void;
 }> = ({ onApply }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,11 +32,11 @@ const HealthCheckDateButton: React.FC<{
   }, []);
  
   
-  const [dateTimeRange, setDateTimeRange] = useState<{ from: string; to: string }>({
-  from: "", to: ""
+  const [dateTimeRange, setDateTimeRange] = useState<DateTimeRange>({
+  fromTimestamp: "", toTimestamp: ""
   });
  
-  const handleDateTimeChange = (field: "from" | "to") => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateTimeChange = (field: "fromTimestamp" | "toTimestamp") => (e: React.ChangeEvent<HTMLInputElement>) => {
     setDateTimeRange((prev) => ({
       ...prev,
       [field]: e.target.value,
@@ -39,8 +44,8 @@ const HealthCheckDateButton: React.FC<{
   };
  
   const isValidRange = () => {
-    if (!dateTimeRange.from || !dateTimeRange.to) return true;
-    return new Date(dateTimeRange.to) > new Date(dateTimeRange.from);
+    if (!dateTimeRange.fromTimestamp || !dateTimeRange.toTimestamp) return true;
+    return new Date(dateTimeRange.toTimestamp) > new Date(dateTimeRange.fromTimestamp);
   };
  
   return (
@@ -63,8 +68,8 @@ const HealthCheckDateButton: React.FC<{
                   </label>
                   <input
                     type="datetime-local"
-                    value={dateTimeRange.from}
-                    onChange={handleDateTimeChange("from")}
+                    value={dateTimeRange.fromTimestamp}
+                    onChange={handleDateTimeChange("fromTimestamp")}
                     className=" w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
                     dark:bg-[#121418] dark:border-gray-800 dark:text-white
@@ -80,9 +85,9 @@ const HealthCheckDateButton: React.FC<{
                   </label>
                   <input
                     type="datetime-local"
-                    value={dateTimeRange.to}
-                    onChange={handleDateTimeChange("to")}
-                    min={dateTimeRange.from}
+                    value={dateTimeRange.toTimestamp}
+                    onChange={handleDateTimeChange("toTimestamp")}
+                    min={dateTimeRange.fromTimestamp}
                     className={` w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
                     dark:bg-[#121418] dark:border-gray-800 dark:text-white
@@ -104,7 +109,7 @@ const HealthCheckDateButton: React.FC<{
                     className="px-4 py-2 border text-black dark:text-white rounded-lg hover:bg-gray-200 disabled:opacity-50 dark-bg-black w-[80px] dark:hover:text-black"
                     disabled={!isValidRange()}
                     onClick={() => {
-                      onApply();
+                      onApply(dateTimeRange);
                       setOpen(false);
                     }}
                   >
@@ -143,9 +148,11 @@ export const DevicesHealthChecks: React.FC = () => {
  
   const [searchText, setSearchText] = useState("");
  
-  const applyDateFilter = () => {
+  const applyDateFilter = (date : DateTimeRange) => {
      const searchData = {
       deviceId: searchText.trim() || undefined,
+      fromTimestamp: date.fromTimestamp,
+      toTimestamp: date.toTimestamp,
     };
     setDevicesHealthChecksFilterData(searchData);
     setSearchText("");   
@@ -171,7 +178,9 @@ export const DevicesHealthChecks: React.FC = () => {
         }
         headerRightExtra={
           <HealthCheckDateButton
-            onApply={applyDateFilter}
+            onApply={(date) => {
+              applyDateFilter(date);
+            }}
           />
         }
         minimalWithPagination={false}
