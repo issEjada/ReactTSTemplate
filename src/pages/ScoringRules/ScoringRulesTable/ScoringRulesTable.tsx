@@ -16,6 +16,7 @@ import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
+import { AppRoutes } from "../../../routes/AppRoutes";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -116,7 +117,10 @@ const RuleMenu = ({
       <button
         ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={toggleMenu}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleMenu();
+        }}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -371,6 +375,12 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           applyFilters={!fromDashboard ? applyFilters : () => {}}
           searchPlaceholder="Search Rule Name"
           showStatusFilter={!fromDashboard}
+          onRowClick={(rowData) => {
+            const { id } = rowData as { id: string | number };
+            navigate(AppRoutes.viewScoringRule, {
+              state: { id: id.toString(), action: "view" },
+            });
+          }}
           statusFilterOptions={
             !fromDashboard
               ? [

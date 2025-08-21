@@ -13,6 +13,7 @@ import EventsFilter from "../EventsFilter/EventsFilterJsx";
 import useEventsTable from "./useEventsTable";
 import { TableFallback } from "../../../components/TableFallback";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { AppRoutes } from "../../../routes/AppRoutes";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const Update = React.lazy(() => import("../../../assets/svg/update.svg?react"));
@@ -121,7 +122,10 @@ const EventMenu = ({ row }: { row: EventRow }) => {
       <button
         ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={toggleMenu}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleMenu();
+        }}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -345,6 +349,12 @@ export const EventsTable = () => {
             { key: "Desktop", label: "Desktop" },
             { key: "Web", label: "Web" },
           ]}
+          onRowClick={(rowData) => {
+            const { id } = rowData as { id: string | number };
+            navigate(AppRoutes.viewEvents, {
+              state: { id: id.toString(), action: "view" },
+            });
+          }}
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewEvent}
           error={null}
