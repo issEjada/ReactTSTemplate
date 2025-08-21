@@ -254,7 +254,7 @@ export const MonitoringFilterForm = ({
           </button>
           <button
             type="button"
-            className="text-sm text-gray-700 hover:underline hover:bg-gray-100 border border-gray-200 rounded-md px-4 py-2"
+            className="text-sm text-gray-700 hover:underline hover:bg-gray-100 dark:text-white dark:hover:bg-white dark:hover:text-black border border-gray-200 rounded-md px-4 py-2"
             onClick={handleClear}
           >
             Clear

@@ -14,6 +14,7 @@ import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
+import { createPortal } from "react-dom";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -21,9 +22,10 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
-const LockIcon = React.lazy(
-  () => import("../../../assets/svg/LockIcon.svg?react")
+const RuleIcon = React.lazy(
+  () => import("../../../assets/svg/EmptyDecisions.svg?react")
 );
+
 const BackgroundCircle = React.lazy(
   () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
@@ -45,22 +47,21 @@ const RuleMenu = ({
   onDelete: (id: number) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [ruleToDeleteId, setRuleToDeleteId] = useState<number | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    },
-    [dropdownRef]
-  );
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (!buttonRef.current) return;
+    if (
+      !buttonRef.current.contains(event.target as Node) &&
+      !(event.target as HTMLElement).closest(".rule-menu-portal")
+    ) {
+      setOpen(false);
+    }
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -69,23 +70,28 @@ const RuleMenu = ({
     };
   }, [handleClickOutside]);
 
+  const toggleMenu = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY, // below button
+        left: rect.right - 143 + window.scrollX, // align right
+      });
+    }
+    setOpen((prev) => !prev);
+  };
+
   const handleView = () => {
     setOpen(false);
-    navigate("/decision-rules/view", {
-      state: {
-        id: rule.id,
-        action: "view",
-      },
+    navigate("/decision-rules/view-rule", {
+      state: { id: rule.id, action: "view" },
     });
   };
 
   const handleEdit = () => {
     setOpen(false);
-    navigate("/decision-rules/edit", {
-      state: {
-        id: rule.id,
-        action: "edit",
-      },
+    navigate("/decision-rules/edit-rule", {
+      state: { id: rule.id, action: "edit" },
     });
   };
 
@@ -109,13 +115,11 @@ const RuleMenu = ({
   };
 
   return (
-    <div
-      ref={dropdownRef}
-      className="relative inline-flex items-center justify-center "
-    >
+    <>
       <button
+        ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={() => setOpen(!open)}
+        onClick={toggleMenu}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -125,38 +129,46 @@ const RuleMenu = ({
         </span>
       </button>
 
-      {open && (
-        <div className="absolute right-1 top-full ml-2 z-20 w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white">
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left"
-            onClick={handleView}
+      {open &&
+        createPortal(
+          <div
+            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            style={{
+              top: coords.top,
+              left: coords.left,
+            }}
           >
-            <div className="w-[16px] h-[16px] flex items-center justify-center">
+            <button
+              type="button"
+              className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
+              onClick={handleView}
+            >
               <ViewIcon />
-            </div>
-            <span className="text-[14px] whitespace-nowrap">View Details</span>
-          </button>
-          <div className="border-t border-gray-200" />
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
-            onClick={handleEdit}
-          >
-            <EditIcon />
-            <span className="text-[14px]">Edit Rule</span>
-          </button>
-          <div className="border-t border-gray-200" />
-          <button
-            type="button"
-            className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left"
-            onClick={handleDelete}
-          >
-            <DeleteIcon />
-            <span className="text-[14px]">Delete</span>
-          </button>
-        </div>
-      )}
+              <span className="text-[14px] whitespace-nowrap">
+                View Details
+              </span>
+            </button>
+            <div className="border-t border-gray-200" />
+            <button
+              type="button"
+              className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
+              onClick={handleEdit}
+            >
+              <EditIcon />
+              <span className="text-[14px]">Edit Rule</span>
+            </button>
+            <div className="border-t border-gray-200" />
+            <button
+              type="button"
+              className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
+              onClick={handleDelete}
+            >
+              <DeleteIcon />
+              <span className="text-[14px]">Delete</span>
+            </button>
+          </div>,
+          document.body
+        )}
 
       {isDeletePopupOpen && (
         <PopupLayout
@@ -170,7 +182,7 @@ const RuleMenu = ({
           />
         </PopupLayout>
       )}
-    </div>
+    </>
   );
 };
 
@@ -257,7 +269,7 @@ export const DecisionRulesTable = () => {
   const navigate = useNavigate();
 
   const handleAddNewRule = () => {
-    navigate("/decision-rules/add");
+    navigate("/decision-rules/new-rule");
   };
 
   const handleClearSearch = () => {
@@ -277,11 +289,11 @@ export const DecisionRulesTable = () => {
   }
 
   return (
-    <div className="p-6 bg-white shadow-sm dark:bg-[#121418] dark:border-gray-800">
+    <div className="p-6 bg-white shadow-sm dark:bg-black">
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Decision Rule{" "}
+            Decision Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
               {totalCount} Rule
               {totalCount !== 1 && "s"}
@@ -326,13 +338,13 @@ export const DecisionRulesTable = () => {
             {/* Lock Icon in styled border */}
             <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
               <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <LockIcon className="sm:w-[28px] sm:h-[28px]" />
+                <RuleIcon className="sm:w-[28px] sm:h-[28px]" />
               </div>
             </div>
           </div>
 
           {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px]">
+          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
             Start adding new rules
           </h3>
           <p className="text-sm text-gray-500 mb-6">
@@ -431,7 +443,7 @@ const getColumns = (
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>
@@ -446,13 +458,18 @@ const getColumns = (
     accessorKey: "status",
     cell: (info) => (
       <span
-        className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
             ? "bg-green-100 text-green-700"
             : "bg-gray-200 text-gray-700"
         }`}
       >
-        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        <div
+          className={`rounded-full bg-black w-[6px] h-[6px] ${
+            info.getValue() === "ENABLED" ? "bg-green-500" : "bg-gray-500"
+          }`}
+        ></div>
+        {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
       </span>
     ),
   },
@@ -462,7 +479,7 @@ const getColumns = (
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>
@@ -474,7 +491,7 @@ const getColumns = (
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue())}
+          {String(info.getValue() ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">category</span>
       </div>

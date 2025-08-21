@@ -26,7 +26,7 @@ export const useDecisionRulesTable = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [totalListSize, setTotalListSize] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(7);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRuleId, setSelectedRuleId] = useState<number>();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);

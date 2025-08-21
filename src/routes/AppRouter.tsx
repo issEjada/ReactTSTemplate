@@ -12,6 +12,8 @@ import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
 import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
 import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
+import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
+import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -98,7 +100,16 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.systemConfiguration,
         element: (
           <ProtectedRoute>
-            <div>SYSTEM CONFIGURATION</div>
+            <SystemConfigTable />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.viewSystemConfiguration,
+        element: (
+          <ProtectedRoute>
+            <SystemConfigDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,

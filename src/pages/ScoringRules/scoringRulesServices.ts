@@ -258,9 +258,7 @@ export const ScoringRulesServices = {
       })
       .then(() => {})
       .catch((error) => {
-        throw new Error(
-          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
-        );
+        throw new Error(`${error.response?.data.descriptionEn}`);
       });
   },
 
@@ -273,9 +271,7 @@ export const ScoringRulesServices = {
       )
       .then(() => {})
       .catch((error) => {
-        throw new Error(
-          `${error.response?.data.message}\n${error.response?.data.descriptionEn}`
-        );
+        throw new Error(`${error.response?.data.descriptionEn}`);
       });
   },
 };

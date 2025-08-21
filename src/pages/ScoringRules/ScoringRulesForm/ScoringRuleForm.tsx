@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
@@ -38,6 +38,8 @@ const RuleForm = () => {
     popupMessage,
     setScreenAction,
     loadingState, // Add loadingState here
+    isFormValid,
+    formValues
   } = useViewScoringRules();
 
   // const [isLoading, setIsLoading] = useState();
@@ -52,14 +54,14 @@ const RuleForm = () => {
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/scoring-rules/edit");
+    navigate("/scoring-rules/edit-rule");
   };
 
   const handleDeleteClick = () => {
     setIsDeletePopupOpen(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (popupType === "successModal" && loadingState === "success") {
       setIsPopupOpen(true);
     } else if (popupType === "errorModal" && loadingState === "error") {
@@ -106,7 +108,7 @@ const RuleForm = () => {
             focus:outline-none focus:ring-2
             ${
               fieldState.error
-                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
                 : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
             }
             ${
@@ -137,8 +139,8 @@ const RuleForm = () => {
       </div>
 
       {/* Form Body */}
-      <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+      <div className="flex flex-col gap-[12px] h-[412px] w-[1440px] gap-y-[24px] mb-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="identifier.eventSourceDevice"
@@ -147,7 +149,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
@@ -164,12 +166,13 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               schemeValues.length === 0
             }
+            required
           />
 
           <DropdownMenu<ViewRulesFormValues>
@@ -180,16 +183,17 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[102%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               asapectValues.length === 0
             }
+            required
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="identifier.controlCode"
@@ -198,12 +202,13 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[105%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               controlValues.length === 0
             }
+            required
           />
 
           <DropdownMenu<ViewRulesFormValues>
@@ -214,16 +219,17 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[105%]"
+            className="w-[100%]"
             disabled={
               screenAction == "view" ||
               screenAction === "edit" ||
               platfromValues.length === 0
             }
+            required
           />
         </div>
 
-        <div className="w-[1136px] h-[67px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
             control={control}
             name="status"
@@ -234,6 +240,7 @@ const RuleForm = () => {
             }))}
             className="w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
+            required
           />
           <DropdownMenu<ViewRulesFormValues>
             control={control}
@@ -243,8 +250,9 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[47%]"
+            className="w-[50%]"
             disabled={screenAction === "view" || riskLevelValues.length === 0}
+            required
           />
         </div>
 
@@ -252,7 +260,7 @@ const RuleForm = () => {
         <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
-            className="text-sm font-medium text-[#414651] mb-[14px]"
+            className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white"
           >
             Description
           </label>
@@ -285,18 +293,38 @@ const RuleForm = () => {
         </div>
         <h3 className="text-[1.2rem]">Condition Editor</h3>
       </div>
-
+      
+      {isFormValid ? (
       <ConditionEditor
         editorContent={editorContent}
         parametersData={parametersData}
         setEditorContent={setEditorContent}
         isReadOnly={screenAction === "view"} // Pass isReadOnly prop
       />
+      ) : (
+        <div className="px-6 py-4 text-red-500">
+          Please complete all required fields to enable the Conditions.
+          <ul className="mt-4">
+            {Object.entries(formValues!).map(([field, isValid]) =>
+              !isValid ? (
+                <li
+                  key={field}
+                  className="text-sm text-red-600 list-disc list-inside"
+                >
+                  {field} is required.
+                </li>
+              ) : null
+            )}
+          </ul>
+        </div>
+      )}
+
       {/* {isEditing && ( */}
       <div className="flex justify-end pb-6 pr-[80px]">
         <div className="flex gap-4">
           <button
             type="submit"
+            onClick={() => setIsPopupOpen(true)}
             className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto mt-10 hover:bg-blue-900 transition duration-100"
           >
             Save Rule
@@ -319,7 +347,7 @@ const RuleForm = () => {
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules/add");
+                  navigate("/scoring-rules/new-rule");
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
@@ -332,7 +360,7 @@ const RuleForm = () => {
                 isEditing
                 onConfirm={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules/add");
+                  navigate("/scoring-rules/new-rule");
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);

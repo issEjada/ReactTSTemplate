@@ -158,6 +158,13 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
 
   const customBreadcrumbLabels: Record<string, string> = {
     monitoring: "Monitor Activity Sessions",
+    "decision-rules": "Decision Rules",
+    "scoring-rules": "Scoring Rules",
+    "new-rule": "New Rule",
+    "view-rule": "View Rule",
+    "edit-rule": "Edit Rule",
+    "system-configuration": "System Configuration",
+    "view-configuration": "View Configuration",
   };
 
   return (
