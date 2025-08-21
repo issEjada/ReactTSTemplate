@@ -34,7 +34,6 @@ export const useViewEvents = () => {
   >();
   const [eventData, setEventData] = useState<EventFormValues>();
   const [popupType, setPopupType] = useState<string>("");
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [popupMessage, setPopupMessage] = useState<string>();
 
   const location = useLocation();
@@ -98,7 +97,6 @@ export const useViewEvents = () => {
         console.log(error);
         setPopupType("errorModal");
         setPopupMessage(error);
-        setIsPopupOpen(true);
         setloadingState(LoadingState.Error);
       })
       .finally(() => {
@@ -122,7 +120,6 @@ export const useViewEvents = () => {
         console.log(error);
         setPopupType("errorModal");
         setPopupMessage(error);
-        setIsPopupOpen(true);
         setloadingState(LoadingState.Error);
       })
       .finally(() => {
@@ -150,7 +147,6 @@ export const useViewEvents = () => {
         console.log("fetch rule Data", error);
         setPopupType("errorModal");
         setPopupMessage(error);
-        setIsPopupOpen(true);
         setloadingState(LoadingState.Error);
       })
       .finally(() => {
@@ -171,10 +167,9 @@ export const useViewEvents = () => {
       })
       .catch((error) => {
         console.log(error);
-        // setPopupType("errorModal");
-        // setPopupMessage(error);
-        // setIsPopupOpen(true);
-        // setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error);
+        setloadingState(LoadingState.Error);
       })
       .finally(() => {
         setloadingState(LoadingState.Success);
@@ -212,14 +207,12 @@ export const useViewEvents = () => {
       EventsServices.createEvent(bodyData)
         .then(() => {
           setPopupType("successModal");
-          setIsPopupOpen(true);
           setPopupMessage("The Event Details have been successfully Created.");
           setloadingState(LoadingState.Success);
         })
         .catch((error) => {
           setPopupType("errorModal");
           setPopupMessage(error);
-          setIsPopupOpen(true);
           setloadingState(LoadingState.Error);
         })
         .finally(() => {});
@@ -236,7 +229,6 @@ export const useViewEvents = () => {
       EventsServices.updateEvent(updateBody, id)
         .then(() => {
           setPopupType("successModal");
-          setIsPopupOpen(true);
           setPopupMessage("The Event Details have been successfully updated.");
           setloadingState(LoadingState.Success);
         })
@@ -244,7 +236,6 @@ export const useViewEvents = () => {
           console.log(error);
           setPopupType("errorModal");
           setPopupMessage(error);
-          setIsPopupOpen(true);
           setloadingState(LoadingState.Error);
         })
         .finally(() => {});
@@ -266,8 +257,6 @@ export const useViewEvents = () => {
     setScreenAction,
     screenAction,
     popupType,
-    isPopupOpen,
-    setIsPopupOpen,
     popupMessage,
     setPopupType,
     loadingState,

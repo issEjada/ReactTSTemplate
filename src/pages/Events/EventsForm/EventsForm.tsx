@@ -263,6 +263,7 @@ const EventsForm = () => {
         <button
           type="submit"
           disabled={isViewing}
+          onClick={() => setIsPopupOpen(true)}
           className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-900 disabled:opacity-50"
         >
           Save Event
@@ -277,19 +278,18 @@ const EventsForm = () => {
       </div>
 
       {/* Confirm / Delete Popups */}
-      {isPopupOpen && (
-        <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
-          <RulesPopupJsx
-            isAdding={isAdding}
-            isEditing={isEditing}
-            onConfirm={() => {
-              setIsPopupOpen(false);
-              navigate("/EventsManagement");
-            }}
-            onCancel={() => setIsPopupOpen(false)}
-          />
-        </LayoutPopup>
-      )}
+
+      <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+        <RulesPopupJsx
+          isAdding={isAdding}
+          isEditing={isEditing}
+          onConfirm={() => {
+            setIsPopupOpen(false);
+            navigate("/EventsManagement");
+          }}
+          onCancel={() => setIsPopupOpen(false)}
+        />
+      </LayoutPopup>
     </form>
   );
 };
