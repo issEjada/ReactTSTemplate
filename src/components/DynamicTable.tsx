@@ -6,8 +6,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../routes/AppRoutes";
 import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
@@ -38,6 +36,7 @@ interface DynamicTableProps<TData extends object> {
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
+  onRowClick?: (rowData: TData) => void;
 }
 
 export function DynamicTable<TData extends object>({
@@ -61,7 +60,7 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
-  isMonitoringTable = false,
+  onRowClick,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -74,8 +73,6 @@ export function DynamicTable<TData extends object>({
     getRowId: (originalRow: ViewSessionsFormValues, index) =>
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
-  const navigate = useNavigate();
-
   if (error) {
     return (
       <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
@@ -92,7 +89,11 @@ export function DynamicTable<TData extends object>({
 
   return (
     <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418]">
-      <div className="px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
+      <div
+        className={`px-4 sm:px-6 ${
+          applyFilters ? "py-4 sm:py-6" : ""
+        }  flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap`}
+      >
         {showStatusFilter &&
           onFilterStatus &&
           statusFilter &&
@@ -228,15 +229,14 @@ export function DynamicTable<TData extends object>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  {...(isMonitoringTable && {
-                    onClick: () => {
-                      const { id } = row.original as { id: string | number };
-                      navigate(AppRoutes.monitoringView, {
-                        state: { id: id.toString() },
-                      });
-                    },
+                  {...(onRowClick && {
+                    onClick: () => onRowClick(row.original),
                   })}
-                  className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800 cursor-pointer"
+                  className={`border-t  dark:border-gray-800 ${
+                    onRowClick
+                      ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                      : ""
+                  } `}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
@@ -317,7 +317,12 @@ export function DynamicTable<TData extends object>({
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className="px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+            className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
+              ${
+                currentPage === 1
+                  ? "bg-gray-100 dark:text-white dark:bg-gray-800"
+                  : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+              }`}
           >
             Previous
           </button>
@@ -328,7 +333,12 @@ export function DynamicTable<TData extends object>({
               )
             }
             disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-            className="px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+            className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
+               ${
+                 currentPage === Math.ceil(totalCount / itemsPerPage)
+                   ? "bg-gray-100 dark:text-white dark:bg-gray-800"
+                   : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+               }`}
           >
             Next
           </button>

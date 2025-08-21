@@ -126,6 +126,8 @@ export const useSystemConfigDetails = () => {
 
     await SystemConfigServices.updateConfiguration(rowProps.id, payload)
       .then(() => {
+        setData((prev) => prev.filter((item) => item.id !== itemToDelete));
+        setTotalCount((prev) => prev - 1);
         fetchData();
         setIsDeletePopupOpen(false);
         setItemToDelete(null);

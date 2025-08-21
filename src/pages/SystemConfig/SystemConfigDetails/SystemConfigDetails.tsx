@@ -112,7 +112,7 @@ export const SystemConfigDetails = () => {
           value={configDesc}
           onChange={(e) => setConfigDesc(e.target.value)}
           disabled={false}
-          className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
+          className={`text-black w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
             false
               ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
               : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
@@ -127,7 +127,7 @@ export const SystemConfigDetails = () => {
         className={`my-7 self-end w-[150px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800
             ${configDesc === rowProps.desc ? " cursor-not-allowed" : ""}`}
       >
-        Save Changes
+        Save description
       </button>
 
       <div className="my-7 flex flex-row justify-between items-center">
@@ -285,7 +285,7 @@ export const SystemConfigDetails = () => {
               setPopupMode("update");
               setError(null);
             } else {
-              setIsPopupOpen(false)
+              setIsPopupOpen(false);
               setIsSuccessPopupOpen(false);
               handleAddConfirm();
             }
@@ -336,11 +336,16 @@ const getColumns = (
     const threeDotsMenuColumn = {
       header: "",
       accessorKey: "action",
+      size: 80,
+      minSize: 70,
+      maxSize: 100,
+      enableResizing: false,
+      headerClassName: "text-right", 
       cell: (row: any) => {
         const rowData = row.row.original;
 
         return (
-          <div className="flex flex-row">
+          <div className="flex flex-row justify-end pr-2">
             {allowAddRow ? (
               <>
                 <EditIcon

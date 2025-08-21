@@ -150,6 +150,15 @@ export const SystemConfigTable = () => {
           onFilterStatus={() => {}}
           statusFilter={"All"}
           statusFilterOptions={[]}
+          onRowClick={(rowData) => {
+            const data = {
+              id: rowData.configId,
+              name: rowData.configName,
+              desc: rowData.configDescription,
+              allowAddRow: rowData.allowAddRow,
+            };
+            handleViewSystemConfig(data);
+          }}
         />
       )}
     </div>
@@ -171,9 +180,6 @@ const getColumns = (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
           {String(row.original.configName ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-white">
-          {/* {row.original.category} */} category
         </span>
       </div>
     ),

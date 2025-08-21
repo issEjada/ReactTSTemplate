@@ -195,11 +195,6 @@ export const SystemConfigForm = ({
             {popupTitle} Config
           </h2>
         </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Changing this option will clear the Conditions Editor. Do you wont to
-          Proceed ?
-        </p>
       </div>
 
       {fields.map((field, index) => (
