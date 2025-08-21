@@ -3,6 +3,7 @@ import { httpClient, getHeaders } from "../../services/api/httpClient";
 import { API, ConstantKeys } from "../../constants/ConstantKeys.constants";
 import type {
   DropDownCategory,
+  DropDownsPayload,
   GetDropDownsResponse,
 } from "../../services/dropdownServices";
 
@@ -27,13 +28,6 @@ export interface GetScoringRulesItemInterface {
   lastUpdatedTimestamp: string;
 }
 
-export interface GetScoringRulesInterface {
-  scoringRules: GetScoringRulesItemInterface[];
-  meta?: { totalItems: number };
-}
-
-export type TTableColumns = GetScoringRulesItemInterface;
-
 export interface GetScoringRulesListPayload {
   page: number;
   maxPageSize: number;
@@ -54,16 +48,6 @@ export interface GetScoringRulesListResponse {
       currentPage: number;
     };
   };
-}
-
-export interface DropDownsAttributes {
-  key: string;
-  value: string;
-}
-
-export interface DropDownsPayload {
-  code: string;
-  attributes?: DropDownsAttributes[];
 }
 
 export interface GetRuleByIdPayload {

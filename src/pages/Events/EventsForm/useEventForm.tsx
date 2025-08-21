@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import type { GetRulesParameterResponse } from "../../ScoringRules/scoringRulesServices";
 import type {
   DropDownsPayload,
   DropDownCategory,
@@ -10,7 +9,6 @@ import type {
 import type { GetRuleByIdPayload } from "../../ScoringRules/scoringRulesServices";
 import type {
   CreateEventPayload,
-  GetEventParametersPayload,
   UpdateEventPayload,
   EventFormValues,
 } from "../eventsServices";
@@ -29,9 +27,6 @@ export const useViewEvents = () => {
   const [eventSourceDeviceValues, seteventSourceDeviceValues] = useState<
     DropDownValue[]
   >([]);
-  const [parametersData, setParameterData] = useState<
-    GetRulesParameterResponse | undefined
-  >();
   const [eventData, setEventData] = useState<EventFormValues>();
   const [popupType, setPopupType] = useState<string>("");
   const [popupMessage, setPopupMessage] = useState<string>();
@@ -53,24 +48,20 @@ export const useViewEvents = () => {
   );
   const isAdding = useMemo(() => !id && !screenAction, [id, screenAction]);
 
-  const { control, handleSubmit, formState, reset, watch } =
-    useForm<EventFormValues>({
-      mode: "onTouched",
-      defaultValues: {
-        id: 0,
-        name: "",
-        code: "",
-        description: "",
-        identifier: {
-          eventSourceDevice: "",
-          scheme: "",
-        },
-        status: "",
+  const { control, handleSubmit, formState, reset } = useForm<EventFormValues>({
+    mode: "onTouched",
+    defaultValues: {
+      id: 0,
+      name: "",
+      code: "",
+      description: "",
+      identifier: {
+        eventSourceDevice: "",
+        scheme: "",
       },
-    });
-
-  const selectedScheme = watch("identifier.scheme");
-  const selectedEventSource = watch("identifier.eventSourceDevice");
+      status: "",
+    },
+  });
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     setloadingState(LoadingState.Loading);
@@ -154,28 +145,6 @@ export const useViewEvents = () => {
       });
   };
 
-  const fetchParameterData = async () => {
-    setloadingState(LoadingState.Loading);
-    const data: GetEventParametersPayload = {
-      identifier: watch().identifier,
-      status: watch().status || null,
-    };
-
-    await EventsServices.getRulesParameters(data)
-      .then((value) => {
-        setParameterData(value);
-      })
-      .catch((error) => {
-        console.log(error);
-        setPopupType("errorModal");
-        setPopupMessage(error);
-        setloadingState(LoadingState.Error);
-      })
-      .finally(() => {
-        setloadingState(LoadingState.Success);
-      });
-  };
-
   useEffect(() => {
     if (isViewing || isEditing) {
       fetchEventData(id);
@@ -189,12 +158,6 @@ export const useViewEvents = () => {
       reset(eventData);
     }
   }, [eventData, reset]);
-
-  useEffect(() => {
-    if (selectedEventSource && selectedScheme) {
-      fetchParameterData();
-    }
-  }, [selectedEventSource, selectedScheme]);
 
   const onSubmit = (data: EventFormValues) => {
     if (isAdding) {
@@ -250,7 +213,6 @@ export const useViewEvents = () => {
     schemeValues,
     statusValues,
     eventSourceDeviceValues,
-    parametersData,
     isAdding,
     isViewing,
     isEditing,

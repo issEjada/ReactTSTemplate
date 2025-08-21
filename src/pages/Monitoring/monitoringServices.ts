@@ -15,41 +15,39 @@ export interface GetSessionItemInterface {
   lastUpdatedTimestamp: string;
 }
 
-export interface GetSessionsInterface {
-  sessions: GetSessionItemInterface[];
-  meta?: { totalItems: number };
-}
+// export interface GetSessionsInterface {
+//   sessions: GetSessionItemInterface[];
+//   meta?: { totalItems: number };
+// }
 
-export interface GetSessionInterface {
-  sessionId: string;
-  customerIdentity: string;
-  channel: string;
-  platform: string;
-  ipAddresses: string[];
-  locations: string[];
-  deviceId: string;
-  isIncognito: boolean;
-  activeXEnabled: boolean;
-  riskScore: string;
-  lastEvent: {
-    eventCode: string;
-    eventName: string;
-    transactionId: string;
-    transactionAmount: string;
-    maskedCard: string;
-    phoneNumber: string;
-    timestamp: string;
-  };
-  transactionSummary: {
-    total: number;
-    currency: string;
-  };
-  userAgent: string;
-  timezone: string[];
-  updatedAt: string;
-}
-
-export type TTableColumns = GetSessionItemInterface;
+// export interface GetSessionInterface {
+//   sessionId: string;
+//   customerIdentity: string;
+//   channel: string;
+//   platform: string;
+//   ipAddresses: string[];
+//   locations: string[];
+//   deviceId: string;
+//   isIncognito: boolean;
+//   activeXEnabled: boolean;
+//   riskScore: string;
+//   lastEvent: {
+//     eventCode: string;
+//     eventName: string;
+//     transactionId: string;
+//     transactionAmount: string;
+//     maskedCard: string;
+//     phoneNumber: string;
+//     timestamp: string;
+//   };
+//   transactionSummary: {
+//     total: number;
+//     currency: string;
+//   };
+//   userAgent: string;
+//   timezone: string[];
+//   updatedAt: string;
+// }
 
 export interface GetSessionsListPayload {
   page: number;

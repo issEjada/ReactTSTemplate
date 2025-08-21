@@ -8,11 +8,8 @@ import type {
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
 import { cleanObject } from "../../../utils/helpers";
+import type { DecisionRulesIdentifier } from "../../DecisionRules/decisionRulesServices";
 
-export interface DecisionRulesIdentifier {
-  eventSourceDevice: string;
-  scheme: string;
-}
 export interface GetEventDropDownsPayload {
   identifier: DecisionRulesIdentifier;
   status: string | null;

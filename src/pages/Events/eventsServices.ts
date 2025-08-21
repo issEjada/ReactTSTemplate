@@ -1,5 +1,4 @@
 import { getHeaders, httpClient } from "../../services/api/httpClient";
-import type { GetRulesParameterResponse } from "../ScoringRules/scoringRulesServices";
 import { API } from "../../constants/ConstantKeys.constants";
 
 export interface EventFormValues {
@@ -8,7 +7,7 @@ export interface EventFormValues {
   description: string;
   code: string;
   status: string;
-  identifier: EventIdentifier;
+  identifier: EventIdentifierInterface;
   creationTimestamp: string;
   lastUpdatedTimestamp: string;
   fromCreationTimestamp: string;
@@ -20,17 +19,12 @@ export interface EventIdentifierInterface {
   scheme: string;
 }
 
-export interface EventIdentifier {
-  eventSourceDevice: string;
-  scheme: string;
-}
-
 export interface GetEventDataPayload {
   maxPageSize?: number;
   page: number;
   name?: string;
   description?: string;
-  identifier?: EventIdentifier;
+  identifier?: EventIdentifierInterface;
   code?: string;
   status?: string;
   fromCreationTimestamp?: string;
@@ -43,7 +37,7 @@ export interface GetEventByIdPayload {
 
 export interface CreateEventPayload {
   name: string;
-  identifier: EventIdentifier;
+  identifier: EventIdentifierInterface;
   code: string;
   description: string;
   status: string;
@@ -51,14 +45,9 @@ export interface CreateEventPayload {
 
 export interface UpdateEventPayload {
   name: string;
-  identifier: EventIdentifier;
+  identifier: EventIdentifierInterface;
   description: string;
   status: string;
-}
-
-export interface GetEventParametersPayload {
-  identifier: EventIdentifier;
-  status: string | null;
 }
 
 export interface GetEventsItem {
@@ -67,7 +56,7 @@ export interface GetEventsItem {
   code: string;
   description: string;
   status: string;
-  identifier: EventIdentifier;
+  identifier: EventIdentifierInterface;
   creationTimestamp: string;
 }
 
@@ -145,29 +134,6 @@ export class EventsServices {
     return httpClient
       .patch(
         `${import.meta.env.VITE_API_BASE_URL}${API.getEventeById}/${ruleId}`,
-        data,
-        {
-          headers: getHeaders(),
-        }
-      )
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        throw new Error(
-          error.response?.data.message +
-            "\n" +
-            error.response?.data.descriptionEn
-        );
-      });
-  }
-
-  static getRulesParameters(
-    data: GetEventParametersPayload
-  ): Promise<GetRulesParameterResponse> {
-    return httpClient
-      .post(
-        `${import.meta.env.VITE_API_BASE_URL}${API.getEventParameter}`,
         data,
         {
           headers: getHeaders(),

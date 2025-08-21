@@ -4,12 +4,12 @@ import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesF
 import type {
   DropDownCategory,
   DropDownValue,
+  DropDownsPayload,
+  DropDownsAttributes,
 } from "../../../services/dropdownServices";
 import {
   type CreateRulesPayload,
   type DeleteRuleByIdPayload,
-  type DropDownsAttributes,
-  type DropDownsPayload,
   type GetRuleByIdPayload,
   type GetRulesParametersPayload,
   type UpdateRulesPayload,
