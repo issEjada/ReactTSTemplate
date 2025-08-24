@@ -8,7 +8,7 @@ import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { LoadingState } from "../../../types/types";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import LayoutPopup from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -395,6 +395,7 @@ const DecisionForm = () => {
         <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
           {isAdding && popupType === "successModal" && (
             <RulesPopupJsx
+              title="Decision Rule"
               isAdding
               onConfirm={() => {
                 setIsPopupOpen(false);
@@ -408,6 +409,7 @@ const DecisionForm = () => {
           )}
           {isEditing && popupType === "successModal" && (
             <RulesPopupJsx
+              title="Decision Rule"
               isEditing
               onConfirm={() => {
                 setIsPopupOpen(false);
@@ -432,6 +434,7 @@ const DecisionForm = () => {
       {isDeletePopupOpen && (
         <LayoutPopup isOpen={isDeletePopupOpen} className="w-[30%]">
           <RulesPopupJsx
+            title="Decision Rule"
             isDeleting
             onConfirm={() => {
               setIsDeletePopupOpen(false);

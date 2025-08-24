@@ -12,7 +12,7 @@ import { useScoringRulesTable } from "./useScoringRulesTable";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
@@ -186,6 +186,7 @@ const RuleMenu = ({
           className="md:w-[30%] lg:w-[35%] w-[90%]"
         >
           <RulesPopupJsx
+            title="Delete Scoring Rule"
             isDeleting={true}
             onConfirm={handleConfirmDelete}
             onCancel={handleCancelDelete}

@@ -15,6 +15,7 @@ interface RulesPopupProps {
   isError?: boolean;
   isConfirm?: boolean;
   errorMessage?: string | ApiError;
+  title?: string; // Added title prop
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -31,20 +32,22 @@ const RulesPopupJsx = ({
   isError = false,
   isConfirm,
   errorMessage,
+  title: propTitle, // Renamed to avoid conflict with internal variable
   onConfirm,
   onCancel,
 }: RulesPopupProps) => {
-  const title = isError
-    ? "Error"
-    : isAdding
-    ? "New Rule Created"
-    : isEditing
-    ? "Updated Successfully"
-    : isDeleting
-    ? "Delete Scoring Rule?"
-    : isConfirm
-    ? "Critical Change"
-    : "";
+  const title = // Use propTitle if provided, otherwise fall back to existing logic
+    isError
+      ? "Error"
+      : isAdding
+      ? `New ${propTitle} Created`
+      : isEditing
+      ? `Updated ${propTitle} Successfully`
+      : isDeleting
+      ? `Delete ${propTitle}?`
+      : isConfirm
+      ? "Critical Change"
+      : "";
 
   const message = isError
     ? typeof errorMessage === "object" && errorMessage !== null
@@ -55,11 +58,11 @@ const RulesPopupJsx = ({
         }`
       : String(errorMessage)
     : isAdding
-    ? "Congratulations, your new rule is created successfully."
+    ? `Congratulations, your new ${propTitle} is created successfully.`
     : isEditing
-    ? "The rule details has been updated successfully."
+    ? `The ${propTitle} details have been updated successfully.`
     : isDeleting
-    ? "Are you sure you want to delete this rule?"
+    ? `Are you sure you want to delete this ${propTitle}?`
     : isConfirm
     ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed ?"
     : "";

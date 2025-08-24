@@ -11,7 +11,7 @@ import { DecisionRulesFilter } from "../DecisionRulesFilter/DecisionRulesFilterJ
 import { useDecisionRulesTable } from "./useDecisionRulesTable";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import { createPortal } from "react-dom";
@@ -185,6 +185,7 @@ const RuleMenu = ({
           className="md:w-[30%] lg:w-[35%] w-[90%]"
         >
           <RulesPopupJsx
+            title="Decision Rule"
             isDeleting={true}
             onConfirm={handleConfirmDelete}
             onCancel={handleCancelDelete}
