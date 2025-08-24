@@ -69,7 +69,7 @@ export const CustomerProfile = () => {
   return (
     <div className="flex flex-col gap-2 w-full pt-6 pb-4 ps-6 pe-4">
       <div className="flex justify-between items-center flex-wrap">
-        <span className="font-inter font-medium text-[18px] leading-[28px] tracking-normal text-gray-900">
+        <span className="font-inter font-medium text-[18px] leading-[28px] tracking-normal text-gray-900 dark:text-white">
           Customer Information
         </span>
         <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
@@ -132,55 +132,57 @@ export const CustomerProfile = () => {
       )}
       {insightsData && (
         <div className="flex justify-between gap-4 w-full py-4">
-          <div className="flex flex-col justify-start gap-2 bg-blueGray-50 rounded-lg w-[304px] border border-blueGray-200 p-4">
+          <div className="flex flex-col justify-start gap-2 bg-blueGray-50 dark:bg-gray-900 dark:border-gray-800 rounded-lg w-[304px] border border-blueGray-200 p-4">
             <span>Customer Information</span>
             <div className="flex flex-col gap-3">
-              <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100">
+              <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
                 <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
                   <UserIcon className="text-blue-700" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700">
+                  <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700 dark:text-blue-500">
                     Mobile Number
                   </span>
-                  <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
+                  <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600 dark:text-white">
                     {insightsData.userInfo.mobileNumber || "N/A"}
                   </span>
                 </div>
               </div>
-              <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100">
+              <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
                 <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
                   <UserIcon className="text-blue-700" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700">
+                  <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700 dark:text-blue-500">
                     User ID
                   </span>
-                  <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
+                  <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600 dark:text-white">
                     {insightsData.userInfo.userId || "N/A"}
                   </span>
                 </div>
               </div>
-              <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100">
+              <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
                 <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
                   <ClientIDIcon className="text-blue-700" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700">
+                  <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700 dark:text-blue-500">
                     Client ID
                   </span>
-                  <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600">
+                  <span className="font-inter font-normal text-sm leading-5 tracking-normal text-blueGray-600 dark:text-white">
                     {insightsData.userInfo.clientUserId || "N/A"}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-4 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4">
+          <div className="flex flex-col gap-4 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4 dark:bg-gray-900 dark:border-gray-800">
             <div className="w-full flex rounded-lg overflow-hidden border border-blueGray-300 shadow-[0px_1px_2px_0px_#0A0D120D]">
               <div
-                className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg ${
-                  currentSection === "customerInsights" && "bg-blueGray-100"
+                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg dark:bg-gray-800 dark:border-gray-900 ${
+                  currentSection === "customerInsights"
+                    ? "bg-blueGray-100 dark:bg-gray-900"
+                    : "bg-white"
                 }`}
                 onClick={() => setCurrentSection("customerInsights")}
               >
@@ -188,16 +190,18 @@ export const CustomerProfile = () => {
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerInsights"
-                      ? "text-blueGray-700"
-                      : "text-gray-700 "
+                      ? "text-blueGray-700 dark:text-white"
+                      : "text-gray-700 dark:text-gray-400"
                   }`}
                 >
                   Customer Insights
                 </div>
               </div>
               <div
-                className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
-                  currentSection === "actionAnalytics" && "bg-blueGray-100"
+                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 dark:bg-gray-800 dark:border-gray-900 ${
+                  currentSection === "actionAnalytics"
+                    ? "bg-blueGray-100 dark:bg-gray-900"
+                    : "bg-white"
                 }`}
                 onClick={() => setCurrentSection("actionAnalytics")}
               >
@@ -205,16 +209,18 @@ export const CustomerProfile = () => {
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "actionAnalytics"
-                      ? "text-blueGray-700"
-                      : "text-gray-700 "
+                      ? "text-blueGray-700 dark:text-white"
+                      : "text-gray-700 dark:text-gray-400"
                   }`}
                 >
                   Action Analytics
                 </div>
               </div>
               <div
-                className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 ${
-                  currentSection === "customerDevices" && "bg-blueGray-100"
+                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 dark:bg-gray-800 dark:border-gray-900 ${
+                  currentSection === "customerDevices"
+                    ? "bg-blueGray-100 dark:bg-gray-900"
+                    : "bg-white"
                 }`}
                 onClick={() => setCurrentSection("customerDevices")}
               >
@@ -222,16 +228,18 @@ export const CustomerProfile = () => {
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerDevices"
-                      ? "text-blueGray-700"
-                      : "text-gray-700 "
+                      ? "text-blueGray-700 dark:text-white"
+                      : "text-gray-700 dark:text-gray-400"
                   }`}
                 >
                   Customer Devices
                 </div>
               </div>
               <div
-                className={`flex w-[25%] bg-white h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg ${
-                  currentSection === "devicesHealthChecks" && "bg-blueGray-100"
+                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg dark:bg-gray-800 dark:border-gray-900 ${
+                  currentSection === "devicesHealthChecks"
+                    ? "bg-blueGray-100 dark:bg-gray-900"
+                    : "bg-white"
                 }`}
                 onClick={() => setCurrentSection("devicesHealthChecks")}
               >
@@ -239,8 +247,8 @@ export const CustomerProfile = () => {
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "devicesHealthChecks"
-                      ? "text-blueGray-700"
-                      : "text-gray-700 "
+                      ? "text-blueGray-700 dark:text-white"
+                      : "text-gray-700 dark:text-gray-400"
                   }`}
                 >
                   Devices Health Checks
@@ -250,8 +258,16 @@ export const CustomerProfile = () => {
             {currentSection === "customerInsights" && (
               <CustomerInsights {...insightsData} />
             )}
-            {currentSection === "actionAnalytics" && <ActionAnalytics />}
-            {currentSection === "customerDevices" && <CustomerDevices />}
+            {currentSection === "actionAnalytics" && (
+              <ActionAnalytics
+                userMobileNumber={insightsData?.userInfo?.mobileNumber}
+              />
+            )}
+            {currentSection === "customerDevices" && (
+              <CustomerDevices
+                userMobileNumber={insightsData?.userInfo?.mobileNumber}
+              />
+            )}
             {currentSection === "devicesHealthChecks" && (
               <DevicesHealthChecks />
             )}

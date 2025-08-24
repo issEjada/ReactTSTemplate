@@ -22,7 +22,7 @@ const CloseIcon = React.lazy(
   () => import("../../../assets/svg/closeX.svg?react")
 );
 
-type MetricId = "total" | "auth" | "accepted" | "rejected" | "mfa" | "sca";
+type MetricId = "totalActions" | "authenticatedActions" | "acceptedActions" | "rejectedActions" | "mfaActions" | "scaActions";
 
 type PopupProps = {
   isOpen: boolean;
@@ -35,20 +35,20 @@ type PopupProps = {
 const METRICS_DEF: Array<{
   id: MetricId;
   title: string;
-  Icon: React.LazyExoticComponent<any>;
+  Icon: React.ReactNode;
 }> = [
-  { id: "total", title: "Total Actions", Icon: TotalActionIcon },
-  { id: "auth", title: "Authenticated Actions", Icon: AuthActionIcon },
-  { id: "accepted", title: "Accepted Actions", Icon: AcceptedIcon },
-  { id: "rejected", title: "Rejected Actions", Icon: RejectedIcon },
-  { id: "mfa", title: "MFA Actions", Icon: MfaIcon },
-  { id: "sca", title: "SCA Actions", Icon: ScaIcon },
+  { id: "totalActions", title: "Total Actions", Icon: <TotalActionIcon className="w-6 h-6 text-blue-700" /> },
+  { id: "authenticatedActions", title: "Authenticated Actions", Icon: <AuthActionIcon className="w-6 h-6 text-purple-700" /> },
+  { id: "acceptedActions", title: "Accepted Actions", Icon: <AcceptedIcon className="w-6 h-6 text-success-600" /> },
+  { id: "rejectedActions", title: "Rejected Actions", Icon: <RejectedIcon className="w-6 h-6" /> },
+  { id: "mfaActions", title: "MFA Actions", Icon: <MfaIcon className="w-6 h-6" /> },
+  { id: "scaActions", title: "SCA Actions", Icon: <ScaIcon className="w-6 h-6" /> },
 ];
 
-export const ActionIndicator: React.FC<PopupProps> = ({
+export const ActionStatistics: React.FC<PopupProps> = ({
   isOpen,
   onClose,
-  title = "Action Statistics Indicator",
+  title = "Action Statistics",
   values,
 }) => {
   useEffect(() => {
@@ -64,7 +64,7 @@ export const ActionIndicator: React.FC<PopupProps> = ({
     id,
     title,
     value: values?.[id] ?? 0,
-    icon: <Icon />,
+    icon: Icon,
   }));
 
   return createPortal(
@@ -88,7 +88,6 @@ export const ActionIndicator: React.FC<PopupProps> = ({
           </button>
         </div>
 
-        {/* Content */}
         <div className="p-5 space-y-3">
           <Suspense fallback={null}>
             {rows.map((m) => (

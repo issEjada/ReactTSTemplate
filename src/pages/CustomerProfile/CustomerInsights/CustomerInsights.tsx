@@ -5,49 +5,206 @@ const CustomerInsightsIcon = React.lazy(
   () => import("../../../assets/svg/ArrowUp.svg?react")
 );
 
-export const CustomerInsights = (insightsData : CustomerInsightsResponse) => {
+// const Trusted = React.lazy(
+//   () => import("../../../assets/svg/TrustedIcon.svg?react")
+// );
+
+// const MostMap = React.lazy(() => import("../../../assets/svg/maps?react"));
+
+export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex w-full gap-3">
-        <div className="flex gap-4 bg-white rounded-lg h-[72px] border border-blueGray-100 p-4 w-[50%]">
-          <div>Some Icon</div>
-          <div className="flex flex-col">
-            <span>Mobile Number</span>
-            <span>+96572738859</span>
-          </div>
-        </div>
-        <div className="flex gap-4 bg-white rounded-lg h-[72px] border border-blueGray-100 p-4 w-[50%]">
-          <div>Some Icon</div>
-          <div className="flex flex-col">
-            <span>Mobile Number</span>
-            <span>+96572738859</span>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-[18px] p-4 bg-white w-full rounded-lg border border-blueGray-100">
-        <div className="flex justify-start gap-[10px]">
-          <div>Some Icon</div>
-          <span>Trusted Device IPs</span>
-        </div>
-        <div className="flex flex-col gap-2">
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-          <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
-            10.10.10.1
-          </div>
-        </div>
-      </div>
-      <ExpandableCard icon={<CustomerInsightsIcon className="text-blue-700"/>} label="Customer Insights" data={insightsData?.userInsights?.mostUsedDeviceIP}/>
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Device IP"
+        data={insightsData?.userInsights?.mostUsedDeviceIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Truted Device IP's"
+        data={insightsData?.userInsights?.trustedDeviceIPs}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Average Device Space Utilization"
+        data={insightsData?.userInsights?.avgDeviceSpaceUtilization}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Average Installed Apps Count"
+        data={insightsData?.userInsights?.avgInstalledAppsCount}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label=" Min Installed Apps Count"
+        data={insightsData?.userInsights?.minInstalledAppsCount}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Max Installed Apps Count"
+        data={insightsData?.userInsights?.maxInstalledAppsCount}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used OS Type"
+        data={insightsData?.userInsights?.mostUsedOSType}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Usual Device Number Of SIMCards"
+        data={insightsData?.userInsights?.mostUsualDeviceNumberOfSIMCards}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Android OS Version"
+        data={insightsData?.userInsights?.mostUsedAndroidOSVersion}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Android Serial Number"
+        data={insightsData?.userInsights?.mostUsedAndroidSerialNumber}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used IOS System Version"
+        data={insightsData?.userInsights?.mostUsedIOSSystemVersion}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used IOS Timezone"
+        data={insightsData?.userInsights?.mostUsedIOSTimezone}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Device City"
+        data={insightsData?.userInsights?.mostUsedDeviceCityFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted Device Cities"
+        data={insightsData?.userInsights?.trustedDeviceCitiesFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Device Country"
+        data={insightsData?.userInsights?.mostUsedDeviceCountryFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted Device Countries"
+        data={insightsData?.userInsights?.trustedDeviceCountriesFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Device Location"
+        data={insightsData?.userInsights?.mostUsedDeviceLocationFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted Device Locations"
+        data={insightsData?.userInsights?.trustedDeviceCountriesFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used 3DS Page IP"
+        data={insightsData?.userInsights?.mostUsed3DSPageIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted 3DS Page IP's"
+        data={insightsData?.userInsights?.trusted3DSPageIPs}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used 3DS Page City"
+        data={insightsData?.userInsights?.mostUsed3DSPageCityFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted 3DS Page Cities"
+        data={insightsData?.userInsights?.trusted3DSPageCitiesFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used 3DS Page Location"
+        data={insightsData?.userInsights?.mostUsed3DSPageLocationFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted 3DS Page Locations"
+        data={insightsData?.userInsights?.trusted3DSPageLocationsFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used 3DS Page Country"
+        data={insightsData?.userInsights?.mostUsed3DSPageCountryFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted 3DS Page Countries"
+        data={insightsData?.userInsights?.trusted3DSPageCountriesFromIP}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Network Carrier"
+        data={insightsData?.userInsights?.mostUsedNetworkCarrier}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted Network Carrier"
+        data={insightsData?.userInsights?.trustedNetworkCarrier}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used WiFi SSID"
+        data={insightsData?.userInsights?.mostUsedWiFiSSID}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted WiFi SSID"
+        data={insightsData?.userInsights?.trustedWiFiSSID}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used GMT Zone"
+        data={insightsData?.userInsights?.mostUsedGMTZone}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Network Type"
+        data={insightsData?.userInsights?.mostUsedNetworkType}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used CPU Cores Number"
+        data={parseInt(insightsData?.userInsights?.mostUsed3DSPageCPUCores)}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used User Plugins List"
+        data={insightsData?.userInsights?.mostUsed3DSPagePlugins}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Platform"
+        data={insightsData?.userInsights?.mostUsed3DSPagePlatform}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Trusted Platforms"
+        data={insightsData?.userInsights?.trusted3DSPagePlatforms}
+      />
+      <ExpandableCard
+        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Blacklisted Devices"
+        data={insightsData?.userInsights?.blacklistedDevices?.map(
+          (item, index) => (
+            <p key={index}>
+              {item.uniqueId + ", " + item.model + ", " + item.manufacturer}
+            </p>
+          )
+        )}
+      />
     </div>
   );
 };
