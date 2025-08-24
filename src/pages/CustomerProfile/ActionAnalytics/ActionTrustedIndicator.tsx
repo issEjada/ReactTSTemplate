@@ -142,14 +142,14 @@ export const ActionTrustedIndicator: React.FC<PopupProps> = ({
           </h2>
           <button
             onClick={onClose}
-            className="h-8 w-8 flex items-center justify-center border rounded-lg"
+            className="h-8 w-8 flex items-center justify-center border rounded-lg dark:hover:bg-gray-800"
           >
-            <CloseIcon />
+            <CloseIcon className="dark:text-white" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-5">
+        <div className="p-5 space-y-5 max-h-[800px] overflow-y-scroll">
           <Suspense fallback={null}>
             {/* First 6 in grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 w-[672px]">
@@ -181,7 +181,7 @@ export const ActionTrustedIndicator: React.FC<PopupProps> = ({
         <div className="px-5 py-4 flex justify-end">
           <button
             onClick={onClose}
-            className="h-9 px-4 rounded-lg border border-gray-300 text-sm hover:bg-gray-100"
+            className="h-9 px-4 rounded-lg border border-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
           >
             Back
           </button>
