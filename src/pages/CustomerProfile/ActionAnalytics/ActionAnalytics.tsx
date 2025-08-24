@@ -41,6 +41,7 @@ export interface FormattedAnalyticData {
   authenticatedActions: number;
   averageAmount: number;
   maxAmount: number;
+  minAmount: number;
   mostUsedTargetCountry: string[];
   trustedTargetCountries: string[];
   mostUsedTargetMerchant: string[];
@@ -235,6 +236,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         event.actionsTrustedIndicators.avgAmount ?? "0"
       ),
       maxAmount: parseFloat(event.actionsTrustedIndicators.maxAmount ?? "0"),
+      minAmount: parseFloat(event.actionsTrustedIndicators.minAmount ?? "0"),
       mostUsedTargetCountry:
         event.actionsTrustedIndicators.mostUsedTargetCountry,
       trustedTargetCountries:
