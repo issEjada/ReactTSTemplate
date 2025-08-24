@@ -3,27 +3,27 @@ import React, { useState } from "react";
 type ExpandableCardProps = {
   icon: React.ReactNode;
   label: string;
-  data: React.ReactNode[] | number;
+  data: React.ReactNode[] | number | string;
 };
 
 export default function ExpandableCard({
   icon,
   label,
-  data = [],
+  data,
 }: ExpandableCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const hasMultiple = Array.isArray(data) && data.length > 1;
-  const firstItem = data
-    ? Array.isArray(data)
-      ? React.isValidElement(data[0])
-        ? (
-            data[0] as React.ReactElement<{ children?: React.ReactNode }>
-          ).props?.children?.toString() || ""
-        : String(data[0])
-      : String(data)
-    : "";
-
+  const firstItem =
+    data !== null && data !== undefined
+      ? Array.isArray(data)
+        ? React.isValidElement(data[0])
+          ? (
+              data[0] as React.ReactElement<{ children?: React.ReactNode }>
+            ).props?.children?.toString() || ""
+          : String(data[0])
+        : String(data)
+      : "";
   return (
     <>
       {!expanded ? (
@@ -38,8 +38,12 @@ export default function ExpandableCard({
             {icon}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm text-gray-600 dark:text-gray-200">{label}</span>
-            <span className="text-base text-gray-900 dark:text-white">{firstItem}</span>
+            <span className="text-sm text-gray-600 dark:text-gray-200">
+              {label}
+            </span>
+            <span className="text-base text-gray-900 dark:text-white">
+              {firstItem}
+            </span>
           </div>
         </div>
       ) : (

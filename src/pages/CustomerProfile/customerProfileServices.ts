@@ -90,6 +90,7 @@ interface ActionsStatistics {
 
 interface ActionsTrustedIndicators {
   avgAmount: string;
+  minAmount: string;
   maxAmount: string;
   mostUsedTargetCountry: string[];
   trustedTargetCountries: string[];
