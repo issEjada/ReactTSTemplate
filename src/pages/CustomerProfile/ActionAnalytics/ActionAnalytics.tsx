@@ -294,7 +294,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               .numberOfAuthenticatedActions || 0
           }
           icon={<AuthActionIcon />}
-          className="w-full md:w-[370px]"
+          className="w-full md:w-[370px] text-purple-700"
         />
         <MetricCard
           title="Rejected Actions"
@@ -307,7 +307,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         <MetricCard
           title="SCA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
-          icon={<ScaIcon />}
+          icon={<ScaIcon className="text-blueLight-600"/>}
           className="w-full md:w-[370px]"
         />
       </div>

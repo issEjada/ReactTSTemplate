@@ -42,7 +42,7 @@ const METRICS_DEF: Array<{
   { id: "acceptedActions", title: "Accepted Actions", Icon: <AcceptedIcon className="w-6 h-6 text-success-600" /> },
   { id: "rejectedActions", title: "Rejected Actions", Icon: <RejectedIcon className="w-6 h-6" /> },
   { id: "mfaActions", title: "MFA Actions", Icon: <MfaIcon className="w-6 h-6" /> },
-  { id: "scaActions", title: "SCA Actions", Icon: <ScaIcon className="w-6 h-6" /> },
+  { id: "scaActions", title: "SCA Actions", Icon: <ScaIcon className="w-6 h-6 text-blueLight-600" /> },
 ];
 
 export const ActionStatistics: React.FC<PopupProps> = ({
