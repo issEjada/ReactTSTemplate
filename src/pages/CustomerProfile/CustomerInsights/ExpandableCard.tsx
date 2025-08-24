@@ -30,7 +30,7 @@ export default function ExpandableCard({
         // collapsed version
         <div
           onClick={() => hasMultiple && setExpanded(true)}
-          className={`flex gap-4 bg-white rounded-lg h-[72px] border border-blueGray-100 p-4 w-full ${
+          className={`flex gap-4 bg-white dark:bg-gray-800 dark:border-gray-900 rounded-lg h-[72px] border border-blueGray-100 p-4 w-full ${
             hasMultiple ? "cursor-pointer" : ""
           }`}
         >
@@ -38,14 +38,14 @@ export default function ExpandableCard({
             {icon}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm text-gray-600">{label}</span>
-            <span className="text-base text-gray-900">{firstItem}</span>
+            <span className="text-sm text-gray-600 dark:text-gray-200">{label}</span>
+            <span className="text-base text-gray-900 dark:text-white">{firstItem}</span>
           </div>
         </div>
       ) : (
         // expanded version
         <div
-          className="flex flex-col gap-[18px] p-4 bg-white w-full rounded-lg border border-blueGray-100"
+          className="flex flex-col gap-[18px] p-4 bg-white dark:bg-gray-800 dark:border-gray-900 w-full rounded-lg border border-blueGray-100"
           onClick={() => setExpanded(false)}
         >
           <div className="flex justify-start gap-[10px]">
@@ -59,13 +59,13 @@ export default function ExpandableCard({
               data.map((item, idx) => (
                 <div
                   key={idx}
-                  className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]"
+                  className="flex items-center w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px] dark:bg-gray-700 dark:border-gray-800"
                 >
                   {item}
                 </div>
               ))
             ) : (
-              <div className="w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px]">
+              <div className="flex items-center w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px] dark:bg-gray-700 dark:border-gray-800">
                 {data}
               </div>
             )}
