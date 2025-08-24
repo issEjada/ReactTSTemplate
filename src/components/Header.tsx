@@ -165,6 +165,14 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
     "edit-rule": "Edit Rule",
     "system-configuration": "System Configuration",
     "view-configuration": "View Configuration",
+    "my-account": "My Account",
+    "about-us": "About Us",
+    support: "Support",
+    "customer-profile": "Customer Profile",
+    events: "Events",
+    "new-event": "New Event",
+    "view-event": "View Event",
+    "edit-event": "Edit Event",
   };
 
   return (
