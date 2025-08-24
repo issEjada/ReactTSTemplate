@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ActionStatistics } from "./ActionStatistics";
 import MetricCard from "./MetricCard";
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
-import { ActionTrustedIndicator } from "./ActionTrustedIndicator";
+import { ActionPopup } from "./ActionsPopup";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -162,7 +161,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     "actionStatistics" | "trustedIndicators" | null
   >(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, ] = useState(10);
+  const [itemsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
 
@@ -209,6 +208,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               console.log("Actions Trusted Indicators for row:", row.original);
               setIsOpen(true);
               setPopUpType("trustedIndicators");
+              setPopUpData(row.original);
             }}
           />
         </div>
@@ -261,6 +261,8 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     return <span className="text-red-500">{errorValidation}</span>;
   }
 
+  console.log("popup data:", popUpData);
+
   return (
     <div className="flex flex-col gap-4">
       {/* KPI Cards */}
@@ -308,23 +310,17 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         <MetricCard
           title="SCA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
-          icon={<ScaIcon className="text-blueLight-600"/>}
+          icon={<ScaIcon className="text-blueLight-600" />}
           className="w-full md:w-[370px]"
         />
       </div>
 
-      {isOpen && popUpType === "actionStatistics" && (
-        <ActionStatistics
+      {isOpen && popUpType && (
+        <ActionPopup
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
+          mode={popUpType}
           values={popUpData}
-        />
-      )}
-
-      {isOpen && popUpType === "trustedIndicators" && (
-        <ActionTrustedIndicator
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
         />
       )}
 
@@ -342,7 +338,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}
-              totalCount={actionAnalyticsData?.actionsAnalytics.meta.totalItems || 0}
+              totalCount={
+                actionAnalyticsData?.actionsAnalytics.meta.totalItems || 0
+              }
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               setCurrentPage={setCurrentPage}
