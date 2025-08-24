@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DynamicTable } from "../../../components/DynamicTable";
+import { CustomerProfileTable } from "../CustomerProfileTable";
 import CustomerDevicesFilter from "../CustomerProfileFilter/CustomerDevicesFilter";
 import { useCustomerDevices } from "./useCustomerDevices";
 import type { SDKCustomerDeviceInfo } from "../customerProfileServices";
@@ -10,7 +10,9 @@ type CustomerDevicesProps = {
   userMobileNumber: string;
 };
 
-export const CustomerDevices: React.FC<CustomerDevicesProps> = ({userMobileNumber}) => {
+export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
+  userMobileNumber,
+}) => {
   const [searchText, setSearchText] = useState<string>("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -57,7 +59,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({userMobileNumbe
 
   return (
     <div className="px-5 pb-5 overflow-x-auto">
-      <DynamicTable<SDKCustomerDeviceInfo>
+      <CustomerProfileTable<SDKCustomerDeviceInfo>
         title="Customer Devices"
         headerLeft={
           <h2 className="text-[#181D27] dark:text-white text-[18px] font-semibold">

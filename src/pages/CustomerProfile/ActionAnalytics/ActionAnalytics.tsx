@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ActionStatistics } from "./ActionStatistics";
 import MetricCard from "./MetricCard";
-import { DynamicTable } from "../../../components/DynamicTable";
+import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 
@@ -314,7 +314,11 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
       </div>
 
       {isOpen && popUpType === "actionStatistics" && (
-        <ActionStatistics isOpen={isOpen} onClose={() => setIsOpen(false)} values={popUpData}/>
+        <ActionStatistics
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          values={popUpData}
+        />
       )}
 
       {/* Card (header + table) */}
@@ -327,7 +331,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
 
         <div className="px-5 pb-5 overflow-x-auto">
           <div className="overflow-x-auto">
-            <DynamicTable<FormattedAnalyticData>
+            <CustomerProfileTable<FormattedAnalyticData>
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}
