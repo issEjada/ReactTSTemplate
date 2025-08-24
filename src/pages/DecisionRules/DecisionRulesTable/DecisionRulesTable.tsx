@@ -141,7 +141,10 @@ const RuleMenu = ({
             <button
               type="button"
               className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-              onClick={handleView}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleView();
+              }}
             >
               <ViewIcon />
               <span className="text-[14px] whitespace-nowrap">
@@ -152,7 +155,10 @@ const RuleMenu = ({
             <button
               type="button"
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-              onClick={handleEdit}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEdit();
+              }}
             >
               <EditIcon />
               <span className="text-[14px]">Edit Rule</span>
@@ -161,7 +167,10 @@ const RuleMenu = ({
             <button
               type="button"
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-              onClick={handleDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
             >
               <DeleteIcon />
               <span className="text-[14px]">Delete</span>
