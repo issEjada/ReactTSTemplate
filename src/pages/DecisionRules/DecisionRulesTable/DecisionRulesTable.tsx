@@ -15,7 +15,8 @@ import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import { createPortal } from "react-dom";
-
+import { TableFallback } from "../../../components/TableFallback";
+import { AppRoutes } from "../../../routes/AppRoutes";
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -24,10 +25,6 @@ const DeleteIcon = React.lazy(
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 const RuleIcon = React.lazy(
   () => import("../../../assets/svg/EmptyDecisions.svg?react")
-);
-
-const BackgroundCircle = React.lazy(
-  () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
 
 type DecisionRule = {
@@ -119,7 +116,10 @@ const RuleMenu = ({
       <button
         ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={toggleMenu}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleMenu();
+        }}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -201,6 +201,7 @@ export const DecisionRulesTable = () => {
     refetch,
     totalCount,
     error,
+    handleToggleStatus, // Destructure handleToggleStatus from the hook
   } = useDecisionRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -244,12 +245,6 @@ export const DecisionRulesTable = () => {
     setCurrentPage(1);
   };
 
-  const handleToggleStatus = async () => {
-    if (refetch) {
-      await refetch();
-    }
-  };
-
   const handleDeleteRule = async (id: number) => {
     try {
       await deleteDecisionRule(id);
@@ -262,8 +257,8 @@ export const DecisionRulesTable = () => {
   };
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule),
-    []
+    () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
+    [handleToggleStatus, handleDeleteRule] // Add dependencies
   );
 
   const navigate = useNavigate();
@@ -317,49 +312,20 @@ export const DecisionRulesTable = () => {
       </div>
 
       {totalCount === 0 && !isFilterActive ? (
-        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
-          {/* Wrapper for icon + background */}
-          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
-            {/* Background Circle positioned behind */}
-            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
-              <BackgroundCircle
-                className="
-            absolute
-            left-1/2 top-[28%]
-            -translate-x-1/2 -translate-y-1/2
-            w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
-            h-[400px]
-            pointer-events-none select-none
-            z-0
-          "
-              />
-            </div>
-
-            {/* Lock Icon in styled border */}
-            <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
-              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <RuleIcon className="sm:w-[28px] sm:h-[28px]" />
-              </div>
-            </div>
-          </div>
-
-          {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
-            Start adding new rules
-          </h3>
-          <p className="text-sm text-gray-500 mb-6">
-            You don’t have any rule yet. Start securing by adding new rules now.
-          </p>
-
-          {/* Add Button */}
-          <button
-            onClick={handleAddNewRule}
-            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[352px] h-10 flex items-center justify-center gap-2"
-          >
-            <PlusIcon className="w-[20px] h-[20px]" />
-            Add New Rule
-          </button>
-        </div>
+        <TableFallback
+          icon={<RuleIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding decision rules"
+          description={
+            <>
+              You don’t have any decision rules yet.
+              <br />
+              Create rules to automate your decision-making process.
+            </>
+          }
+          buttonText="Add New Decision Rule"
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
+          onButtonClick={handleAddNewRule}
+        />
       ) : (
         <DynamicTable<DecisionRule>
           data={data.map((item) => ({
@@ -393,8 +359,14 @@ export const DecisionRulesTable = () => {
           setSearchText={setSearchText}
           openFilterModal={openFilterModal}
           applyFilters={applyFilters}
-          searchPlaceholder="Search rules"
+          searchPlaceholder="Search Rule Name"
           showStatusFilter={true}
+          onRowClick={(rowData) => {
+            const { id } = rowData as { id: string | number };
+            navigate(AppRoutes.viewDecisionRule, {
+              state: { id: id.toString(), action: "view" },
+            });
+          }}
           statusFilterOptions={[
             { key: "All", label: "View All" },
             { key: "ENABLED", label: "Active" },
@@ -407,7 +379,7 @@ export const DecisionRulesTable = () => {
 };
 
 const getColumns = (
-  onToggleStatus: (id: number) => void,
+  onToggleStatus: (id: number, currentStatus: string) => void, // Update signature
   onDelete: (id: number) => void
 ): ColumnDef<DecisionRule>[] => [
   {
@@ -419,7 +391,7 @@ const getColumns = (
       return (
         <div className="flex justify-center">
           <button
-            onClick={() => onToggleStatus(row.original.id)}
+            onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"

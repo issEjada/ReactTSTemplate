@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type {
   DecisionRulesFormValues,
   DeleteRuleByIdPayload,
+  UpdateDecisionPayload,
 } from "../decisionRulesServices";
 import {
   DecisionRulesServices,
@@ -33,8 +34,6 @@ export const useDecisionRulesTable = () => {
   const [popupType, setPopupType] = useState<string>("");
   const [popupMessage, setPopupMessage] = useState<string>("");
 
-  const [refetch, setRefetch] = useState<(() => void) | undefined>();
-
   const handleOpenDrawer = () => {
     setIsFilterOpen(true);
   };
@@ -57,31 +56,26 @@ export const useDecisionRulesTable = () => {
       ...filters,
     };
 
-    const fetchData = async () => {
-      try {
-        const value = await DecisionRulesServices.getDecisionData(data);
-        const formattedDecision = value.data.decisionRules.map((dec) => ({
-          ...dec,
-          // creationTimestamp: formatTime(dec.creationTimestamp),
-        }));
-        setData(formattedDecision);
-        setTotalListSize(
-          value.meta?.totalPages ? value.meta.totalPages * itemsPerPage : 0
-        );
-        setTotalCount(value.meta?.totalItems || 0);
-        setloadingState(LoadingState.Success);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError(String(error));
-        setloadingState(LoadingState.Error);
-        setPopupType("errorModal");
-        setPopupMessage(String(error));
-        setIsPopupOpen(true);
-      }
-    };
-
-    await fetchData();
-    setRefetch(() => fetchData);
+    try {
+      const value = await DecisionRulesServices.getDecisionData(data);
+      const formattedDecision = value.data.decisionRules.map((dec) => ({
+        ...dec,
+        // creationTimestamp: formatTime(dec.creationTimestamp),
+      }));
+      setData(formattedDecision);
+      setTotalListSize(
+        value.meta?.totalPages ? value.meta.totalPages * itemsPerPage : 0
+      );
+      setTotalCount(value.meta?.totalItems || 0);
+      setloadingState(LoadingState.Success);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(String(error));
+      setloadingState(LoadingState.Error);
+      setPopupType("errorModal");
+      setPopupMessage(String(error));
+      setIsPopupOpen(true);
+    }
   };
 
   useEffect(() => {
@@ -109,6 +103,24 @@ export const useDecisionRulesTable = () => {
       });
   };
 
+  const handleToggleStatus = async (id: number, currentStatus: string) => {
+    setloadingState(LoadingState.Loading);
+    const newStatus = currentStatus === "ENABLED" ? "DISABLED" : "ENABLED";
+    const payload: UpdateDecisionPayload = {
+      status: newStatus,
+    };
+
+    try {
+      await DecisionRulesServices.updateDecisionRule(payload, id);
+      await fetchDecisionData(); // Refetch data to update the table
+      setloadingState(LoadingState.Success);
+    } catch (err) {
+      console.error("Failed to update decision rule status:", err);
+      setError("Failed to update decision rule status.");
+      setloadingState(LoadingState.Error);
+    }
+  };
+
   const onDeleteRule = async () => {
     try {
       setloadingState(LoadingState.Loading);
@@ -116,9 +128,7 @@ export const useDecisionRulesTable = () => {
       setIsPopupOpen(true);
       setPopupType("successModal");
       setPopupMessage("Decision rule deleted successfully");
-      if (refetch) {
-        refetch();
-      }
+      await fetchDecisionData(); // Use fetchDecisionData instead of refetch
       setloadingState(LoadingState.Success);
     } catch (error) {
       console.error("Error deleting decision rule:", error);
@@ -151,9 +161,10 @@ export const useDecisionRulesTable = () => {
     isPopupOpen,
     popupType,
     deleteDecisionRule,
-    refetch,
+    refetch: fetchDecisionData,
     totalCount,
     data,
     error,
+    handleToggleStatus,
   };
 };

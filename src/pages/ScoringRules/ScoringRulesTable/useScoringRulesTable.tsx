@@ -3,6 +3,7 @@ import {
   ScoringRulesServices,
   type GetScoringRulesItemInterface,
   type GetScoringRulesListResponse,
+  type UpdateRulesPayload,
 } from "../scoringRulesServices";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { cleanObject } from "../../../utils/helpers";
@@ -25,6 +26,7 @@ export const useScoringRulesTable = () => {
     setFilters(filteredData as ViewRulesFormValues);
     setCurrentPage(1);
   };
+
   const fetchData = async () => {
     setloadingState(LoadingState.Loading);
     setError(null);
@@ -61,6 +63,24 @@ export const useScoringRulesTable = () => {
       });
   };
 
+  const handleToggleStatus = async (id: number, currentStatus: string) => {
+    setloadingState(LoadingState.Loading);
+    const newStatus = currentStatus === "ENABLED" ? "DISABLED" : "ENABLED"; // Corrected status toggle logic
+    const payload: UpdateRulesPayload = {
+      status: newStatus,
+    };
+
+    try {
+      await ScoringRulesServices.updateRule(payload, id);
+      fetchData(); // Refetch data to update the table
+      setloadingState(LoadingState.Success);
+    } catch (err) {
+      console.error("Failed to update rule status:", err);
+      setError("Failed to update rule status.");
+      setloadingState(LoadingState.Error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [currentPage, itemsPerPage, filters]);
@@ -79,5 +99,6 @@ export const useScoringRulesTable = () => {
     refetch: fetchData,
     deleteRule,
     handleSearchSubmit,
+    handleToggleStatus,
   };
 };

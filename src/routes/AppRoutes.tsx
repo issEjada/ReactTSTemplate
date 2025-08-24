@@ -11,6 +11,9 @@ export const AppRoutes = {
   viewDecisionRule: "/decision-rules/view-rule",
   editDecisionRule: "/decision-rules/edit-rule",
   events: "/events",
+  addEvents: "/events/new-event",
+  editEvents: "/events/edit-event",
+  viewEvents: "/events/view-event",
   systemConfiguration: "/system-configuration",
   viewSystemConfiguration: "/system-configuration/view-configuration",
   monitoring: "/monitoring",
@@ -21,4 +24,5 @@ export const AppRoutes = {
   myAccount: "/my-account",
   aboutUs: "/about-us",
   support: "/support",
+  customerProfile: "/customer-profile",
 };

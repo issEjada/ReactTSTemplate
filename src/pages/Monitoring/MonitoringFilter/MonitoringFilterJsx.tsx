@@ -1,12 +1,15 @@
 import React from "react";
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
-import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
 import { Controller } from "react-hook-form";
 import {
   useMonitoringFilter,
   type ViewSessionsFormValues,
 } from "./useMonitoringFilter";
+
+const ToolTipQuestionMark = React.lazy(
+  () => import("../../../assets/svg/toolTipQuestionMark.svg?react")
+);
 
 export interface SessionsFilterProps {
   isOpen: boolean;
@@ -66,11 +69,7 @@ export const MonitoringFilterForm = ({
           />
 
           <div className="absolute top-[40px] left-[calc(100%-32px)] group">
-            <img
-              src={ToolTipQuestionMark}
-              className="w-4 h-4 cursor-pointer"
-              alt="Tooltip"
-            />
+            <ToolTipQuestionMark className="w-4 h-4 cursor-pointer" />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 ">
               Enter Session ID.
             </div>
@@ -207,7 +206,7 @@ export const MonitoringFilterForm = ({
             <label className="text-sm font-medium">Date From</label>
             <Controller
               control={control}
-              name="fromCreationTimestamp"
+              name="fromDate"
               render={({ field }) => (
                 <input
                   {...field}
@@ -227,7 +226,7 @@ export const MonitoringFilterForm = ({
             <label className="text-sm font-medium">Date To</label>
             <Controller
               control={control}
-              name="toCreationTimestamp"
+              name="toDate"
               render={({ field }) => (
                 <input
                   {...field}

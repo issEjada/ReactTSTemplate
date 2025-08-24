@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import ScoringRulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
+import LayoutPopup from "../../../components/Popup/LayoutPopup";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -39,13 +40,62 @@ const RuleForm = () => {
     setScreenAction,
     loadingState, // Add loadingState here
     isFormValid,
-    formValues
+    formValues,
   } = useViewScoringRules();
 
   // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const previousValues = useRef({
+    aspectCode: "",
+    controlCode: "",
+    platform: "",
+    scoring_scheme: "",
+    scheme: "",
+    eventSourceDevice: "",
+  });
+
+  // Track changes for confirm clear
+  useEffect(() => {
+    if (!formValues) return;
+
+    if (!editorContent) {
+      previousValues.current = {
+        aspectCode: formValues.aspectCode,
+        controlCode: formValues.controlCode,
+        platform: formValues.platform,
+        scoring_scheme: formValues.scoring_scheme || "",
+        scheme: formValues.scheme || "",
+        eventSourceDevice: formValues.eventSourceDevice,
+      };
+      return;
+    }
+    const hasChanged = (
+      Object.keys(previousValues.current) as Array<
+        keyof typeof previousValues.current
+      >
+    ).some((key) => {
+      if (previousValues.current[key] === "") {
+        return false;
+      }
+      return previousValues.current[key] !== formValues[key];
+    });
+
+    if (isAdding && hasChanged) {
+      setShowConfirmModal(true);
+    }
+  }, [
+    isAdding,
+    formValues,
+    formValues?.scheme,
+    formValues?.scoring_scheme,
+    formValues?.platform,
+    formValues?.aspectCode,
+    formValues?.controlCode,
+    formValues?.eventSourceDevice,
+  ]);
 
   const handleCancel = () => {
     reset();
@@ -59,6 +109,11 @@ const RuleForm = () => {
 
   const handleDeleteClick = () => {
     setIsDeletePopupOpen(true);
+  };
+
+  const handleConfirmClear = () => {
+    setEditorContent("");
+    setShowConfirmModal(false);
   };
 
   useEffect(() => {
@@ -75,7 +130,17 @@ const RuleForm = () => {
       className="flex flex-col gap-[16px]"
     >
       {loadingState === "loading" && <FullScreenSpinner />}
-      {/* Rule name editable area */}
+
+      {showConfirmModal && (
+        <LayoutPopup isOpen={showConfirmModal} className="w-[30%]">
+          <RulesPopupJsx
+            isConfirm
+            onConfirm={handleConfirmClear}
+            onCancel={() => setShowConfirmModal(false)}
+          />
+        </LayoutPopup>
+      )}
+
       <div className="h-auto flex flex-row items-start px-6 py-5">
         <div className="flex flex-col gap-2">
           <label
@@ -293,14 +358,14 @@ const RuleForm = () => {
         </div>
         <h3 className="text-[1.2rem]">Condition Editor</h3>
       </div>
-      
+
       {isFormValid ? (
-      <ConditionEditor
-        editorContent={editorContent}
-        parametersData={parametersData}
-        setEditorContent={setEditorContent}
-        isReadOnly={screenAction === "view"} // Pass isReadOnly prop
-      />
+        <ConditionEditor
+          editorContent={editorContent}
+          parametersData={parametersData}
+          setEditorContent={setEditorContent}
+          isReadOnly={screenAction === "view"} // Pass isReadOnly prop
+        />
       ) : (
         <div className="px-6 py-4 text-red-500">
           Please complete all required fields to enable the Conditions.
@@ -343,7 +408,7 @@ const RuleForm = () => {
         <div>
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
             {isAdding && popupType === "successModal" && (
-              <ScoringRulesPopupJsx
+              <RulesPopupJsx
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);
@@ -356,7 +421,7 @@ const RuleForm = () => {
               />
             )}
             {isEditing && popupType === "successModal" && (
-              <ScoringRulesPopupJsx
+              <RulesPopupJsx
                 isEditing
                 onConfirm={() => {
                   setIsPopupOpen(false);
@@ -369,7 +434,7 @@ const RuleForm = () => {
               />
             )}
             {popupType === "errorModal" && (
-              <ScoringRulesPopupJsx
+              <RulesPopupJsx
                 isError
                 errorMessage={popupMessage}
                 onConfirm={() => setIsPopupOpen(false)}
@@ -382,7 +447,7 @@ const RuleForm = () => {
       {isDeletePopupOpen && (
         <div>
           <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
-            <ScoringRulesPopupJsx
+            <RulesPopupJsx
               isDeleting
               onConfirm={() => {
                 setIsDeletePopupOpen(false);

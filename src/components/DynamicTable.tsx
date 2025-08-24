@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
+import FullScreenSpinner from "./FullScreenSpinner";
+import type { LoadingState } from "../types/types";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
@@ -36,7 +38,10 @@ interface DynamicTableProps<TData extends object> {
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
-  onRowClick?: (rowData: TData) => void;
+  onRowClick?: (rowData: TData) => void; // New prop for dynamic row click navigation
+  minimal?: boolean;
+  minimalWithPagination?: boolean;
+  loadingState?: LoadingState;
 }
 
 export function DynamicTable<TData extends object>({
@@ -60,7 +65,10 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
-  onRowClick,
+  onRowClick, // Destructure new prop
+  minimal = false,
+  minimalWithPagination = false,
+  loadingState,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -73,6 +81,7 @@ export function DynamicTable<TData extends object>({
     getRowId: (originalRow: ViewSessionsFormValues, index) =>
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
+
   if (error) {
     return (
       <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
@@ -85,97 +94,103 @@ export function DynamicTable<TData extends object>({
     const col = table.getColumn(columnId);
     if (!col) return;
     col.toggleSorting(col.getIsSorted() === "asc");
+
+    if (loadingState === "loading") {
+      return <FullScreenSpinner />;
+    }
   };
 
   return (
-    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418]">
-      <div
-        className={`px-4 sm:px-6 ${
-          applyFilters ? "py-4 sm:py-6" : ""
-        }  flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap`}
-      >
-        {showStatusFilter &&
-          onFilterStatus &&
-          statusFilter &&
-          statusFilterOptions && (
-            <div className="w-full sm:w-auto">
-              <div className="rounded-lg overflow-hidden border border-gray-300 sm:divide-y-0 divide-y divide-gray-300 sm:flex sm:space-x-0">
-                {statusFilterOptions.map((option, idx) => (
-                  <button
-                    key={option.key}
-                    onClick={() => onFilterStatus(option.key)}
-                    className={`text-xs h-9 sm:h-10 px-3 w-full sm:w-[90px] ${
-                      statusFilter === option.key
-                        ? "bg-[#FAFAFA] text-black"
-                        : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
-                    } ${idx > 0 ? "sm:border-l" : ""}`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418] ">
+      {!(minimal || minimalWithPagination) && (
+        <div
+          className={`px-4  sm:px-6 ${
+            applyFilters ? "py-4 sm:py-6" : ""
+          }  flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap`}
+        >
+          {showStatusFilter &&
+            onFilterStatus &&
+            statusFilter &&
+            statusFilterOptions && (
+              <div className="w-full sm:w-auto">
+                <div className="rounded-lg overflow-hidden border border-gray-300 sm:divide-y-0 divide-y divide-gray-300 sm:flex sm:space-x-0">
+                  {statusFilterOptions.map((option, idx) => (
+                    <button
+                      key={option.key}
+                      onClick={() => onFilterStatus(option.key)}
+                      className={`text-xs h-9 sm:h-10 px-3 w-full sm:w-[90px] ${
+                        statusFilter === option.key
+                          ? "bg-[#FAFAFA] text-black"
+                          : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
+                      } ${idx > 0 ? "sm:border-l" : ""}`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-          {applyFilters && (
-            <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+            {applyFilters && (
+              <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
+                <button
+                  type="button"
+                  title="Search"
+                  onClick={applyFilters}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <Suspense>
+                    <SearchIcon className="w-5 h-5" />
+                  </Suspense>
+                </button>
+
+                <input
+                  type="text"
+                  value={searchText}
+                  onChange={(e) =>
+                    setSearchText ? setSearchText(e.target.value) : null
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") applyFilters();
+                  }}
+                  placeholder={searchPlaceholder}
+                  className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+                />
+
+                {searchText && (
+                  <button
+                    onClick={() => (onClearSearch ? onClearSearch() : null)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                    aria-label="Clear search"
+                  >
+                    &#10005;
+                  </button>
+                )}
+              </div>
+            )}
+
+            {filterComponent && (
               <button
-                type="button"
-                title="Search"
-                onClick={applyFilters}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+                onClick={openFilterModal}
               >
                 <Suspense>
-                  <SearchIcon className="w-5 h-5" />
+                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
                 </Suspense>
+                <span className="hidden sm:inline">Filter</span>
               </button>
-
-              <input
-                type="text"
-                value={searchText}
-                onChange={(e) =>
-                  setSearchText ? setSearchText(e.target.value) : null
-                }
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") applyFilters();
-                }}
-                placeholder={searchPlaceholder}
-                className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
-              />
-
-              {searchText && (
-                <button
-                  onClick={() => (onClearSearch ? onClearSearch() : null)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-                  aria-label="Clear search"
-                >
-                  &#10005;
-                </button>
-              )}
-            </div>
-          )}
-
-          {filterComponent && (
-            <button
-              className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
-              onClick={openFilterModal}
-            >
-              <Suspense>
-                <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
-              </Suspense>
-              <span className="hidden sm:inline">Filter</span>
-            </button>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
-      {filterComponent}
+      {!minimal && filterComponent}
 
       <div className="overflow-x-auto">
         <table className="min-w-[900px] w-full table-auto text-sm text-center">
           {table.getRowModel().rows.length > 0 ? (
-            <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+            <thead className="bg-[#FDFDFD] text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
@@ -221,8 +236,7 @@ export function DynamicTable<TData extends object>({
             </thead>
           ) : (
             <div className="border-t border-gray-200 dark:border-gray-800 h-[1px] w-full"></div>
-          )
-          }
+          )}
 
           <tbody>
             {table.getRowModel().rows.length > 0 ? (
@@ -268,7 +282,7 @@ export function DynamicTable<TData extends object>({
                               No {title} found
                             </h1>
                             <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-1">
-                              Your search “Keyword” did not match any{" "}
+                              Your search "{searchText}" did not match any{" "}
                               {title.toLowerCase()}. Please try again or create
                               and add a new{" "}
                               {title.includes("Rules") ? "rule" : "item"}.
@@ -308,42 +322,43 @@ export function DynamicTable<TData extends object>({
           </tbody>
         </table>
       </div>
-
-      <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
-        <div className="text-center sm:text-left">
-          Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
-        </div>
-        <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            disabled={currentPage === 1}
-            className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
+      {!minimal && (
+        <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
+          <div className="text-center sm:text-left">
+            Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
+          </div>
+          <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
               ${
                 currentPage === 1
                   ? "bg-gray-100 dark:text-white dark:bg-gray-800"
                   : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
               }`}
-          >
-            Previous
-          </button>
-          <button
-            onClick={() =>
-              setCurrentPage((p) =>
-                p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
-              )
-            }
-            disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-            className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
+            >
+              Previous
+            </button>
+            <button
+              onClick={() =>
+                setCurrentPage((p) =>
+                  p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
+                )
+              }
+              disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
+              className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
                ${
                  currentPage === Math.ceil(totalCount / itemsPerPage)
                    ? "bg-gray-100 dark:text-white dark:bg-gray-800"
                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
                }`}
-          >
-            Next
-          </button>
+            >
+              Next
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

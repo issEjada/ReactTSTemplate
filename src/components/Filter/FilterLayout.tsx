@@ -1,4 +1,7 @@
-import CloseX from "../../assets/svg/closeX.svg";
+import React from "react";
+const CloseXIcon = React.lazy(
+  () => import("../../assets/svg/closeX.svg?react")
+);
 
 type props = {
   title: string;
@@ -23,7 +26,7 @@ export default function FilterLayout({
       `}
     >
       <div
-        className={`fixed bg-white rounded-lg shadow-lg p-6 top-0 right-0 w-1/2 h-[100vh] overflow-y-auto dark:bg-[#121418] dark:border-gray-800
+        className={`flex flex-col fixed bg-white rounded-lg shadow-lg p-6 top-0 right-0 w-1/2 h-[100vh] overflow-y-auto dark:bg-[#121418] dark:border-gray-800
           transform transition-transform duration-300
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
@@ -36,7 +39,7 @@ export default function FilterLayout({
             title="Close"
             aria-label="Close"
           >
-            <img src={CloseX} className="w-[10px] h-[10px]" alt="Close icon" />
+            <CloseXIcon className=" w-[10px] h-[10px] dark:text-white" />
           </button>
         </div>
         {children}

@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy } from "react";
+import { useEffect, useState, lazy, useRef } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useViewDecisionRules } from "./useDecisionRuleForm";
@@ -18,8 +18,12 @@ const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DecisionForm = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const previousValues = useRef({
+    eventSourceDevice: "",
+    scheme: "",
+  });
 
-  // const previousValues = useRef({ eventSourceDevice: "", scheme: "" });
   const navigate = useNavigate();
 
   const {
@@ -44,31 +48,37 @@ const DecisionForm = () => {
     formValues,
     statusValues,
     screenAction,
+    eventSourceDeviceValues,
     reset,
   } = useViewDecisionRules();
 
   // Track changes for confirm clear
-  // useEffect(() => {
-  //   if (!editorContent) {
-  //     previousValues.current = {
-  //       scheme: formValues!.scheme!,
-  //       eventSourceDevice: formValues!.eventSourceDevice,
-  //     };
-  //     return;
-  //   }
-  //   const hasChanged = (
-  //     Object.keys(previousValues.current) as Array<
-  //       keyof typeof previousValues.current
-  //     >
-  //   ).some((key) => {
-  //     if (previousValues.current[key] === "") return false;
-  //     return previousValues.current[key] !== formValues![key];
-  //   });
+  useEffect(() => {
+    if (!formValues) return;
 
-  //   // if (isAdding && hasChanged) {
-  //   //   setShowConfirmModal(true);
-  //   // }
-  // }, [editorContent, isAdding, formValues]);
+    // Initialize previous values if editor is empty
+    if (!editorContent) {
+      previousValues.current = {
+        scheme: formValues.scheme,
+        eventSourceDevice: formValues.eventSourceDevice,
+      };
+      return;
+    }
+
+    // Check if tracked fields have changed
+    const hasChanged = (["scheme", "eventSourceDevice"] as const).some(
+      (key) => previousValues.current[key] !== formValues[key]
+    );
+
+    if (isAdding && hasChanged) {
+      setShowConfirmModal(true);
+    }
+  }, [
+    editorContent,
+    isAdding,
+    formValues?.scheme,
+    formValues?.eventSourceDevice,
+  ]);
 
   const handleCancel = () => {
     reset();
@@ -83,10 +93,10 @@ const DecisionForm = () => {
     setIsDeletePopupOpen(true);
   };
 
-  // const handleConfirmClear = () => {
-  //   setEditorContent("");
-  //   // setShowConfirmModal(false);
-  // };
+  const handleConfirmClear = () => {
+    setEditorContent("");
+    setShowConfirmModal(false);
+  };
 
   useEffect(() => {
     if (popupType === "successModal" && loadingState === LoadingState.Success) {
@@ -108,6 +118,15 @@ const DecisionForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
+      {showConfirmModal && (
+        <LayoutPopup isOpen={showConfirmModal} className="w-[30%]">
+          <RulesPopupJsx
+            isConfirm
+            onConfirm={handleConfirmClear}
+            onCancel={() => setShowConfirmModal(false)}
+          />
+        </LayoutPopup>
+      )}
       <div className="h-auto flex flex-row items-start px-6 py-5">
         <div className="flex flex-col gap-2">
           <label
@@ -224,12 +243,14 @@ const DecisionForm = () => {
             control={control}
             name="identifier.eventSourceDevice"
             label="Event Source Device"
-            options={eventNameValues.map((item) => ({
+            options={eventSourceDeviceValues.map((item) => ({
               key: item.key,
               node: item.valueEn,
             }))}
             className="w-[102%]"
-            disabled={isViewing || isEditing || eventNameValues.length === 0}
+            disabled={
+              isViewing || isEditing || eventSourceDeviceValues.length === 0
+            }
             required
           />
           <DropdownMenu<DecisionRulesFormValues>
@@ -391,11 +412,9 @@ const DecisionForm = () => {
               isEditing
               onConfirm={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules");
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules");
               }}
             />
           )}

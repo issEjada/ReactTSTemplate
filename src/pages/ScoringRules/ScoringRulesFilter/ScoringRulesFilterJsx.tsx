@@ -1,12 +1,16 @@
 import React from "react";
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
-import ToolTipQuestionMark from "../../../assets/svg/ToolTipQuestionMark.svg";
+
 import { Controller } from "react-hook-form";
 import {
   useScoringRulesFilter,
   type ViewRulesFormValues,
 } from "./useScoringRulesFilter";
+
+const ToolTipQuestionMark = React.lazy(
+  () => import("../../../assets/svg/toolTipQuestionMark.svg?react")
+);
 
 export interface RulesFilterProps {
   isOpen: boolean;
@@ -47,7 +51,7 @@ export const ScoringRulesFilterForm = ({
       onClose={closeDrawer}
     >
       <form
-        className="flex flex-col justify-between h-full"
+        className="flex flex-col justify-between h-[950px]"
         onSubmit={onFormSubmit}
       >
         <div className="relative flex flex-col mt-6">
@@ -62,17 +66,13 @@ export const ScoringRulesFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Rule Name"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
 
-          <div className="absolute top-[40px] left-[calc(95%-32px)] group">
-            <img
-              src={ToolTipQuestionMark}
-              className="w-4 h-4 cursor-pointer"
-              alt="Tooltip"
-            />
+          <div className="absolute top-[40px] left-[calc(100%-32px)] group">
+            <ToolTipQuestionMark className="w-4 h-4 cursor-pointer" />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
               Enter Rule Name.
             </div>
@@ -89,35 +89,33 @@ export const ScoringRulesFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Type Description"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
         </div>
 
-        <div className="flex gap-2">
-          <DropdownMenu<ViewRulesFormValues>
-            control={control}
-            name="status"
-            label="Status"
-            options={statusValues.map((item) => ({
-              key: item.key,
-              node: item.valueEn,
-            }))}
-            className="w-[47%]"
-          />
+        <DropdownMenu<ViewRulesFormValues>
+          control={control}
+          name="status"
+          label="Status"
+          options={statusValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[100%]"
+        />
 
-          <DropdownMenu<ViewRulesFormValues>
-            control={control}
-            name="riskLevel"
-            label="Risk Level"
-            options={riskLevelValues.map((item) => ({
-              key: item.key,
-              node: item.valueEn,
-            }))}
-            className="w-[47%]"
-          />
-        </div>
+        <DropdownMenu<ViewRulesFormValues>
+          control={control}
+          name="riskLevel"
+          label="Risk Level"
+          options={riskLevelValues.map((item) => ({
+            key: item.key,
+            node: item.valueEn,
+          }))}
+          className="w-[100%]"
+        />
 
         <DropdownMenu<ViewRulesFormValues>
           control={control}
@@ -127,7 +125,7 @@ export const ScoringRulesFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-[100%]"
         />
 
         <DropdownMenu<ViewRulesFormValues>
@@ -138,7 +136,7 @@ export const ScoringRulesFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-[100%]"
         />
 
         <DropdownMenu<ViewRulesFormValues>
@@ -149,7 +147,7 @@ export const ScoringRulesFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-[100%]"
         />
 
         <DropdownMenu<ViewRulesFormValues>
@@ -160,7 +158,7 @@ export const ScoringRulesFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-[100%]"
         />
 
         <DropdownMenu<ViewRulesFormValues>
@@ -171,11 +169,11 @@ export const ScoringRulesFilterForm = ({
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-[95%]"
+          className="w-[100%]"
         />
 
         <div className="flex gap-4 mb-4">
-          <div className="w-[47%]">
+          <div className="w-[50%]">
             <label className="text-sm font-medium">Date From</label>
             <Controller
               control={control}
@@ -195,7 +193,7 @@ export const ScoringRulesFilterForm = ({
               )}
             />
           </div>
-          <div className="w-[45.5%]">
+          <div className="w-[50%]">
             <label className="text-sm font-medium">Date To</label>
             <Controller
               control={control}
@@ -217,7 +215,7 @@ export const ScoringRulesFilterForm = ({
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 mb-8 w-[95%]">
+        <div className="flex justify-end gap-2 mb-8 w-[100%]">
           <button
             type="submit"
             className="bg-blue-700 hover:bg-primary-700 text-white text-sm px-4 py-2 rounded-md"

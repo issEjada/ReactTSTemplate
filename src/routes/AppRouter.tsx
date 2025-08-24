@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import App from "../App";
-import Home from "../pages/Home";
+import Home from "../pages/Dashboard/Home";
 import LoginForm from "../pages/Login";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import Support from "../pages/Support";
@@ -14,6 +14,11 @@ import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/De
 import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
 import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
 import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
+import EventsTable from "../pages/Events/EventsTable/EventsTable";
+import EventsForm from "../pages/Events/EventsForm/EventsForm";
+import EventsView from "../pages/Events/EventsForm/EventsView";
+import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
+import { ActionAnalytics } from "../pages/CustomerProfile/ActionAnalytics/ActionAnalytics";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -56,6 +61,24 @@ export const AppRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <div>TESTING</div>
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.customerProfile,
+        element: (
+          <ProtectedRoute>
+            <CustomerProfile />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.customerProfile,
+        element: (
+          <ProtectedRoute>
+            <CustomerProfile />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -191,7 +214,43 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.events,
         element: (
           <ProtectedRoute>
-            <div>EVENTS</div>
+            <EventsTable />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.addEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.editDecisionRule,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.viewEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsView />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
+        path: AppRoutes.editEvents,
+        element: (
+          <ProtectedRoute>
+            <EventsForm />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -200,7 +259,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.analytics,
         element: (
           <ProtectedRoute>
-            <div>ANALYTICS</div>
+            <ActionAnalytics />
           </ProtectedRoute>
         ),
         errorElement: <></>,

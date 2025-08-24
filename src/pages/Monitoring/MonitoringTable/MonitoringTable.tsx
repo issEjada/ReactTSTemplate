@@ -1,21 +1,27 @@
-import { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
 import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
-import NoSessions from "./NoSessions";
 import SessionActivity from "./SessionActivity";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
+import { TableFallback } from "../../../components/TableFallback";
+import { AppRoutes } from "../../../routes/AppRoutes";
+import { useNavigate } from "react-router-dom";
+
+const ShieldIcon = React.lazy(
+  () => import("../../../assets/svg/shieldG.svg?react")
+);
 
 export type Session = {
   id: number;
   sessionId: string;
   deviceId: string;
   channel: string;
-  industry: string;
+  customerIdentity: string;
   ip: string;
   country: string;
   city: string;
@@ -61,8 +67,8 @@ const getColumns = (): ColumnDef<Session>[] => [
     ),
   },
   {
-    header: "Industry",
-    accessorKey: "industry",
+    header: "Customer Identity",
+    accessorKey: "customerIdentity",
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
@@ -185,6 +191,7 @@ export const MonitoringTable = () => {
   } = useMonitoringTable();
 
   const { sessionActivityData } = useSessionActivity();
+  const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -235,7 +242,7 @@ export const MonitoringTable = () => {
         sessionId: item.sessionId,
         deviceId: item.deviceId,
         channel: item.channel,
-        industry: item.industry,
+        customerIdentity: item.customerIdentity,
         ip: item.ip,
         country: item.country,
         city: item.city,
@@ -297,7 +304,17 @@ export const MonitoringTable = () => {
         </div>
       </div>
       {totalCount === 0 && !isFilterActive ? (
-        <NoSessions />
+        <TableFallback
+          icon={<ShieldIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding decision rules"
+          description={
+            <>
+              You don’t have any sessions yet.
+              <br />
+              Start monitoring by adding new sessions now"
+            </>
+          }
+        />
       ) : (
         <>
           <DynamicTable<Session>
@@ -325,9 +342,14 @@ export const MonitoringTable = () => {
             setSearchText={setSearchText}
             openFilterModal={openFilterModal}
             applyFilters={applyFilters}
-            searchPlaceholder="Search"
+            searchPlaceholder="Search Session ID"
             showStatusFilter={true}
-            isMonitoringTable={true}
+            onRowClick={(rowData) => {
+              const { id } = rowData as { id: string | number };
+              navigate(AppRoutes.monitoringView, {
+                state: { id: id.toString(), action: "view" },
+              });
+            }}
             statusFilterOptions={[
               { key: "All", label: "View All" },
               { key: "VIEWED", label: "Viewed" },

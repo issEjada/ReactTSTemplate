@@ -54,13 +54,13 @@ export interface CreateDecisionPayload {
 }
 
 export interface UpdateDecisionPayload {
-  name: string;
-  description: string;
-  eventCode: string;
-  criteriaName: string;
-  condition: string;
-  decision: string;
-  status: string;
+  name?: string;
+  description?: string;
+  eventCode?: string;
+  criteriaName?: string;
+  condition?: string;
+  decision?: string;
+  status?: string;
 }
 
 export interface GetDecisionParametersPayload {

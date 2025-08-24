@@ -15,6 +15,8 @@ import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
+import { TableFallback } from "../../../components/TableFallback";
+import { AppRoutes } from "../../../routes/AppRoutes";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -22,11 +24,9 @@ const DeleteIcon = React.lazy(
   () => import("../../../assets/svg/Delete.svg?react")
 );
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
+
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/LockIcon.svg?react")
-);
-const BackgroundCircle = React.lazy(
-  () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
 
 type Rule = {
@@ -117,7 +117,10 @@ const RuleMenu = ({
       <button
         ref={buttonRef}
         className="h-[30px] w-[30px] flex items-center justify-center rounded hover:bg-gray-200 focus:outline-none"
-        onClick={toggleMenu}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleMenu();
+        }}
         aria-label="More options"
       >
         <span className="flex flex-col justify-center items-center gap-[3px]">
@@ -152,7 +155,7 @@ const RuleMenu = ({
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
               onClick={handleEdit}
             >
-              <EditIcon className="h-4 w-4"/>
+              <EditIcon className="h-4 w-4" />
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -184,7 +187,9 @@ const RuleMenu = ({
   );
 };
 
-export const ScoringRulesTable = () => {
+export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
+  fromDashboard = false,
+}) => {
   const {
     data = [],
     loadingState,
@@ -198,6 +203,7 @@ export const ScoringRulesTable = () => {
     refetch,
     handleSearchSubmit,
     deleteRule,
+    handleToggleStatus, // Destructure handleToggleStatus from the hook
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -241,10 +247,6 @@ export const ScoringRulesTable = () => {
     setCurrentPage(1);
   };
 
-  const handleToggleStatus = async () => {
-    await refetch();
-  };
-
   const handleDeleteRule = async (id: number) => {
     try {
       await deleteRule(id);
@@ -255,15 +257,11 @@ export const ScoringRulesTable = () => {
   };
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule),
-    []
+    () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
+    [handleToggleStatus, handleDeleteRule]
   );
 
   const navigate = useNavigate();
-
-  const handleAddNewRule = () => {
-    navigate("/scoring-rules/new-rule");
-  };
 
   const handleClearSearch = () => {
     setSearchText("");
@@ -280,11 +278,20 @@ export const ScoringRulesTable = () => {
   if (loadingState === "loading") {
     return <FullScreenSpinner />;
   }
-
+  const handleAddNewRule = () => {
+    navigate("/scoring-rules/new-rule");
+  };
   return (
-    <div className="p-6 bg-white shadow-sm dark:bg-black">
-      <div className="mb-6">
-        <div className="flex items-center justify-between pt-5">
+    <div
+      className={` bg-white  dark:bg-black${
+        fromDashboard
+          ? "w-[60%] h-full dark:bg-black"
+          : " pt-[50px] p-6 w-full overflow-hidden"
+      }`}
+    >
+      {" "}
+      <div className="flex items-center justify-between mb-6 ">
+        <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Scoring Rules{" "}
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
@@ -292,67 +299,47 @@ export const ScoringRulesTable = () => {
               {totalCount !== 1 && "s"}
             </span>
           </h2>
-
-          {totalCount !== 0 && (
+          <p className="text-sm text-gray-500 mt-1">
+            Keep track of customers and their security levels.
+          </p>
+        </div>
+        {totalCount !== 0 && !fromDashboard && (
+          <div className="ml-auto">
             <button
               onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
+              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
             >
               <PlusIcon className="w-[20px] h-[20px]" />
               Add New Rule
             </button>
-          )}
-        </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
-      </div>
-
-      {totalCount === 0 && !isFilterActive ? (
-        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
-          {/* Wrapper for icon + background */}
-          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
-            {/* Background Circle positioned behind */}
-            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
-              <BackgroundCircle
-                className="
-            absolute
-            left-1/2 top-[28%]
-            -translate-x-1/2 -translate-y-1/2
-            w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
-            h-[400px]
-            pointer-events-none select-none
-            z-0
-          "
-              />
-            </div>
-
-            {/* Lock Icon in styled border */}
-            <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
-              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <LockIcon className="sm:w-[28px] sm:h-[28px]" />
-              </div>
-            </div>
           </div>
+        )}
 
-          {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
-            Start adding new rules
-          </h3>
-          <p className="text-sm text-gray-500 mb-6">
-            You don’t have any rule yet. Start securing by adding new rules now.
-          </p>
-
-          {/* Add Button */}
+        {fromDashboard && (
           <button
             onClick={handleAddNewRule}
-            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[352px] h-10 flex items-center justify-center gap-2"
+            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+            aria-label="Add New Rule"
           >
-            <PlusIcon className="w-[20px] h-[20px]" />
-            Add New Rule
+            <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
           </button>
-        </div>
+        )}
+      </div>
+      {totalCount === 0 && !isFilterActive ? (
+        <TableFallback
+          icon={<LockIcon className="sm:w-[28px] sm:h-[28px]" />}
+          title="Start adding scoring rules"
+          description={
+            <>
+              You don’t have any scoring rules yet.
+              <br />
+              Start securing by adding new rules now.
+            </>
+          }
+          buttonText="Add New Scoring Rule"
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
+          onButtonClick={handleAddNewRule}
+        />
       ) : (
         <DynamicTable<Rule>
           data={data.map((item) => ({
@@ -375,23 +362,37 @@ export const ScoringRulesTable = () => {
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
-          onFilterStatus={onFilterStatus as (status: string) => void}
-          statusFilter={statusFilter}
+          onFilterStatus={
+            !fromDashboard ? (onFilterStatus as (s: string) => void) : undefined
+          }
+          statusFilter={!fromDashboard ? statusFilter : undefined}
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
           title="Scoring Rules"
+          loadingState={loadingState}
           error={error}
-          searchText={searchText}
-          setSearchText={setSearchText}
-          openFilterModal={openFilterModal}
-          applyFilters={applyFilters}
-          searchPlaceholder="Search rules"
-          showStatusFilter={true}
-          statusFilterOptions={[
-            { key: "All", label: "View All" },
-            { key: "ENABLED", label: "Active" },
-            { key: "DISABLED", label: "Inactive" },
-          ]}
+          searchText={!fromDashboard ? searchText : ""}
+          setSearchText={!fromDashboard ? setSearchText : () => {}}
+          openFilterModal={!fromDashboard ? openFilterModal : () => {}}
+          applyFilters={!fromDashboard ? applyFilters : () => {}}
+          searchPlaceholder="Search Rule Name"
+          showStatusFilter={!fromDashboard}
+          onRowClick={(rowData) => {
+            const { id } = rowData as { id: string | number };
+            navigate(AppRoutes.viewScoringRule, {
+              state: { id: id.toString(), action: "view" },
+            });
+          }}
+          statusFilterOptions={
+            !fromDashboard
+              ? [
+                  { key: "All", label: "View All" },
+                  { key: "ENABLED", label: "Active" },
+                  { key: "DISABLED", label: "Inactive" },
+                ]
+              : undefined
+          }
+          minimal={fromDashboard}
         />
       )}
     </div>
@@ -399,7 +400,7 @@ export const ScoringRulesTable = () => {
 };
 
 const getColumns = (
-  onToggleStatus: (id: number) => void,
+  onToggleStatus: (id: number, currentStatus: string) => void, // Update signature
   onDelete: (id: number) => void
 ): ColumnDef<Rule>[] => [
   {
@@ -409,9 +410,9 @@ const getColumns = (
 
       const isActive = status === "ENABLED";
       return (
-        <div className="flex justify-center">
+        <div className="flex justify-content flex-start">
           <button
-            onClick={() => onToggleStatus(row.original.id)}
+            onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"
@@ -449,7 +450,7 @@ const getColumns = (
     header: "Status",
     accessorKey: "status",
     cell: (info) => (
-       <span
+      <span
         className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
             ? "bg-green-100 text-green-700"
@@ -473,7 +474,9 @@ const getColumns = (
       const colorMap: Record<string, string> = {
         Low: "text-gray-700 bg-gray-100",
         Moderate: "text-warning-700 bg-warning-50",
+        Medium: "text-warning-700 bg-warning-50",
         High: "text-red-700 bg-red-50",
+        Extreme: "text-red-700 bg-red-50",
       };
       // Capitalize first letter, rest lowercase
       const display =

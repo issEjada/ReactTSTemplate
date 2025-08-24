@@ -1,12 +1,12 @@
 import { httpClient, getHeaders } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
- 
+
 export interface GetSessionItemInterface {
-  id: number
+  id: number;
   sessionId: string;
   deviceId: string;
   channel: string;
-  industry: string;
+  customerIdentity: string;
   ip: string;
   country: string;
   city: string;
@@ -14,44 +14,41 @@ export interface GetSessionItemInterface {
   creationTimestamp: string;
   lastUpdatedTimestamp: string;
 }
- 
-export interface GetSessionsInterface {
-  sessions: GetSessionItemInterface[];
-  meta?: { totalItems: number };
-}
 
-export interface GetSessionInterface
-{
-    sessionId: string;
-    customerIdentity: string;
-    channel: string;
-    platform: string;
-    ipAddresses: string[];
-    locations: string[];
-    deviceId: string;
-    isIncognito: boolean;
-    activeXEnabled: boolean;
-    riskScore: string;
-    lastEvent: {
-      eventCode: string;
-      eventName: string;
-      transactionId: string;
-      transactionAmount: string;
-      maskedCard: string;
-      phoneNumber: string;
-      timestamp: string;
-    };
-    transactionSummary: {
-      total: number;
-      currency: string;
-    };
-    userAgent: string;
-    timezone: string[];
-    updatedAt: string;
-  }
+// export interface GetSessionsInterface {
+//   sessions: GetSessionItemInterface[];
+//   meta?: { totalItems: number };
+// }
 
-export type TTableColumns = GetSessionItemInterface;
- 
+// export interface GetSessionInterface {
+//   sessionId: string;
+//   customerIdentity: string;
+//   channel: string;
+//   platform: string;
+//   ipAddresses: string[];
+//   locations: string[];
+//   deviceId: string;
+//   isIncognito: boolean;
+//   activeXEnabled: boolean;
+//   riskScore: string;
+//   lastEvent: {
+//     eventCode: string;
+//     eventName: string;
+//     transactionId: string;
+//     transactionAmount: string;
+//     maskedCard: string;
+//     phoneNumber: string;
+//     timestamp: string;
+//   };
+//   transactionSummary: {
+//     total: number;
+//     currency: string;
+//   };
+//   userAgent: string;
+//   timezone: string[];
+//   updatedAt: string;
+// }
+
 export interface GetSessionsListPayload {
   page: number;
   maxPageSize: number;
@@ -60,12 +57,12 @@ export interface GetSessionsListPayload {
   [key: string]: string | number | undefined;
 }
 
-export interface GetSessionPayload{
+export interface GetSessionPayload {
   page: number;
   maxPageSize: number;
-  id : string,
+  id: string;
 }
- 
+
 export interface GetSessionsListResponse {
   status: number;
   data: {
@@ -103,6 +100,14 @@ export interface PaginationMeta {
 export interface EventsData {
   data: EventItem[];
   meta: PaginationMeta;
+}
+
+export interface GetStatisticsResponse {
+  totalSessions: number;
+  viewedSessions: number;
+  notViewedSessions: number;
+  viewedPercentage: number;
+  notViewedPercentage: number;
 }
 
 export interface GetSessionResponse {
@@ -155,17 +160,17 @@ export const monitoringService = {
         },
       }
     );
- 
+
     return {
       status: response.status,
       data: {
-        sessions : response.data.data,
-        meta : response.data.meta ,
+        sessions: response.data.data,
+        meta: response.data.meta,
       },
     };
   },
 
-    getSessionsItem: async (
+  getSessionsItem: async (
     data: GetSessionPayload
   ): Promise<GetSessionResponse> => {
     const { id, page, maxPageSize } = data;
@@ -179,8 +184,18 @@ export const monitoringService = {
         },
       }
     );
- 
+
     return response.data;
   },
- 
+
+  getStatistics: async (): Promise<GetStatisticsResponse> => {
+    const response = await httpClient.get(
+      `${import.meta.env.VITE_API_BASE_URL}${API.statistics}`,
+      {
+        headers: getHeaders(),
+      }
+    );
+
+    return response.data;
+  },
 };

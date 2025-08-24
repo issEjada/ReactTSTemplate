@@ -13,6 +13,18 @@ module.exports = {
     },
     extend: {
       colors: {
+        blueLight:{
+          50: "#F0F9FF",
+          100:"#E0F2FE",
+        },
+        blueGray:{
+          50: "#F8F9FC",
+          100: "#EAECF5",
+          200: "#D5D9EB",
+          300: "#AFB5D9",
+          600: "#535862",
+          700: "#363F72",
+        },
         gray: {
           50: "#FAFAFA",
           100: "#F5F5F5",
@@ -29,6 +41,9 @@ module.exports = {
         blue: {
           500: "#2E90FA",
           700: "#1637C4",
+        },
+        purple:{
+          700: "#5925DC",
         },
         red: {
           50: "#FEF3F2",

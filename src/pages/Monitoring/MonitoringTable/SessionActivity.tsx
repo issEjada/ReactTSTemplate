@@ -126,7 +126,7 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
               <Tooltip
                 contentStyle={{
                   color: isDarkMode ? "white" : "",
-                  backgroundColor: isDarkMode ? "#1C1C1CCC" : "",
+                  backgroundColor: isDarkMode ? "#1F2937" : "white",
                   boxShadow: "none",
                   padding: "8px 12px",
                   border: "1px solid #E5E7EB",
