@@ -12,7 +12,7 @@ export interface DevicesHealthChecksFilterData {
 
 export const useDevicesHealthChecks = () => {
   const [devicesHealthChecksData, setDevicesHealthChecksData] =
-    useState<DevicesHealthChecksResponse[]>(); 
+    useState<DevicesHealthChecksResponse>(); 
   const [devicesHealthChecksFilterData, setDevicesHealthChecksFilterData] =
     useState<DevicesHealthChecksFilterData>({
       fromTimestamp: new Date().toISOString(),
@@ -31,7 +31,8 @@ export const useDevicesHealthChecks = () => {
     const data = {
       maxPageSize: 10,
       page: currentPage,
-      ...devicesHealthChecksFilterData,
+      fromTimestamp: new Date(devicesHealthChecksFilterData.fromTimestamp || "").toISOString(),
+      toTimestamp: new Date(devicesHealthChecksFilterData.toTimestamp || "").toISOString(),
     };
 
     await CustomerClient.getDevicesHealthChecksData(data)
