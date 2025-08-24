@@ -6,8 +6,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../routes/AppRoutes";
 import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "./FullScreenSpinner";
 import type { LoadingState } from "../types/types";
@@ -15,6 +13,7 @@ import type { LoadingState } from "../types/types";
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
 const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
+
 const ArrowIcon = React.lazy(() => import("../assets/svg/ArrowUp.svg?react"));
 
 interface DynamicTableProps<TData extends object> {
@@ -39,11 +38,10 @@ interface DynamicTableProps<TData extends object> {
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
+  onRowClick?: (rowData: TData) => void; // New prop for dynamic row click navigation
   minimal?: boolean;
   minimalWithPagination?: boolean;
   loadingState?: LoadingState;
-  headerRightExtra?: React.ReactNode;
-  headerLeft?: React.ReactNode;
 }
 
 export function DynamicTable<TData extends object>({
@@ -67,12 +65,10 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
-  isMonitoringTable = false,
+  onRowClick, // Destructure new prop
   minimal = false,
   minimalWithPagination = false,
   loadingState,
-  headerLeft = false,
-  headerRightExtra = false,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -85,7 +81,6 @@ export function DynamicTable<TData extends object>({
     getRowId: (originalRow: ViewSessionsFormValues, index) =>
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
-  const navigate = useNavigate();
 
   if (error) {
     return (
@@ -106,71 +101,14 @@ export function DynamicTable<TData extends object>({
   };
 
   return (
-    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg bg-white dark:bg-[#121418] ">
+    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418] ">
       {!(minimal || minimalWithPagination) && (
-        <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-3">
-          <div className="flex items-center justify-between gap-3 flex-wrap">
-            <div className="min-w-[120px]">{headerLeft}</div>
-
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-              <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
-                <button
-                  type="button"
-                  title="Search"
-                  onClick={applyFilters}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-                >
-                  <Suspense>
-                    <SearchIcon className="w-5 h-5" />
-                  </Suspense>
-                </button>
-
-                <input
-                  type="text"
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") applyFilters();
-                  }}
-                  placeholder={searchPlaceholder}
-                  className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
-                />
-
-                {searchText && (
-                  <button
-                    onClick={() => onClearSearch()}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-                    aria-label="Clear search"
-                  >
-                    &#10005;
-                  </button>
-                )}
-              </div>
-
-              {filterComponent && (
-                <button
-                  className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
-                  onClick={openFilterModal}
-                >
-                  <Suspense>
-                    <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
-                  </Suspense>
-                  <span className="hidden sm:inline">Filter</span>
-                </button>
-              )}
-              {headerRightExtra && (
-                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-                  {headerRightExtra}
-                </div>
-              )}
-            </div>
-          </div>
-
+        <div className="px-4  sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
           {showStatusFilter &&
             onFilterStatus &&
             statusFilter &&
             statusFilterOptions && (
-              <div className="w-full">
+              <div className="w-full sm:w-auto">
                 <div className="rounded-lg overflow-hidden border border-gray-300 sm:divide-y-0 divide-y divide-gray-300 sm:flex sm:space-x-0">
                   {statusFilterOptions.map((option, idx) => (
                     <button
@@ -188,6 +126,54 @@ export function DynamicTable<TData extends object>({
                 </div>
               </div>
             )}
+
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+            <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
+              <button
+                type="button"
+                title="Search"
+                onClick={applyFilters}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+              >
+                <Suspense>
+                  <SearchIcon className="w-5 h-5" />
+                </Suspense>
+              </button>
+
+              <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") applyFilters();
+                }}
+                placeholder={searchPlaceholder}
+                className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+              />
+
+              {searchText && (
+                <button
+                  onClick={() => onClearSearch()}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                  aria-label="Clear search"
+                >
+                  &#10005;
+                </button>
+              )}
+            </div>
+
+            {filterComponent && (
+              <button
+                className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+                onClick={openFilterModal}
+              >
+                <Suspense>
+                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
+                </Suspense>
+                <span className="hidden sm:inline">Filter</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -196,7 +182,7 @@ export function DynamicTable<TData extends object>({
       <div className="overflow-x-auto">
         <table className="min-w-[900px] w-full table-auto text-sm text-center">
           {table.getRowModel().rows.length > 0 ? (
-            <thead className="bg-white dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+            <thead className="bg-white  dark:bg-[#121418] dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
@@ -219,22 +205,20 @@ export function DynamicTable<TData extends object>({
                         {(header.id === "deviceId" ||
                           header.id === "sessionId" ||
                           header.id === "name" ||
-                          header.id === "userMobileNumber" ||
                           header.id === "id") && (
                           <button
                             title="sorting"
                             onClick={() => onArrowClick(header.column.id)}
                           >
-                            <Suspense>
-                              <ArrowIcon
-                                className={`stroke-gray-600 dark:stroke-white ${
-                                  header.column.getIsSorted() === "asc"
-                                    ? "transform rotate-180 transition-transform"
-                                    : header.column.getIsSorted() === "desc" &&
-                                      "transform rotate-0 transition-transform"
-                                }`}
-                              />
-                            </Suspense>
+                            <ArrowIcon
+                              className={`stroke-gray-600 dark:stroke-white   ${
+                                header.column.getIsSorted() === "asc"
+                                  ? "transform rotate-180 transition-transform"
+                                  : header.column.getIsSorted() === "desc" &&
+                                    "transform rotate-0 transition-transform"
+                              }
+                              `}
+                            />
                           </button>
                         )}
                       </div>
@@ -252,13 +236,8 @@ export function DynamicTable<TData extends object>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  {...(isMonitoringTable && {
-                    onClick: () => {
-                      const { id } = row.original as { id: string | number };
-                      navigate(AppRoutes.monitoringView, {
-                        state: { id: id.toString() },
-                      });
-                    },
+                  {...(onRowClick && {
+                    onClick: () => onRowClick(row.original),
                   })}
                   className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800 cursor-pointer"
                 >
@@ -282,7 +261,7 @@ export function DynamicTable<TData extends object>({
                     <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
-                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center dark:border-gray-700 ">
+                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center  dark:border-gray-700 ">
                             <Suspense>
                               <SearchIcon className="text-blue-700" />
                             </Suspense>
