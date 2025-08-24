@@ -400,7 +400,10 @@ const getColumns = (
       return (
         <div className="flex justify-center">
           <button
-            onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleStatus(row.original.id, status);
+            }}
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"

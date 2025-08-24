@@ -1,4 +1,4 @@
-import { useState, lazy } from "react";
+import { useState, lazy, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../../../components/DropDown";
@@ -24,6 +24,8 @@ const EventsForm = () => {
     statusValues,
     handleSubmit,
     reset,
+    popupType,
+    popupMessage,
   } = useViewEvents();
 
   const navigate = useNavigate();
@@ -37,6 +39,14 @@ const EventsForm = () => {
   const handleEditClick = () => {
     setScreenAction("edit");
   };
+
+  useEffect(() => {
+    if (popupType === "successModal" && loadingState === "success") {
+      setIsPopupOpen(true);
+    } else if (popupType === "errorModal" && loadingState === "error") {
+      setIsPopupOpen(true);
+    }
+  }, [popupType, loadingState]);
 
   return (
     <form
@@ -263,7 +273,6 @@ const EventsForm = () => {
         <button
           type="submit"
           disabled={isViewing}
-          onClick={() => setIsPopupOpen(true)}
           className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-900 disabled:opacity-50"
         >
           Save Event
@@ -279,17 +288,25 @@ const EventsForm = () => {
 
       {/* Confirm / Delete Popups */}
 
-      <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
-        <RulesPopupJsx
-          isAdding={isAdding}
-          isEditing={isEditing}
-          onConfirm={() => {
-            setIsPopupOpen(false);
-            navigate("/EventsManagement");
-          }}
-          onCancel={() => setIsPopupOpen(false)}
-        />
-      </LayoutPopup>
+      {isPopupOpen && (
+        <div>
+          <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+            <RulesPopupJsx
+              isAdding={isAdding && popupType === "successModal"}
+              isEditing={isEditing && popupType === "successModal"}
+              isError={popupType === "errorModal"}
+              errorMessage={popupMessage}
+              onConfirm={() => {
+                setIsPopupOpen(false);
+              }}
+              onCancel={() => {
+                setIsPopupOpen(false);
+                navigate("/events"); // Navigate to events list or stay on form
+              }}
+            />
+          </LayoutPopup>
+        </div>
+      )}
     </form>
   );
 };

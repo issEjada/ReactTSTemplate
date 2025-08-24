@@ -112,7 +112,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
 
   const handleUpdateEvent = () => {
     setOpen(false);
-    navigate("/events/new-event", {
+    navigate(AppRoutes.editEvents, {
       state: { action: "edit", id: row.id, event: row },
     });
   };
@@ -268,7 +268,7 @@ export const EventsTable = () => {
   };
 
   const handleAddNewEvent = () => {
-    navigate("/events/new-event", { state: { action: "add" } });
+    navigate(AppRoutes.addEvents);
   };
 
   if (loadingState === "loading") {

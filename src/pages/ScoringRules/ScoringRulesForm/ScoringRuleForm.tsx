@@ -389,7 +389,6 @@ const RuleForm = () => {
         <div className="flex gap-4">
           <button
             type="submit"
-            onClick={() => setIsPopupOpen(true)}
             className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto mt-10 hover:bg-blue-900 transition duration-100"
           >
             Save Rule
