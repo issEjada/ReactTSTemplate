@@ -262,7 +262,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   return (
     <div className="flex flex-col gap-4">
       {/* KPI Cards */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4 flex-wrap justify-around">
         <MetricCard
           title="Total Actions"
           value={
@@ -285,9 +285,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           icon={<MfaIcon />}
           className="w-full md:w-[370px]"
         />
-      </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
         <MetricCard
           title="Authenticated Actions"
           value={
