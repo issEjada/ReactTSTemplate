@@ -161,11 +161,12 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     "actionStatistics" | "trustedIndicators" | null
   >(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, ] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
 
   const { actionAnalyticsData, errorValidation, loadingState } =
-    useActionAnalytics(userMobileNumber, currentPage);
+    useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
 
   console.log("Action Analytics Data:", actionAnalyticsData);
 
@@ -333,9 +334,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}
-              totalCount={formattedAnalyticData?.length || 0}
+              totalCount={actionAnalyticsData?.actionsAnalytics.meta.totalItems || 0}
               currentPage={currentPage}
-              itemsPerPage={10}
+              itemsPerPage={itemsPerPage}
               setCurrentPage={setCurrentPage}
               searchText={searchText}
               setSearchText={setSearchText}

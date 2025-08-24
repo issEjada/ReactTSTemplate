@@ -7,7 +7,8 @@ import {
 
 export const useActionAnalytics = (
   userMobileNumber: string,
-  currentPage: number
+  currentPage: number,
+  itemsPerPage: number,
 ) => {
   const [actionAnalyticsData, setActionAnalyticsData] =
     useState<ActionAnalyticsResponse>();
@@ -23,6 +24,7 @@ export const useActionAnalytics = (
     const data: ActionAnalyticsPayload = {
       userMobileNumber: userMobileNumber,
       page: currentPage,
+      maxPageSize: itemsPerPage
     };
     await CustomerClient.getActionsAnalyticsData(data)
       .then((value) => {
@@ -40,7 +42,8 @@ export const useActionAnalytics = (
 
   useEffect(() => {
     fetchActionAnalyticsData();
-  }, []);
+    console.log("currentPage", currentPage)
+  }, [currentPage, userMobileNumber]);
 
   return {
     actionAnalyticsData,
