@@ -186,7 +186,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
         Dashboard
       </Link>
-      <span className="text-[#1C1C1C33]">/</span>
+      <span className="text-[#1C1C1C33] dark:text-gray-700">/</span>
 
       {fullPath.map((name, index) => {
         const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
