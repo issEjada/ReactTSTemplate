@@ -144,7 +144,10 @@ const EventMenu = ({ row }: { row: EventRow }) => {
             <button
               type="button"
               className="w-[151px] h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800 rounded-t-[8px]"
-              onClick={handleView}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleView();
+              }}
             >
               <ViewIcon />
               <span className="text-[14px] whitespace-nowrap">
@@ -155,7 +158,10 @@ const EventMenu = ({ row }: { row: EventRow }) => {
             <button
               type="button"
               className="w-[151px] h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800 rounded-b-[8px]"
-              onClick={handleUpdateEvent}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleUpdateEvent();
+              }}
             >
               <Update />
               <span className="text-[14px]">Update Event</span>
