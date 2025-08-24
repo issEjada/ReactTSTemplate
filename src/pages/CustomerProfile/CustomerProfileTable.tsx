@@ -12,10 +12,16 @@ import type { ViewSessionsFormValues } from "../Monitoring/MonitoringFilter/useM
 import FullScreenSpinner from "../../components/FullScreenSpinner";
 import type { LoadingState } from "../../types/types";
 
-const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
-const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
-const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
-const ArrowIcon = React.lazy(() => import("../assets/svg/ArrowUp.svg?react"));
+const SearchIcon = React.lazy(
+  () => import("../../assets/svg/Search.svg?react")
+);
+const FilterIcon = React.lazy(
+  () => import("../../assets/svg/Filters.svg?react")
+);
+const PlusIcon = React.lazy(() => import("../../assets/svg/plus.svg?react"));
+const ArrowIcon = React.lazy(
+  () => import("../../assets/svg/ArrowUp.svg?react")
+);
 
 interface DynamicTableProps<TData extends object> {
   data: TData[];

@@ -74,6 +74,7 @@ const HealthCheckDateButton: React.FC<{
                 type="datetime-local"
                 value={dateTimeRange.fromTimestamp}
                 onChange={handleDateTimeChange("fromTimestamp")}
+                title="Select start date and time"
                 className=" w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
                     dark:bg-[#121418] dark:border-gray-800 dark:text-white
@@ -91,6 +92,7 @@ const HealthCheckDateButton: React.FC<{
                 value={dateTimeRange.toTimestamp}
                 onChange={handleDateTimeChange("toTimestamp")}
                 min={dateTimeRange.fromTimestamp}
+                title="Select end date and time"
                 className={` w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
                     dark:bg-[#121418] dark:border-gray-800 dark:text-white
