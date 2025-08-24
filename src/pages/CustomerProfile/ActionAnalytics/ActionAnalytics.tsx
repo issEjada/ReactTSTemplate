@@ -6,6 +6,7 @@ import MetricCard from "./MetricCard";
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { ActionTrustedIndicator } from "./ActionTrustedIndicator";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -161,11 +162,12 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     "actionStatistics" | "trustedIndicators" | null
   >(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, ] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
 
   const { actionAnalyticsData, errorValidation, loadingState } =
-    useActionAnalytics(userMobileNumber, currentPage);
+    useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
 
   console.log("Action Analytics Data:", actionAnalyticsData);
 
@@ -293,7 +295,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               .numberOfAuthenticatedActions || 0
           }
           icon={<AuthActionIcon />}
-          className="w-full md:w-[370px]"
+          className="w-full md:w-[370px] text-purple-700"
         />
         <MetricCard
           title="Rejected Actions"
@@ -306,7 +308,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         <MetricCard
           title="SCA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
-          icon={<ScaIcon />}
+          icon={<ScaIcon className="text-blueLight-600"/>}
           className="w-full md:w-[370px]"
         />
       </div>
@@ -316,6 +318,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           values={popUpData}
+        />
+      )}
+
+      {isOpen && popUpType === "trustedIndicators" && (
+        <ActionTrustedIndicator
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
         />
       )}
 
@@ -333,9 +342,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}
-              totalCount={formattedAnalyticData?.length || 0}
+              totalCount={actionAnalyticsData?.actionsAnalytics.meta.totalItems || 0}
               currentPage={currentPage}
-              itemsPerPage={10}
+              itemsPerPage={itemsPerPage}
               setCurrentPage={setCurrentPage}
               searchText={searchText}
               setSearchText={setSearchText}

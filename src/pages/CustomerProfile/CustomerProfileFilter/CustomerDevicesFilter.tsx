@@ -4,14 +4,14 @@ import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller, useForm } from "react-hook-form";
 import type { CustomerDevicesFilterData } from "../CustomerDevices/useCustomerDevices";
- 
+
 interface CustomerFilterFormProps {
   isOpen: boolean;
   closeDrawer: () => void;
   handleSearchSubmit: (searchData: CustomerDevicesFilterData) => void;
   filterData?: CustomerDevicesFilterData;
 }
- 
+
 const OS_TYPES = [
   { key: "IOS", node: "iOS" },
   { key: "ANDROID", node: "Android" },
@@ -20,7 +20,7 @@ const OS_TYPES = [
   { key: "LINUX", node: "Linux" },
   { key: "OTHER", node: "Other" },
 ];
- 
+
 const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
   isOpen,
   closeDrawer,
@@ -37,13 +37,17 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
       dateTo: filterData?.dateTo ?? "",
     },
   });
- 
+
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const v = getValues();
     const cleaned: CustomerDevicesFilterData = {
-      deviceUniqueId: v.deviceUniqueId?.trim() ? v.deviceUniqueId.trim() : undefined,
-      deviceManufacturer: v.deviceManufacturer?.trim() ? v.deviceManufacturer.trim() : undefined,
+      deviceUniqueId: v.deviceUniqueId?.trim()
+        ? v.deviceUniqueId.trim()
+        : undefined,
+      deviceManufacturer: v.deviceManufacturer?.trim()
+        ? v.deviceManufacturer.trim()
+        : undefined,
       deviceModel: v.deviceModel?.trim() ? v.deviceModel.trim() : undefined,
       osType: v.osType || undefined,
       dateFrom: v.dateFrom || undefined,
@@ -52,15 +56,22 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
     handleSearchSubmit(cleaned);
     closeDrawer();
   };
- 
+
   const handleClear = () => {
     reset();
     handleSearchSubmit({});
   };
- 
+
   return (
-    <FilterLayout title="Filter Customer Devices" isOpen={isOpen} onClose={closeDrawer}>
-      <form className="flex flex-col justify-between h-[672px]" onSubmit={onFormSubmit}>
+    <FilterLayout
+      title="Filter Customer Devices"
+      isOpen={isOpen}
+      onClose={closeDrawer}
+    >
+      <form
+        className="flex flex-col space-y-3 h-[672px]"
+        onSubmit={onFormSubmit}
+      >
         <div className="relative flex flex-col mt-6">
           <label className="text-sm font-medium dark:text-white">
             Device ID
@@ -73,23 +84,23 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
                 {...field}
                 type="text"
                 placeholder="Enter Device ID"
-                className="w-[95%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
               />
             )}
           />
- 
-          <div className="absolute top-[40px] left-[calc(95%-32px)] group">
+
+          <div className="absolute right-2 mr-1.5 top-[40px] group pb-0.5">
             <img
               src={ToolTipQuestionMark}
               className="w-4 h-4 cursor-pointer"
               alt="Tooltip"
             />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                Enter Device ID.
+              Enter Device ID.
             </div>
           </div>
         </div>
- 
+
         <div className="flex flex-col">
           <label className="text-sm font-medium">deviceManufacturer</label>
           <Controller
@@ -105,7 +116,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
             )}
           />
         </div>
- 
+
         <div className="flex flex-col">
           <label className="text-sm font-medium">deviceModel</label>
           <Controller
@@ -121,7 +132,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
             )}
           />
         </div>
- 
+
         <DropdownMenu<CustomerDevicesFilterData>
           control={control}
           name="osType"
@@ -130,7 +141,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
           placeholder="Choose OS"
           className="w-full"
         />
- 
+
         <div className="flex gap-4 mb-4">
           <div className="w-1/2">
             <label className="text-sm font-medium">Date From</label>
@@ -161,8 +172,8 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
             />
           </div>
         </div>
- 
-        <div className="flex justify-end gap-2 mb-8">
+
+        <div className="fixed bottom-6 right-6 flex justify-end gap-2">
           <button
             type="submit"
             className="bg-blue-700 hover:bg-blue-800 text-white text-sm px-4 py-2 rounded-md"
@@ -181,5 +192,5 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
     </FilterLayout>
   );
 };
- 
+
 export default CustomerDevicesFilter;
