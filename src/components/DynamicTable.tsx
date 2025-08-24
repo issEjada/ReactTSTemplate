@@ -71,8 +71,8 @@ export function DynamicTable<TData extends object>({
   minimal = false,
   minimalWithPagination = false,
   loadingState,
-  headerLeft,
-  headerRightExtra,
+  headerLeft = false,
+  headerRightExtra = false,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -158,11 +158,11 @@ export function DynamicTable<TData extends object>({
                   <span className="hidden sm:inline">Filter</span>
                 </button>
               )}
-            {headerRightExtra && (
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-              {headerRightExtra}
-            </div>
-            )}
+              {headerRightExtra && (
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+                  {headerRightExtra}
+                </div>
+              )}
             </div>
           </div>
 
