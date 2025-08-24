@@ -6,6 +6,7 @@ import MetricCard from "./MetricCard";
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { ActionTrustedIndicator } from "./ActionTrustedIndicator";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -317,6 +318,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           values={popUpData}
+        />
+      )}
+
+      {isOpen && popUpType === "trustedIndicators" && (
+        <ActionTrustedIndicator
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
         />
       )}
 
