@@ -2,7 +2,6 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { useContext, useMemo } from "react";
 import { ThemeContext } from "../../context/Context";
 import { useSessionActivity } from "../../pages/Monitoring/MonitoringTable/useSessionActivity";
-import type { GetStatisticsResponse } from "../../pages/Monitoring/monitoringServices";
 
 type RCTooltipProps = {
   active?: boolean;
@@ -64,7 +63,11 @@ export default function PieChartComponent() {
             <Tooltip
               cursor={false}
               content={({ active, payload }) => (
-                <DonutTooltip active={active} payload={payload as any} total={total} />
+                <DonutTooltip
+                  active={active}
+                  payload={payload as any}
+                  total={total}
+                />
               )}
               wrapperStyle={{ outline: "none" }}
             />
