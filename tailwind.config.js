@@ -16,6 +16,7 @@ module.exports = {
         blueLight:{
           50: "#F0F9FF",
           100:"#E0F2FE",
+          600: "#0086C9",
         },
         blueGray:{
           50: "#F8F9FC",

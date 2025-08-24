@@ -57,9 +57,9 @@ const RulesPopupJsx = ({
     : isAdding
     ? "Congratulations, your new rule is created successfully."
     : isEditing
-    ? "The scoring rule details has been updated successfully."
+    ? "The rule details has been updated successfully."
     : isDeleting
-    ? "Are you sure you want to delete this scoring rule?"
+    ? "Are you sure you want to delete this rule?"
     : isConfirm
     ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed ?"
     : "";

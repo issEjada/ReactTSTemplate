@@ -90,6 +90,7 @@ interface ActionsStatistics {
 
 interface ActionsTrustedIndicators {
   avgAmount: string;
+  minAmount: string;
   maxAmount: string;
   mostUsedTargetCountry: string[];
   trustedTargetCountries: string[];
@@ -160,12 +161,21 @@ export interface CustomerDeviceResponse {
 }
 
 export interface DevicesHealthChecksResponse {
-  deviceId: string;
-  manufacturer: string;
-  model: string;
-  appInstallationId: string;
-  checkTimestamp: string;
-  negativeHealthCheck: string;
+  data: {
+    healthCheckRecords: {
+      deviceInfo: {
+        deviceId: {
+          uniqueId: string;
+          manufacturer: string;
+          model: string;
+        };
+        appInstallationId: string;
+      };
+      checkTimestamp: string;
+      negativeHealthCheck: string;
+    }[];
+  };
+  meta: PaginationMeta;
 }
 
 export interface DevicesHealthChecksPayload {
@@ -258,7 +268,7 @@ export class CustomerClient {
 
   static getDevicesHealthChecksData(
     data: DevicesHealthChecksPayload
-  ): Promise<DevicesHealthChecksResponse[]> {
+  ): Promise<DevicesHealthChecksResponse> {
     const { page, maxPageSize, ...requestBody } = data;
     return httpClient
       .get(`${import.meta.env.VITE_API_SDK_URL}${API.healthCheck}`, {

@@ -30,7 +30,7 @@ const DashboardEvents: React.FC = () => {
     navigate("/events/new-event", { state: { action: "add" } });
   };
 
-  const handelViewDetails = (event: RecentEvent) => {
+  const handleViewDetails = (event: RecentEvent) => {
     navigate("/events/view-event", {
       state: { action: "view", id: event.id, event: event },
     });
@@ -82,7 +82,7 @@ const DashboardEvents: React.FC = () => {
               <button
                 type="button"
                 className="text-[12px] text-[#344054] dark:text-gray-300 hover:underline"
-                onClick={() => handelViewDetails(ev)}
+                onClick={() => handleViewDetails(ev)}
               >
                 View Details
               </button>

@@ -3,13 +3,21 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
-import type { DevicesHealthChecksResponse } from "../customerProfileServices";
 
 const DateIcon = React.lazy(() => import("../../../assets/svg/Date.svg?react"));
 
 export type DateTimeRange = {
   fromTimestamp: string;
   toTimestamp: string;
+};
+
+export type FlattenedHealthResponse = {
+  uniqueId: string;
+  manufacturer: string;
+  model: string;
+  appInstallationId: string;
+  checkTimestamp: string;
+  negativeHealthCheck: string;
 };
 
 const HealthCheckDateButton: React.FC<{
@@ -140,9 +148,24 @@ export const DevicesHealthChecks: React.FC = () => {
     setCurrentPage,
   } = useDevicesHealthChecks();
 
-  const columns = useMemo<ColumnDef<DevicesHealthChecksResponse>[]>(
+  console.log(
+    "device health checks",
+    devicesHealthChecksData?.data.healthCheckRecords
+  );
+
+  const flattened: FlattenedHealthResponse[] =
+    devicesHealthChecksData?.data.healthCheckRecords.map((record) => ({
+      uniqueId: record.deviceInfo.deviceId.uniqueId,
+      manufacturer: record.deviceInfo.deviceId.manufacturer,
+      model: record.deviceInfo.deviceId.model,
+      appInstallationId: record.deviceInfo.appInstallationId,
+      checkTimestamp: record.checkTimestamp,
+      negativeHealthCheck: record.negativeHealthCheck,
+    })) || [];
+
+  const columns = useMemo<ColumnDef<FlattenedHealthResponse>[]>(
     () => [
-      { header: "Device ID", accessorKey: "deviceId" },
+      { header: "Device ID", accessorKey: "uniqueId" },
       { header: "Manufacturers", accessorKey: "manufacturer" },
       { header: "Model", accessorKey: "model" },
       { header: "App Installation ID", accessorKey: "appInstallationId" },
@@ -174,7 +197,7 @@ export const DevicesHealthChecks: React.FC = () => {
 
   return (
     <div className="px-5 overflow-x-auto">
-      <CustomerProfileTable<DevicesHealthChecksResponse>
+      <CustomerProfileTable<FlattenedHealthResponse>
         title="Devices Health Check"
         headerLeft={
           <h2 className="text-[#181D27] dark:text-white text-[18px] font-semibold">
@@ -189,9 +212,9 @@ export const DevicesHealthChecks: React.FC = () => {
           />
         }
         minimalWithPagination={false}
-        data={devicesHealthChecksData || []}
+        data={flattened || []}
         columns={columns}
-        totalCount={devicesHealthChecksData?.length || 0}
+        totalCount={devicesHealthChecksData?.meta.totalItems || 0}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         searchText={searchText}

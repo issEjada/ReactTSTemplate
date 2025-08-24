@@ -142,7 +142,10 @@ const RuleMenu = ({
             <button
               type="button"
               className="w-full h-[40px] flex items-center gap-[12px] px-4 py-2 hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-              onClick={handleView}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleView();
+              }}
             >
               <ViewIcon />
               <span className="text-[14px] whitespace-nowrap">
@@ -153,7 +156,10 @@ const RuleMenu = ({
             <button
               type="button"
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-              onClick={handleEdit}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEdit();
+              }}
             >
               <EditIcon className="h-4 w-4" />
               <span className="text-[14px]">Edit Rule</span>
@@ -162,7 +168,10 @@ const RuleMenu = ({
             <button
               type="button"
               className="w-full h-[40px] flex items-center px-[16px] py-[10px] gap-[12px] hover:bg-gray-100 cursor-pointer text-left dark:hover:bg-gray-800"
-              onClick={handleDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
             >
               <DeleteIcon />
               <span className="text-[14px]">Delete</span>
@@ -327,7 +336,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-          icon={<LockIcon className="sm:w-[28px] sm:h-[28px]" />}
+          icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding scoring rules"
           description={
             <>
@@ -412,7 +421,10 @@ const getColumns = (
       return (
         <div className="flex justify-content flex-start">
           <button
-            onClick={() => onToggleStatus(row.original.id, status)} // Pass current status
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleStatus(row.original.id, status);
+            }}
             className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
             ${isActive ? "bg-green-600" : "bg-gray-300"}`}
             aria-label="Toggle Rule Status"

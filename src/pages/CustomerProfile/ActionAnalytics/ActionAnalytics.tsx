@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ActionStatistics } from "./ActionStatistics";
 import MetricCard from "./MetricCard";
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { ActionPopup } from "./ActionsPopup";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -41,6 +41,7 @@ export interface FormattedAnalyticData {
   authenticatedActions: number;
   averageAmount: number;
   maxAmount: number;
+  minAmount: number;
   mostUsedTargetCountry: string[];
   trustedTargetCountries: string[];
   mostUsedTargetMerchant: string[];
@@ -161,11 +162,12 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     "actionStatistics" | "trustedIndicators" | null
   >(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
 
   const { actionAnalyticsData, errorValidation, loadingState } =
-    useActionAnalytics(userMobileNumber, currentPage);
+    useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
 
   console.log("Action Analytics Data:", actionAnalyticsData);
 
@@ -207,6 +209,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               console.log("Actions Trusted Indicators for row:", row.original);
               setIsOpen(true);
               setPopUpType("trustedIndicators");
+              setPopUpData(row.original);
             }}
           />
         </div>
@@ -233,6 +236,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         event.actionsTrustedIndicators.avgAmount ?? "0"
       ),
       maxAmount: parseFloat(event.actionsTrustedIndicators.maxAmount ?? "0"),
+      minAmount: parseFloat(event.actionsTrustedIndicators.minAmount ?? "0"),
       mostUsedTargetCountry:
         event.actionsTrustedIndicators.mostUsedTargetCountry,
       trustedTargetCountries:
@@ -258,6 +262,8 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   if (errorValidation) {
     return <span className="text-red-500">{errorValidation}</span>;
   }
+
+  console.log("popup data:", popUpData);
 
   return (
     <div className="flex flex-col gap-4">
@@ -293,7 +299,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               .numberOfAuthenticatedActions || 0
           }
           icon={<AuthActionIcon />}
-          className="w-full md:w-[370px]"
+          className="w-full md:w-[370px] text-purple-700"
         />
         <MetricCard
           title="Rejected Actions"
@@ -306,15 +312,16 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         <MetricCard
           title="SCA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
-          icon={<ScaIcon />}
+          icon={<ScaIcon className="text-blueLight-600" />}
           className="w-full md:w-[370px]"
         />
       </div>
 
-      {isOpen && popUpType === "actionStatistics" && (
-        <ActionStatistics
+      {isOpen && popUpType && (
+        <ActionPopup
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
+          mode={popUpType}
           values={popUpData}
         />
       )}
@@ -333,9 +340,11 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}
-              totalCount={formattedAnalyticData?.length || 0}
+              totalCount={
+                actionAnalyticsData?.actionsAnalytics.meta.totalItems || 0
+              }
               currentPage={currentPage}
-              itemsPerPage={10}
+              itemsPerPage={itemsPerPage}
               setCurrentPage={setCurrentPage}
               searchText={searchText}
               setSearchText={setSearchText}

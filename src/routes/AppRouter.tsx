@@ -219,15 +219,6 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.editDecisionRule,
-        element: (
-          <ProtectedRoute>
-            <EventsForm />
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
         path: AppRoutes.viewEvents,
         element: (
           <ProtectedRoute>
