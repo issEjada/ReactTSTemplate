@@ -26,14 +26,14 @@ interface DynamicTableProps<TData extends object> {
   setCurrentPage: (page: number | ((prev: number) => number)) => void;
   onFilterStatus?: (status: string) => void;
   statusFilter?: string;
-  onClearSearch: () => void;
+  onClearSearch?: () => void;
   onAddNewItem?: () => void;
   error: string | null;
   title: string;
-  searchText: string;
-  setSearchText: (text: string) => void;
-  openFilterModal: () => void;
-  applyFilters: () => void;
+  searchText?: string;
+  setSearchText?: (text: string) => void;
+  openFilterModal?: () => void;
+  applyFilters?: () => void;
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
@@ -103,7 +103,11 @@ export function DynamicTable<TData extends object>({
   return (
     <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg dark:bg-[#121418] ">
       {!(minimal || minimalWithPagination) && (
-        <div className="px-4  sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap">
+        <div
+          className={`px-4  sm:px-6 ${
+            applyFilters ? "py-4 sm:py-6" : ""
+          }  flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap`}
+        >
           {showStatusFilter &&
             onFilterStatus &&
             statusFilter &&
@@ -128,39 +132,43 @@ export function DynamicTable<TData extends object>({
             )}
 
           <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-            <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
-              <button
-                type="button"
-                title="Search"
-                onClick={applyFilters}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-              >
-                <Suspense>
-                  <SearchIcon className="w-5 h-5" />
-                </Suspense>
-              </button>
-
-              <input
-                type="text"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") applyFilters();
-                }}
-                placeholder={searchPlaceholder}
-                className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
-              />
-
-              {searchText && (
+            {applyFilters && (
+              <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
                 <button
-                  onClick={() => onClearSearch()}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-                  aria-label="Clear search"
+                  type="button"
+                  title="Search"
+                  onClick={applyFilters}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                 >
-                  &#10005;
+                  <Suspense>
+                    <SearchIcon className="w-5 h-5" />
+                  </Suspense>
                 </button>
-              )}
-            </div>
+
+                <input
+                  type="text"
+                  value={searchText}
+                  onChange={(e) =>
+                    setSearchText ? setSearchText(e.target.value) : null
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") applyFilters();
+                  }}
+                  placeholder={searchPlaceholder}
+                  className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+                />
+
+                {searchText && (
+                  <button
+                    onClick={() => (onClearSearch ? onClearSearch() : null)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                    aria-label="Clear search"
+                  >
+                    &#10005;
+                  </button>
+                )}
+              </div>
+            )}
 
             {filterComponent && (
               <button
@@ -182,7 +190,7 @@ export function DynamicTable<TData extends object>({
       <div className="overflow-x-auto">
         <table className="min-w-[900px] w-full table-auto text-sm text-center">
           {table.getRowModel().rows.length > 0 ? (
-            <thead className="bg-white  dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+            <thead className="bg-gray-50 text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
@@ -191,7 +199,7 @@ export function DynamicTable<TData extends object>({
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap "
+                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap"
                     >
                       <div className="flex items-center justify-start gap-2">
                         <span>
@@ -207,7 +215,6 @@ export function DynamicTable<TData extends object>({
                           header.id === "name" ||
                           header.id === "id") && (
                           <button
-                            title="sorting"
                             onClick={() => onArrowClick(header.column.id)}
                           >
                             <ArrowIcon
@@ -239,7 +246,11 @@ export function DynamicTable<TData extends object>({
                   {...(onRowClick && {
                     onClick: () => onRowClick(row.original),
                   })}
-                  className="border-t hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-800 cursor-pointer"
+                  className={`border-t  dark:border-gray-800 ${
+                    onRowClick
+                      ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                      : ""
+                  } `}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
@@ -282,20 +293,25 @@ export function DynamicTable<TData extends object>({
                           <button
                             type="button"
                             onClick={onClearSearch}
-                            className="w-[170px] h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black"
+                            className={`${
+                              onAddNewItem ? "w-[170px]" : "w-full"
+                            } h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
                           >
                             Clear search
                           </button>
-                          <button
-                            type="button"
-                            onClick={onAddNewItem}
-                            className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
-                          >
-                            <Suspense>
-                              <PlusIcon />
-                            </Suspense>
-                            Add New {title.includes("Rules") ? "Rule" : "Item"}
-                          </button>
+                          {onAddNewItem && (
+                            <button
+                              type="button"
+                              onClick={onAddNewItem}
+                              className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
+                            >
+                              <Suspense>
+                                <PlusIcon />
+                              </Suspense>
+                              Add New{" "}
+                              {title.includes("Rules") ? "Rule" : "Item"}
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -315,7 +331,12 @@ export function DynamicTable<TData extends object>({
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
-              className="px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+              className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
+              ${
+                currentPage === 1
+                  ? "bg-gray-100 dark:text-white dark:bg-gray-800"
+                  : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+              }`}
             >
               Previous
             </button>
@@ -326,7 +347,12 @@ export function DynamicTable<TData extends object>({
                 )
               }
               disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-              className="px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+              className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
+               ${
+                 currentPage === Math.ceil(totalCount / itemsPerPage)
+                   ? "bg-gray-100 dark:text-white dark:bg-gray-800"
+                   : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+               }`}
             >
               Next
             </button>

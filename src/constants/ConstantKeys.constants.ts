@@ -19,4 +19,6 @@ export const API = {
   customerInsights: "/user-profile/v1/user-insights",
   events: "/events-management/v1/events/search",
   getEventeById: "/events-management/v1/events",
+  systemConfiguration: "/system-configurations/v1/search",
+  systemConfigurationById: "/system-configurations/v1",
 };

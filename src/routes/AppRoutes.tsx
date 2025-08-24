@@ -15,6 +15,7 @@ export const AppRoutes = {
   editEvents: "/events/edit-event",
   viewEvents: "/events/view-event",
   systemConfiguration: "/system-configuration",
+  viewSystemConfiguration: "/system-configuration/view-configuration",
   monitoring: "/monitoring",
   monitoringView: "/monitoring/view",
   organizations: "/organizations",
