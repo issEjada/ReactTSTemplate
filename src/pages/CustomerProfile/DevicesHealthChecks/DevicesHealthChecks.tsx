@@ -1,10 +1,11 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DevicesHealthChecksResponse } from "../customerProfileServices";
+
+const DateIcon = React.lazy(() => import("../../../assets/svg/Date.svg?react"));
 
 export type DateTimeRange = {
   fromTimestamp: string;
@@ -58,9 +59,10 @@ const HealthCheckDateButton: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((s) => !s)}
-        className="h-10 px-3 rounded-lg border border-[#E9EAEB] bg-white text-sm text-[#414651] flex items-center gap-2 hover:bg-gray-50 dark:border-gray-800 dark:bg-[#0F141A] dark:text-white"
+        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-[#414651] flex items-center gap-2 hover:bg-gray-100  dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
       >
         Date
+        <DateIcon className="w-[20px] h-[20px]" />
       </button>
 
       {open && (

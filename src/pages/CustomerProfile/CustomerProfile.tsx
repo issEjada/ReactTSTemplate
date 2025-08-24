@@ -131,8 +131,13 @@ export const CustomerProfile = () => {
         <div className="text-red-600 px-20 pt-2">{errorValidation}</div>
       )}
       {insightsData && (
-        <div className="flex justify-between gap-4 w-full py-4">
-          <div className="flex flex-col justify-start gap-2 bg-blueGray-50 dark:bg-gray-900 dark:border-gray-800 rounded-lg w-[304px] border border-blueGray-200 p-4">
+        <div className="flex justify-between gap-4 w-full py-4 overflow-x-auto">
+          <div
+            className="flex-shrink-0 flex flex-col justify-start gap-2 
+                  bg-blueGray-50 dark:bg-gray-900 dark:border-gray-800 
+                  rounded-lg border border-blueGray-200 p-4 
+                  max-w-full overflow-x-auto"
+          >
             <span>Customer Information</span>
             <div className="flex flex-col gap-3">
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
@@ -176,10 +181,10 @@ export const CustomerProfile = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-4 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4 dark:bg-gray-900 dark:border-gray-800">
+          <div className="flex flex-col max-w-[824px] gap-4 flex-shrink-0 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4 dark:bg-gray-900 dark:border-gray-800 max-w-full overflow-x-auto">
             <div className="w-full flex rounded-lg overflow-hidden border border-blueGray-300 shadow-[0px_1px_2px_0px_#0A0D120D]">
               <div
-                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg dark:bg-gray-800 dark:border-gray-900 ${
+                className={`flex w-[25%] cursor-pointer h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg dark:bg-gray-800 dark:border-gray-900 ${
                   currentSection === "customerInsights"
                     ? "bg-blueGray-100 dark:bg-gray-900"
                     : "bg-white"
@@ -198,7 +203,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div
-                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 dark:bg-gray-800 dark:border-gray-900 ${
+                className={`flex w-[25%] cursor-pointer h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 dark:bg-gray-800 dark:border-gray-900 ${
                   currentSection === "actionAnalytics"
                     ? "bg-blueGray-100 dark:bg-gray-900"
                     : "bg-white"
@@ -217,7 +222,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div
-                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 dark:bg-gray-800 dark:border-gray-900 ${
+                className={`flex w-[25%] cursor-pointer h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 dark:bg-gray-800 dark:border-gray-900 ${
                   currentSection === "customerDevices"
                     ? "bg-blueGray-100 dark:bg-gray-900"
                     : "bg-white"
@@ -236,7 +241,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div
-                className={`flex w-[25%] h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg dark:bg-gray-800 dark:border-gray-900 ${
+                className={`flex w-[25%] cursor-pointer h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-r-lg dark:bg-gray-800 dark:border-gray-900 ${
                   currentSection === "devicesHealthChecks"
                     ? "bg-blueGray-100 dark:bg-gray-900"
                     : "bg-white"
@@ -255,22 +260,24 @@ export const CustomerProfile = () => {
                 </div>
               </div>
             </div>
-            {currentSection === "customerInsights" && (
-              <CustomerInsights {...insightsData} />
-            )}
-            {currentSection === "actionAnalytics" && (
-              <ActionAnalytics
-                userMobileNumber={insightsData?.userInfo?.mobileNumber}
-              />
-            )}
-            {currentSection === "customerDevices" && (
-              <CustomerDevices
-                userMobileNumber={insightsData?.userInfo?.mobileNumber}
-              />
-            )}
-            {currentSection === "devicesHealthChecks" && (
-              <DevicesHealthChecks />
-            )}
+            <div className="w-full max-w-full overflow-x-auto">
+              {currentSection === "customerInsights" && (
+                <CustomerInsights {...insightsData} />
+              )}
+              {currentSection === "actionAnalytics" && (
+                <ActionAnalytics
+                  userMobileNumber={insightsData?.userInfo?.mobileNumber}
+                />
+              )}
+              {currentSection === "customerDevices" && (
+                <CustomerDevices
+                  userMobileNumber={insightsData?.userInfo?.mobileNumber}
+                />
+              )}
+              {currentSection === "devicesHealthChecks" && (
+                <DevicesHealthChecks />
+              )}
+            </div>
           </div>
         </div>
       )}
