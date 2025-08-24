@@ -18,7 +18,6 @@ import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import EventsForm from "../pages/Events/EventsForm/EventsForm";
 import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
-import { ActionAnalytics } from "../pages/CustomerProfile/ActionAnalytics/ActionAnalytics";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -61,15 +60,6 @@ export const AppRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <div>TESTING</div>
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
-        path: AppRoutes.customerProfile,
-        element: (
-          <ProtectedRoute>
-            <CustomerProfile />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -251,15 +241,6 @@ export const AppRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <EventsForm />
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
-        path: AppRoutes.analytics,
-        element: (
-          <ProtectedRoute>
-            <ActionAnalytics />
           </ProtectedRoute>
         ),
         errorElement: <></>,

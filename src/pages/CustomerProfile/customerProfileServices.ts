@@ -230,7 +230,7 @@ export class CustomerClient {
   static getCustomerDeviceData(
     data: CustomerDevicesPayload
   ): Promise<CustomerDeviceResponse> {
-    const { page, maxPageSize, ...requestBody } = data;
+    const { page, maxPageSize, userMobileNumber, ...requestBody } = data;
     return httpClient
       .post(
         `${import.meta.env.VITE_API_SDK_URL}${API.customerDevices}`,
@@ -238,7 +238,7 @@ export class CustomerClient {
         {
           headers: getHeaders(),
           params: {
-            // userMobileNumber: userMobileNumber,
+            userMobileNumber: userMobileNumber,
             maxPageSize: maxPageSize,
             page: page,
           },
@@ -261,17 +261,14 @@ export class CustomerClient {
   ): Promise<DevicesHealthChecksResponse[]> {
     const { page, maxPageSize, ...requestBody } = data;
     return httpClient
-      .get(
-        `${import.meta.env.VITE_API_SDK_URL}${API.healthCheck}`,
-        {
-          headers: getHeaders(),
-          params: {
-            maxPageSize: maxPageSize,
-            page: page,
-            ...requestBody,
-          },
-        }
-      )
+      .get(`${import.meta.env.VITE_API_SDK_URL}${API.healthCheck}`, {
+        headers: getHeaders(),
+        params: {
+          maxPageSize: maxPageSize,
+          page: page,
+          ...requestBody,
+        },
+      })
       .then((response) => {
         return response.data;
       })
