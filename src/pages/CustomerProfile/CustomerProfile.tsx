@@ -181,7 +181,7 @@ export const CustomerProfile = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col max-w-[824px] gap-4 flex-shrink-0 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4 dark:bg-gray-900 dark:border-gray-800 max-w-full overflow-x-auto">
+          <div className="flex flex-col min-w-[824px] gap-4 bg-blueGray-50 rounded-lg w-full border border-blueGray-200 p-4 dark:bg-gray-900 dark:border-gray-800 max-w-full overflow-x-auto">
             <div className="w-full flex rounded-lg overflow-hidden border border-blueGray-300 shadow-[0px_1px_2px_0px_#0A0D120D]">
               <div
                 className={`flex w-[25%] cursor-pointer h-[40px] px-4 py-[10px] gap-2 items-center border-r border-gray-300 rounded-l-lg dark:bg-gray-800 dark:border-gray-900 ${
