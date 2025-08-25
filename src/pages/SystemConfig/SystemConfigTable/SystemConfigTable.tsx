@@ -147,7 +147,6 @@ export const SystemConfigTable = () => {
           applyFilters={applyFilters}
           searchPlaceholder="Search"
           showStatusFilter={true}
-          onFilterStatus={() => {}}
           statusFilter={"All"}
           statusFilterOptions={[]}
           onRowClick={(rowData) => {

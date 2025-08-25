@@ -108,11 +108,11 @@ export function DynamicTable<TData extends object>({
             applyFilters ? "py-4 sm:py-6" : ""
           }  flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap`}
         >
-          {showStatusFilter &&
-            onFilterStatus &&
-            statusFilter &&
-            statusFilterOptions && (
-              <div className="w-full sm:w-auto">
+          <div className="w-full sm:w-auto">
+            {showStatusFilter &&
+              onFilterStatus &&
+              statusFilter &&
+              statusFilterOptions && (
                 <div className="rounded-lg overflow-hidden border border-gray-300 sm:divide-y-0 divide-y divide-gray-300 sm:flex sm:space-x-0">
                   {statusFilterOptions.map((option, idx) => (
                     <button
@@ -128,8 +128,8 @@ export function DynamicTable<TData extends object>({
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+          </div>
 
           <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
             {applyFilters && (
@@ -188,7 +188,11 @@ export function DynamicTable<TData extends object>({
       {!minimal && filterComponent}
 
       <div className="overflow-x-auto">
-        <table className={`w-full table-auto text-sm text-center ${minimal ? "min-w-[710px]" : "min-w-[900px]"}`}>
+        <table
+          className={`w-full table-auto text-sm text-center ${
+            minimal ? "min-w-[710px]" : "min-w-[900px]"
+          }`}
+        >
           {table.getRowModel().rows.length > 0 ? (
             <thead className="bg-[#FDFDFD] text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -213,6 +217,7 @@ export function DynamicTable<TData extends object>({
                         {(header.id === "deviceId" ||
                           header.id === "sessionId" ||
                           header.id === "name" ||
+                          header.id == "configName" ||
                           header.id === "id") && (
                           <button
                             onClick={() => onArrowClick(header.column.id)}
