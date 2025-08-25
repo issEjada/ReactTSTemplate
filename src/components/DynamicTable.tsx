@@ -188,7 +188,7 @@ export function DynamicTable<TData extends object>({
       {!minimal && filterComponent}
 
       <div className="overflow-x-auto">
-        <table className="min-w-[900px] w-full table-auto text-sm text-center">
+        <table className={`w-full table-auto text-sm text-center ${minimal ? "min-w-[710px]" : "min-w-[900px]"}`}>
           {table.getRowModel().rows.length > 0 ? (
             <thead className="bg-[#FDFDFD] text-gray-600 dark:bg-[#121418] dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (

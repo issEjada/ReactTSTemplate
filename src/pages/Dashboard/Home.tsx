@@ -4,14 +4,14 @@ import DashboardOperations from "./DashboardOperations.js";
 import DashboardEvents from "./DashboardEvents.js";
 const Home = () => {
   return (
-    <div className="flex flex-col gap-[28px] px-6 pb-2">
+    <div className="flex flex-col gap-[28px] ps-6 pe-4 pb-2">
       <div className="mt-[24px]">
         <DashboardOperations />
       </div>
       {/* Widgets */}
 
       <HomeWidgetGroup />
-      <div className="flex h-[507px] gap-[24px] mt-[24px]">
+      <div className="flex h-[584px] gap-[24px] mt-[24px] flex-wrap">
         <ScoringRulesTable fromDashboard={true} />
         <DashboardEvents />
       </div>
