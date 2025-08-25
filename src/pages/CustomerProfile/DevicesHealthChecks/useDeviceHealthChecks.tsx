@@ -31,8 +31,8 @@ export const useDevicesHealthChecks = () => {
     const data = {
       maxPageSize: 10,
       page: currentPage,
-      fromTimestamp: new Date(devicesHealthChecksFilterData.fromTimestamp || "").toISOString(),
-      toTimestamp: new Date(devicesHealthChecksFilterData.toTimestamp || "").toISOString(),
+      fromTimestamp: new Date(devicesHealthChecksFilterData.fromTimestamp || Date.now()).toISOString(),
+      toTimestamp: new Date(devicesHealthChecksFilterData.toTimestamp || Date.now()).toISOString(),
     };
 
     await CustomerClient.getDevicesHealthChecksData(data)
