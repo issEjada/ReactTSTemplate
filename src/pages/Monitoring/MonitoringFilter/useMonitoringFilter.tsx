@@ -7,7 +7,11 @@ import type {
 } from "../../../services/dropdownServices";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
-import { cleanObject } from "../../../utils/helpers";
+import {
+  cleanObject,
+  formatFromTime,
+  formatToTime,
+} from "../../../utils/helpers";
 import type { DecisionRulesIdentifier } from "../../DecisionRules/decisionRulesServices";
 
 export interface GetEventDropDownsPayload {
@@ -130,6 +134,8 @@ export const useMonitoringFilter = (
 
   const onSubmit = (data: ViewSessionsFormValues) => {
     const filteredData = cleanObject(data);
+    filteredData.fromDate = formatFromTime(filteredData.fromDate ?? "");
+    filteredData.toDate = formatToTime(filteredData.toDate ?? "");
     handleSearchSubmit(filteredData as ViewSessionsFormValues);
     closeDrawer();
   };

@@ -20,6 +20,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { LoadingState } from "../../../types/types";
+import { formatTime } from "../../../utils/helpers";
 
 function useViewScoringRules() {
   const [editorContent, setEditorContent] = useState("");
@@ -135,6 +136,12 @@ function useViewScoringRules() {
     };
     await ScoringRulesServices.getRulesById(data)
       .then((value) => {
+        if (value.creationTimestamp) {
+          value.creationTimestamp = formatTime(value.creationTimestamp);
+        }
+        if (value.lastUpdatedTimestamp) {
+          value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
+        }
         setloadingState(LoadingState.Success);
         console.log("test Rule by Id", value);
         setRuleData(value);

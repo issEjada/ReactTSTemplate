@@ -9,6 +9,7 @@ import type {
 import { getDropDownsValue } from "../../../services/dropdownServices";
 
 import type { EventFormValues } from "../eventsServices";
+import { formatFromTime, formatToTime } from "../../../utils/helpers";
 
 interface useEventFilterFormProps {
   handleSearchSubmit: (searchData: EventFormValues) => void;
@@ -95,6 +96,13 @@ export const useEventFilterForm = ({
   }, []);
 
   const onSubmit = (data: EventFormValues) => {
+    data.fromCreationTimestamp = data.fromCreationTimestamp
+      ? formatFromTime(data.fromCreationTimestamp)
+      : "";
+    data.toCreationTimestamp = data.toCreationTimestamp
+      ? formatToTime(data.toCreationTimestamp)
+      : "";
+
     handleSearchSubmit(data);
   };
 

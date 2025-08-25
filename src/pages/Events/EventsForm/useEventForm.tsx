@@ -16,6 +16,7 @@ import { getDropDownsValue } from "../../../services/dropdownServices";
 import { EventsServices } from "../eventsServices";
 import { useLocation } from "react-router-dom";
 import { LoadingState } from "../../../types/types";
+import { formatTime } from "../../../utils/helpers";
 // import { formatTime } from "../../../helpers";
 
 export const useViewEvents = () => {
@@ -125,12 +126,12 @@ export const useViewEvents = () => {
     };
     await EventsServices.getEventById(data)
       .then((value) => {
-        // if (value.creationTimestamp) {
-        //   value.creationTimestamp = formatTime(value.creationTimestamp);
-        // }
-        // if (value.lastUpdatedTimestamp) {
-        //   value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
-        // }
+        if (value.creationTimestamp) {
+          value.creationTimestamp = formatTime(value.creationTimestamp);
+        }
+        if (value.lastUpdatedTimestamp) {
+          value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
+        }
         console.log("test Rule by Id", value);
         setEventData(value);
       })
