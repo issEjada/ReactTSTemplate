@@ -69,7 +69,7 @@ const EventView = () => {
               Event Source Device
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {eventData.identifier.eventSourceDevice}
+              {eventData?.identifier?.eventSourceDevice}
             </span>
           </div>
 
@@ -79,7 +79,7 @@ const EventView = () => {
               Scheme
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {eventData.identifier.scheme}
+              {eventData?.identifier?.scheme}
             </span>
           </div>
 
@@ -109,7 +109,9 @@ const EventView = () => {
               Creation Date
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {new Date(eventData.creationTimestamp).toLocaleDateString()}
+              {eventData.creationTimestamp
+                ? new Date(eventData.creationTimestamp).toLocaleDateString()
+                : "N/A"}
             </span>
           </div>
 
@@ -119,7 +121,9 @@ const EventView = () => {
               Creation Time
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {new Date(eventData.creationTimestamp).toLocaleTimeString()}
+              {eventData.creationTimestamp
+                ? new Date(eventData.creationTimestamp).toLocaleTimeString()
+                : "N/A"}
             </span>
           </div>
 
@@ -129,7 +133,9 @@ const EventView = () => {
               Last Updated Date
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {new Date(eventData.lastUpdatedTimestamp).toLocaleDateString()}
+              {eventData.lastUpdatedTimestamp
+                ? new Date(eventData.lastUpdatedTimestamp).toLocaleDateString()
+                : "N/A"}
             </span>
           </div>
 
@@ -139,7 +145,9 @@ const EventView = () => {
               Last Updated Time
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {new Date(eventData.lastUpdatedTimestamp).toLocaleTimeString()}
+              {eventData.lastUpdatedTimestamp
+                ? new Date(eventData.lastUpdatedTimestamp).toLocaleTimeString()
+                : "N/A"}
             </span>
           </div>
         </div>
