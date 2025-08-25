@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 const ToolTipQuestionMark = React.lazy(
   () => import("../../../assets/svg/toolTipQuestionMark.svg?react")
 );
@@ -46,13 +46,31 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
     handleSearchSubmit({});
   };
 
+    const headerRef = useRef<HTMLFormElement>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+    if (
+      headerRef.current &&
+      !headerRef.current.contains(event.target as Node)
+    ) {
+      closeDrawer();
+    }
+  };
+
+    useEffect(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
   return (
     <FilterLayout
       title="Filter Customer Information"
       isOpen={isOpen}
       onClose={closeDrawer}
     >
-      <form className="flex flex-col justify-between flex-1" onSubmit={onFormSubmit}>
+      <form className="flex flex-col justify-between flex-1" onSubmit={onFormSubmit} ref={headerRef}>
         <div className="flex flex-col gap-3">
           <div className="relative flex flex-col mt-6 gap-[6px]">
             <label className="text-sm font-medium">Mobile Number</label>

@@ -69,7 +69,15 @@ module.exports = {
       boxShadow: {
         "logout-inner": "0px 8px 8px -4px rgba(10, 13, 18, 0.03)",
         "logout-outer": "0px 20px 24px -4px rgba(10, 13, 18, 0.08)",
-        // Use your original hex alphas as RGBA
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 0.3s ease-out",
       },
     },
   },

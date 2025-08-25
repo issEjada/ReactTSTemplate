@@ -271,7 +271,7 @@ export const CustomerProfile = () => {
               )}
               {currentSection === "customerDevices" && (
                 <CustomerDevices
-                  userMobileNumber={insightsData?.userInfo?.mobileNumber}
+                  userInfo={insightsData?.userInfo}
                 />
               )}
               {currentSection === "devicesHealthChecks" && (

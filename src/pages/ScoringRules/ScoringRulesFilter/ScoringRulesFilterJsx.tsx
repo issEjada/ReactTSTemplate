@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import FilterLayout from "../../../components/Filter/FilterLayout";
 import DropdownMenu from "../../../components/DropDown";
 
@@ -44,6 +44,24 @@ export const ScoringRulesFilterForm = ({
     closeDrawer();
   };
 
+  const headerRef = useRef<HTMLFormElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      headerRef.current &&
+      !headerRef.current.contains(event.target as Node)
+    ) {
+      closeDrawer();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <FilterLayout
       title="Filter Scoring Rules"
@@ -53,6 +71,7 @@ export const ScoringRulesFilterForm = ({
       <form
         className="flex flex-col justify-between h-[950px]"
         onSubmit={onFormSubmit}
+        ref={headerRef}
       >
         <div className="relative flex flex-col mt-6">
           <label className="text-sm font-medium dark:text-white">
