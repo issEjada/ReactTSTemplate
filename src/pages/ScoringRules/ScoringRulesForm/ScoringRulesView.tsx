@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
-import { useViewDecisionRules } from "./useDecisionRuleForm";
+import useViewScoringRules from "./useScoringRuleForm";
 import { LoadingState } from "../../../types/types";
 
-const DecisionRulesView = () => {
+const ScoringRuleView = () => {
   const navigate = useNavigate();
-  const { ruleData, loadingState, setScreenAction } = useViewDecisionRules();
+  const { ruleData, loadingState, setScreenAction } = useViewScoringRules();
 
   const handleCancel = () => {
-    navigate("/decision-rules");
+    navigate("/scoring-rules");
   };
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/decision-rules/edit-rule", {
+    navigate("/scoring-rules/edit-rule", {
       state: { id: ruleData?.id, action: "edit" },
     });
   };
@@ -26,7 +26,7 @@ const DecisionRulesView = () => {
     return (
       <div className="w-full min-h-screen flex items-center justify-center">
         <p className="text-lg text-gray-600 dark:text-gray-400">
-          Decision Rule not found or an error occurred.
+          Scoring Rule not found or an error occurred.
         </p>
       </div>
     );
@@ -36,67 +36,34 @@ const DecisionRulesView = () => {
     <div className="w-full min-h-screen flex flex-col pt-6 px-2 sm:px-4 md:px-6 gap-2">
       <div className="w-full px-1 py-5">
         <h1 className="text-[#181D27] text-lg md:text-xl font-medium leading-7 dark:text-white">
-          Decision Rule Details
+          Scoring Rule Details
         </h1>
       </div>
 
       {/* Card */}
       <div className="w-full rounded-xl border border-[#E9EAEB] shadow-[0_1px_2px_0_#0A0D120F,0_1px_3px_0_#0A0D121A] p-4 sm:p-6 bg-white dark:bg-[#121418] dark:border-gray-800 flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
-          {/* Decision Rule Name */}
+          {/* Scoring Rule Name */}
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Decision Rule
+              Scoring Rule Name
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
               {ruleData.name}
             </span>
           </div>
+
+          {/* Description */}
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Criteria Name
+              Description
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.criteriaName}
+              {ruleData.description}
             </span>
           </div>
 
-          <div className="min-h-[56px] flex flex-col gap-2">
-            <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Event source device
-            </span>
-            <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.identifier.eventSourceDevice}
-            </span>
-          </div>
-
-          <div className="min-h-[56px] flex flex-col gap-2">
-            <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Scheme
-            </span>
-            <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.identifier.scheme}
-            </span>
-          </div>
-
-          <div className="min-h-[56px] flex flex-col gap-2">
-            <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Decision
-            </span>
-            <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.decision}
-            </span>
-          </div>
-
-          <div className="min-h-[56px] flex flex-col gap-2">
-            <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Event name
-            </span>
-            <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.eventName}
-            </span>
-          </div>
-
+          {/* Status */}
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
               Status
@@ -108,16 +75,71 @@ const DecisionRulesView = () => {
 
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Description
+              Risk level
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.description}
+              {ruleData.riskLevel}
+            </span>
+          </div>
+          <div className="min-h-[56px] flex flex-col gap-2">
+            <span className="text-base font-normal text-[#181D27] dark:text-white">
+              Event source device
+            </span>
+            <span className="text-base font-normal text-[#717680] break-all">
+              {ruleData.identifier.eventSourceDevice}
+            </span>
+          </div>
+
+          {/* Scheme */}
+          <div className="min-h-[56px] flex flex-col gap-2">
+            <span className="text-base font-normal text-[#181D27] dark:text-white">
+              Scheme
+            </span>
+            <span className="text-base font-normal text-[#717680] break-all">
+              {ruleData.identifier.scheme}
             </span>
           </div>
 
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Creation date
+              Aspect code
+            </span>
+            <span className="text-base font-normal text-[#717680] break-all">
+              {ruleData.identifier.aspectCode}
+            </span>
+          </div>
+
+          <div className="min-h-[56px] flex flex-col gap-2">
+            <span className="text-base font-normal text-[#181D27] dark:text-white">
+              Control code
+            </span>
+            <span className="text-base font-normal text-[#717680] break-all">
+              {ruleData.identifier.controlCode}
+            </span>
+          </div>
+
+          <div className="min-h-[56px] flex flex-col gap-2">
+            <span className="text-base font-normal text-[#181D27] dark:text-white">
+              Platform
+            </span>
+            <span className="text-base font-normal text-[#717680] break-all">
+              {ruleData.identifier.platform}
+            </span>
+          </div>
+
+          <div className="min-h-[56px] flex flex-col gap-2">
+            <span className="text-base font-normal text-[#181D27] dark:text-white">
+              Condition
+            </span>
+            <span className="text-base font-normal text-[#717680] break-all">
+              {ruleData.condition}
+            </span>
+          </div>
+
+          {/* Creation Timestamp */}
+          <div className="min-h-[56px] flex flex-col gap-2">
+            <span className="text-base font-normal text-[#181D27] dark:text-white">
+              Creation Date
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
               {ruleData.creationTimestamp
@@ -126,9 +148,10 @@ const DecisionRulesView = () => {
             </span>
           </div>
 
+          {/* Creation Time */}
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Creation time
+              Creation Time
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
               {ruleData.creationTimestamp
@@ -140,7 +163,7 @@ const DecisionRulesView = () => {
           {/* Last Updated Timestamp */}
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Last updated date
+              Last Updated Date
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
               {ruleData.lastUpdatedTimestamp
@@ -152,21 +175,12 @@ const DecisionRulesView = () => {
           {/* Last Updated Time */}
           <div className="min-h-[56px] flex flex-col gap-2">
             <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Last updated time
+              Last Updated Time
             </span>
             <span className="text-base font-normal text-[#717680] break-all">
               {ruleData.lastUpdatedTimestamp
                 ? new Date(ruleData.lastUpdatedTimestamp).toLocaleTimeString()
                 : "N/A"}
-            </span>
-          </div>
-
-          <div className="min-h-[56px] flex flex-col gap-2">
-            <span className="text-base font-normal text-[#181D27] dark:text-white">
-              Condition
-            </span>
-            <span className="text-base font-normal text-[#717680] break-all">
-              {ruleData.condition}
             </span>
           </div>
         </div>
@@ -191,4 +205,4 @@ const DecisionRulesView = () => {
   );
 };
 
-export default DecisionRulesView;
+export default ScoringRuleView;

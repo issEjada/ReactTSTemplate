@@ -19,6 +19,7 @@ import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import EventsForm from "../pages/Events/EventsForm/EventsForm";
 import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
+import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -150,7 +151,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewScoringRule,
         element: (
           <ProtectedRoute>
-            <RuleForm />
+            <ScoringRuleView />
           </ProtectedRoute>
         ),
         errorElement: <></>,
