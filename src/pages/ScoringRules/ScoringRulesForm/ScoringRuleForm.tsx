@@ -5,7 +5,7 @@ import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesF
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
 import LayoutPopup from "../../../components/Popup/LayoutPopup";
@@ -83,12 +83,10 @@ const RuleForm = () => {
       return previousValues.current[key] !== formValues[key];
     });
 
-    if (isAdding && hasChanged) {
+    if (hasChanged) {
       setShowConfirmModal(true);
     }
   }, [
-    isAdding,
-    formValues,
     formValues?.scheme,
     formValues?.scoring_scheme,
     formValues?.platform,
@@ -408,10 +406,12 @@ const RuleForm = () => {
           <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
             {isAdding && popupType === "successModal" && (
               <RulesPopupJsx
+                title="Scoring Rule"
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules/new-rule");
+                  setEditorContent("");
+                  reset();
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
@@ -421,11 +421,8 @@ const RuleForm = () => {
             )}
             {isEditing && popupType === "successModal" && (
               <RulesPopupJsx
+                title="Scoring Rule"
                 isEditing
-                onConfirm={() => {
-                  setIsPopupOpen(false);
-                  navigate("/scoring-rules/new-rule");
-                }}
                 onCancel={() => {
                   setIsPopupOpen(false);
                   navigate("/scoring-rules");
@@ -447,6 +444,7 @@ const RuleForm = () => {
         <div>
           <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
             <RulesPopupJsx
+              title="Scoring Rule"
               isDeleting
               onConfirm={() => {
                 setIsDeletePopupOpen(false);

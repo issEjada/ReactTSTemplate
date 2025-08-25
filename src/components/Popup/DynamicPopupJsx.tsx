@@ -15,8 +15,9 @@ interface RulesPopupProps {
   isError?: boolean;
   isConfirm?: boolean;
   errorMessage?: string | ApiError;
-  onConfirm: () => void;
-  onCancel: () => void;
+  title?: string; // Added title prop
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 interface ApiError {
@@ -24,27 +25,29 @@ interface ApiError {
   descriptionEn?: string;
 }
 
-const RulesPopupJsx = ({
+const DynamicPopupJsx = ({
   isAdding = false,
   isEditing = false,
   isDeleting = false,
   isError = false,
   isConfirm,
   errorMessage,
+  title: propTitle, // Renamed to avoid conflict with internal variable
   onConfirm,
   onCancel,
 }: RulesPopupProps) => {
-  const title = isError
-    ? "Error"
-    : isAdding
-    ? "New Rule Created"
-    : isEditing
-    ? "Updated Successfully"
-    : isDeleting
-    ? "Delete Scoring Rule?"
-    : isConfirm
-    ? "Critical Change"
-    : "";
+  const title = // Use propTitle if provided, otherwise fall back to existing logic
+    isError
+      ? "Error"
+      : isAdding
+      ? `New ${propTitle} Created`
+      : isEditing
+      ? `Updated ${propTitle} Successfully`
+      : isDeleting
+      ? `Delete ${propTitle}?`
+      : isConfirm
+      ? "Critical Change"
+      : "";
 
   const message = isError
     ? typeof errorMessage === "object" && errorMessage !== null
@@ -55,11 +58,11 @@ const RulesPopupJsx = ({
         }`
       : String(errorMessage)
     : isAdding
-    ? "Congratulations, your new rule is created successfully."
+    ? `Congratulations, your new ${propTitle} is created successfully.`
     : isEditing
-    ? "The rule details has been updated successfully."
+    ? `The ${propTitle} details have been updated successfully.`
     : isDeleting
-    ? "Are you sure you want to delete this rule?"
+    ? `Are you sure you want to delete this ${propTitle}?`
     : isConfirm
     ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed ?"
     : "";
@@ -101,13 +104,19 @@ const RulesPopupJsx = ({
         {isAdding && !isError && (
           <>
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Back
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
             >
               Create New Rule
@@ -117,7 +126,10 @@ const RulesPopupJsx = ({
 
         {(isEditing || isError) && (
           <button
-            onClick={onCancel}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel?.();
+            }}
             className="px-6 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
           >
             Back
@@ -127,13 +139,19 @@ const RulesPopupJsx = ({
         {isDeleting && (
           <>
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Cancel
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm?.();
+              }}
               className="flex-1 px-4 py-2 bg-red-800 rounded-[8px] text-white font-medium hover:bg-red-700 transition-colors"
             >
               Confirm Delete
@@ -144,13 +162,19 @@ const RulesPopupJsx = ({
         {isConfirm && (
           <>
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Discard
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm?.();
+              }}
               className="flex-1 px-4 py-2 bg-red-800 rounded-[8px] text-white font-medium hover:bg-red-700 transition-colors"
             >
               Confirm
@@ -162,4 +186,4 @@ const RulesPopupJsx = ({
   );
 };
 
-export default RulesPopupJsx;
+export default DynamicPopupJsx;

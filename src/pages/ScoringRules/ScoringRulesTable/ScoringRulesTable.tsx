@@ -12,7 +12,7 @@ import { useScoringRulesTable } from "./useScoringRulesTable";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
@@ -95,8 +95,8 @@ const RuleMenu = ({
 
   const handleDelete = () => {
     setOpen(false);
-    setRuleToDeleteId(rule.id);
     setIsDeletePopupOpen(true);
+    setRuleToDeleteId(rule.id);
   };
 
   const handleConfirmDelete = () => {
@@ -105,11 +105,6 @@ const RuleMenu = ({
       setIsDeletePopupOpen(false);
       setRuleToDeleteId(null);
     }
-  };
-
-  const handleCancelDelete = () => {
-    setIsDeletePopupOpen(false);
-    setRuleToDeleteId(null);
   };
 
   return (
@@ -180,18 +175,19 @@ const RuleMenu = ({
           document.body
         )}
 
-      {isDeletePopupOpen && (
+      <div className="cursor-auto" onClick={(e) => e.stopPropagation()}>
         <PopupLayout
           isOpen={isDeletePopupOpen}
           className="md:w-[30%] lg:w-[35%] w-[90%]"
         >
           <RulesPopupJsx
+            title="Delete Scoring Rule"
             isDeleting={true}
             onConfirm={handleConfirmDelete}
-            onCancel={handleCancelDelete}
+            onCancel={() => setIsDeletePopupOpen(false)}
           />
         </PopupLayout>
-      )}
+      </div>
     </>
   );
 };
@@ -292,9 +288,9 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   };
   return (
     <div
-      className={` bg-white  dark:bg-black${
+      className={` bg-white dark:bg-black${
         fromDashboard
-          ? "w-[60%] h-full dark:bg-black"
+          ? " h-full dark:bg-black flex-grow"
           : " pt-[50px] p-6 w-full overflow-hidden"
       }`}
     >

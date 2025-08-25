@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             //   () => toggleDropdown("search")
             // }
           />
-          <kbd className="absolute right-2 text-xs text-black/20">⌘/</kbd>
+          <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">⌘/</kbd>
         </div>
 
         <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
@@ -165,6 +165,14 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
     "edit-rule": "Edit Rule",
     "system-configuration": "System Configuration",
     "view-configuration": "View Configuration",
+    "my-account": "My Account",
+    "about-us": "About Us",
+    support: "Support",
+    "customer-profile": "Customer Profile",
+    events: "Events",
+    "new-event": "New Event",
+    "view-event": "View Event",
+    "edit-event": "Edit Event",
   };
 
   return (
@@ -178,7 +186,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
         Dashboard
       </Link>
-      <span className="text-[#1C1C1C33]">/</span>
+      <span className="text-[#1C1C1C33] dark:text-gray-700">/</span>
 
       {fullPath.map((name, index) => {
         const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;

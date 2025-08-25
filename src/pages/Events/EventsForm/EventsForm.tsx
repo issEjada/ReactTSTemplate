@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../../../components/DropDown";
 import LayoutPopup from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import { useViewEvents } from "./useEventForm";
 import type { EventFormValues } from "../eventsServices";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
@@ -215,59 +215,6 @@ const EventsForm = () => {
         />
       </div>
 
-      {/* Row: Creation Time + Last Update Time */}
-      <div className="flex gap-6 px-6">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white">
-            Creation Time
-          </label>
-          <Controller
-            name="creationTimestamp"
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                placeholder="Enter creation time"
-                disabled={isViewing}
-                className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border
-                  ${
-                    isViewing
-                      ? "border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0]"
-                      : "border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
-                  }
-                `}
-              />
-            )}
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white">
-            Last Update Time
-          </label>
-          <Controller
-            name="lastUpdatedTimestamp"
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                placeholder="Enter last update time"
-                disabled={isViewing}
-                className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border
-                  ${
-                    isViewing
-                      ? "border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0]"
-                      : "border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
-                  }
-                `}
-              />
-            )}
-          />
-        </div>
-      </div>
-
       {/* Footer Buttons */}
       <div className="flex justify-end gap-4 px-6 pt-6">
         <button
@@ -292,6 +239,7 @@ const EventsForm = () => {
         <div>
           <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
             <RulesPopupJsx
+              title="Event"
               isAdding={isAdding && popupType === "successModal"}
               isEditing={isEditing && popupType === "successModal"}
               isError={popupType === "errorModal"}

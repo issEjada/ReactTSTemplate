@@ -8,7 +8,7 @@ import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { LoadingState } from "../../../types/types";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import LayoutPopup from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/RulesPopupJsx";
+import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -70,15 +70,10 @@ const DecisionForm = () => {
       (key) => previousValues.current[key] !== formValues[key]
     );
 
-    if (isAdding && hasChanged) {
+    if (hasChanged) {
       setShowConfirmModal(true);
     }
-  }, [
-    editorContent,
-    isAdding,
-    formValues?.scheme,
-    formValues?.eventSourceDevice,
-  ]);
+  }, [editorContent, formValues?.scheme, formValues?.eventSourceDevice]);
 
   const handleCancel = () => {
     reset();
@@ -395,10 +390,12 @@ const DecisionForm = () => {
         <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
           {isAdding && popupType === "successModal" && (
             <RulesPopupJsx
+              title="Decision Rule"
               isAdding
               onConfirm={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules/new-rule");
+                setEditorContent("");
+                reset();
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
@@ -408,12 +405,11 @@ const DecisionForm = () => {
           )}
           {isEditing && popupType === "successModal" && (
             <RulesPopupJsx
+              title="Decision Rule"
               isEditing
-              onConfirm={() => {
-                setIsPopupOpen(false);
-              }}
               onCancel={() => {
                 setIsPopupOpen(false);
+                navigate("/decision-rules");
               }}
             />
           )}
@@ -421,7 +417,6 @@ const DecisionForm = () => {
             <RulesPopupJsx
               isError
               errorMessage={popupMessage}
-              onConfirm={() => setIsPopupOpen(false)}
               onCancel={() => setIsPopupOpen(false)}
             />
           )}
@@ -432,6 +427,7 @@ const DecisionForm = () => {
       {isDeletePopupOpen && (
         <LayoutPopup isOpen={isDeletePopupOpen} className="w-[30%]">
           <RulesPopupJsx
+            title="Decision Rule"
             isDeleting
             onConfirm={() => {
               setIsDeletePopupOpen(false);

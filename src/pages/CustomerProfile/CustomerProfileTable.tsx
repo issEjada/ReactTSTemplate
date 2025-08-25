@@ -93,13 +93,13 @@ export function CustomerProfileTable<TData extends object>({
   });
   const navigate = useNavigate();
 
-  if (error) {
-    return (
-      <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-        {error}
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
+  //       {error}
+  //     </div>
+  //   );
+  // }
 
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);
@@ -200,7 +200,7 @@ export function CustomerProfileTable<TData extends object>({
       {!minimal && filterComponent}
 
       <div className="overflow-x-auto">
-        <table className="min-w-[900px] w-full table-auto text-sm text-center">
+        <table className="w-full table-auto text-sm text-center">
           {table.getRowModel().rows.length > 0 ? (
             <thead className="bg-white dark:bg-[#121418] dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -252,7 +252,13 @@ export function CustomerProfileTable<TData extends object>({
           ) : (
             <div className="border-t border-gray-200 dark:border-gray-800 h-[1px] w-full"></div>
           )}
-
+          {error ? (
+            <div className="w-full h-[25vh] flex items-center justify-center text-red-500 text-lg">
+              {error}
+            </div>
+          )
+          :
+          (
           <tbody>
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
@@ -284,7 +290,7 @@ export function CustomerProfileTable<TData extends object>({
             ) : (
               <tr>
                 <td colSpan={columns.length} className="p-0">
-                  <div className="min-w-[900px] h-[220px] sm:h-[244px] flex items-center justify-center border-[#E9EAEB]">
+                  <div className="h-[220px] sm:h-[244px] flex items-center justify-center border-[#E9EAEB]">
                     <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
@@ -331,6 +337,9 @@ export function CustomerProfileTable<TData extends object>({
               </tr>
             )}
           </tbody>
+          )
+          }
+
         </table>
       </div>
       {!minimal && (

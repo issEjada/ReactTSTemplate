@@ -201,7 +201,7 @@ export const ActionPopup: React.FC<PopupProps> = ({
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center animate-fadeIn">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
         onClick={onClose}

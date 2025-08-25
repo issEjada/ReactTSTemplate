@@ -162,11 +162,13 @@ export const useViewEvents = () => {
   const onSubmit = (data: EventFormValues) => {
     if (isAdding) {
       setloadingState(LoadingState.Loading);
-      const { ...restData } = data;
       const bodyData: CreateEventPayload = {
-        ...restData,
+        name: data.name || "",
+        identifier: data.identifier || { eventSourceDevice: "", scheme: "" },
+        code: data.code || "",
+        description: data.description || "",
+        status: data.status || "",
       };
-
       EventsServices.createEvent(bodyData)
         .then(() => {
           setPopupType("successModal");
@@ -184,10 +186,10 @@ export const useViewEvents = () => {
     if (isEditing) {
       setloadingState(LoadingState.Loading);
       const updateBody: UpdateEventPayload = {
-        description: data.description,
-        name: data.name,
-        status: data.status?.toUpperCase(),
-        identifier: data.identifier,
+        description: data.description || "",
+        name: data.name || "",
+        status: data.status?.toUpperCase() || "",
+        identifier: data.identifier || { eventSourceDevice: "", scheme: "" },
       };
       EventsServices.updateEvent(updateBody, id)
         .then(() => {
