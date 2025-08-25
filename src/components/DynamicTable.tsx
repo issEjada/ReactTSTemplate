@@ -217,6 +217,7 @@ export function DynamicTable<TData extends object>({
                         {(header.id === "deviceId" ||
                           header.id === "sessionId" ||
                           header.id === "name" ||
+                          header.id == "configName" ||
                           header.id === "id") && (
                           <button
                             onClick={() => onArrowClick(header.column.id)}
