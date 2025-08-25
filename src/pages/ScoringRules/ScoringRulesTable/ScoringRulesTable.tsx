@@ -290,7 +290,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     <div
       className={` bg-white dark:bg-black${
         fromDashboard
-          ? "w-[60%] h-full dark:bg-black"
+          ? " h-full dark:bg-black flex-grow"
           : " pt-[50px] p-6 w-full overflow-hidden"
       }`}
     >
