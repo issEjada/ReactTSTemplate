@@ -39,6 +39,7 @@ export const useDevicesHealthChecks = () => {
       .then((value) => {
         setDevicesHealthChecksData(value);
         setLoadingState("success");
+        setErrorValidate(undefined);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

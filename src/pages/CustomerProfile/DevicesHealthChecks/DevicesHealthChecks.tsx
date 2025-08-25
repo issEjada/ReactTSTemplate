@@ -191,9 +191,9 @@ export const DevicesHealthChecks: React.FC = () => {
     return <FullScreenSpinner />;
   }
 
-  if (errorValidation) {
-    return <span className="text-red-500">{errorValidation}</span>;
-  }
+  // if (errorValidation) {
+  //   return <span className="text-red-500">{errorValidation}</span>;
+  // }
 
   return (
     <div className="px-5 overflow-x-auto">
@@ -223,7 +223,7 @@ export const DevicesHealthChecks: React.FC = () => {
         openFilterModal={() => {}}
         applyFilters={() => {}}
         showStatusFilter={false}
-        error={null}
+        error={errorValidation || ""}
         itemsPerPage={5}
       />
     </div>

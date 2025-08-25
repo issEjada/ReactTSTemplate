@@ -93,13 +93,13 @@ export function CustomerProfileTable<TData extends object>({
   });
   const navigate = useNavigate();
 
-  if (error) {
-    return (
-      <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-        {error}
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
+  //       {error}
+  //     </div>
+  //   );
+  // }
 
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);
@@ -252,7 +252,13 @@ export function CustomerProfileTable<TData extends object>({
           ) : (
             <div className="border-t border-gray-200 dark:border-gray-800 h-[1px] w-full"></div>
           )}
-
+          {error ? (
+            <div className="w-full h-[25vh] flex items-center justify-center text-red-500 text-lg">
+              {error}
+            </div>
+          )
+          :
+          (
           <tbody>
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
@@ -331,6 +337,9 @@ export function CustomerProfileTable<TData extends object>({
               </tr>
             )}
           </tbody>
+          )
+          }
+
         </table>
       </div>
       {!minimal && (
