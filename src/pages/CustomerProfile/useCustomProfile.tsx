@@ -18,19 +18,25 @@ export interface CustomerDevice {
   creationTimestamp: string;
 }
 
+const MOBILE_NUMBER_STORAGE_KEY = "customerProfileMobileNumber";
+
 export const useCustomProfile = () => {
   const [insightsData, setInsightsData] = useState<CustomerInsightsResponse>();
   const [globalFilterData, setGlobalFilterData] =
-    useState<CustomerInsightsPayload>();
+    useState<CustomerInsightsPayload>(() => {
+      const storedMobileNumber = localStorage.getItem(
+        MOBILE_NUMBER_STORAGE_KEY
+      );
+      return storedMobileNumber ? { userMobileNumber: storedMobileNumber } : {};
+    });
   const [errorValidation, setErrorValidate] = useState<string>();
   const [loadingState, setLoadingState] = useState<
     "loading" | "success" | "error"
   >("success");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-    const [customerDevicesData, setCustomerDevicesData] = useState<
-    CustomerDeviceResponse
-  >();
+  const [customerDevicesData, setCustomerDevicesData] =
+    useState<CustomerDeviceResponse>();
 
   const fetchCustomerInsightsData = async () => {
     setLoadingState("loading");
@@ -79,16 +85,27 @@ export const useCustomProfile = () => {
   };
 
   useEffect(() => {
-    if (globalFilterData) {
+    if (globalFilterData?.userMobileNumber) {
+      localStorage.setItem(
+        MOBILE_NUMBER_STORAGE_KEY,
+        globalFilterData.userMobileNumber
+      );
       fetchCustomerInsightsData();
+    } else if (globalFilterData && !globalFilterData.userMobileNumber) {
+      localStorage.removeItem(MOBILE_NUMBER_STORAGE_KEY);
+      setInsightsData(undefined);
+      setErrorValidate(undefined);
     }
   }, [globalFilterData]);
 
-    useEffect(() => {
-    fetchCustomerDevicesData();
-  }, [
-    // customerDeviceFilters
-  ]);
+  useEffect(
+    () => {
+      fetchCustomerDevicesData();
+    },
+    [
+      // customerDeviceFilters
+    ]
+  );
 
   return {
     insightsData,

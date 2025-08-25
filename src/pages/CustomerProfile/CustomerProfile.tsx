@@ -34,10 +34,15 @@ const FilterIcon = React.lazy(
   () => import("../../../src/assets/svg/Filters.svg?react")
 );
 
+const MOBILE_NUMBER_STORAGE_KEY = "customerProfileMobileNumber";
+
 export const CustomerProfile = () => {
   const [currentSection, setCurrentSection] =
     useState<string>("customerInsights");
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(() => {
+    const storedMobileNumber = localStorage.getItem(MOBILE_NUMBER_STORAGE_KEY);
+    return storedMobileNumber || "";
+  });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { insightsData, setGlobalFilterData, errorValidation, loadingState } =
@@ -48,11 +53,12 @@ export const CustomerProfile = () => {
       userMobileNumber: searchText.trim() || undefined,
     };
     setGlobalFilterData(searchData);
-    setSearchText("");
+    // setSearchText(""); // Keep the search text in the input field
   };
 
   const onClearSearch = () => {
     setSearchText("");
+    setGlobalFilterData({});
   };
 
   const handleSearchSubmit = (searchData: CustomerInsightsPayload) => {
@@ -270,9 +276,7 @@ export const CustomerProfile = () => {
                 />
               )}
               {currentSection === "customerDevices" && (
-                <CustomerDevices
-                  userInfo={insightsData?.userInfo}
-                />
+                <CustomerDevices userInfo={insightsData?.userInfo} />
               )}
               {currentSection === "devicesHealthChecks" && (
                 <DevicesHealthChecks />
