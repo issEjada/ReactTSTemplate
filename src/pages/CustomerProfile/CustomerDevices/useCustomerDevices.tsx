@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import {
   CustomerClient,
-  type CustomerDeviceResponse
+  type CustomerDeviceResponse,
 } from "../customerProfileServices";
+import type { CustomerDevicesProps } from "./CustomerDevices";
 
 export interface CustomerDevicesFilterData {
   sdkId?: string;
@@ -17,7 +18,7 @@ export interface CustomerDevicesFilterData {
   dateTo?: string;
 }
 
-export const useCustomerDevices = (userMobileNumber: string) => {
+export const useCustomerDevices = ({userInfo} : CustomerDevicesProps) => {
   const [customerDevicesData, setCustomerDevicesData] =
     useState<CustomerDeviceResponse>(); 
   const [customerDevicesFilterData, setCustomerDevicesFilterData] =
@@ -35,7 +36,7 @@ export const useCustomerDevices = (userMobileNumber: string) => {
     const data = {
       maxPageSize: 10,
       page: currentPage,
-      userMobileNumber: userMobileNumber,
+      ...userInfo,
       ...customerDevicesFilterData,
     };
 
