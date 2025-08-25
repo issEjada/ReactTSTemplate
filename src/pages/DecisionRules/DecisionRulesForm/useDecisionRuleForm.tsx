@@ -348,5 +348,6 @@ export const useViewDecisionRules = () => {
     isFormValid,
     handleSubmit,
     reset,
+    ruleData,
   };
 };
