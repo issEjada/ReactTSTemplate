@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             //   () => toggleDropdown("search")
             // }
           />
-          <kbd className="absolute right-2 text-xs text-black/20">⌘/</kbd>
+          <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">⌘/</kbd>
         </div>
 
         <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
