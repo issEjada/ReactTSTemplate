@@ -83,12 +83,10 @@ const RuleForm = () => {
       return previousValues.current[key] !== formValues[key];
     });
 
-    if (isAdding && hasChanged) {
+    if (hasChanged) {
       setShowConfirmModal(true);
     }
   }, [
-    isAdding,
-    formValues,
     formValues?.scheme,
     formValues?.scoring_scheme,
     formValues?.platform,
@@ -412,7 +410,8 @@ const RuleForm = () => {
                 isAdding
                 onConfirm={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules/new-rule");
+                  setEditorContent("");
+                  reset();
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
@@ -424,10 +423,6 @@ const RuleForm = () => {
               <RulesPopupJsx
                 title="Scoring Rule"
                 isEditing
-                onConfirm={() => {
-                  setIsPopupOpen(false);
-                  navigate("/scoring-rules/new-rule");
-                }}
                 onCancel={() => {
                   setIsPopupOpen(false);
                   navigate("/scoring-rules");

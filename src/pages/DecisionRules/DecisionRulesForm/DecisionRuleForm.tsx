@@ -70,15 +70,10 @@ const DecisionForm = () => {
       (key) => previousValues.current[key] !== formValues[key]
     );
 
-    if (isAdding && hasChanged) {
+    if (hasChanged) {
       setShowConfirmModal(true);
     }
-  }, [
-    editorContent,
-    isAdding,
-    formValues?.scheme,
-    formValues?.eventSourceDevice,
-  ]);
+  }, [editorContent, formValues?.scheme, formValues?.eventSourceDevice]);
 
   const handleCancel = () => {
     reset();
@@ -399,7 +394,8 @@ const DecisionForm = () => {
               isAdding
               onConfirm={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules/new-rule");
+                setEditorContent("");
+                reset();
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
@@ -411,11 +407,9 @@ const DecisionForm = () => {
             <RulesPopupJsx
               title="Decision Rule"
               isEditing
-              onConfirm={() => {
-                setIsPopupOpen(false);
-              }}
               onCancel={() => {
                 setIsPopupOpen(false);
+                navigate("/decision-rules");
               }}
             />
           )}
@@ -423,7 +417,6 @@ const DecisionForm = () => {
             <RulesPopupJsx
               isError
               errorMessage={popupMessage}
-              onConfirm={() => setIsPopupOpen(false)}
               onCancel={() => setIsPopupOpen(false)}
             />
           )}

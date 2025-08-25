@@ -16,8 +16,8 @@ interface RulesPopupProps {
   isConfirm?: boolean;
   errorMessage?: string | ApiError;
   title?: string; // Added title prop
-  onConfirm: () => void;
-  onCancel: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 interface ApiError {
@@ -25,7 +25,7 @@ interface ApiError {
   descriptionEn?: string;
 }
 
-const RulesPopupJsx = ({
+const DynamicPopupJsx = ({
   isAdding = false,
   isEditing = false,
   isDeleting = false,
@@ -104,13 +104,19 @@ const RulesPopupJsx = ({
         {isAdding && !isError && (
           <>
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Back
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
             >
               Create New Rule
@@ -120,7 +126,10 @@ const RulesPopupJsx = ({
 
         {(isEditing || isError) && (
           <button
-            onClick={onCancel}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel?.();
+            }}
             className="px-6 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
           >
             Back
@@ -130,13 +139,19 @@ const RulesPopupJsx = ({
         {isDeleting && (
           <>
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Cancel
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm?.();
+              }}
               className="flex-1 px-4 py-2 bg-red-800 rounded-[8px] text-white font-medium hover:bg-red-700 transition-colors"
             >
               Confirm Delete
@@ -147,13 +162,19 @@ const RulesPopupJsx = ({
         {isConfirm && (
           <>
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCancel?.();
+              }}
               className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
             >
               Discard
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm?.();
+              }}
               className="flex-1 px-4 py-2 bg-red-800 rounded-[8px] text-white font-medium hover:bg-red-700 transition-colors"
             >
               Confirm
@@ -165,4 +186,4 @@ const RulesPopupJsx = ({
   );
 };
 
-export default RulesPopupJsx;
+export default DynamicPopupJsx;

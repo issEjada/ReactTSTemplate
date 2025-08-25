@@ -104,12 +104,12 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             </span>
             <SideBarItemsGroup
               items={[
-                {
-                  pageTitle: "My Account",
-                  text: "My Account",
-                  icon: "myAccount",
-                  url: AppRoutes.myAccount,
-                },
+                // {
+                //   pageTitle: "My Account",
+                //   text: "My Account",
+                //   icon: "myAccount",
+                //   url: AppRoutes.myAccount,
+                // },
                 {
                   pageTitle: "About Us",
                   text: "About Us",

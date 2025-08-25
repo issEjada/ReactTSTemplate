@@ -179,7 +179,7 @@ const RuleMenu = ({
           document.body
         )}
 
-      {isDeletePopupOpen && (
+      <div className="cursor-auto" onClick={(e) => e.stopPropagation()}>
         <PopupLayout
           isOpen={isDeletePopupOpen}
           className="md:w-[30%] lg:w-[35%] w-[90%]"
@@ -191,7 +191,7 @@ const RuleMenu = ({
             onCancel={handleCancelDelete}
           />
         </PopupLayout>
-      )}
+      </div>
     </>
   );
 };
