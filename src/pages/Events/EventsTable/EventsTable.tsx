@@ -14,6 +14,7 @@ import useEventsTable from "./useEventsTable";
 import { TableFallback } from "../../../components/TableFallback";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import type { EventFormValues } from "../eventsServices";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const Update = React.lazy(() => import("../../../assets/svg/update.svg?react"));
@@ -240,6 +241,7 @@ export const EventsTable = () => {
     handleSearchSubmit,
     // setItemsPerPage,
     filters,
+    setFilters,
     totalCount,
     loadingState,
   } = useEventsTable();
@@ -259,6 +261,18 @@ export const EventsTable = () => {
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
+    const newFilters: EventFormValues = {
+      ...filters,
+      name: searchText.trim(),
+    };
+
+    // if (statusFilter !== "All") {
+    //   newFilters.status = statusFilter;
+    // } else {
+    //   delete newFilters.status;
+    // }
+
+    setFilters(newFilters);
     setCurrentPage(1);
   };
 
@@ -269,6 +283,7 @@ export const EventsTable = () => {
 
   const handleClearSearch = () => {
     setSearchText("");
+    setFilters({});
     setDeviceFilter("All");
     setCurrentPage(1);
   };
@@ -369,7 +384,7 @@ export const EventsTable = () => {
           setSearchText={setSearchText}
           openFilterModal={openFilterModal}
           applyFilters={applyFilters}
-          searchPlaceholder="Search"
+          searchPlaceholder="Search Event Name"
           showStatusFilter={true}
         />
       )}
