@@ -268,7 +268,7 @@ export function DynamicTable<TData extends object>({
             ) : (
               <tr>
                 <td colSpan={columns.length} className="p-0">
-                  <div className="min-w-[900px] h-[220px] sm:h-[244px] flex items-center justify-center border-[#E9EAEB]">
+                  <div className="h-[220px] sm:h-[244px] flex items-center justify-center border-[#E9EAEB]">
                     <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">

@@ -38,7 +38,7 @@ const Support: React.FC = () => {
           <p className="text-[16px] leading-[24px] text-[#535862] pl-[60px] dark:text-gray-300">
             Our friendly team is here to help.
           </p>
-          <p className="text-[16px] leading-[24px] font-semibold text-blue-700 pl-[60px]">
+          <p className="text-[16px] leading-[24px] font-semibold text-blue-700 pl-[60px] dark:text-blue-500">
             hi@alphas.com
           </p>
         </div>
@@ -56,7 +56,7 @@ const Support: React.FC = () => {
           <p className="text-[16px] leading-[24px] text-[#535862] pl-[60px] dark:text-gray-300">
             Sun-Thu from 8am to 5pm.
           </p>
-          <p className="text-[16px] leading-[24px] font-semibold text-blue-700 pl-[60px]">
+          <p className="text-[16px] leading-[24px] font-semibold text-blue-700 pl-[60px] dark:text-blue-500">
             +965 - 503857499
           </p>
         </div>
