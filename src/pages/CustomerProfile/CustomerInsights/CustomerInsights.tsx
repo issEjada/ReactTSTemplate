@@ -5,35 +5,29 @@ const CustomerInsightsIcon = React.lazy(
   () => import("../../../assets/svg/ArrowUp.svg?react")
 );
 
-// const Trusted = React.lazy(
-//   () => import("../../../assets/svg/TrustedIcon.svg?react")
-// );
+const TrustedIcon = React.lazy(
+  () => import("../../../assets/svg/TrustedIcon.svg?react")
+);
 
-// const MostMap = React.lazy(() => import("../../../assets/svg/maps?react"));
+const MostMapIcon = React.lazy(
+  () => import("../../../assets/svg/MostUsedTargetCountry.svg?react")
+);
 
 export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
   return (
     <div className="flex flex-col gap-2">
-      <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
-        label="Most Used Device IP"
-        data={insightsData?.userInsights?.mostUsedDeviceIP}
-      />
-      <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
-        label="Truted Device IP's"
-        data={insightsData?.userInsights?.trustedDeviceIPs}
-      />
-      <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
-        label="Average Device Space Utilization"
-        data={insightsData?.userInsights?.avgDeviceSpaceUtilization}
-      />
-      <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
-        label="Average Installed Apps Count"
-        data={insightsData?.userInsights?.avgInstalledAppsCount}
-      />
+      <div className="flex flex-row gap-[12px]">
+        <ExpandableCard
+          icon={<CustomerInsightsIcon className="text-blue-700" />}
+          label="Average Device Space Utilization"
+          data={insightsData?.userInsights?.avgDeviceSpaceUtilization}
+        />
+        <ExpandableCard
+          icon={<CustomerInsightsIcon className="text-blue-700" />}
+          label="Average Installed Apps Count"
+          data={insightsData?.userInsights?.avgInstalledAppsCount}
+        />
+      </div>
       <ExpandableCard
         icon={<CustomerInsightsIcon className="text-blue-700" />}
         label=" Min Installed Apps Count"
@@ -76,71 +70,81 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
       />
       <ExpandableCard
         icon={<CustomerInsightsIcon className="text-blue-700" />}
+        label="Most Used Device IP"
+        data={insightsData?.userInsights?.mostUsedDeviceIP}
+      />
+      <ExpandableCard
+        icon={<TrustedIcon className="text-blue-700" />}
+        label="Truted Device IP's"
+        data={insightsData?.userInsights?.trustedDeviceIPs}
+      />
+      <ExpandableCard
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used Device City"
         data={insightsData?.userInsights?.mostUsedDeviceCityFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted Device Cities"
         data={insightsData?.userInsights?.trustedDeviceCitiesFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used Device Country"
         data={insightsData?.userInsights?.mostUsedDeviceCountryFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted Device Countries"
         data={insightsData?.userInsights?.trustedDeviceCountriesFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used Device Location"
         data={insightsData?.userInsights?.mostUsedDeviceLocationFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted Device Locations"
         data={insightsData?.userInsights?.trustedDeviceCountriesFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used 3DS Page IP"
         data={insightsData?.userInsights?.mostUsed3DSPageIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted 3DS Page IP's"
         data={insightsData?.userInsights?.trusted3DSPageIPs}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used 3DS Page City"
         data={insightsData?.userInsights?.mostUsed3DSPageCityFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted 3DS Page Cities"
         data={insightsData?.userInsights?.trusted3DSPageCitiesFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used 3DS Page Location"
         data={insightsData?.userInsights?.mostUsed3DSPageLocationFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted 3DS Page Locations"
         data={insightsData?.userInsights?.trusted3DSPageLocationsFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<MostMapIcon className="text-blue-700" />}
         label="Most Used 3DS Page Country"
         data={insightsData?.userInsights?.mostUsed3DSPageCountryFromIP}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted 3DS Page Countries"
         data={insightsData?.userInsights?.trusted3DSPageCountriesFromIP}
       />
@@ -150,7 +154,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.mostUsedNetworkCarrier}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted Network Carrier"
         data={insightsData?.userInsights?.trustedNetworkCarrier}
       />
@@ -160,7 +164,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.mostUsedWiFiSSID}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted WiFi SSID"
         data={insightsData?.userInsights?.trustedWiFiSSID}
       />
@@ -190,7 +194,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.mostUsed3DSPagePlatform}
       />
       <ExpandableCard
-        icon={<CustomerInsightsIcon className="text-blue-700" />}
+        icon={<TrustedIcon className="text-blue-700" />}
         label="Trusted Platforms"
         data={insightsData?.userInsights?.trusted3DSPagePlatforms}
       />
