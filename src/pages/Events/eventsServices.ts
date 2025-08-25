@@ -2,14 +2,14 @@ import { getHeaders, httpClient } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
 
 export interface EventFormValues {
-  id: number;
-  name: string;
-  description: string;
-  code: string;
-  status: string;
-  identifier: EventIdentifierInterface;
-  creationTimestamp: string;
-  lastUpdatedTimestamp: string;
+  id?: number;
+  name?: string;
+  description?: string;
+  code?: string;
+  status?: string;
+  identifier?: EventIdentifierInterface;
+  creationTimestamp?: string;
+  lastUpdatedTimestamp?: string;
   fromCreationTimestamp?: string;
   toCreationTimestamp?: string;
 }
