@@ -1,5 +1,4 @@
 import React from "react";
-import FullScreenSpinner from "../components/FullScreenSpinner";
 
 interface Field {
   title: string;
@@ -24,15 +23,10 @@ interface DynamicViewProps {
 const DynamicView: React.FC<DynamicViewProps> = ({
   title,
   fields,
-  loadingState = "success",
   emptyMessage = "No data found or an error occurred.",
   showActions = true,
   actions = [],
 }) => {
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
-  }
-
   if (!fields || fields.length === 0) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center">
