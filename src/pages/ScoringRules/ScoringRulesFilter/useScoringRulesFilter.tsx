@@ -8,7 +8,11 @@ import type {
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
 import type { RuleIdentifierInterface } from "../scoringRulesServices";
-import { cleanObject } from "../../../utils/helpers";
+import {
+  cleanObject,
+  formatFromTime,
+  formatToTime,
+} from "../../../utils/helpers";
 
 export interface ViewRulesFormValues {
   id?: number;
@@ -172,6 +176,13 @@ export const useScoringRulesFilter = (
 
   const onSubmit = (data: ViewRulesFormValues) => {
     const filteredData = cleanObject(data);
+    filteredData.fromCreationTimestamp = formatFromTime(
+      filteredData.fromCreationTimestamp ?? ""
+    );
+    filteredData.toCreationTimestamp = formatToTime(
+      filteredData.toCreationTimestamp ?? ""
+    );
+
     handleSearchSubmit(filteredData as ViewRulesFormValues);
     closeDrawer();
   };

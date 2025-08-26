@@ -12,7 +12,11 @@ import {
   type DecisionRulesFormValues,
   type GetEventDropDownsPayload,
 } from "../decisionRulesServices";
-import { cleanObject } from "../../../utils/helpers";
+import {
+  cleanObject,
+  formatFromTime,
+  formatToTime,
+} from "../../../utils/helpers";
 
 export const useDecisionRulesFilter = (
   closeDrawer: () => void,
@@ -143,6 +147,12 @@ export const useDecisionRulesFilter = (
 
   const onSubmit = (data: DecisionRulesFormValues) => {
     const filteredData = cleanObject(data);
+    filteredData.fromCreationTimestamp = formatFromTime(
+      filteredData.fromCreationTimestamp ?? ""
+    );
+    filteredData.toCreationTimestamp = formatToTime(
+      filteredData.toCreationTimestamp ?? ""
+    );
     handleSearchSubmit(filteredData as DecisionRulesFormValues);
     closeDrawer();
   };

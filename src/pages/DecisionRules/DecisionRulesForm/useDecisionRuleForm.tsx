@@ -22,6 +22,7 @@ import {
 import type { GetRulesParameterResponse } from "../../ScoringRules/scoringRulesServices";
 import { DecisionRulesServices } from "../decisionRulesServices";
 import { useLocation } from "react-router-dom";
+import { formatTime } from "../../../utils/helpers";
 
 export const useViewDecisionRules = () => {
   const [schemeValues, setSchemeValues] = useState<DropDownValue[]>([]);
@@ -145,12 +146,12 @@ export const useViewDecisionRules = () => {
     };
     await DecisionRulesServices.getDecisionRulesById(data)
       .then((value) => {
-        // if (value.creationTimestamp) {
-        //   value.creationTimestamp = formatTime(value.creationTimestamp);
-        // }
-        // if (value.lastUpdatedTimestamp) {
-        //   value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
-        // }
+        if (value.creationTimestamp) {
+          value.creationTimestamp = formatTime(value.creationTimestamp);
+        }
+        if (value.lastUpdatedTimestamp) {
+          value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
+        }
         console.log("test Rule by Id", value);
         setRuleData(value);
         setloadingState(LoadingState.Success);
@@ -347,5 +348,6 @@ export const useViewDecisionRules = () => {
     isFormValid,
     handleSubmit,
     reset,
+    ruleData,
   };
 };

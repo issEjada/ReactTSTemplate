@@ -56,24 +56,28 @@ const DecisionForm = () => {
   useEffect(() => {
     if (!formValues) return;
 
-    // Initialize previous values if editor is empty
     if (!editorContent) {
       previousValues.current = {
-        scheme: formValues.scheme,
+        scheme: formValues.scheme || "",
         eventSourceDevice: formValues.eventSourceDevice,
       };
       return;
     }
-
-    // Check if tracked fields have changed
-    const hasChanged = (["scheme", "eventSourceDevice"] as const).some(
-      (key) => previousValues.current[key] !== formValues[key]
-    );
+    const hasChanged = (
+      Object.keys(previousValues.current) as Array<
+        keyof typeof previousValues.current
+      >
+    ).some((key) => {
+      if (previousValues.current[key] === "") {
+        return false;
+      }
+      return previousValues.current[key] !== formValues[key];
+    });
 
     if (hasChanged) {
       setShowConfirmModal(true);
     }
-  }, [editorContent, formValues?.scheme, formValues?.eventSourceDevice]);
+  }, [formValues?.scheme, formValues?.eventSourceDevice]);
 
   const handleCancel = () => {
     reset();

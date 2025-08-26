@@ -12,12 +12,14 @@ import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
 import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
 import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
+import DecisionRulesView from "../pages/DecisionRules/DecisionRulesForm/DecisionRulesView";
 import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
 import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
 import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import EventsForm from "../pages/Events/EventsForm/EventsForm";
 import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
+import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -149,7 +151,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewScoringRule,
         element: (
           <ProtectedRoute>
-            <RuleForm />
+            <ScoringRuleView />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -185,7 +187,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRuleForm />
+            <DecisionRulesView />
           </ProtectedRoute>
         ),
         errorElement: <></>,
