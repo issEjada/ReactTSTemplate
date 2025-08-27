@@ -329,11 +329,16 @@ export const EventsTable = () => {
           title="Start adding decision rules"
           description={
             <>
-              You don’t have any sessions yet.
+              You don’t have any Events yet.
               <br />
-              Start monitoring by adding new sessions now"
+              Start monitoring by adding new evemts now"
             </>
           }
+          buttonText="Add New Event"
+          buttonIcon={
+            <PlusIcon className="w-[20px] h-[20px] dark:text-black " />
+          }
+          onButtonClick={handleAddNewEvent}
         />
       ) : (
         <DynamicTable<EventRow>
