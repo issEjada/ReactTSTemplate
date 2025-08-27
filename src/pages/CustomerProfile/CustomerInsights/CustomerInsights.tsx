@@ -29,26 +29,18 @@ const MostMapIcon = React.lazy(
 export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
   return (
     <div className="flex flex-col gap-2">
-      <ExpandableCard
-        icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
-        label="Most Used Device IP"
-        data={insightsData?.userInsights?.mostUsedDeviceIP}
-      />
-      <ExpandableCard
-        icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
-        label="Truted Device IP's"
-        data={insightsData?.userInsights?.trustedDeviceIPs}
-      />
-      <ExpandableCard
-        icon={<AnalyticsIcon className="text-blue-700 w-[9.33px]" />}
-        label="Average Device Space Utilization"
-        data={insightsData?.userInsights?.avgDeviceSpaceUtilization}
-      />
-      <ExpandableCard
-        icon={<AnalyticsIcon className="text-blue-700 w-[9.33px]" />}
-        label="Average Installed Apps Count"
-        data={insightsData?.userInsights?.avgInstalledAppsCount}
-      />
+      <div className="flex flex-row gap-[12px]">
+        <ExpandableCard
+          icon={<AnalyticsIcon className="text-blue-700 w-[9.33px]" />}
+          label="Average Device Space Utilization"
+          data={insightsData?.userInsights?.avgDeviceSpaceUtilization}
+        />
+        <ExpandableCard
+          icon={<AnalyticsIcon className="text-blue-700 w-[9.33px]" />}
+          label="Average Installed Apps Count"
+          data={insightsData?.userInsights?.avgInstalledAppsCount}
+        />
+      </div>
       <ExpandableCard
         icon={
           <CustomerInsightsIcon className="text-blue-700 w-[9.33px] rotate-180" />
@@ -90,6 +82,16 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
         label="Most Used IOS Timezone"
         data={insightsData?.userInsights?.mostUsedIOSTimezone}
+      />
+      <ExpandableCard
+        icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
+        label="Most Used Device IP"
+        data={insightsData?.userInsights?.mostUsedDeviceIP}
+      />
+      <ExpandableCard
+        icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
+        label="Trusted Device IP's"
+        data={insightsData?.userInsights?.trustedDeviceIPs}
       />
       <ExpandableCard
         icon={<MostMapIcon className="text-blue-700 w-[9.33px]" />}
