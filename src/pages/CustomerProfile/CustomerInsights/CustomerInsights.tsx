@@ -92,7 +92,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.mostUsedIOSTimezone}
       />
       <ExpandableCard
-        icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
+        icon={<MostMapIcon className="text-blue-700 w-[9.33px]" />}
         label="Most Used Device City"
         data={insightsData?.userInsights?.mostUsedDeviceCityFromIP}
       />
@@ -102,7 +102,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.trustedDeviceCitiesFromIP}
       />
       <ExpandableCard
-        icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
+        icon={<MostMapIcon className="text-blue-700 w-[9.33px]" />}
         label="Most Used Device Country"
         data={insightsData?.userInsights?.mostUsedDeviceCountryFromIP}
       />
@@ -112,7 +112,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.trustedDeviceCountriesFromIP}
       />
       <ExpandableCard
-        icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
+        icon={<MostMapIcon className="text-blue-700 w-[9.33px]" />}
         label="Most Used Device Location"
         data={insightsData?.userInsights?.mostUsedDeviceLocationFromIP}
       />
@@ -132,7 +132,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.trusted3DSPageIPs}
       />
       <ExpandableCard
-        icon={<NavigatorIcon className="text-blue-700 w-[9.33px]" />}
+        icon={<MostMapIcon className="text-blue-700 w-[9.33px]" />}
         label="Most Used 3DS Page City"
         data={insightsData?.userInsights?.mostUsed3DSPageCityFromIP}
       />
