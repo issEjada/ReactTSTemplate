@@ -334,36 +334,39 @@ export function DynamicTable<TData extends object>({
             Page {totalCount === 0 ? 0 : currentPage} of{" "}
             {totalCount === 0 ? 0 : Math.ceil(totalCount / itemsPerPage)}
           </div>
-          <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
-              ${
-                currentPage === 1
-                  ? "bg-gray-100 dark:text-white dark:bg-gray-800"
-                  : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-              }`}
-            >
-              Previous
-            </button>
-            <button
-              onClick={() =>
-                setCurrentPage((p) =>
-                  p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
-                )
-              }
-              disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-              className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
-               ${
-                 currentPage === Math.ceil(totalCount / itemsPerPage)
-                   ? "bg-gray-100 dark:text-white dark:bg-gray-800"
-                   : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-               }`}
-            >
-              Next
-            </button>
-          </div>
+
+          {table.getRowModel().rows.length > 0 && (
+            <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
+          ${
+            currentPage === 1
+              ? "bg-gray-100 dark:text-white dark:bg-gray-800"
+              : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+          }`}
+              >
+                Previous
+              </button>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) =>
+                    p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
+                  )
+                }
+                disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
+                className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
+          ${
+            currentPage === Math.ceil(totalCount / itemsPerPage)
+              ? "bg-gray-100 dark:text-white dark:bg-gray-800"
+              : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+          }`}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
