@@ -124,7 +124,7 @@ function RowMenu({
                 setOpen(false);
               }}
             >
-              <StatisticsIcon className="w-4 h-4" />
+              <StatisticsIcon className="w-4 h-4 text-white" />
               <span className="text-sm whitespace-nowrap">
                 Actions Statistics
               </span>
