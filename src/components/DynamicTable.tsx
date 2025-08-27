@@ -220,6 +220,7 @@ export function DynamicTable<TData extends object>({
                           header.id == "configName" ||
                           header.id === "id") && (
                           <button
+                            title="Sort"
                             onClick={() => onArrowClick(header.column.id)}
                           >
                             <ArrowIcon
@@ -330,7 +331,8 @@ export function DynamicTable<TData extends object>({
       {!minimal && (
         <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
           <div className="text-center sm:text-left">
-            Page {currentPage} of {Math.ceil(totalCount / itemsPerPage)}
+            Page {totalCount === 0 ? 0 : currentPage} of{" "}
+            {totalCount === 0 ? 0 : Math.ceil(totalCount / itemsPerPage)}
           </div>
           <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
             <button

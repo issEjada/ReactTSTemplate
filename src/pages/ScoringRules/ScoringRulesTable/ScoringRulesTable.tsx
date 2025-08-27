@@ -332,6 +332,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
+          minimal={fromDashboard}
           icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding scoring rules"
           description={
