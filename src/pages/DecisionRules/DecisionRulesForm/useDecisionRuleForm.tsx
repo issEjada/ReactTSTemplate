@@ -106,6 +106,9 @@ export const useViewDecisionRules = () => {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -122,6 +125,9 @@ export const useViewDecisionRules = () => {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
 
     await getDropDownsValue({
@@ -136,6 +142,9 @@ export const useViewDecisionRules = () => {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -175,6 +184,9 @@ export const useViewDecisionRules = () => {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error);
       });
   };
 

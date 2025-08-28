@@ -126,6 +126,9 @@ function useViewScoringRules() {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -166,6 +169,9 @@ function useViewScoringRules() {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
 
     await getDropDownsValue({
@@ -180,6 +186,9 @@ function useViewScoringRules() {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
   const fetchParameterData = async () => {
@@ -193,6 +202,9 @@ function useViewScoringRules() {
       })
       .catch((error) => {
         console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 

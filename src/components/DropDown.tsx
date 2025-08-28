@@ -88,10 +88,10 @@ const DropdownMenu = <T extends FieldValues>({
                 onClick={toggleDropdown}
               >
                 <span
-                  className={` text-gray-700 dark:text-white" 
+                  className={` 
                     ${
                       disabled
-                        ? " text-gray-300 cursor-not-allowed"
+                        ? "text-gray-400 cursor-not-allowed"
                         : "cursor-pointer dark:text-white"
                     }
                   
