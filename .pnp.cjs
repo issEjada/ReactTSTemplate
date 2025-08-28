@@ -6911,7 +6911,7 @@ var createModule = function() {
         return "[Emscripten Module object]";
       };
     }
-    Module["print"] || console.log.bind(console);
+    Module["print"]
     var err = Module["printErr"] || console.warn.bind(console);
     for (key in moduleOverrides) {
       if (moduleOverrides.hasOwnProperty(key)) {

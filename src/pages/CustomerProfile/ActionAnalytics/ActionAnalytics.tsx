@@ -169,7 +169,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   const { actionAnalyticsData, errorValidation, loadingState } =
     useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
 
-  console.log("Action Analytics Data:", actionAnalyticsData);
 
   const columns: ColumnDef<FormattedAnalyticData>[] = [
     {
@@ -200,13 +199,11 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         <div className="flex justify-end pr-3">
           <RowMenu
             onStatistics={() => {
-              console.log("Actions Statistics for row:", row.original);
               setIsOpen(true);
               setPopUpType("actionStatistics");
               setPopUpData(row.original);
             }}
             onTrustedIndicators={() => {
-              console.log("Actions Trusted Indicators for row:", row.original);
               setIsOpen(true);
               setPopUpType("trustedIndicators");
               setPopUpData(row.original);
@@ -263,7 +260,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     return <span className="text-red-500">{errorValidation}</span>;
   }
 
-  console.log("popup data:", popUpData);
 
   return (
     <div className="flex flex-col gap-4">

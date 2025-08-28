@@ -280,7 +280,6 @@ export const MonitoringTable = () => {
     return <FullScreenSpinner />;
   }
 
-  console.log("Monitoring Table Data:", table);
 
   return (
     <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#000000] dark:border-gray-800 dark:text-white">

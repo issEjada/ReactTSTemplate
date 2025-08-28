@@ -86,7 +86,6 @@ export const useViewEvents = () => {
         );
       })
       .catch((error) => {
-        console.log(error);
         setPopupType("errorModal");
         setPopupMessage(error);
         setloadingState(LoadingState.Error);
@@ -109,7 +108,6 @@ export const useViewEvents = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         setPopupType("errorModal");
         setPopupMessage(error);
         setloadingState(LoadingState.Error);
@@ -132,11 +130,9 @@ export const useViewEvents = () => {
         if (value.lastUpdatedTimestamp) {
           value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
         }
-        console.log("test Rule by Id", value);
         setEventData(value);
       })
       .catch((error) => {
-        console.log("fetch rule Data", error);
         setPopupType("errorModal");
         setPopupMessage(error);
         setloadingState(LoadingState.Error);
@@ -199,7 +195,6 @@ export const useViewEvents = () => {
           setloadingState(LoadingState.Success);
         })
         .catch((error) => {
-          console.log(error);
           setPopupType("errorModal");
           setPopupMessage(error);
           setloadingState(LoadingState.Error);

@@ -168,7 +168,6 @@ export const ActionPopup: React.FC<PopupProps> = ({
   title,
   values,
 }) => {
-  console.log("values ", values);
 
   const metricRows = METRICS_DEF.map(({ id, title, Icon }) => ({
     id,

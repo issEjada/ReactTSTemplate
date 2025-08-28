@@ -189,7 +189,6 @@ export class CustomerClient {
   static getCustomerInsightsData(
     data: CustomerInsightsPayload
   ): Promise<CustomerInsightsResponse> {
-    console.log("user Mobile", data.userMobileNumber);
     return httpClient
       .get(`${import.meta.env.VITE_API_BASE_URL}${API.customerInsights}`, {
         headers: getHeaders(),

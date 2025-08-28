@@ -29,7 +29,6 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
     errorValidation,
   } = useCustomerDevices({userInfo});
 
-  console.log("customer devices data", customerDevicesData);
 
   const columns = useMemo<ColumnDef<SDKCustomerDeviceInfo>[]>(
     () => [
@@ -88,7 +87,6 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
             closeDrawer={() => setIsFilterOpen(false)}
             handleSearchSubmit={(data) => {
               setCurrentPage(1);
-              console.log("Filter Data: My filter", data);
               setIsFilterOpen(false);
               setCustomerDevicesFilterData(data);
             }}

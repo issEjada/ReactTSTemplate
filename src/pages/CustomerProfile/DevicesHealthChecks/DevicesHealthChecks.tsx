@@ -148,10 +148,7 @@ export const DevicesHealthChecks: React.FC = () => {
     setCurrentPage,
   } = useDevicesHealthChecks();
 
-  console.log(
-    "device health checks",
-    devicesHealthChecksData?.data.healthCheckRecords
-  );
+
 
   const flattened: FlattenedHealthResponse[] =
     devicesHealthChecksData?.data.healthCheckRecords.map((record) => ({
