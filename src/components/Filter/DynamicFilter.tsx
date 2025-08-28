@@ -45,11 +45,7 @@ export function DynamicFilterForm<T extends FieldValues>({
 
   return (
     <FilterLayout title={title} isOpen={isOpen} onClose={closeDrawer}>
-      <form
-        className="flex flex-col justify-between ]"
-        onSubmit={onSubmit}
-        ref={formRef}
-      >
+      <form className="flex flex-col h-full" onSubmit={onSubmit} ref={formRef}>
         {fields.map((field) => {
           if (field.type === "text") {
             return (
@@ -63,7 +59,8 @@ export function DynamicFilterForm<T extends FieldValues>({
                       {...inputField}
                       type="text"
                       placeholder={field.placeholder}
-                      className="w-full h-[44px]  p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 mt-2 mb-2"
+                      className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm
+                           dark:bg-[#121418] dark:border-gray-800 mt-2 mb-2"
                     />
                   )}
                 />
@@ -95,13 +92,11 @@ export function DynamicFilterForm<T extends FieldValues>({
                     <input
                       {...inputField}
                       type="date"
-                      className="
-                    w-full h-[44px] mt-2 p-2 rounded-md text-sm mb-2
-                    border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
-                    placeholder:text-gray-400 dark:placeholder:text-gray-500
-                    [color-scheme:light] dark:[color-scheme:dark]
-                  "
+                      className="w-full h-[44px] mt-2 p-2 rounded-md text-sm mb-2
+                           border border-gray-300 text-gray-900
+                           dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                           placeholder:text-gray-400 dark:placeholder:text-gray-500
+                           [color-scheme:light] dark:[color-scheme:dark]"
                     />
                   )}
                 />
@@ -112,20 +107,24 @@ export function DynamicFilterForm<T extends FieldValues>({
           return null;
         })}
 
-        <div className="flex justify-end gap-2 mt-2">
-          <button
-            type="submit"
-            className="bg-blue-700 hover:bg-primary-700 text-white text-sm px-4 py-2 rounded-md"
-          >
-            Apply Filters
-          </button>
-          <button
-            type="button"
-            onClick={handleClear}
-            className="text-sm text-gray-700 hover:underline hover:bg-gray-100 dark:text-white dark:hover:bg-white dark:hover:text-black border border-gray-200 rounded-md px-4 py-2"
-          >
-            Clear
-          </button>
+        <div className="mt-auto  py-2">
+          <div className="flex justify-end gap-2">
+            <button
+              type="submit"
+              className="bg-blue-700 hover:bg-primary-700 text-white text-sm px-4 py-2 rounded-md"
+            >
+              Apply Filters
+            </button>
+            <button
+              type="button"
+              onClick={handleClear}
+              className="text-sm text-gray-700 hover:underline hover:bg-gray-100
+                 dark:text-white dark:hover:bg-white dark:hover:text-black
+                 border border-gray-200 rounded-md px-4 py-2"
+            >
+              Clear
+            </button>
+          </div>
         </div>
       </form>
     </FilterLayout>
