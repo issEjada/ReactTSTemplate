@@ -274,7 +274,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfTotalActions || 0
           }
-          icon={<TotalActionIcon />}
+          icon={<TotalActionIcon className="text-blue-700"/>}
           className="w-full md:w-[370px]"
         />
         <MetricCard
@@ -282,13 +282,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfAcceptedActions || 0
           }
-          icon={<AcceptedIcon />}
+          icon={<AcceptedIcon className="text-success-600"/>}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="MFA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfMFAActions || 0}
-          icon={<MfaIcon />}
+          icon={<MfaIcon className="text-warning-600"/>}
           className="w-full md:w-[370px]"
         />
 
@@ -298,15 +298,15 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
             actionAnalyticsData?.actionsAnalytics
               .numberOfAuthenticatedActions || 0
           }
-          icon={<AuthActionIcon />}
-          className="w-full md:w-[370px] text-purple-700"
+          icon={<AuthActionIcon className="text-purple-700"/>}
+          className="w-full md:w-[370px]"
         />
         <MetricCard
           title="Rejected Actions"
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfRejectedActions || 0
           }
-          icon={<RejectedIcon />}
+          icon={<RejectedIcon className="text-red-600"/>}
           className="w-full md:w-[370px]"
         />
         <MetricCard

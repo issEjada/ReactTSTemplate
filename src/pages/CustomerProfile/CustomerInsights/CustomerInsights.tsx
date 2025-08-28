@@ -18,7 +18,7 @@ const AnalyticsIcon = React.lazy(
   () => import("../../../assets/svg/AAnalytics.svg?react")
 );
 
-const Rulescon = React.lazy(
+const RulesIcon = React.lazy(
   () => import("../../../assets/svg/rules.svg?react")
 );
 
@@ -214,7 +214,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         data={insightsData?.userInsights?.trusted3DSPagePlatforms}
       />
       <ExpandableCard
-        icon={<Rulescon className="text-blue-700 w-[9.33px]" />}
+        icon={<RulesIcon className="text-blue-700 w-[9.33px]" />}
         label="Blacklisted Devices"
         data={insightsData?.userInsights?.blacklistedDevices?.map(
           (item, index) => (

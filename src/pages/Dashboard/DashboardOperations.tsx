@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AppRoutes } from "../../routes/AppRoutes";
 
 const ActivityIcon = React.lazy(
-  () => import(`/src/assets/svg/activity.svg?react`)
+  () => import(`/src/assets/svg/monitoring.svg?react`)
 );
 
 const DashboardOperations: React.FC = () => {

@@ -36,7 +36,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             top-0 left-1/2 -translate-x-1/2
             w-[400px] h-[400px]
             pointer-events-none select-none
-            z-0
+            z-0 text-gray-200 dark:text-gray-500
           "
         />
       </Suspense>

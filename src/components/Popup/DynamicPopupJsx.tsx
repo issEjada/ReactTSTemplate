@@ -4,8 +4,8 @@ const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
 );
 
-const AlerTraingletIcon = React.lazy(
-  () => import(`/src/assets/svg/alert-triangle.svg?react`)
+const AlertTraingletIcon = React.lazy(
+  () => import(`/src/assets/svg/ActiveAlerts.svg?react`)
 );
 
 interface RulesPopupProps {
@@ -68,11 +68,11 @@ const DynamicPopupJsx = ({
     : "";
 
   const icon = isConfirm ? (
-    <AlerTraingletIcon className="w-6 h-6" />
+    <AlertTraingletIcon className="w-6 h-6 text-warning-600" />
   ) : isError || isDeleting ? (
     <AlertIcon className="w-6 h-6" />
   ) : (
-    <CheckIcon className="w-6 h-6" />
+    <CheckIcon className="w-6 h-6 text-success-600" />
   );
   const iconBgClass =
     isError || isDeleting || isConfirm

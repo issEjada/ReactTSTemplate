@@ -85,7 +85,7 @@ export const DecisionRulesFilter = ({
           />
 
           <div className="absolute top-[40px] left-[calc(100%-32px)] group">
-            <ToolTipQuestionMark className="w-4 h-4 cursor-pointer" />
+            <ToolTipQuestionMark className="w-4 h-4 cursor-pointer text-gray-400" />
             <div className="absolute right-full w-32 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
               Enter Rule Name.
             </div>

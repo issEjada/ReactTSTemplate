@@ -87,7 +87,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
               )}
             />
             <div className="absolute top-[40px] right-2 group">
-              <ToolTipQuestionMark className="w-4 h-4 cursor-pointer" />
+              <ToolTipQuestionMark className="w-4 h-4 cursor-pointer text-gray-400" />
               <div className="absolute right-0 mt-1 w-40 bg-gray-800 text-white text-xs rounded p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
                 Enter the customer’s mobile number.
               </div>

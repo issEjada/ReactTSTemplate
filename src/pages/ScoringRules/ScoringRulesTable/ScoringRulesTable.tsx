@@ -142,7 +142,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon />
+              <ViewIcon className="text-gray-700"/>
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -314,7 +314,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
             >
-              <PlusIcon className="w-[20px] h-[20px]" />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
               Add New Rule
             </button>
           </div>

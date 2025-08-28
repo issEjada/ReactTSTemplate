@@ -188,7 +188,7 @@ export const SystemConfigForm = ({
 
   return (
     <div>
-      <EditPopupIcon />
+      <EditPopupIcon className="text-blue-700"/>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">

@@ -323,7 +323,7 @@ export function CustomerProfileTable<TData extends object>({
                               className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
                             >
                               <Suspense>
-                                <PlusIcon />
+                                <PlusIcon className="text-white"/>
                               </Suspense>
                               Add New{" "}
                               {title.includes("Rules") ? "Rule" : "Item"}

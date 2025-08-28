@@ -1,7 +1,9 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import type { Path, Control, FieldValues } from "react-hook-form";
-import ChevronDown from "../assets/svg/ChevronDown.svg";
+const ChevronDown = React.lazy(
+  () => import("../assets/svg/ChevronDown.svg?react")
+);
 
 interface Option {
   key: string;
@@ -100,11 +102,7 @@ const DropdownMenu = <T extends FieldValues>({
                   {options.find((opt) => opt.key === value)?.node ||
                     `Choose ${label}`}
                 </span>
-                <img
-                  src={ChevronDown}
-                  alt="Dropdown icon"
-                  className="w-[10px] h-5 object-contain"
-                />
+                <ChevronDown className="w-[10px] h-5 object-contain text-gray-500"/>
               </div>
 
               {/* Dropdown Menu */}

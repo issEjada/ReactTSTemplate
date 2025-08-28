@@ -72,7 +72,7 @@ const DashboardEvents: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
-                  <MobileIcon className="w-4 h-4" />
+                  <MobileIcon className="w-4 h-4 text-blue-700 dark:text-blue-600" />
                 </div>
                 <span className="text-sm text-[#101828] dark:text-white">
                   {ev.name}

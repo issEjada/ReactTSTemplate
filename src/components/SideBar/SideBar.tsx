@@ -76,13 +76,13 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 {
                   pageTitle: "System Configuration",
                   text: "System Configuration",
-                  icon: "systemConfiguration",
+                  icon: "settings",
                   url: AppRoutes.systemConfiguration,
                 },
                 {
                   pageTitle: "Customer Profile",
                   text: "Customer Profile",
-                  icon: "systemConfiguration",
+                  icon: "settings",
                   url: AppRoutes.customerProfile,
                 },
                 {
@@ -104,17 +104,12 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             </span>
             <SideBarItemsGroup
               items={[
-                // {
-                //   pageTitle: "My Account",
-                //   text: "My Account",
-                //   icon: "myAccount",
-                //   url: AppRoutes.myAccount,
-                // },
                 {
                   pageTitle: "About Us",
                   text: "About Us",
-                  icon: "aboutUsIcon",
+                  icon: "AlertIcon",
                   url: AppRoutes.aboutUs,
+                  class: "rotate-180 w-[16.5px]"
                 },
                 {
                   pageTitle: "Support",

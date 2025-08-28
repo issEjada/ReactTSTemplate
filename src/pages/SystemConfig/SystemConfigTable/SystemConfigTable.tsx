@@ -104,7 +104,7 @@ export const SystemConfigTable = () => {
                   w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
                   h-[400px]
                   pointer-events-none select-none
-                  z-0
+                  z-0 text-gray-200 dark:text-gray-500
                 "
               />
             </div>
@@ -200,7 +200,7 @@ const getColumns = (
       };
       return (
         <div onClick={() => handleViewSystemConfig(rowData)}>
-          <EditIcon className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE]" />
+          <EditIcon className="sm:w-[20px] sm:h-[20px] text-gray-400" />
         </div>
       );
     },

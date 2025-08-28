@@ -1,7 +1,5 @@
 import React from "react";
 
-// import EmailIcon from "../assets/svg/mail.svg?react";
-// import PhoneIcon from "../assets/svg/phone.svg?react";
 const EmailIcon = React.lazy(() => import(`/src/assets/svg/mail.svg?react`));
 const PhoneIcon = React.lazy(() => import(`/src/assets/svg/phone.svg?react`));
 
@@ -24,11 +22,6 @@ const Support: React.FC = () => {
         <div className="flex flex-col gap-[16px] w-full md:w-[556px]">
           <div className="flex items-center gap-[12px]">
             <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-blue-50 bg-blue-100 dark:bg-gray-800 dark:border-gray-700 flex items-center justify-center">
-              {/* <img
-                src={EmailIcon}
-                alt="Email Icon"
-                className="w-[20px] h-[16px]"
-              /> */}
               <EmailIcon className="text-blue-700 dark:text-white" />
             </div>
             <p className="text-[20px] leading-[30px] font-semibold text-gray-900 dark:text-white">

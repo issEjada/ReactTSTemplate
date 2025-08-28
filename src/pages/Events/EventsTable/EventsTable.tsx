@@ -17,7 +17,7 @@ import { AppRoutes } from "../../../routes/AppRoutes";
 import type { EventFormValues } from "../eventsServices";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
-const Update = React.lazy(() => import("../../../assets/svg/update.svg?react"));
+const UpdateIcon = React.lazy(() => import("../../../assets/svg/update.svg?react"));
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 const MobileIcon = React.lazy(
@@ -58,11 +58,11 @@ const DevicePill: React.FC<{ device: string }> = ({ device }) => {
     <span className="inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-[#E9EAEB] dark:border-gray-700">
         {key === "MOBILE_SDK_MD" && (
-          <MobileIcon className="w-[20px] h-[20px]" />
+          <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {key === "WEB_SDK_MD" && <DesktopIcon className="w-[20px] h-[20px]" />}
+        {key === "WEB_SDK_MD" && <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />}
         {key === "3DS_MICROSITE_SDK_MD" && (
-          <WebIcon className="w-[20px] h-[20px]" />
+          <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
       </span>
       <span className="text-[14px] leading-[20px] dark:text-white">
@@ -150,7 +150,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleView();
               }}
             >
-              <ViewIcon />
+              <ViewIcon className="text-gray-700"/>
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -164,7 +164,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <Update />
+              <UpdateIcon className="text-gray-700"/>
               <span className="text-[14px]">Update Event</span>
             </button>
           </div>,
@@ -317,7 +317,7 @@ export const EventsTable = () => {
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 h-[40px] rounded-[8px] text-sm font-semibold flex items-center gap-2"
             >
-              <PlusIcon className="w-[20px] h-[20px]" />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
               <span className="text-[14px]">Add New Event</span>
             </button>
           </div>
@@ -325,7 +325,7 @@ export const EventsTable = () => {
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-          icon={<EventIcon className="sm:w-[28px] sm:h-[28px]" />}
+          icon={<EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding decision rules"
           description={
             <>
@@ -336,7 +336,7 @@ export const EventsTable = () => {
           }
           buttonText="Add New Event"
           buttonIcon={
-            <PlusIcon className="w-[20px] h-[20px] dark:text-black " />
+            <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
           }
           onButtonClick={handleAddNewEvent}
         />

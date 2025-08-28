@@ -1,5 +1,7 @@
-import { useRef, useEffect, useState } from "react";
-import ChevronDown from "../../../assets/svg/ChevronDown.svg";
+import React, { useRef, useEffect, useState } from "react";
+const ChevronDown = React.lazy(
+  () => import("../../../assets/svg/ChevronDown.svg?react")
+);
 
 interface Option {
   key: string;
@@ -80,11 +82,7 @@ const PopupDropdownMenu = ({
           <span className="text-gray-700 dark:text-white">
             {options.find((opt) => opt.key === value)?.node || `Choose ${label}`}
           </span>
-          <img
-            src={ChevronDown}
-            alt="Dropdown icon"
-            className="w-[10px] h-5 object-contain"
-          />
+          <ChevronDown className="w-[10px] h-5 object-contain text-gray-500"/>
         </div>
 
         {/* Dropdown Menu */}

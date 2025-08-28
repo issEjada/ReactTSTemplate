@@ -156,7 +156,7 @@ export const SystemConfigDetails = () => {
               className=" h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
             >
               <Suspense>
-                <PlusBorderIcon className="w-4 h-4" />
+                <PlusBorderIcon className="w-4 h-4 text-gray-700" />
               </Suspense>
               {attributes ? `Add ${attributes[0]?.name}` : "Add New Item"}
             </button>
@@ -178,7 +178,7 @@ export const SystemConfigDetails = () => {
                         w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
                         h-[400px]
                         pointer-events-none select-none
-                        z-0
+                        z-0 text-gray-200 dark:text-gray-500
                       "
               />
             </div>
@@ -363,14 +363,14 @@ const getColumns = (
                     setPopupMode("update");
                     setIsPopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE] mr-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5"
                 />
                 <DeleteIcon
                   onClick={() => {
                     setItemToDelete(rowData.id);
                     setIsDeletePopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE] ml-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 ml-5"
                 />
               </>
             ) : (
@@ -388,7 +388,7 @@ const getColumns = (
                     setPopupMode("update");
                     setIsPopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-[#A4A7AE] mr-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5"
                 />
                 {/* show Update Pop  */}
               </>
