@@ -46,7 +46,7 @@ export function DynamicFilterForm<T extends FieldValues>({
   return (
     <FilterLayout title={title} isOpen={isOpen} onClose={closeDrawer}>
       <form
-        className="flex flex-col justify-between h-[950px]"
+        className="flex flex-col justify-between ]"
         onSubmit={onSubmit}
         ref={formRef}
       >
@@ -63,7 +63,7 @@ export function DynamicFilterForm<T extends FieldValues>({
                       {...inputField}
                       type="text"
                       placeholder={field.placeholder}
-                      className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                      className="w-full h-[44px]  p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 mt-2 mb-2"
                     />
                   )}
                 />
@@ -79,7 +79,7 @@ export function DynamicFilterForm<T extends FieldValues>({
                 name={field.name}
                 label={field.label}
                 options={field.options}
-                className="w-full"
+                className="w-full mb-2 mt-2"
               />
             );
           }
@@ -96,7 +96,7 @@ export function DynamicFilterForm<T extends FieldValues>({
                       {...inputField}
                       type="date"
                       className="
-                    w-full h-[44px] mt-1 p-2 rounded-md text-sm
+                    w-full h-[44px] mt-2 p-2 rounded-md text-sm mb-2
                     border border-gray-300 text-gray-900
                     dark:bg-[#121418] dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
@@ -112,7 +112,7 @@ export function DynamicFilterForm<T extends FieldValues>({
           return null;
         })}
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-2 mt-2">
           <button
             type="submit"
             className="bg-blue-700 hover:bg-primary-700 text-white text-sm px-4 py-2 rounded-md"
