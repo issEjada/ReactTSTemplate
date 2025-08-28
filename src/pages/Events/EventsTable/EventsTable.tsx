@@ -40,14 +40,10 @@ type EventRow = {
   status: string;
   scheme: string;
   eventSourceDevice: string;
-  createdAt: string; // ISO string
+  createdAt: string;
 };
 
-/* ─────────────────────────────
-   Device pill (20×20, 8px radius)
-   ───────────────────────────── */
 const DevicePill: React.FC<{ device: string }> = ({ device }) => {
-  // Normalize to 3 buckets based on the device label
   const key = /web/i.test(device)
     ? "3DS_MICROSITE_SDK_MD"
     : /desk/i.test(device)
@@ -239,7 +235,6 @@ export const EventsTable = () => {
     itemsPerPage,
     setCurrentPage,
     handleSearchSubmit,
-    // setItemsPerPage,
     filters,
     setFilters,
     totalCount,
@@ -265,13 +260,6 @@ export const EventsTable = () => {
       ...filters,
       name: searchText.trim(),
     };
-
-    // if (statusFilter !== "All") {
-    //   newFilters.status = statusFilter;
-    // } else {
-    //   delete newFilters.status;
-    // }
-
     setFilters(newFilters);
     setCurrentPage(1);
   };

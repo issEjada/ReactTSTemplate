@@ -72,8 +72,8 @@ const RuleMenu = ({
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY, // below button
-        left: rect.right - 143 + window.scrollX, // align right
+        top: rect.bottom + window.scrollY,
+        left: rect.right - 143 + window.scrollX,
       });
     }
     setOpen((prev) => !prev);
@@ -208,7 +208,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     refetch,
     handleSearchSubmit,
     deleteRule,
-    handleToggleStatus, // Destructure handleToggleStatus from the hook
+    handleToggleStatus, 
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -262,7 +262,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   };
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
+    () => getColumns(handleToggleStatus, handleDeleteRule),
     [handleToggleStatus, handleDeleteRule]
   );
 
@@ -406,7 +406,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 };
 
 const getColumns = (
-  onToggleStatus: (id: number, currentStatus: string) => void, // Update signature
+  onToggleStatus: (id: number, currentStatus: string) => void,
   onDelete: (id: number) => void
 ): ColumnDef<Rule>[] => [
   {
@@ -487,7 +487,6 @@ const getColumns = (
         High: "text-red-700 bg-red-50",
         Extreme: "text-red-700 bg-red-50",
       };
-      // Capitalize first letter, rest lowercase
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (

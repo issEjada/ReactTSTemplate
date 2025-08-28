@@ -107,7 +107,6 @@ export const useSystemConfigDetails = () => {
     }
   }, [attributes]);
 
-  // Handle Delete Actions
   const handleConfirmDelete = async () => {
     if (!itemToDelete) return;
     setloadingState(LoadingState.Loading);
@@ -145,7 +144,6 @@ export const useSystemConfigDetails = () => {
     setIsDeletePopupOpen(false);
   };
 
-  // Hanlde Add Actions
   const handleAddConfirm = () => {
     setPopupMode("add");
     setPopupFields(
@@ -161,7 +159,6 @@ export const useSystemConfigDetails = () => {
     setIsPopupOpen(true);
   };
 
-  // Handle Save
   const handleSave = async (formValues: Value | Value[]) => {
     const action = popupMode === "add" ? "Add" : "Update";
 
@@ -234,7 +231,6 @@ export const useSystemConfigDetails = () => {
       .finally(() => setloadingState(LoadingState.Success));
   };
 
-  //handle update Description
   const handleDescriptionUpdate = async (newDescription: string) => {
     const payload = {
       description: newDescription,

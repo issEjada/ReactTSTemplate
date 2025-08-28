@@ -38,7 +38,7 @@ interface DynamicTableProps<TData extends object> {
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
   isMonitoringTable?: boolean;
-  onRowClick?: (rowData: TData) => void; // New prop for dynamic row click navigation
+  onRowClick?: (rowData: TData) => void;
   minimal?: boolean;
   minimalWithPagination?: boolean;
   loadingState?: LoadingState;
@@ -65,7 +65,7 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
-  onRowClick, // Destructure new prop
+  onRowClick, 
   minimal = false,
   minimalWithPagination = false,
   loadingState,

@@ -38,12 +38,11 @@ const RuleForm = () => {
     popupType,
     popupMessage,
     setScreenAction,
-    loadingState, // Add loadingState here
+    loadingState, 
     isFormValid,
     formValues,
   } = useViewScoringRules();
 
-  // const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
@@ -57,7 +56,6 @@ const RuleForm = () => {
     eventSourceDevice: "",
   });
 
-  // Track changes for confirm clear
   useEffect(() => {
     if (!formValues) return;
 
@@ -201,7 +199,6 @@ const RuleForm = () => {
         )}
       </div>
 
-      {/* Form Body */}
       <div className="flex flex-col gap-[12px] h-[412px] w-[1440px] gap-y-[24px] mb-[16px]">
         <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewRulesFormValues>
@@ -319,7 +316,6 @@ const RuleForm = () => {
           />
         </div>
 
-        {/* Description Textarea */}
         <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
@@ -362,7 +358,7 @@ const RuleForm = () => {
           editorContent={editorContent}
           parametersData={parametersData}
           setEditorContent={setEditorContent}
-          isReadOnly={screenAction === "view"} // Pass isReadOnly prop
+          isReadOnly={screenAction === "view"}
         />
       ) : (
         <div className="px-6 py-4 text-red-500">
@@ -382,7 +378,6 @@ const RuleForm = () => {
         </div>
       )}
 
-      {/* {isEditing && ( */}
       <div className="flex justify-end pb-6 pr-[80px]">
         <div className="flex gap-4">
           <button

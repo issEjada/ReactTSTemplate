@@ -56,7 +56,6 @@ export const CustomerProfile = () => {
       userMobileNumber: searchText.trim() || undefined,
     };
     setGlobalFilterData(searchData);
-    // setSearchText(""); // Keep the search text in the input field
   };
 
   const onClearSearch = () => {

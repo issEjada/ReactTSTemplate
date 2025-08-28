@@ -89,13 +89,11 @@ export const SystemConfigForm = ({
         isValid = false;
       }
 
-      // First field (IP validation)
       if (field.key === "ip") {
         const validation = validations.ip(String(fieldValues[field.key]));
         errors[field.key] = validation;
         if (!validation.isValid) isValid = false;
       }
-      // First field (Phone Number validation)
       if (field.key === "phoneNumber") {
         const validation = validations.phoneNumber(
           String(fieldValues[field.key])
@@ -145,13 +143,11 @@ export const SystemConfigForm = ({
       setTouchedFields((prev) => ({ ...prev, [key]: true }));
     }
 
-    // Validate IP field
     if (key === "ip") {
       const validation = validations.ip(String(fieldValues[key]));
       setFieldErrors((prev) => ({ ...prev, [key]: validation }));
     }
 
-    // Validate Phone Number field
     if (key === "phoneNumber") {
       const validation = validations.phoneNumber(String(fieldValues[key]));
       setFieldErrors((prev) => ({ ...prev, [key]: validation }));

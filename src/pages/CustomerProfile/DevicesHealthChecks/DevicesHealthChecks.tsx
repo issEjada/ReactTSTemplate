@@ -191,9 +191,6 @@ export const DevicesHealthChecks: React.FC = () => {
     return <FullScreenSpinner />;
   }
 
-  // if (errorValidation) {
-  //   return <span className="text-red-500">{errorValidation}</span>;
-  // }
 
   return (
     <div className="px-5 overflow-x-auto">

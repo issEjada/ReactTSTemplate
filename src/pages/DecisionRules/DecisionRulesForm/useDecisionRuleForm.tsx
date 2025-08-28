@@ -211,7 +211,7 @@ export const useViewDecisionRules = () => {
     if (ruleData) {
       reset({
         ...ruleData,
-        id: ruleData.id?.toString(), // Convert id to string
+        id: ruleData.id?.toString(),
       });
       setEditorContent(ruleData.condition);
     }

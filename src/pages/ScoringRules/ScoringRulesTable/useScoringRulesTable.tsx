@@ -65,14 +65,14 @@ export const useScoringRulesTable = () => {
 
   const handleToggleStatus = async (id: number, currentStatus: string) => {
     setloadingState(LoadingState.Loading);
-    const newStatus = currentStatus === "ENABLED" ? "DISABLED" : "ENABLED"; // Corrected status toggle logic
+    const newStatus = currentStatus === "ENABLED" ? "DISABLED" : "ENABLED";
     const payload: UpdateRulesPayload = {
       status: newStatus,
     };
 
     try {
       await ScoringRulesServices.updateRule(payload, id);
-      fetchData(); // Refetch data to update the table
+      fetchData();
       setloadingState(LoadingState.Success);
     } catch (err) {
       console.error("Failed to update rule status:", err);

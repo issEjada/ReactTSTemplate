@@ -36,7 +36,6 @@ export const ScoringDimensionForm = ({
   // Validate all fields whenever content changes
   useEffect(() => {
     const allValid = content.every((item) => {
-      // Check if the field is empty
       if (item.weight === "" || item.weight === undefined) {
         return false;
       }
@@ -58,7 +57,6 @@ export const ScoringDimensionForm = ({
 
     setTouchedFields((prev) => ({ ...prev, [id]: true }));
 
-    // Check if field is empty
     if (item.weight === "" || item.weight === undefined) {
       setFieldErrors((prev) => ({
         ...prev,

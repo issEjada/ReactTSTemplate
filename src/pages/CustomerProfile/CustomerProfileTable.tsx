@@ -93,14 +93,6 @@ export function CustomerProfileTable<TData extends object>({
   });
   const navigate = useNavigate();
 
-  // if (error) {
-  //   return (
-  //     <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-  //       {error}
-  //     </div>
-  //   );
-  // }
-
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);
     if (!col) return;

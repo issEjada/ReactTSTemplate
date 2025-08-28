@@ -13,7 +13,7 @@ interface ConditionsEditorsProps {
   editorContent: string;
   setEditorContent: React.Dispatch<React.SetStateAction<string>>;
   parametersData: GetRulesParameterResponse | undefined;
-  isReadOnly: boolean; // New prop to control read-only mode
+  isReadOnly: boolean; 
 }
 
 export const ConditionEditor = ({
@@ -73,7 +73,7 @@ export const ConditionEditor = ({
       setShowCopiedMessage(true);
       setTimeout(() => {
         setShowCopiedMessage(false);
-      }, 2000); // Hide after 2 seconds
+      }, 2000); 
     });
   };
 
@@ -111,25 +111,25 @@ export const ConditionEditor = ({
             label="Source"
             icon={SourceDocumentIcon}
             data={staticData.Source}
-            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
+            isReadOnly={isReadOnly}
           ></ConditionItem>
           <ConditionItem
             label="Comparison Operator"
             icon={ScaleComparisonIcon}
             data={staticData.Comparison}
-            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
+            isReadOnly={isReadOnly}
           ></ConditionItem>
           <ConditionItem
             label="Target"
             icon={SmartphoneARIcon}
             data={staticData.Target}
-            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
+            isReadOnly={isReadOnly}
           ></ConditionItem>
           <ConditionItem
             label="Logic Operator"
             icon={SmartphoneARIcon}
             data={staticData.Logic}
-            isReadOnly={isReadOnly} // Pass isReadOnly to ConditionItem
+            isReadOnly={isReadOnly}
           ></ConditionItem>
         </div>
       </div>
@@ -165,7 +165,7 @@ export const ConditionEditor = ({
           }}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          readOnly={isReadOnly} // Make textarea read-only in view mode
+          readOnly={isReadOnly}
           className={`bg-gray-50 overflow-y-scroll border border-transparent flex-1 p-4 resize-none rounded-lg focus:outline-none dark:text-white dark:bg-[#121418] dark:border-gray-800 ${
             isReadOnly ? "cursor-not-allowed" : ""
           }`}

@@ -61,9 +61,6 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             type="text"
             placeholder="Search"
             className="pl-8 pr-9 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
-            // onClick={
-            //   () => toggleDropdown("search")
-            // }
           />
           <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">⌘/</kbd>
         </div>
@@ -112,7 +109,6 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
                 <div className="flex items-center space-x-2">
                   <button
-                    // onClick={() => logout()}
                     onClick={() => setIsPopupOpen(true)}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
@@ -182,7 +178,6 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
         onClick={onSidebarIconClick}
       />
 
-      {/* Dashboard: always a link, always consistent */}
       <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
         Dashboard
       </Link>

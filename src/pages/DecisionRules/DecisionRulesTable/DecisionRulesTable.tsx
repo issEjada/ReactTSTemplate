@@ -71,8 +71,8 @@ const RuleMenu = ({
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY, // below button
-        left: rect.right - 143 + window.scrollX, // align right
+        top: rect.bottom + window.scrollY, 
+        left: rect.right - 143 + window.scrollX, 
       });
     }
     setOpen((prev) => !prev);
@@ -203,7 +203,6 @@ export const DecisionRulesTable = () => {
     itemsPerPage,
     setCurrentPage,
     handleSearchSubmit,
-    // setItemsPerPage,
     filters,
     setFilters,
     loadingState,

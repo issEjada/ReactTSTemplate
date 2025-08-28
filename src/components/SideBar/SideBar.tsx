@@ -121,7 +121,6 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             />
 
             <div
-              // className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 items-center text-gray-700 h-9 overflow-hidden ${isClosed? " justify-center": " justify-between "}`}
               className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 px-2 ${
                 isClosed
                   ? " translate-x-[-10%] h-20"

@@ -43,7 +43,6 @@ type LineChartContent = {
 };
 
 export default function SessionActivity({ data = [] }: LineChartContent) {
-  // same domain logic
   const allVals = data.flatMap((d) => [d?.Viewed ?? 0, d?.NotViewed ?? 0]);
   const yMin = Math.min(0, ...(allVals.length ? allVals : [0]));
   const yMax = Math.max(1, ...(allVals.length ? allVals : [1]));
@@ -66,8 +65,8 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
   }, []);
 
   // keep the original look; give each point some space (~90px) so labels/dots don’t collide
-  const naturalWidth = Math.max(560, data.length * 90); // 560px min keeps your original spacing
-  const innerWidth = Math.max(containerWidth, naturalWidth); // if container is smaller, allow scroll
+  const naturalWidth = Math.max(560, data.length * 90); 
+  const innerWidth = Math.max(containerWidth, naturalWidth);
 
   return (
     <div className="bg-white dark:bg-[#121418] dark:border-gray-800 p-4 sm:p-6 w-full border border-[#E9EAEB] rounded-[12px] shadow-[0_1px_2px_0_#0A0D120F,0_1px_3px_0_#0A0D121A]">

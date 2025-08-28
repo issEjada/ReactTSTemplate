@@ -249,7 +249,7 @@ const EventsForm = () => {
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate("/events"); // Navigate to events list or stay on form
+                navigate("/events");
               }}
             />
           </LayoutPopup>

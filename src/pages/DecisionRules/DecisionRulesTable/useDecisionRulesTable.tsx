@@ -9,7 +9,6 @@ import {
   type GetDecisionDataPayload,
   type GetDecisionRulesItem,
 } from "../decisionRulesServices";
-// import { formatTime } from "../../../helpers";
 
 import { cleanObject } from "../../../utils/helpers";
 import { LoadingState } from "../../../types/types";
@@ -112,7 +111,7 @@ export const useDecisionRulesTable = () => {
 
     try {
       await DecisionRulesServices.updateDecisionRule(payload, id);
-      await fetchDecisionData(); // Refetch data to update the table
+      await fetchDecisionData(); 
       setloadingState(LoadingState.Success);
     } catch (err) {
       console.error("Failed to update decision rule status:", err);
@@ -128,7 +127,7 @@ export const useDecisionRulesTable = () => {
       setIsPopupOpen(true);
       setPopupType("successModal");
       setPopupMessage("Decision rule deleted successfully");
-      await fetchDecisionData(); // Use fetchDecisionData instead of refetch
+      await fetchDecisionData();
       setloadingState(LoadingState.Success);
     } catch (error) {
       console.error("Error deleting decision rule:", error);

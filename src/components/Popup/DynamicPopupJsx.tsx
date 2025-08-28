@@ -15,7 +15,7 @@ interface RulesPopupProps {
   isError?: boolean;
   isConfirm?: boolean;
   errorMessage?: string | ApiError;
-  title?: string; // Added title prop
+  title?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
@@ -32,11 +32,11 @@ const DynamicPopupJsx = ({
   isError = false,
   isConfirm,
   errorMessage,
-  title: propTitle, // Renamed to avoid conflict with internal variable
+  title: propTitle,
   onConfirm,
   onCancel,
 }: RulesPopupProps) => {
-  const title = // Use propTitle if provided, otherwise fall back to existing logic
+  const title = 
     isError
       ? "Error"
       : isAdding
