@@ -108,6 +108,16 @@ export interface GetStatisticsResponse {
   notViewedSessions: number;
   viewedPercentage: number;
   notViewedPercentage: number;
+  sessionsByMonth: SessionByMonth[];
+}
+
+export interface SessionByMonth {
+  month: string;
+  totalSessions: number;
+  viewedSessions: number;
+  notViewedSessions: number;
+  viewedPercentage: number;
+  notViewedPercentage: number;
 }
 
 export interface GetSessionResponse {

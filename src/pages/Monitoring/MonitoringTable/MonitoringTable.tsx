@@ -305,7 +305,9 @@ export const MonitoringTable = () => {
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-          icon={<ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
+          icon={
+            <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+          }
           title="Start adding decision rules"
           description={
             <>
@@ -357,7 +359,13 @@ export const MonitoringTable = () => {
             ]}
           />
 
-          <SessionActivity data={sessionActivityData} />
+          <SessionActivity
+            data={(sessionActivityData ?? []).map((item) => ({
+              Month: item.month ?? "",
+              Viewed: item.viewedSessions ?? 0,
+              NotViewed: item.notViewedSessions ?? 0,
+            }))}
+          />
         </>
       )}
     </div>
