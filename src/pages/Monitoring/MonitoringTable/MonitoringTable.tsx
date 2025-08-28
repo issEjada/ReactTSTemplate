@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
@@ -249,12 +248,6 @@ export const MonitoringTable = () => {
     [data]
   );
 
-  const table = useReactTable<Session>({
-    data: sessionsData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getRowId: (row) => row.id.toString(),
-  });
 
   const isFilterActive = useMemo(
     () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
