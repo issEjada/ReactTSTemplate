@@ -113,7 +113,7 @@ function RowMenu({
       {open &&
         createPortal(
           <div
-            className="row-menu-portal absolute z-[9999] w-[237px] rounded-lg border border-gray-200 bg-white shadow-lg text-gray-700 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="row-menu-portal absolute z-[9999] w-[237px] rounded-lg border border-gray-200 bg-white shadow-lg text-gray-700 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{ top: coords.top, left: coords.left }}
           >
             <button

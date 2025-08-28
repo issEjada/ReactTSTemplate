@@ -82,7 +82,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Session ID"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px]"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800 px-[14px]"
               />
             )}
           />
@@ -105,7 +105,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Device ID"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px] "
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800 px-[14px] "
               />
             )}
           />
@@ -132,7 +132,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Customer Identity"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px]"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800 px-[14px]"
               />
             )}
           />
@@ -214,7 +214,7 @@ export const MonitoringFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter IP Address"
-                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800 px-[14px]"
+                className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800 px-[14px]"
               />
             )}
           />
@@ -233,7 +233,7 @@ export const MonitoringFilterForm = ({
                   className="
                     w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
                     [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
                   "
@@ -253,7 +253,7 @@ export const MonitoringFilterForm = ({
                   className="
                     w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
                     [color-scheme:light] dark:[color-scheme:dark]:border-gray-800
                   "

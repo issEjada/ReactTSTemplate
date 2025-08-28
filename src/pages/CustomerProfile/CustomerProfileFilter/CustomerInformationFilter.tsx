@@ -82,7 +82,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
                   {...field}
                   type="text"
                   placeholder="Enter Mobile Number"
-                  className="w-full h-[44px] p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+                  className="w-full h-[44px] p-2 rounded-md text-sm border border-gray-300 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
                 />
               )}
             />
@@ -105,7 +105,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
                   {...field}
                   type="text"
                   placeholder="Type User ID"
-                  className="w-full h-[44px] p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+                  className="w-full h-[44px] p-2 rounded-md text-sm border border-gray-300 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
                 />
               )}
             />
@@ -122,7 +122,7 @@ const CustomerInformationFilter: React.FC<CustomerFilterFormProps> = ({
                   {...field}
                   type="text"
                   placeholder="Type Client ID"
-                  className="w-full h-[44px] p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+                  className="w-full h-[44px] p-2 rounded-md text-sm border border-gray-300 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
                 />
               )}
             />

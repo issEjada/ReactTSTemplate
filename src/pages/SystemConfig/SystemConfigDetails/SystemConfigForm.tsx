@@ -227,8 +227,8 @@ export const SystemConfigForm = ({
             focus:outline-none focus:ring-2 ${
               fieldErrors[field.key]?.isValid === false &&
               touchedFields[field.key]
-                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
-                : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
             } rounded-md`}
                 pattern="\d*"
                 required={!addRow && index === 1}

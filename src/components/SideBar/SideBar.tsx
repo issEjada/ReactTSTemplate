@@ -12,7 +12,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
   return (
     <>
       <div
-        className={`h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-[#121418] dark:border-gray-800 py-[20px] ${
+        className={`h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-darkTheme dark:border-gray-800 py-[20px] ${
           isClosed ? " w-[110px] ps-[33px] pe-[34px]" : " w-64 px-4"
         }`}
       >
@@ -29,7 +29,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
             />
           </div>
           <div
-            className={`h-[1px] bg-[#D2D6DB] mb-3 transition-all duration-300 dark:bg-gray-800 ${
+            className={`h-[1px] bg-gray-950/10 mb-3 transition-all duration-300 dark:bg-gray-800 ${
               isClosed ? " -mx-8" : " -mx-4"
             }`}
           ></div>
@@ -47,7 +47,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           </div>
           <div className="pb-3">
             <span
-              className={`block text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 mb-1 ${
+              className={`block text-gray-950/40 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 mb-1 ${
                 isClosed ? " translate-x-[-50%]" : " translate-x-0"
               }`}
             >
@@ -96,7 +96,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           </div>
           <div className="pb-3">
             <span
-              className={`block text-gray-950 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 mb-1 ${
+              className={`block text-gray-950/40 dark:text-gray-600 text-sm py-1 px-3 h-7 transition-all duration-300 mb-1 ${
                 isClosed ? " translate-x-[-40%]" : " translate-x-0"
               }`}
             >

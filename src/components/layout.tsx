@@ -14,7 +14,7 @@ export const Layout = () => {
     <div className="min-h-screen ">
       <div className="flex">
         <div>
-          <div className="text-white h-screen fixed border-r border-r-[1px] border-r-[#1C1C1C1A] dark:border-gray-800 bg-white z-10">
+          <div className="text-white h-screen fixed border-r border-r-[1px] border-r-gray-950/10 dark:border-gray-800 bg-white z-10">
             <SideBar isClosed={isClosed} />
           </div>
         </div>

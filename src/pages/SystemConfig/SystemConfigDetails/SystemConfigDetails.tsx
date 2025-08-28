@@ -102,7 +102,7 @@ export const SystemConfigDetails = () => {
       <div className="w-full h-[154px] gap-[6px] flex flex-col">
         <label
           htmlFor="description"
-          className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white"
+          className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white"
         >
           Configuration Description
         </label>
@@ -112,10 +112,10 @@ export const SystemConfigDetails = () => {
           value={configDesc}
           onChange={(e) => setConfigDesc(e.target.value)}
           disabled={false}
-          className={`text-black w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
+          className={`text-black w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-gray-500 shadow-[#0A0D120D] focus:outline-none dark:bg-darkTheme dark:border-gray-800 dark:text-white ${
             false
               ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
-              : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
+              : "border border-gray-300 bg-white text-gray-500"
           }`}
         />
       </div>
@@ -141,7 +141,7 @@ export const SystemConfigDetails = () => {
           <button
             type="button"
             onClick={handleUpdateScoring}
-            className=" h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
+            className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
           >
             <Suspense>
               <EditIcon className="w-4 h-4" />
@@ -153,7 +153,7 @@ export const SystemConfigDetails = () => {
             <button
               type="button"
               onClick={handleAddConfirm}
-              className=" h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
+              className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
             >
               <Suspense>
                 <PlusBorderIcon className="w-4 h-4 text-gray-700" />
@@ -184,7 +184,7 @@ export const SystemConfigDetails = () => {
             </div>
 
             {/* Lock Icon in styled border */}
-            <div className="relative z-10 flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] gap-[8px] p-[4px]">
+            <div className="relative z-10 flex items-center justify-center bg-white border border-gray-300 rounded-[16px] gap-[8px] p-[4px]">
               <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
                 <LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
               </div>
@@ -225,7 +225,7 @@ export const SystemConfigDetails = () => {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className={`${"w-[100px]"} h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
+          className={`${"w-[100px]"} h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
         >
           Back
         </button>

@@ -52,7 +52,7 @@ const DevicePill: React.FC<{ device: string }> = ({ device }) => {
 
   return (
     <span className="inline-flex items-center gap-[10px]">
-      <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-[#E9EAEB] dark:border-gray-700">
+      <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
         {key === "MOBILE_SDK_MD" && (
           <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
@@ -135,7 +135,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
       {open &&
         createPortal(
           <div
-            className="event-menu-portal absolute z-[9999] w-[151px] h-[82px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="event-menu-portal absolute z-[9999] w-[151px] h-[82px] rounded-[8px] border border-gray-200 bg-white font-medium text-gray-700 shadow-lg dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{ top: coords.top, left: coords.left }}
           >
             <button
@@ -285,7 +285,7 @@ export const EventsTable = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#000000] dark:border-gray-800 dark:text-white">
+    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
       <div className="pt-5 px-6 pb-[18px]">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
           <div>

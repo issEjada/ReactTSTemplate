@@ -63,7 +63,7 @@ export default function RecentActivityTable() {
   });
 
   return (
-    <div className="bg-gray-50 dark:bg-[#121418] dark:border-gray-800 p-4 rounded-2xl w-[844px] h-full overflow-x-auto">
+    <div className="bg-gray-50 dark:bg-darkTheme dark:border-gray-800 p-4 rounded-2xl w-[844px] h-full overflow-x-auto">
       <p className="text-black dark:text-white font-semibold text-base mb-4 text-left">
         Recent Activity
       </p>

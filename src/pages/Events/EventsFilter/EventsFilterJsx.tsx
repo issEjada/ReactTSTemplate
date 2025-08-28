@@ -72,7 +72,7 @@ export const EventFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Event Name"
-                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800"
               />
             )}
           />
@@ -95,7 +95,7 @@ export const EventFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Type Description"
-                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800"
               />
             )}
           />
@@ -112,7 +112,7 @@ export const EventFilterForm = ({
                 {...field}
                 type="text"
                 placeholder="Enter Event Code"
-                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-[100%] h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800"
               />
             )}
           />
@@ -164,7 +164,7 @@ export const EventFilterForm = ({
                   className="
                     w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
                     [color-scheme:light] dark:[color-scheme:dark]
                   "
@@ -184,7 +184,7 @@ export const EventFilterForm = ({
                   className="
                     w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
                     [color-scheme:light] dark:[color-scheme:dark]
                   "

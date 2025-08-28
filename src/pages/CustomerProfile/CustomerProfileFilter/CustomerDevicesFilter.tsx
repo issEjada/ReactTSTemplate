@@ -86,7 +86,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
                 {...field}
                 type="text"
                 placeholder="Enter Device ID"
-                className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-[#121418] dark:border-gray-800"
+                className="w-full h-[44px] mt-1 p-2 border border-gray-300 rounded-md text-sm dark:bg-darkTheme dark:border-gray-800"
               />
             )}
           />
@@ -109,7 +109,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
                 {...field}
                 type="text"
                 placeholder="Enter deviceManufacturer"
-                className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+                className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
               />
             )}
           />
@@ -125,7 +125,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
                 {...field}
                 type="text"
                 placeholder="Type deviceModel"
-                className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+                className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
               />
             )}
           />
@@ -150,7 +150,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 text-gray-900 dark:bg-[#121418] dark:border-gray-800 dark:text-white [color-scheme:light] dark:[color-scheme:dark]"
+                  className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 text-gray-900 dark:bg-darkTheme dark:border-gray-800 dark:text-white [color-scheme:light] dark:[color-scheme:dark]"
                 />
               )}
             />
@@ -164,7 +164,7 @@ const CustomerDevicesFilter: React.FC<CustomerFilterFormProps> = ({
                 <input
                   {...field}
                   type="date"
-                  className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 text-gray-900 dark:bg-[#121418] dark:border-gray-800 dark:text-white [color-scheme:light] dark:[color-scheme:dark]"
+                  className="w-full h-[44px] mt-1 p-2 rounded-md text-sm border border-gray-300 text-gray-900 dark:bg-darkTheme dark:border-gray-800 dark:text-white [color-scheme:light] dark:[color-scheme:dark]"
                 />
               )}
             />

@@ -129,13 +129,13 @@ const DecisionForm = () => {
         <div className="flex flex-col gap-2">
           <label
             htmlFor="ruleName"
-            className="block text-md font-medium text-[#414651] mb-2 dark:text-white"
+            className="block text-md font-medium text-gray-700 mb-2 dark:text-white"
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Decision Rule
             {isViewing && (
               <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-[#EFF8FF] p-[8px] gap-[4px"
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-blue-50 p-[8px] gap-[4px"
                 onClick={handleEditClick}
               >
                 <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
@@ -155,8 +155,8 @@ const DecisionForm = () => {
                   className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium focus:outline-none focus:ring-2
                     ${
                       fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
-                        : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
                     }
                     ${
                       isViewing
@@ -198,7 +198,7 @@ const DecisionForm = () => {
           <div className="w-[368px] h-[120px]">
             <label
               htmlFor="criteriaName"
-              className="block text-sm font-medium text-[#414651] mb-[6px] mt-[20.8px] dark:text-white"
+              className="block text-sm font-medium text-gray-700 mb-[6px] mt-[20.8px] dark:text-white"
             >
               Criteria Name
               {isAdding && (
@@ -223,8 +223,8 @@ const DecisionForm = () => {
                   className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] w-[320px] h-[44px] focus:outline-none focus:ring-2
                     ${
                       fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
-                        : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
+                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
                     }
                     ${
                       isViewing
@@ -310,7 +310,7 @@ const DecisionForm = () => {
         <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
-            className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white"
+            className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white"
           >
             Description
           </label>
@@ -325,10 +325,10 @@ const DecisionForm = () => {
                   id="description"
                   placeholder="Enter a description..."
                   disabled={isDisabled}
-                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white  ${
+                  className={`w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-gray-500 shadow-[#0A0D120D] focus:outline-none dark:bg-darkTheme dark:border-gray-800 dark:text-white  ${
                     isDisabled
                       ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
-                      : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
+                      : "border border-gray-300 bg-white text-gray-500"
                   }`}
                 />
               );

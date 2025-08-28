@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-[#121418] dark:border-gray-800">
+    <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-darkTheme dark:border-gray-800">
       {isLoading && <FullScreenSpinner />}
       {/* Left: Breadcrumbs */}
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
@@ -178,10 +178,10 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
         onClick={onSidebarIconClick}
       />
 
-      <Link to="/" className="text-gray-950 dark:text-gray-400 hover:underline">
+      <Link to="/" className="text-gray-950/40 dark:text-gray-400 hover:underline">
         Dashboard
       </Link>
-      <span className="text-[#1C1C1C33] dark:text-gray-700">/</span>
+      <span className="text-gray-950/20 dark:text-gray-700">/</span>
 
       {fullPath.map((name, index) => {
         const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
@@ -200,7 +200,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
               <>
                 <Link
                   to={routeTo}
-                  className="text-gray-950 dark:text-gray-400 hover:underline capitalize"
+                  className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
                 >
                   {label}
                 </Link>

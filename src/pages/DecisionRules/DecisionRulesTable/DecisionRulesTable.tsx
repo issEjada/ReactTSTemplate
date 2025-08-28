@@ -132,7 +132,7 @@ const RuleMenu = ({
       {open &&
         createPortal(
           <div
-            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-gray-200 bg-white font-medium text-gray-700 shadow-lg dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{
               top: coords.top,
               left: coords.left,

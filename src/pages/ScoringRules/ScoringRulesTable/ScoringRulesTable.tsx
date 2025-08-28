@@ -128,7 +128,7 @@ const RuleMenu = ({
       {open &&
         createPortal(
           <div
-            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-gray-200 bg-white font-medium text-gray-700 shadow-lg dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{
               top: coords.top,
               left: coords.left,
@@ -323,7 +323,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
         {fromDashboard && (
           <button
             onClick={handleAddNewRule}
-            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
             aria-label="Add New Rule"
           >
             <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />

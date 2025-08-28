@@ -60,12 +60,12 @@ const EventsForm = () => {
         <div className="flex flex-col">
           <label
             htmlFor="name"
-            className="text-sm font-medium text-[#414651] mb-[14px] dark:text-white"
+            className="text-sm font-medium text-gray-700 mb-[14px] dark:text-white"
           >
             Event Name
             {isViewing && (
               <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-[#EFF8FF] p-[8px]"
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-blue-50 p-[8px]"
                 onClick={handleEditClick}
               >
                 <EditIcon className="w-[12px] h-[12px] text-blue-700" />
@@ -86,8 +86,8 @@ const EventsForm = () => {
                   className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2
                     ${
                       fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
-                        : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
+                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
                     }
                     ${isViewing ? "bg-[#F9FAFB] text-[#A0A0A0]" : ""}
                   `}
@@ -104,12 +104,12 @@ const EventsForm = () => {
         <div className="flex flex-col ">
           <label
             htmlFor="name"
-            className="text-sm font-medium text-[#414651] mb-[14px] dark:text-white"
+            className="text-sm font-medium text-gray-700 mb-[14px] dark:text-white"
           >
             Event Description
             {isViewing && (
               <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-[#EFF8FF] p-[8px]"
+                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[8px] bg-blue-50 p-[8px]"
                 onClick={handleEditClick}
               >
                 <EditIcon className="w-[12px] h-[12px] text-blue-700" />
@@ -126,7 +126,7 @@ const EventsForm = () => {
                   {...field}
                   placeholder="Enter Description"
                   disabled={isViewing}
-                  className="text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                  className="text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2 border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
                 />
               </div>
             )}
@@ -138,7 +138,7 @@ const EventsForm = () => {
       <div className="flex gap-6 px-6">
         {/* Event Code */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-[#414651] mb-[6px] dark:text-white">
+          <label className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white">
             Event Code<span className="text-red-500"> *</span>
           </label>
           <Controller
@@ -154,8 +154,8 @@ const EventsForm = () => {
                   className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2
                     ${
                       fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37]"
-                        : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
+                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
                     }
                     ${isViewing ? "bg-[#F9FAFB] text-[#A0A0A0]" : ""}
                   `}

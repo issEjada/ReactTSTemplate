@@ -65,7 +65,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
       <CustomerProfileTable<SDKCustomerDeviceInfo>
         title="Customer Devices"
         headerLeft={
-          <h2 className="text-[#181D27] dark:text-white text-[18px] font-semibold">
+          <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
             Customer Devices
           </h2>
         }

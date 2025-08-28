@@ -40,7 +40,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
   const route = routeMap[title] ?? "#";
 
   return (
-    <div className="w-full h-[112px] bg-[#FDFDFD] dark:bg-[#121418] dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
+    <div className="w-full h-[112px] bg-gray-25 dark:bg-darkTheme dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
       <div className="flex justify-between items-center">
         <Link
           to={route}
@@ -48,7 +48,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
         >
           {title}
         </Link>
-        <div className="w-[36px] h-[36px] p-[4px] bg-[#1C1C1C0D] dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
+        <div className="w-[36px] h-[36px] p-[4px] bg-gray-950/5 dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
           <Suspense fallback={<div className="w-7 h-7 bg-gray-300 rounded" />}>
             <Icon className={`w-[28px] h-[28px] ${myClass}`} />
           </Suspense>
