@@ -64,6 +64,8 @@ export const SystemConfigDetails = () => {
     setIsScoringPopupOpen,
     isScoringPopupOPen,
     setError,
+    isErrorPopupOpen,
+    setIsErrorPopupOpen,
   } = useSystemConfigDetails();
 
   const columns = useMemo(
@@ -111,12 +113,7 @@ export const SystemConfigDetails = () => {
           placeholder="Enter a description..."
           value={configDesc}
           onChange={(e) => setConfigDesc(e.target.value)}
-          disabled={false}
-          className={`text-black w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white ${
-            false
-              ? "border border-[#E4E7EC] bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed"
-              : "border border-[#D5D7DA] bg-[#FFFFFF] text-[#717680]"
-          }`}
+          className={`text-black w-full h-[128px] resize-none rounded-[8px] px-[14px] py-[10px] placeholder-[#717680] shadow-[#0A0D120D] focus:outline-none dark:bg-[#121418] dark:border-gray-800 dark:text-white border border-[#D5D7DA] bg-[#FFFFFF]`}
         />
       </div>
 
@@ -276,24 +273,32 @@ export const SystemConfigDetails = () => {
       >
         <SystemConfigPopup
           itemTitle={rowProps.name}
-          isAdding={popupMode === "add" ? true : false}
-          isEditing={popupMode === "update" ? true : false}
-          isError={popupMode === "error" ? true : false}
-          errorMessage={error ? error : ""}
+          isAdding={popupMode === "add"}
+          isEditing={popupMode === "update"}
           onConfirm={() => {
-            if (popupMode === "error") {
-              setPopupMode("update");
-              setError(null);
-            } else {
-              setIsPopupOpen(false);
-              setIsSuccessPopupOpen(false);
-              handleAddConfirm();
-            }
+            setIsSuccessPopupOpen(false);
+            handleAddConfirm()
+          }}
+          onCancel={() => setIsSuccessPopupOpen(false)}
+        />
+      </PopupLayout>
+
+      <PopupLayout
+        isOpen={isErrorPopupOpen}
+        className="md:w-[30%] lg:w-[35%] w-[90%]"
+      >
+        <SystemConfigPopup
+          itemTitle={rowProps.name}
+          isError={true}
+          errorMessage={error || "Something went wrong"}
+          onConfirm={() => {
+            setIsErrorPopupOpen(false);
+            setIsPopupOpen(false);
           }}
           onCancel={() => {
-            setIsSuccessPopupOpen(false);
-            setPopupMode("update");
             setError(null);
+            setIsErrorPopupOpen(false);
+            setIsPopupOpen(false);
           }}
         />
       </PopupLayout>

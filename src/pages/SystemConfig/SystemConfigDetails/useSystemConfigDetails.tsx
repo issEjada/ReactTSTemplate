@@ -41,6 +41,7 @@ export const useSystemConfigDetails = () => {
   const [popupMode, setPopupMode] = useState<"add" | "update" | "error">(
     "update"
   );
+  const [isErrorPopupOpen, setIsErrorPopupOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const location = useLocation();
@@ -220,16 +221,18 @@ export const useSystemConfigDetails = () => {
     };
     setloadingState(LoadingState.Loading);
     await SystemConfigServices.updateConfiguration(rowProps.id, payload)
-      .then(() => {
-        fetchData();
+      .then(async () => {
+        await fetchData();
         setIsPopupOpen(false);
         setIsScoringPopupOpen(false);
         setIsSuccessPopupOpen(true);
       })
-      .catch((error) => {
+      .catch(async (error) => {
         setError(`${error}`);
+        setIsErrorPopupOpen(true);
         setPopupMode("error");
-        setIsSuccessPopupOpen(true);
+        setIsSuccessPopupOpen(false);
+        await fetchData();
       })
       .finally(() => setloadingState(LoadingState.Success));
   };
@@ -293,5 +296,7 @@ export const useSystemConfigDetails = () => {
     setData,
     setIsScoringPopupOpen,
     isScoringPopupOPen,
+    isErrorPopupOpen,
+    setIsErrorPopupOpen,
   };
 };
