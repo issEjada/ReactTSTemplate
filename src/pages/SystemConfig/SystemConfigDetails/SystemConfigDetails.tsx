@@ -60,7 +60,6 @@ export const SystemConfigDetails = () => {
     setIsSuccessPopupOpen,
     handleDescriptionUpdate,
     handleUpdateScoring,
-    setData,
     setIsScoringPopupOpen,
     isScoringPopupOPen,
     setError,
@@ -276,7 +275,7 @@ export const SystemConfigDetails = () => {
           isEditing={popupMode === "update"}
           onConfirm={() => {
             setIsSuccessPopupOpen(false);
-            handleAddConfirm()
+            handleAddConfirm();
           }}
           onCancel={() => setIsSuccessPopupOpen(false)}
         />
@@ -344,7 +343,7 @@ const getColumns = (
       minSize: 70,
       maxSize: 100,
       enableResizing: false,
-      headerClassName: "text-right", 
+      headerClassName: "text-right",
       cell: (row: any) => {
         const rowData = row.row.original;
 
