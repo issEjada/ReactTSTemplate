@@ -95,8 +95,8 @@ export const SystemConfigDetails = () => {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {rowProps.name}
           </h2>
-          <div className="ml-2 text-blue-50 bg-blue-100 px-1 py-1 rounded-full">
-            <EditIcon className="sm:w-[15px] sm:h-[15px] text-blue-700" />
+          <div className="flex justify-center items-center w-[28px] h-[28px] ml-2 text-blue-50 bg-blue-100 rounded-full">
+            <EditIcon className="sm:w-[12px] sm:h-[12px] text-blue-700" />
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@ export const SystemConfigDetails = () => {
             <Suspense>
               <EditIcon className="w-4 h-4" />
             </Suspense>
-            Update Dimantions
+            Update Dimensions
           </button>
         ) : (
           rowProps.allowAddRow && (
