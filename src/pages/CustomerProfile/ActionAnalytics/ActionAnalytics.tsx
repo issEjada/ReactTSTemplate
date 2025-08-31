@@ -113,7 +113,7 @@ function RowMenu({
       {open &&
         createPortal(
           <div
-            className="row-menu-portal absolute z-[9999] w-[237px] rounded-lg border border-gray-200 bg-white shadow-lg text-gray-700 dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="row-menu-portal absolute z-[9999] w-[237px] rounded-lg border border-gray-200 bg-white shadow-lg text-gray-700 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{ top: coords.top, left: coords.left }}
           >
             <button
@@ -124,7 +124,7 @@ function RowMenu({
                 setOpen(false);
               }}
             >
-              <StatisticsIcon className="w-4 h-4" />
+              <StatisticsIcon className="w-4 h-4 text-black dark:text-white" />
               <span className="text-sm whitespace-nowrap">
                 Actions Statistics
               </span>
@@ -169,7 +169,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   const { actionAnalyticsData, errorValidation, loadingState } =
     useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
 
-  console.log("Action Analytics Data:", actionAnalyticsData);
 
   const columns: ColumnDef<FormattedAnalyticData>[] = [
     {
@@ -200,13 +199,11 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         <div className="flex justify-end pr-3">
           <RowMenu
             onStatistics={() => {
-              console.log("Actions Statistics for row:", row.original);
               setIsOpen(true);
               setPopUpType("actionStatistics");
               setPopUpData(row.original);
             }}
             onTrustedIndicators={() => {
-              console.log("Actions Trusted Indicators for row:", row.original);
               setIsOpen(true);
               setPopUpType("trustedIndicators");
               setPopUpData(row.original);
@@ -263,7 +260,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     return <span className="text-red-500">{errorValidation}</span>;
   }
 
-  console.log("popup data:", popUpData);
 
   return (
     <div className="flex flex-col gap-4">
@@ -274,7 +270,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfTotalActions || 0
           }
-          icon={<TotalActionIcon />}
+          icon={<TotalActionIcon className="text-blue-700"/>}
           className="w-full md:w-[370px]"
         />
         <MetricCard
@@ -282,13 +278,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfAcceptedActions || 0
           }
-          icon={<AcceptedIcon />}
+          icon={<AcceptedIcon className="text-success-600"/>}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="MFA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfMFAActions || 0}
-          icon={<MfaIcon />}
+          icon={<MfaIcon className="text-warning-600"/>}
           className="w-full md:w-[370px]"
         />
 
@@ -298,15 +294,15 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
             actionAnalyticsData?.actionsAnalytics
               .numberOfAuthenticatedActions || 0
           }
-          icon={<AuthActionIcon />}
-          className="w-full md:w-[370px] text-purple-700"
+          icon={<AuthActionIcon className="text-purple-700"/>}
+          className="w-full md:w-[370px]"
         />
         <MetricCard
           title="Rejected Actions"
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfRejectedActions || 0
           }
-          icon={<RejectedIcon />}
+          icon={<RejectedIcon className="text-red-600"/>}
           className="w-full md:w-[370px]"
         />
         <MetricCard

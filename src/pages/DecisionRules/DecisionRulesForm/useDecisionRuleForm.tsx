@@ -105,7 +105,9 @@ export const useViewDecisionRules = () => {
         );
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -121,7 +123,9 @@ export const useViewDecisionRules = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
 
     await getDropDownsValue({
@@ -135,7 +139,9 @@ export const useViewDecisionRules = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -152,12 +158,10 @@ export const useViewDecisionRules = () => {
         if (value.lastUpdatedTimestamp) {
           value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
         }
-        console.log("test Rule by Id", value);
         setRuleData(value);
         setloadingState(LoadingState.Success);
       })
       .catch((error) => {
-        console.log("fetch rule Data", error);
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
         setPopupMessage(error);
@@ -174,7 +178,9 @@ export const useViewDecisionRules = () => {
         setParameterData(value);
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -195,7 +201,9 @@ export const useViewDecisionRules = () => {
       })
       .catch((error) => {
         setEventNameValues([]);
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -211,7 +219,7 @@ export const useViewDecisionRules = () => {
     if (ruleData) {
       reset({
         ...ruleData,
-        id: ruleData.id?.toString(), // Convert id to string
+        id: ruleData.id?.toString(),
       });
       setEditorContent(ruleData.condition);
     }
@@ -259,7 +267,6 @@ export const useViewDecisionRules = () => {
           setPopupType("errorModal");
           setPopupMessage(error);
           setIsPopupOpen(true);
-          console.log(error);
         });
     }
 
@@ -284,7 +291,6 @@ export const useViewDecisionRules = () => {
           );
         })
         .catch((error) => {
-          console.log(error);
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
           setPopupMessage(error);

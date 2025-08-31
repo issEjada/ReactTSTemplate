@@ -72,8 +72,8 @@ const RuleMenu = ({
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY, // below button
-        left: rect.right - 143 + window.scrollX, // align right
+        top: rect.bottom + window.scrollY,
+        left: rect.right - 143 + window.scrollX,
       });
     }
     setOpen((prev) => !prev);
@@ -128,7 +128,7 @@ const RuleMenu = ({
       {open &&
         createPortal(
           <div
-            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-gray-200 bg-white font-medium text-gray-700 shadow-lg dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{
               top: coords.top,
               left: coords.left,
@@ -142,7 +142,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon />
+              <ViewIcon className="text-gray-700"/>
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -208,7 +208,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     refetch,
     handleSearchSubmit,
     deleteRule,
-    handleToggleStatus, // Destructure handleToggleStatus from the hook
+    handleToggleStatus, 
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -262,7 +262,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   };
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule), // Pass the destructured handleToggleStatus
+    () => getColumns(handleToggleStatus, handleDeleteRule),
     [handleToggleStatus, handleDeleteRule]
   );
 
@@ -314,7 +314,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
             >
-              <PlusIcon className="w-[20px] h-[20px]" />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
               Add New Rule
             </button>
           </div>
@@ -323,7 +323,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
         {fromDashboard && (
           <button
             onClick={handleAddNewRule}
-            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
             aria-label="Add New Rule"
           >
             <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
@@ -332,6 +332,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
+          minimal={fromDashboard}
           icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding scoring rules"
           description={
@@ -405,7 +406,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 };
 
 const getColumns = (
-  onToggleStatus: (id: number, currentStatus: string) => void, // Update signature
+  onToggleStatus: (id: number, currentStatus: string) => void,
   onDelete: (id: number) => void
 ): ColumnDef<Rule>[] => [
   {
@@ -486,7 +487,6 @@ const getColumns = (
         High: "text-red-700 bg-red-50",
         Extreme: "text-red-700 bg-red-50",
       };
-      // Capitalize first letter, rest lowercase
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (

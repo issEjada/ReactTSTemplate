@@ -17,7 +17,6 @@ export const useActionAnalytics = (
     "loading" | "success" | "error"
   >("success");
 
-  console.log("User Mobile Number:", userMobileNumber);
 
   const fetchActionAnalyticsData = async () => {
     setLoadingState("loading");
@@ -42,7 +41,6 @@ export const useActionAnalytics = (
 
   useEffect(() => {
     fetchActionAnalyticsData();
-    console.log("currentPage", currentPage)
   }, [currentPage, userMobileNumber]);
 
   return {

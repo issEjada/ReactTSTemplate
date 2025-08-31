@@ -55,7 +55,7 @@ const DashboardEvents: React.FC = () => {
 
         <button
           onClick={handleAddNewEvent}
-          className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-[#121418] dark:border-gray-800"
+          className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
           aria-label="Add New Rule"
         >
           <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
@@ -63,16 +63,16 @@ const DashboardEvents: React.FC = () => {
       </div>
 
       {/* Card */}
-      <div className="rounded-2xl border border-[#E5E7EB] dark:border-gray-800 bg-white dark:bg-[#121418] p-4 shadow-sm">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-darkTheme p-4 shadow-sm">
         <div className="space-y-3">
           {events.slice(0, 3).map((ev) => (
             <div
               key={ev.id}
-              className="flex items-center justify-between rounded-lg border-b border-[#E5E7EB] dark:border-gray-800 px-3 py-3"
+              className="flex items-center justify-between rounded-lg border-b border-gray-200 dark:border-gray-800 px-3 py-3"
             >
               <div className="flex items-center gap-2">
                 <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
-                  <MobileIcon className="w-4 h-4" />
+                  <MobileIcon className="w-4 h-4 text-blue-700 dark:text-blue-600" />
                 </div>
                 <span className="text-sm text-[#101828] dark:text-white">
                   {ev.name}
@@ -81,7 +81,7 @@ const DashboardEvents: React.FC = () => {
 
               <button
                 type="button"
-                className="text-[12px] text-[#344054] dark:text-gray-300 hover:underline"
+                className="text-[12px] text-gray-600 dark:text-gray-300 hover:underline"
                 onClick={() => handleViewDetails(ev)}
               >
                 View Details

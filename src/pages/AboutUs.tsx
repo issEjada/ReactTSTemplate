@@ -3,7 +3,7 @@ import AboutUsImg from "../assets/png/aboutUsImg.png";
 
 const AboutUs: React.FC = () => {
   return (
-    <section className="bg-white text-gray-800  py-8 md:px-6 dark:bg-black">
+    <section className="relative bg-white text-gray-800  py-8 md:px-6 dark:bg-black">
       <div className="max-w-6xl grid md:grid-cols-1 gap-12 items-end">
         <div className="flex">
           <div className="flex flex-col text-left w-[70%]">
@@ -18,7 +18,7 @@ const AboutUs: React.FC = () => {
               "As fraudsters evolve, so must their hunters."
             </blockquote>
           </div>
-          <button className="bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] ml-auto hover:bg-blue-800 transition duration-300">
+          <button className="absolute  right-6 bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-800 transition duration-300 z-50">
             Contact Us
           </button>
         </div>
@@ -57,7 +57,11 @@ const AboutUs: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <img src={AboutUsImg} alt="cybersecurity illustration" className="w-full ml-20" />
+            <img
+              src={AboutUsImg}
+              alt="cybersecurity illustration"
+              className="w-full ml-20"
+            />
           </div>
         </div>
       </div>

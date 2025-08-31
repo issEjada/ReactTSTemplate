@@ -4,8 +4,8 @@ const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
 );
 
-const AlerTraingletIcon = React.lazy(
-  () => import(`/src/assets/svg/alert-triangle.svg?react`)
+const AlertTraingletIcon = React.lazy(
+  () => import(`/src/assets/svg/ActiveAlerts.svg?react`)
 );
 
 interface RulesPopupProps {
@@ -15,7 +15,7 @@ interface RulesPopupProps {
   isError?: boolean;
   isConfirm?: boolean;
   errorMessage?: string | ApiError;
-  title?: string; // Added title prop
+  title?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
@@ -32,11 +32,11 @@ const DynamicPopupJsx = ({
   isError = false,
   isConfirm,
   errorMessage,
-  title: propTitle, // Renamed to avoid conflict with internal variable
+  title: propTitle,
   onConfirm,
   onCancel,
 }: RulesPopupProps) => {
-  const title = // Use propTitle if provided, otherwise fall back to existing logic
+  const title = 
     isError
       ? "Error"
       : isAdding
@@ -68,11 +68,11 @@ const DynamicPopupJsx = ({
     : "";
 
   const icon = isConfirm ? (
-    <AlerTraingletIcon className="w-6 h-6" />
+    <AlertTraingletIcon className="w-6 h-6 text-warning-600" />
   ) : isError || isDeleting ? (
     <AlertIcon className="w-6 h-6" />
   ) : (
-    <CheckIcon className="w-6 h-6" />
+    <CheckIcon className="w-6 h-6 text-success-600" />
   );
   const iconBgClass =
     isError || isDeleting || isConfirm

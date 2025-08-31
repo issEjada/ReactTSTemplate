@@ -89,13 +89,11 @@ export const SystemConfigForm = ({
         isValid = false;
       }
 
-      // First field (IP validation)
       if (field.key === "ip") {
         const validation = validations.ip(String(fieldValues[field.key]));
         errors[field.key] = validation;
         if (!validation.isValid) isValid = false;
       }
-      // First field (Phone Number validation)
       if (field.key === "phoneNumber") {
         const validation = validations.phoneNumber(
           String(fieldValues[field.key])
@@ -145,13 +143,11 @@ export const SystemConfigForm = ({
       setTouchedFields((prev) => ({ ...prev, [key]: true }));
     }
 
-    // Validate IP field
     if (key === "ip") {
       const validation = validations.ip(String(fieldValues[key]));
       setFieldErrors((prev) => ({ ...prev, [key]: validation }));
     }
 
-    // Validate Phone Number field
     if (key === "phoneNumber") {
       const validation = validations.phoneNumber(String(fieldValues[key]));
       setFieldErrors((prev) => ({ ...prev, [key]: validation }));
@@ -188,7 +184,7 @@ export const SystemConfigForm = ({
 
   return (
     <div>
-      <EditPopupIcon />
+      <EditPopupIcon className="text-blue-700"/>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -231,8 +227,8 @@ export const SystemConfigForm = ({
             focus:outline-none focus:ring-2 ${
               fieldErrors[field.key]?.isValid === false &&
               touchedFields[field.key]
-                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
-                : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
             } rounded-md`}
                 pattern="\d*"
                 required={!addRow && index === 1}

@@ -23,7 +23,7 @@ const LayoutPopup: React.FC<PopupProps> = ({
       `}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 backdrop-blur-[16px] bg-[#434C5FB2] dark:bg-[#181D27C9]" />
+      <div className="absolute inset-0 backdrop-blur-[16px] bg-[#434C5FB2] dark:bg-gray-900/[0.788]" />
 
       {/* Popup Content */}
       <div

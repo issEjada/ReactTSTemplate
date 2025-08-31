@@ -9,6 +9,9 @@ import { useCustomProfile } from "./useCustomProfile";
 import type { CustomerInsightsPayload } from "./customerProfileServices";
 import FullScreenSpinner from "../../components/FullScreenSpinner";
 
+const MobileIcon = React.lazy(
+  () => import("../../../src/assets/svg/Mobile.svg?react")
+);
 const UserIcon = React.lazy(
   () => import("../../../src/assets/svg/profile.svg?react")
 );
@@ -22,7 +25,7 @@ const ActionAnalyticsIcon = React.lazy(
   () => import("../../../src/assets/svg/AAnalytics.svg?react")
 );
 const CustomerDevicesIcon = React.lazy(
-  () => import("../../../src/assets/svg/monitoring.svg?react")
+  () => import("../../../src/assets/svg/mobile.svg?react")
 );
 const DevicesHealthChecksIcon = React.lazy(
   () => import("../../../src/assets/svg/monitoring.svg?react")
@@ -53,7 +56,6 @@ export const CustomerProfile = () => {
       userMobileNumber: searchText.trim() || undefined,
     };
     setGlobalFilterData(searchData);
-    // setSearchText(""); // Keep the search text in the input field
   };
 
   const onClearSearch = () => {
@@ -99,7 +101,7 @@ export const CustomerProfile = () => {
                 if (e.key === "Enter") applyFilters();
               }}
               placeholder={"Search"}
-              className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+              className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-gray-300 outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
             />
 
             {searchText && (
@@ -147,8 +149,8 @@ export const CustomerProfile = () => {
             <span>Customer Information</span>
             <div className="flex flex-col gap-3">
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
-                  <UserIcon className="text-blue-700" />
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                  <MobileIcon className="text-blue-700 dark:text-blue-600 w-[9.33px]" />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700 dark:text-blue-500">
@@ -160,8 +162,8 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
-                  <UserIcon className="text-blue-700" />
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                  <UserIcon className="text-blue-700 h-[12px]" />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700 dark:text-blue-500">
@@ -173,8 +175,8 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
-                  <ClientIDIcon className="text-blue-700" />
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                  <ClientIDIcon className="text-blue-700 w-[14.67px]" />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-inter font-medium text-sm leading-5 tracking-normal text-blueGray-700 dark:text-blue-500">
@@ -197,7 +199,7 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("customerInsights")}
               >
-                <CustomerInsightsIcon className="text-gray-500" />
+                <CustomerInsightsIcon className={`${currentSection === "customerInsights" ? "text-blueGray-500" : "text-gray-500"}`} />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerInsights"
@@ -216,7 +218,7 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("actionAnalytics")}
               >
-                <ActionAnalyticsIcon className="text-gray-500" />
+                <ActionAnalyticsIcon className={`${currentSection === "actionAnalytics" ? "text-blueGray-500" : "text-gray-500"}`} />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "actionAnalytics"
@@ -235,7 +237,7 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("customerDevices")}
               >
-                <CustomerDevicesIcon className="text-gray-500" />
+                <CustomerDevicesIcon className={`${currentSection === "customerDevices" ? "text-blueGray-500" : "text-gray-500"}`} />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerDevices"
@@ -254,7 +256,7 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("devicesHealthChecks")}
               >
-                <DevicesHealthChecksIcon className="text-gray-500" />
+                <DevicesHealthChecksIcon className={`w-[23px] ${currentSection === "devicesHealthChecks" ? "text-blueGray-500" : "text-gray-500"}`}/>
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "devicesHealthChecks"

@@ -50,6 +50,11 @@ export function formatTimeWithNoOffset(dateString: string): string {
 
 export function formatFromTime(dateString: string): string {
   const date = new Date(decodeURIComponent(dateString));
+
+  if (isNaN(date.getTime())) {
+    return ""; // Return empty string for invalid date
+  }
+
   date.setHours(0, 0, 0, 0); // Set to 00:00:00.000
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -72,6 +77,9 @@ export function formatFromTime(dateString: string): string {
 
 export function formatToTime(dateString: string): string {
   const date = new Date(decodeURIComponent(dateString));
+  if (isNaN(date.getTime())) {
+    return ""; // Return empty string for invalid date
+  }
   date.setHours(23, 59, 59, 999); // Set to 23:59:59.999
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

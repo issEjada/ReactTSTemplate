@@ -58,37 +58,10 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
-        path: AppRoutes.testing,
-        element: (
-          <ProtectedRoute>
-            <div>TESTING</div>
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
         path: AppRoutes.customerProfile,
         element: (
           <ProtectedRoute>
             <CustomerProfile />
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
-        path: AppRoutes.organizations,
-        element: (
-          <ProtectedRoute>
-            <div>ORGANIZATIONS</div>
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
-        path: AppRoutes.users,
-        element: (
-          <ProtectedRoute>
-            <div>USERS</div>
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -234,15 +207,6 @@ export const AppRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <EventsForm />
-          </ProtectedRoute>
-        ),
-        errorElement: <></>,
-      },
-      {
-        path: AppRoutes.myAccount,
-        element: (
-          <ProtectedRoute>
-            <div>MY ACCOUNT</div>
           </ProtectedRoute>
         ),
         errorElement: <></>,

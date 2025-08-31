@@ -34,7 +34,7 @@ export default function ExpandableCard({
             hasMultiple ? "cursor-pointer" : ""
           }`}
         >
-          <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+          <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
             {icon}
           </div>
           <div className="flex flex-col">
@@ -52,8 +52,8 @@ export default function ExpandableCard({
           className="flex flex-col gap-[18px] p-4 bg-white dark:bg-gray-800 dark:border-gray-900 w-full rounded-lg border border-blueGray-100"
           onClick={() => setExpanded(false)}
         >
-          <div className="flex justify-start gap-[10px]">
-            <div className="flex justify-center items-center w-[28px] h-[28px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+          <div className="flex justify-start gap-[10px] items-center">
+            <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
               {icon}
             </div>
             <span className="font-medium">{label}</span>

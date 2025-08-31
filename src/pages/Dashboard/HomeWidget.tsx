@@ -5,7 +5,7 @@ import { useDashboard } from "./useDashboard";
 import FullScreenSpinner from "../../components/FullScreenSpinner";
 
 const ShieldIcon = React.lazy(
-  () => import("../../assets/svg/ShieldIcon.svg?react")
+  () => import("../../assets/svg/ShieldG.svg?react")
 );
 const Threatblock = React.lazy(
   () => import("../../assets/svg/Threatblock.svg?react")
@@ -20,6 +20,7 @@ interface HomeWidgetProps {
   active: number;
   inactive: number;
   total: number;
+  myClass?: string;
 }
 
 const HomeWidget: React.FC<HomeWidgetProps> = ({
@@ -28,6 +29,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
   active,
   inactive,
   total,
+  myClass,
 }) => {
   const routeMap: Record<string, string> = {
     "Scoring Rules": AppRoutes.scoringRules,
@@ -38,7 +40,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
   const route = routeMap[title] ?? "#";
 
   return (
-    <div className="w-full h-[112px] bg-[#FDFDFD] dark:bg-[#121418] dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
+    <div className="w-full h-[112px] bg-gray-25 dark:bg-darkTheme dark:border-gray-800 border border-gray-300 rounded-[16px] shadow-sm px-5 py-4 flex flex-col justify-between">
       <div className="flex justify-between items-center">
         <Link
           to={route}
@@ -46,9 +48,9 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
         >
           {title}
         </Link>
-        <div className="w-[36px] h-[36px] p-[4px] bg-[#1C1C1C0D] dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
+        <div className="w-[36px] h-[36px] p-[4px] bg-gray-950/5 dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
           <Suspense fallback={<div className="w-7 h-7 bg-gray-300 rounded" />}>
-            <Icon className="w-[28px] h-[28px]" />
+            <Icon className={`w-[28px] h-[28px] ${myClass}`} />
           </Suspense>
         </div>
       </div>
@@ -84,6 +86,7 @@ const HomeWidgetGroup: React.FC = () => {
           active: data.scoringRules.activeRules,
           inactive: data.scoringRules.inactiveRules,
           total: data.scoringRules.totalRules,
+          myClass: "text-blue-700",
         },
         {
           title: "Decision Rules",
@@ -98,6 +101,7 @@ const HomeWidgetGroup: React.FC = () => {
           active: data.events.activeRules,
           inactive: data.events.inactiveRules,
           total: data.events.totalRules,
+          myClass: "text-red-600",
         },
       ]);
     }
@@ -121,6 +125,7 @@ const HomeWidgetGroup: React.FC = () => {
           active={item.active}
           inactive={item.inactive}
           total={item.total}
+          myClass={item.myClass}
         />
       ))}
     </div>

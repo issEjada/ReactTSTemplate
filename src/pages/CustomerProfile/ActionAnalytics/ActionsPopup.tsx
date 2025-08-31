@@ -10,9 +10,6 @@ const ArrowRiseIcon = React.lazy(
 const AverageAmountIcon = React.lazy(
   () => import("../../../assets/svg/AverageAmount.svg?react")
 );
-const ArrowDownIcon = React.lazy(
-  () => import("../../../assets/svg/MinAmount.svg?react")
-);
 const MapIcon = React.lazy(
   () => import("../../../assets/svg/MostUsedTargetCountry.svg?react")
 );
@@ -66,48 +63,48 @@ const TRUSTED_DEF: {
   title: string;
   Icon: React.ReactNode;
 }[] = [
-  { id: "averageAmount", title: "Average Amount", Icon: <AverageAmountIcon /> },
-  { id: "maxAmount", title: "Max Amount", Icon: <ArrowRiseIcon /> },
-  { id: "minAmount", title: "Min Amount", Icon: <ArrowDownIcon /> },
+  { id: "averageAmount", title: "Average Amount", Icon: <AverageAmountIcon className="text-blue-700"/> },
+  { id: "maxAmount", title: "Max Amount", Icon: <ArrowRiseIcon className="text-blue-700"/> },
+  { id: "minAmount", title: "Min Amount", Icon: <ArrowRiseIcon className="text-blue-700 rotate-180" /> },
   {
     id: "mostUsedTargetCountry",
     title: "Most Used Target Country",
-    Icon: <MapIcon />,
+    Icon: <MapIcon className="text-blue-700"/>,
   },
   {
     id: "mostUsedTargetMerchant",
     title: "Most Used Target Merchant",
-    Icon: <TargetIcon />,
+    Icon: <TargetIcon className="text-blue-700"/>,
   },
   {
     id: "mostUsedTargetBank",
     title: "Most Used Target Bank",
-    Icon: <CoinIcon />,
+    Icon: <CoinIcon className="text-blue-700"/>,
   },
   {
     id: "trustedTargetCountries",
     title: "Trusted Targeted Countries",
-    Icon: <CountryIcon />,
+    Icon: <CountryIcon className="text-blue-700"/>,
   },
   {
     id: "trustedTargetMerchants",
     title: "Trusted Targeted Merchants",
-    Icon: <TargetIcon />,
+    Icon: <TargetIcon className="text-blue-700"/>,
   },
   {
     id: "trustedTargetBanks",
     title: "Trusted Targeted Banks",
-    Icon: <CoinIcon />,
+    Icon: <CoinIcon className="text-blue-700"/>,
   },
   {
     id: "mostUsedMaskedCard",
     title: "Most Used Masked Card",
-    Icon: <CardIcon />,
+    Icon: <CardIcon className="text-blue-700"/>,
   },
   {
     id: "trustedMaskedCards",
     title: "Trusted Masked Cards",
-    Icon: <CardIcon />,
+    Icon: <CardIcon className="text-blue-700"/>,
   },
 ];
 
@@ -142,12 +139,12 @@ const METRICS_DEF: Array<{
   {
     id: "rejectedActions",
     title: "Rejected Actions",
-    Icon: <RejectedIcon className="w-6 h-6" />,
+    Icon: <RejectedIcon className="w-6 h-6 text-red-600" />,
   },
   {
     id: "mfaActions",
     title: "MFA Actions",
-    Icon: <MfaIcon className="w-6 h-6" />,
+    Icon: <MfaIcon className="w-6 h-6 text-warning-600" />,
   },
   {
     id: "scaActions",
@@ -164,8 +161,6 @@ type PopupProps = {
   values?: FormattedAnalyticData | null;
 };
 
-console.log(TRUSTED_DEF);
-
 export const ActionPopup: React.FC<PopupProps> = ({
   isOpen,
   onClose,
@@ -173,7 +168,6 @@ export const ActionPopup: React.FC<PopupProps> = ({
   title,
   values,
 }) => {
-  console.log("values ", values);
 
   const metricRows = METRICS_DEF.map(({ id, title, Icon }) => ({
     id,
@@ -188,8 +182,6 @@ export const ActionPopup: React.FC<PopupProps> = ({
     value: values?.[id] ?? 0,
     icon: Icon,
   }));
-
-  console.log("rows", trustedRows);
 
   useEffect(() => {
     if (!isOpen) return;

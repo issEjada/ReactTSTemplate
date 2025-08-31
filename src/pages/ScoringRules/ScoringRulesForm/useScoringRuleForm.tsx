@@ -125,7 +125,9 @@ function useViewScoringRules() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -143,7 +145,6 @@ function useViewScoringRules() {
           value.lastUpdatedTimestamp = formatTime(value.lastUpdatedTimestamp);
         }
         setloadingState(LoadingState.Success);
-        console.log("test Rule by Id", value);
         setRuleData(value);
       })
       .catch((error) => {
@@ -165,7 +166,9 @@ function useViewScoringRules() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
 
     await getDropDownsValue({
@@ -179,7 +182,9 @@ function useViewScoringRules() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
   const fetchParameterData = async () => {
@@ -192,7 +197,9 @@ function useViewScoringRules() {
         setParametersData(value);
       })
       .catch((error) => {
-        console.log(error);
+        setloadingState(LoadingState.Error);
+        setPopupType("errorModal");
+        setPopupMessage(error.message);
       });
   };
 
@@ -341,7 +348,6 @@ function useViewScoringRules() {
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
           setPopupMessage(error.message);
-          console.log(error);
         });
     }
     if (isEditing) {
@@ -360,7 +366,6 @@ function useViewScoringRules() {
         })
         .catch((error) => {
           setloadingState(LoadingState.Error);
-          console.log(error);
           setPopupType("errorModal");
           setPopupMessage(error.message);
         });

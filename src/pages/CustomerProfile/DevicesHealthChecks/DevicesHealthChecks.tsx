@@ -67,7 +67,7 @@ const HealthCheckDateButton: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((s) => !s)}
-        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-[#414651] flex items-center gap-2 hover:bg-gray-100  dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
+        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 flex items-center gap-2 hover:bg-gray-100  dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
       >
         Date
         <DateIcon className="w-[20px] h-[20px]" />
@@ -87,7 +87,7 @@ const HealthCheckDateButton: React.FC<{
                 title="Select start date and time"
                 className=" w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
                     [color-scheme:light] dark:[color-scheme:dark]"
               />
@@ -105,7 +105,7 @@ const HealthCheckDateButton: React.FC<{
                 title="Select end date and time"
                 className={` w-full h-[44px] mt-1 p-2 rounded-md text-sm
                     border border-gray-300 text-gray-900
-                    dark:bg-[#121418] dark:border-gray-800 dark:text-white
+                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
                     placeholder:text-gray-400 dark:placeholder:text-gray-500
                     [color-scheme:light] dark:[color-scheme:dark] ${
                       isValidRange() ? "border-gray-300" : "border-red-500"
@@ -148,10 +148,7 @@ export const DevicesHealthChecks: React.FC = () => {
     setCurrentPage,
   } = useDevicesHealthChecks();
 
-  console.log(
-    "device health checks",
-    devicesHealthChecksData?.data.healthCheckRecords
-  );
+
 
   const flattened: FlattenedHealthResponse[] =
     devicesHealthChecksData?.data.healthCheckRecords.map((record) => ({
@@ -191,16 +188,13 @@ export const DevicesHealthChecks: React.FC = () => {
     return <FullScreenSpinner />;
   }
 
-  // if (errorValidation) {
-  //   return <span className="text-red-500">{errorValidation}</span>;
-  // }
 
   return (
     <div className="px-5 overflow-x-auto">
       <CustomerProfileTable<FlattenedHealthResponse>
         title="Devices Health Check"
         headerLeft={
-          <h2 className="text-[#181D27] dark:text-white text-[18px] font-semibold">
+          <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
             Devices Health Check
           </h2>
         }

@@ -53,7 +53,7 @@ const SystemConfigPopup = ({
     isError || isDeleting ? (
       <AlertIcon className="w-6 h-6" />
     ) : (
-      <CheckIcon className="w-6 h-6" />
+      <CheckIcon className="w-6 h-6 text-success-600" />
     );
   const iconBgClass =
     isError || isDeleting

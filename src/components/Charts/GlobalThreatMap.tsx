@@ -42,7 +42,7 @@ const VerticalCard: React.FC = () => {
   const mapFixedWidth = 224;
 
   return (
-    <div className="flex flex-col w-full max-w-[272px] p-4 sm:p-6 gap-4 rounded-[16px] dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+    <div className="flex flex-col w-full max-w-[272px] p-4 sm:p-6 gap-4 rounded-[16px] dark:bg-darkTheme dark:border-gray-800 dark:text-white">
       {/* Title */}
       <div className="flex flex-col w-full">
         <span className="text-sm sm:text-base font-semibold">

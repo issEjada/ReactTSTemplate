@@ -69,7 +69,6 @@ export const useCustomProfile = () => {
       maxPageSize: itemsPerPage,
       page: currentPage,
       ...globalFilterData,
-      // ...customerDeviceFilters,
     };
 
     await CustomerClient.getCustomerDeviceData(data)
@@ -103,7 +102,6 @@ export const useCustomProfile = () => {
       fetchCustomerDevicesData();
     },
     [
-      // customerDeviceFilters
     ]
   );
 

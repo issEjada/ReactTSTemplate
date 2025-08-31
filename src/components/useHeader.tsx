@@ -8,7 +8,6 @@ export const useHeader = () => {
   const headerRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = (type: "search" | "user") => {
-    console.log("toggleDropdown", type);
     setShowDropdown((prev) => ({
       search: type === "search" ? !prev.search : false,
       user: type === "user" ? !prev.user : false,

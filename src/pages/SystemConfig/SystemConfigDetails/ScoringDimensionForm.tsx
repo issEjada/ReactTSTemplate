@@ -36,7 +36,6 @@ export const ScoringDimensionForm = ({
   // Validate all fields whenever content changes
   useEffect(() => {
     const allValid = content.every((item) => {
-      // Check if the field is empty
       if (item.weight === "" || item.weight === undefined) {
         return false;
       }
@@ -58,7 +57,6 @@ export const ScoringDimensionForm = ({
 
     setTouchedFields((prev) => ({ ...prev, [id]: true }));
 
-    // Check if field is empty
     if (item.weight === "" || item.weight === undefined) {
       setFieldErrors((prev) => ({
         ...prev,
@@ -76,7 +74,7 @@ export const ScoringDimensionForm = ({
 
   return (
     <div>
-      <EditPopupIcon />
+      <EditPopupIcon className="text-blue-700"/>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -101,8 +99,8 @@ export const ScoringDimensionForm = ({
             focus:outline-none focus:ring-2 ${
               fieldErrors[item.id as string]?.isValid === false &&
               touchedFields[item.id as string]
-                ? "border border-red-500 bg-red-50 placeholder-red-400 text-[#252B37] dark:bg-[#121418] dark:border-gray-800"
-                : "border border-[#D5D7DA] bg-white text-[#717680] dark:bg-[#121418] dark:border-gray-800"
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
             } rounded-md`}
             min="0"
             max="100"

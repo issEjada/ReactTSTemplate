@@ -24,6 +24,7 @@ export interface MenuItem {
   text: string;
   icon?: string;
   url?: string;
+  class?: string;
 }
 
 export const LoadingState = {

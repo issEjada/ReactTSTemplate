@@ -22,13 +22,18 @@ type PopupProps = {
 };
 
 
-const METRICS_DEF: Array<{ id: MetricId; title: string; Icon: React.LazyExoticComponent<any> }> = [
-  { id: "total",    title: "Total Actions",          Icon: TotalActionIcon },
-  { id: "auth",     title: "Authenticated Actions",  Icon: AuthActionIcon },
-  { id: "accepted", title: "Accepted Actions",       Icon: AcceptedIcon },
-  { id: "rejected", title: "Rejected Actions",       Icon: RejectedIcon },
-  { id: "mfa",      title: "MFA Actions",            Icon: MfaIcon },
-  { id: "sca",      title: "SCA Actions",            Icon: ScaIcon },
+const METRICS_DEF: Array<{
+  id: MetricId;
+  title: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  className?: string;
+}> = [
+  { id: "total",    title: "Total Actions",          Icon: TotalActionIcon, className: "text-blue-700" },
+  { id: "auth",     title: "Authenticated Actions",  Icon: AuthActionIcon, className: "text-purple-700" },
+  { id: "accepted", title: "Accepted Actions",       Icon: AcceptedIcon, className: "text-success-600" },
+  { id: "rejected", title: "Rejected Actions",       Icon: RejectedIcon, className: "text-red-600" },
+  { id: "mfa",      title: "MFA Actions",            Icon: MfaIcon, className: "text-warning-600" },
+  { id: "sca",      title: "SCA Actions",            Icon: ScaIcon, className:"text-blueLight-600" },
 ];
 
 
@@ -47,11 +52,11 @@ export const ActionIndicator: React.FC<PopupProps> = ({
 
   if (!isOpen) return null;
 
-  const rows = METRICS_DEF.map(({ id, title, Icon }) => ({
+  const rows = METRICS_DEF.map(({ id, title, Icon, className }) => ({
     id,
     title,
     value: values?.[id] ?? 0,
-    icon: <Icon />,
+    icon: <Icon className={className}/>,
   }));
 
   return createPortal(
