@@ -143,7 +143,7 @@ export const SystemConfigDetails = () => {
             <Suspense>
               <EditIcon className="w-4 h-4" />
             </Suspense>
-            Update Dimantions
+            Update Dimensions
           </button>
         ) : (
           rowProps.allowAddRow && (

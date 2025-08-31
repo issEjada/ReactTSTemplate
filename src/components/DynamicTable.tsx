@@ -203,7 +203,7 @@ export function DynamicTable<TData extends object>({
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap"
+                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap rounded-lg"
                     >
                       <div className="flex items-center justify-start gap-2">
                         <span>
@@ -343,7 +343,7 @@ export function DynamicTable<TData extends object>({
                 className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
           ${
             currentPage === 1
-              ? "bg-gray-100 dark:text-white dark:bg-gray-800 cursor-not-allowed"
+              ? "dark:text-white cursor-not-allowed opacity-50"
               : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
           }`}
               >
@@ -359,7 +359,7 @@ export function DynamicTable<TData extends object>({
                 className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
           ${
             currentPage === Math.ceil(totalCount / itemsPerPage)
-              ? "bg-gray-100 dark:text-white dark:bg-gray-800 cursor-not-allowed"
+              ? "dark:text-white cursor-not-allowed opacity-50"
               : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
           }`}
               >

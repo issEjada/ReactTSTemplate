@@ -59,9 +59,8 @@ export function DynamicFilterForm<T extends FieldValues>({
                       {...inputField}
                       type="text"
                       placeholder={field.placeholder}
-                      className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm
-                           dark:bg-darkTheme dark:border-gray-800 mt-2 mb-2
-                           autofill:!bg-darkTheme"
+                      className="w-full h-[44px] px-[14px] py-[10px] border border-gray-300 rounded-md placeholder:text-base placeholder:text-gray-500
+                           dark:bg-darkTheme dark:border-gray-800 mt-2 mb-2"
                     />
                   )}
                 />
@@ -93,10 +92,10 @@ export function DynamicFilterForm<T extends FieldValues>({
                     <input
                       {...inputField}
                       type="date"
-                      className="w-full h-[44px] mt-2 p-2 rounded-md text-sm mb-2
-                           border border-gray-300 text-gray-900
+                      className="w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
+                           border border-gray-300 uppercase
                            dark:bg-darkTheme dark:border-gray-800 dark:text-white
-                           placeholder:text-gray-400 dark:placeholder:text-gray-500
+                           dark:placeholder:text-gray-500
                            [color-scheme:light] dark:[color-scheme:dark]"
                     />
                   )}

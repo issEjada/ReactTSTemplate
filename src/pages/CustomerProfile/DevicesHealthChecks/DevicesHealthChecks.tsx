@@ -74,7 +74,7 @@ const HealthCheckDateButton: React.FC<{
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-10 w-[200px]">
+        <div className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-10 w-[250px]">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">
@@ -85,11 +85,11 @@ const HealthCheckDateButton: React.FC<{
                 value={dateTimeRange.fromTimestamp}
                 onChange={handleDateTimeChange("fromTimestamp")}
                 title="Select start date and time"
-                className=" w-full h-[44px] mt-1 p-2 rounded-md text-sm
-                    border border-gray-300 text-gray-900
-                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
-                    placeholder:text-gray-400 dark:placeholder:text-gray-500
-                    [color-scheme:light] dark:[color-scheme:dark]"
+                className="w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
+                           border border-gray-300 uppercase
+                           dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                           dark:placeholder:text-gray-500
+                           [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -103,11 +103,11 @@ const HealthCheckDateButton: React.FC<{
                 onChange={handleDateTimeChange("toTimestamp")}
                 min={dateTimeRange.fromTimestamp}
                 title="Select end date and time"
-                className={` w-full h-[44px] mt-1 p-2 rounded-md text-sm
-                    border border-gray-300 text-gray-900
-                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
-                    placeholder:text-gray-400 dark:placeholder:text-gray-500
-                    [color-scheme:light] dark:[color-scheme:dark] ${
+                className={` w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
+                           border border-gray-300 uppercase
+                           dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                           dark:placeholder:text-gray-500
+                           [color-scheme:light] dark:[color-scheme:dark] ${
                       isValidRange() ? "border-gray-300" : "border-red-500"
                     }`}
               />
@@ -148,8 +148,6 @@ export const DevicesHealthChecks: React.FC = () => {
     setCurrentPage,
   } = useDevicesHealthChecks();
 
-
-
   const flattened: FlattenedHealthResponse[] =
     devicesHealthChecksData?.data.healthCheckRecords.map((record) => ({
       uniqueId: record.deviceInfo.deviceId.uniqueId,
@@ -187,7 +185,6 @@ export const DevicesHealthChecks: React.FC = () => {
   if (loadingState === "loading") {
     return <FullScreenSpinner />;
   }
-
 
   return (
     <div className="px-5 overflow-x-auto">
