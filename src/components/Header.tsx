@@ -31,7 +31,15 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setIsAuthenticated] = useState(false);
+  const [dontShowLogoutPopup, setDontShowLogoutPopup] = useState(() => {
+    return localStorage.getItem("dontShowLogoutPopup") === "true";
+  });
   const { toggleDarkMode } = useContext(ThemeContext);
+
+  const handleSetDontShowLogoutPopup = (value: boolean) => {
+    setDontShowLogoutPopup(value);
+    localStorage.setItem("dontShowLogoutPopup", String(value));
+  };
 
   const handleLogout = () => {
     setIsPopupOpen(false);
@@ -45,6 +53,14 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       localStorage.removeItem(ConstantKeys.rememberMe);
       setIsAuthenticated(false);
     }, 1000);
+  };
+
+  const handleOpenPopup = () => {
+    if (!dontShowLogoutPopup) {
+      setIsPopupOpen(true);
+    } else {
+      handleLogout();
+    }
   };
 
   return (
@@ -62,7 +78,9 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             placeholder="Search"
             className="pl-8 pr-9 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
           />
-          <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">⌘/</kbd>
+          <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">
+            ⌘/
+          </kbd>
         </div>
 
         <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
@@ -109,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => setIsPopupOpen(true)}
+                    onClick={handleOpenPopup}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
                     <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
@@ -129,6 +147,8 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               <LogoutPopupJsx
                 onCancel={() => setIsPopupOpen(false)}
                 onConfirm={handleLogout}
+                dontShowPreference={dontShowLogoutPopup}
+                onSetDontShowPreference={handleSetDontShowLogoutPopup}
               />
             </PopupLayout>
           </div>
@@ -178,7 +198,10 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
         onClick={onSidebarIconClick}
       />
 
-      <Link to="/" className="text-gray-950/40 dark:text-gray-400 hover:underline">
+      <Link
+        to="/"
+        className="text-gray-950/40 dark:text-gray-400 hover:underline"
+      >
         Dashboard
       </Link>
       <span className="text-gray-950/20 dark:text-gray-700">/</span>

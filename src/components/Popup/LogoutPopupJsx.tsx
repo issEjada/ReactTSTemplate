@@ -1,13 +1,34 @@
 import React, { useState } from "react";
-// import AlertIcon from "../../assets/svg/AlertIcon.svg?react";
-const AlertIcon = React.lazy(() => import(`/src/assets/svg/AlertIcon.svg?react`));
+const AlertIcon = React.lazy(
+  () => import(`/src/assets/svg/AlertIcon.svg?react`)
+);
 interface LogoutPopupProps {
   onConfirm: () => void;
   onCancel: () => void;
+  dontShowPreference: boolean;
+  onSetDontShowPreference: (value: boolean) => void;
 }
 
-const LogoutPopup = ({ onConfirm, onCancel }: LogoutPopupProps) => {
-  const [dontShow, setDontShow] = useState(false);
+const LogoutPopup = ({
+  onConfirm,
+  onCancel,
+  dontShowPreference,
+  onSetDontShowPreference,
+}: LogoutPopupProps) => {
+  const [dontShow, setDontShow] = useState(dontShowPreference);
+
+  if (dontShowPreference) {
+    return null;
+  }
+
+  const handleConfirm = () => {
+    onSetDontShowPreference(dontShow);
+    onConfirm();
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDontShow(e.target.checked);
+  };
 
   return (
     <div className="flex items-start gap-4 ">
@@ -21,7 +42,7 @@ const LogoutPopup = ({ onConfirm, onCancel }: LogoutPopupProps) => {
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
           Logout
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 dark:text-gray-400">
+        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
           Are you sure you want to logout?
         </p>
 
@@ -34,11 +55,11 @@ const LogoutPopup = ({ onConfirm, onCancel }: LogoutPopupProps) => {
               type="checkbox"
               className="form-checkbox h-4 w-4 rounded"
               checked={dontShow}
-              onChange={(e) => setDontShow(e.target.checked)}
+              onChange={handleCheckboxChange}
             />
             <label
               htmlFor="dont-show"
-              className="ml-2 text-sm text-gray-700 dark:text-gray-300 dark:text-gray-400"
+              className="ml-2 text-sm text-gray-700 dark:text-gray-300"
             >
               Don’t show again
             </label>
@@ -53,7 +74,7 @@ const LogoutPopup = ({ onConfirm, onCancel }: LogoutPopupProps) => {
               Cancel
             </button>
             <button
-              onClick={onConfirm}
+              onClick={handleConfirm}
               className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blueGray-500"
             >
               Confirm
