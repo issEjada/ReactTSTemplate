@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../routes/AppRoutes";
 
@@ -32,7 +32,13 @@ const DashboardOperations: React.FC = () => {
                   dark:hover:bg-blue-800 shadow-[0_1px_2px_#0A0D120D]
 "
         >
-          <ActivityIcon className="w-[16px] h-[16px] text-white" />
+          <Suspense
+            fallback={
+              <div className="w-[16px] h-[16px] bg-gray-300 rounded-full" />
+            }
+          >
+            <ActivityIcon className="w-[16px] h-[16px] text-white" />
+          </Suspense>
           <span>Live Monitoring</span>
         </Link>
       </div>

@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   useCallback,
+  Suspense,
 } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DynamicTable } from "../../../components/DynamicTable";
@@ -164,7 +165,9 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              </Suspense>
               <span className="text-[14px]">Update Event</span>
             </button>
           </div>,
@@ -309,7 +312,9 @@ export const EventsTable = () => {
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 h-[40px] rounded-[8px] text-sm font-semibold flex items-center gap-2"
             >
-              <PlusIcon className="w-[20px] h-[20px] text-white" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <PlusIcon className="w-[20px] h-[20px] text-white" />
+              </Suspense>
               <span className="text-[14px]">Add New Event</span>
             </button>
           </div>
@@ -317,7 +322,11 @@ export const EventsTable = () => {
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-          icon={<EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
+          icon={
+            <Suspense fallback={<FullScreenSpinner />}>
+              <EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+            </Suspense>
+          }
           title="Start adding decision rules"
           description={
             <>
@@ -328,7 +337,9 @@ export const EventsTable = () => {
           }
           buttonText="Add New Event"
           buttonIcon={
-            <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
+            <Suspense fallback={<FullScreenSpinner />}>
+              <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
+            </Suspense>
           }
           onButtonClick={handleAddNewEvent}
         />

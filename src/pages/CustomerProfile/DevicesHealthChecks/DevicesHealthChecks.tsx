@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React, { useMemo, useState, useRef, useEffect, Suspense } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
@@ -70,7 +70,13 @@ const HealthCheckDateButton: React.FC<{
         className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 flex items-center gap-2 hover:bg-gray-100  dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
       >
         Date
-        <DateIcon className="w-[20px] h-[20px]" />
+        <Suspense
+          fallback={
+            <div className="w-[20px] h-[20px] bg-gray-300 rounded-full" />
+          }
+        >
+          <DateIcon className="w-[20px] h-[20px]" />
+        </Suspense>
       </button>
 
       {open && (
@@ -108,8 +114,10 @@ const HealthCheckDateButton: React.FC<{
                            dark:bg-darkTheme dark:border-gray-800 dark:text-white
                            dark:placeholder:text-gray-500
                            [color-scheme:light] dark:[color-scheme:dark] ${
-                      isValidRange() ? "border-gray-300" : "border-red-500"
-                    }`}
+                             isValidRange()
+                               ? "border-gray-300"
+                               : "border-red-500"
+                           }`}
               />
               {!isValidRange() && (
                 <p className="mt-1 text-sm text-red-600">

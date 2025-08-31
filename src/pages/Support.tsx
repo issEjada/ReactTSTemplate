@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Suspense } from "react";
+import FullScreenSpinner from "../components/FullScreenSpinner";
 
 const EmailIcon = React.lazy(() => import(`/src/assets/svg/mail.svg?react`));
 const PhoneIcon = React.lazy(() => import(`/src/assets/svg/phone.svg?react`));
@@ -22,7 +23,9 @@ const Support: React.FC = () => {
         <div className="flex flex-col gap-[16px] w-full md:w-[556px]">
           <div className="flex items-center gap-[12px]">
             <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-blue-50 bg-blue-100 dark:bg-gray-800 dark:border-gray-700 flex items-center justify-center">
-              <EmailIcon className="text-blue-700 dark:text-white" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <EmailIcon className="text-blue-700 dark:text-white" />
+              </Suspense>
             </div>
             <p className="text-[20px] leading-[30px] font-semibold text-gray-900 dark:text-white">
               Email
@@ -40,7 +43,9 @@ const Support: React.FC = () => {
         <div className="flex flex-col gap-[16px] w-full md:w-[556px]">
           <div className="flex items-center gap-[12px]">
             <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-blue-50 bg-blue-100 dark:bg-gray-800 dark:border-gray-700 flex items-center justify-center">
-              <PhoneIcon className="text-blue-700 dark:text-white" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <PhoneIcon className="text-blue-700 dark:text-white" />
+              </Suspense>
             </div>
             <p className="text-[20px] leading-[30px] font-semibold text-gray-900 dark:text-white">
               Phone

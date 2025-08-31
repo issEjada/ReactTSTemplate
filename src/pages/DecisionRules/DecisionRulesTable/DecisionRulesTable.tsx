@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   useCallback,
+  Suspense,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -146,7 +147,9 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              </Suspense>
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -160,7 +163,9 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              </Suspense>
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -172,7 +177,9 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              </Suspense>
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,
@@ -309,7 +316,9 @@ export const DecisionRulesTable = () => {
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
             >
-              <PlusIcon className="w-[20px] h-[20px] text-white" />
+              <Suspense fallback={<FullScreenSpinner />}>
+                <PlusIcon className="w-[20px] h-[20px] text-white" />
+              </Suspense>
               Add New Rule
             </button>
           )}
@@ -322,7 +331,11 @@ export const DecisionRulesTable = () => {
 
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-          icon={<RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
+          icon={
+            <Suspense fallback={<FullScreenSpinner />}>
+              <RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+            </Suspense>
+          }
           title="Start adding decision rules"
           description={
             <>
@@ -332,7 +345,11 @@ export const DecisionRulesTable = () => {
             </>
           }
           buttonText="Add New Decision Rule"
-          buttonIcon={<PlusIcon className="w-[20px] h-[20px] text-white" />}
+          buttonIcon={
+            <Suspense fallback={<FullScreenSpinner />}>
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
+            </Suspense>
+          }
           onButtonClick={handleAddNewRule}
         />
       ) : (

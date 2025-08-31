@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, Suspense } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
@@ -248,7 +248,6 @@ export const MonitoringTable = () => {
     [data]
   );
 
-
   const isFilterActive = useMemo(
     () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
     [filters, searchText]
@@ -273,7 +272,6 @@ export const MonitoringTable = () => {
     return <FullScreenSpinner />;
   }
 
-
   return (
     <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
       <div className="pt-5 px-6 pb-[18px]">
@@ -295,7 +293,9 @@ export const MonitoringTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+            <Suspense fallback={<FullScreenSpinner />}>
+              <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+            </Suspense>
           }
           title="Start adding decision rules"
           description={

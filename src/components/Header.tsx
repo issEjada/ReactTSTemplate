@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, Suspense } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
@@ -72,7 +72,9 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <div className="flex items-start gap-5">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
-          <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
+          <Suspense fallback={<FullScreenSpinner />}>
+            <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
+          </Suspense>
           <input
             type="text"
             placeholder="Search"
@@ -111,13 +113,17 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                      <Suspense fallback={<FullScreenSpinner />}>
+                        <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                      </Suspense>
                       View Profile
                     </button>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                      <Suspense fallback={<FullScreenSpinner />}>
+                        <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                      </Suspense>
                       Settings
                     </button>
                   </div>
@@ -130,7 +136,9 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                     onClick={handleOpenPopup}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
-                    <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                    <Suspense fallback={<FullScreenSpinner />}>
+                      <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                    </Suspense>
                     Logout
                   </button>
                 </div>
@@ -193,10 +201,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
 
   return (
     <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-      <SideBarIcon
-        className="text-black dark:text-white cursor-pointer"
-        onClick={onSidebarIconClick}
-      />
+      <Suspense fallback={<FullScreenSpinner />}>
+        <SideBarIcon
+          className="text-black dark:text-white cursor-pointer"
+          onClick={onSidebarIconClick}
+        />
+      </Suspense>
 
       <Link
         to="/"
