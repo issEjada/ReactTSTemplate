@@ -49,7 +49,6 @@ interface DynamicTableProps<TData extends object> {
   loadingState?: LoadingState;
   headerRightExtra?: React.ReactNode;
   headerLeft?: React.ReactNode;
-  areFiltersApplied: boolean; // New prop
 }
 
 export function CustomerProfileTable<TData extends object>({
@@ -78,7 +77,6 @@ export function CustomerProfileTable<TData extends object>({
   loadingState,
   headerLeft = false,
   headerRightExtra = false,
-  areFiltersApplied, // Destructure new prop
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -304,15 +302,9 @@ export function CustomerProfileTable<TData extends object>({
                                   <button
                                     type="button"
                                     onClick={onClearSearch}
-                                    disabled={
-                                      !searchText &&
-                                      !areFiltersApplied &&
-                                      totalCount === 0
-                                    }
+                                    disabled={!searchText && totalCount === 0}
                                     className={`w-[170px] h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black ${
-                                      !searchText &&
-                                      !areFiltersApplied &&
-                                      totalCount === 0
+                                      !searchText && totalCount === 0
                                         ? "opacity-50 cursor-not-allowed"
                                         : ""
                                     }`}
