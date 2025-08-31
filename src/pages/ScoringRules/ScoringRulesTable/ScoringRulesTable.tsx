@@ -142,7 +142,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700"/>
+              <ViewIcon className="text-gray-700" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -178,10 +178,10 @@ const RuleMenu = ({
       <div className="cursor-auto" onClick={(e) => e.stopPropagation()}>
         <PopupLayout
           isOpen={isDeletePopupOpen}
-          className="md:w-[30%] lg:w-[35%] w-[90%]"
+          className="md:w-[30%] lg:w-[28%] w-[90%]"
         >
           <RulesPopupJsx
-            title="Delete Scoring Rule"
+            title="Scoring Rule"
             isDeleting={true}
             onConfirm={handleConfirmDelete}
             onCancel={() => setIsDeletePopupOpen(false)}
@@ -208,7 +208,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     refetch,
     handleSearchSubmit,
     deleteRule,
-    handleToggleStatus, 
+    handleToggleStatus,
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);

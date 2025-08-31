@@ -36,18 +36,17 @@ const DynamicPopupJsx = ({
   onConfirm,
   onCancel,
 }: RulesPopupProps) => {
-  const title = 
-    isError
-      ? "Error"
-      : isAdding
-      ? `New ${propTitle} Created`
-      : isEditing
-      ? `Updated ${propTitle} Successfully`
-      : isDeleting
-      ? `Delete ${propTitle}?`
-      : isConfirm
-      ? "Critical Change"
-      : "";
+  const title = isError
+    ? "Error"
+    : isAdding
+    ? `New ${propTitle} Created`
+    : isEditing
+    ? `Updated ${propTitle} Successfully`
+    : isDeleting
+    ? `Delete ${propTitle}?`
+    : isConfirm
+    ? "Critical Change"
+    : "";
 
   const message = isError
     ? typeof errorMessage === "object" && errorMessage !== null
@@ -64,20 +63,21 @@ const DynamicPopupJsx = ({
     : isDeleting
     ? `Are you sure you want to delete this ${propTitle}?`
     : isConfirm
-    ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed ?"
+    ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed?"
     : "";
 
   const icon = isConfirm ? (
-    <AlertTraingletIcon className="w-6 h-6 text-warning-600" />
+    <AlertTraingletIcon className="w-5 h-5" />
   ) : isError || isDeleting ? (
-    <AlertIcon className="w-6 h-6" />
+    <AlertIcon className="w-5 h-5" />
   ) : (
-    <CheckIcon className="w-6 h-6 text-success-600" />
+    <CheckIcon className="w-5 h-5 text-success-600" />
   );
-  const iconBgClass =
-    isError || isDeleting || isConfirm
-      ? "bg-red-100 text-red-600"
-      : "bg-green-100 text-green-600";
+  const iconBgClass = isConfirm
+    ? "bg-warning-100 border-8 border-warning-50 text-warning-600"
+    : isError || isDeleting
+    ? "bg-red-100 text-red-600 border-8 border-red-50"
+    : "bg-green-100 text-green-600";
 
   return (
     <div className="flex flex-col items-center text-center">
