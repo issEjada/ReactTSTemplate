@@ -4,9 +4,10 @@ import type { FieldConfig } from "./useSystemConfigDetails";
 import { validations } from "./ValidationSchema";
 import PopupDropdownMenu from "./PopupDropDownsMenue";
 
-const EditPopupIcon = React.lazy(
-  () => import("../../../assets/svg/EditPopupIcon.svg?react")
+const EditPenIcon = React.lazy(
+  () => import("../../../assets/svg/EditPen.svg?react")
 );
+
 
 interface SystemConfigFormProps {
   mode: "add" | "update" | "error";
@@ -184,7 +185,9 @@ export const SystemConfigForm = ({
 
   return (
     <div>
-      <EditPopupIcon className="text-blue-700"/>
+      <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-blue-100 border border-blue-50 border-8">
+        <EditPenIcon className="text-blue-700"/>
+      </div>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
