@@ -13,7 +13,7 @@ interface ConditionsEditorsProps {
   editorContent: string;
   setEditorContent: React.Dispatch<React.SetStateAction<string>>;
   parametersData: GetRulesParameterResponse | undefined;
-  isReadOnly: boolean; 
+  isReadOnly: boolean;
 }
 
 export const ConditionEditor = ({
@@ -73,7 +73,7 @@ export const ConditionEditor = ({
       setShowCopiedMessage(true);
       setTimeout(() => {
         setShowCopiedMessage(false);
-      }, 2000); 
+      }, 2000);
     });
   };
 
@@ -99,8 +99,8 @@ export const ConditionEditor = ({
               Components
             </h2>
             {!isReadOnly && ( // Conditionally render "Drag & Drop"
-              <span className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700">
-                <DragDropIcon className="text-gray-600" />
+              <span className="flex items-center gap-1 text-sm text-gray-700 dark:text-white">
+                <DragDropIcon className="text-gray-600 dark:text-white" />
                 Drag & Drop
               </span>
             )}
@@ -141,7 +141,8 @@ export const ConditionEditor = ({
             </h2>
             <div className="flex flex-col items-end">
               <button
-                className="text-sm text-gray-400 hover:text-gray-700"
+                type="button"
+                className="text-sm text-gray-400 dark:hover:text-gray-300 hover:text-gray-700"
                 onClick={handleCopyCode}
               >
                 Copy Condition
