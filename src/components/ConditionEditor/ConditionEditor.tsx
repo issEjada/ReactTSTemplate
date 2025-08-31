@@ -2,7 +2,8 @@ import ConditionItem from "./ConditionItem";
 import SourceDocumentIcon from "../../assets/svg/sourceDocument.svg?react";
 import ScaleComparisonIcon from "../../assets/svg/scaleComparison.svg?react";
 import SmartphoneARIcon from "../../assets/svg/smartphoneAR.svg?react";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Suspense } from "react";
+import FullScreenSpinner from "../FullScreenSpinner";
 import type { GetRulesParameterResponse } from "../../pages/ScoringRules/scoringRulesServices";
 
 const DragDropIcon = React.lazy(
@@ -100,7 +101,9 @@ export const ConditionEditor = ({
             </h2>
             {!isReadOnly && ( // Conditionally render "Drag & Drop"
               <span className="flex items-center gap-1 text-sm text-gray-700 dark:text-white">
-                <DragDropIcon className="text-gray-600 dark:text-white" />
+                <Suspense fallback={<FullScreenSpinner />}>
+                  <DragDropIcon className="text-gray-600 dark:text-white" />
+                </Suspense>
                 Drag & Drop
               </span>
             )}

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
+import FullScreenSpinner from "../FullScreenSpinner";
+
 const CheckIcon = React.lazy(() => import(`/src/assets/svg/Check.svg?react`));
 const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
@@ -67,11 +69,17 @@ const DynamicPopupJsx = ({
     : "";
 
   const icon = isConfirm ? (
-    <AlertTraingletIcon className="w-5 h-5" />
+    <Suspense fallback={<FullScreenSpinner />}>
+      <AlertTraingletIcon className="w-5 h-5" />
+    </Suspense>
   ) : isError || isDeleting ? (
-    <AlertIcon className="w-5 h-5" />
+    <Suspense fallback={<FullScreenSpinner />}>
+      <AlertIcon className="w-5 h-5" />
+    </Suspense>
   ) : (
-    <CheckIcon className="w-5 h-5 text-success-600" />
+    <Suspense fallback={<FullScreenSpinner />}>
+      <CheckIcon className="w-5 h-5 text-success-600" />
+    </Suspense>
   );
   const iconBgClass = isConfirm
     ? "bg-warning-100 border-8 border-warning-50 text-warning-600"

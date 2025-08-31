@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, Suspense } from "react";
 import { Controller } from "react-hook-form";
 import type { Path, Control, FieldValues } from "react-hook-form";
 const ChevronDown = React.lazy(
   () => import("../assets/svg/ChevronDown.svg?react")
 );
+import FullScreenSpinner from "./FullScreenSpinner";
 
 interface Option {
   key: string;
@@ -58,7 +59,7 @@ const DropdownMenu = <T extends FieldValues>({
       <Controller
         name={name}
         control={control}
-        defaultValue={"" as any}
+        defaultValue={"" as unknown as T[keyof T]}
         render={({ field, fieldState }) => {
           const { onChange, value } = field;
           const { error } = fieldState;
@@ -102,7 +103,9 @@ const DropdownMenu = <T extends FieldValues>({
                   {options.find((opt) => opt.key === value)?.node ||
                     `Choose ${label}`}
                 </span>
-                <ChevronDown className="w-[10px] h-5 object-contain text-gray-500"/>
+                <Suspense fallback={<FullScreenSpinner />}>
+                  <ChevronDown className="w-[10px] h-5 object-contain text-gray-500" />
+                </Suspense>
               </div>
 
               {/* Dropdown Menu */}

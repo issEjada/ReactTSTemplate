@@ -1,4 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
+import FullScreenSpinner from "../FullScreenSpinner";
+
 const CheckIcon = React.lazy(() => import(`/src/assets/svg/Check.svg?react`));
 const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
@@ -51,9 +53,13 @@ const SystemConfigPopup = ({
 
   const icon =
     isError || isDeleting ? (
-      <AlertIcon className="w-6 h-6" />
+      <Suspense fallback={<FullScreenSpinner />}>
+        <AlertIcon className="w-6 h-6" />
+      </Suspense>
     ) : (
-      <CheckIcon className="w-6 h-6 text-success-600" />
+      <Suspense fallback={<FullScreenSpinner />}>
+        <CheckIcon className="w-6 h-6 text-success-600" />
+      </Suspense>
     );
   const iconBgClass =
     isError || isDeleting

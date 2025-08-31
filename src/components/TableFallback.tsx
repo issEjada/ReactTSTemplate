@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import FullScreenSpinner from "./FullScreenSpinner";
 
 const BackgroundCircle = React.lazy(
   () => import("../assets/svg/BackgroundCircle.svg?react")
@@ -29,7 +30,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         minimal ? "h-[437px]" : "h-[600px]"
       } flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden`}
     >
-      <Suspense>
+      <Suspense fallback={<FullScreenSpinner />}>
         <BackgroundCircle
           className="
             absolute

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
+import FullScreenSpinner from "../FullScreenSpinner";
+
 const CloseXIcon = React.lazy(
   () => import("../../assets/svg/closeX.svg?react")
 );
@@ -39,7 +41,9 @@ export default function FilterLayout({
             title="Close"
             aria-label="Close"
           >
-            <CloseXIcon className=" w-[10px] h-[10px] dark:text-white" />
+            <Suspense fallback={<FullScreenSpinner />}>
+              <CloseXIcon className=" w-[10px] h-[10px] dark:text-white" />
+            </Suspense>
           </button>
         </div>
         {children}
