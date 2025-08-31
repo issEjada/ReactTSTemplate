@@ -12,7 +12,7 @@ const LogoutPopup = ({ onConfirm, onCancel }: LogoutPopupProps) => {
   return (
     <div className="flex items-start gap-4 ">
       {/* Icon */}
-      <div className="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-gray-200 border-2 border-gray-100 text-blue-700 mt-1 dark:bg-[#4E5BA6] dark:border-[#717BBC] dark:text-[#EAECF5]">
+      <div className="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-gray-200 border-2 border-gray-100 text-blue-700 mt-1 dark:bg-blueGray-500 dark:border-blueGray-400 dark:text-blueGray-100">
         <AlertIcon className="w-6 h-6" />
       </div>
 
@@ -54,7 +54,7 @@ const LogoutPopup = ({ onConfirm, onCancel }: LogoutPopupProps) => {
             </button>
             <button
               onClick={onConfirm}
-              className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-[#4E5BA6]"
+              className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blueGray-500"
             >
               Confirm
             </button>

@@ -93,14 +93,6 @@ export function CustomerProfileTable<TData extends object>({
   });
   const navigate = useNavigate();
 
-  // if (error) {
-  //   return (
-  //     <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-  //       {error}
-  //     </div>
-  //   );
-  // }
-
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);
     if (!col) return;
@@ -112,7 +104,7 @@ export function CustomerProfileTable<TData extends object>({
   };
 
   return (
-    <div className="border border-[#E9EAEB] dark:border-gray-800 rounded-lg bg-white dark:bg-[#121418] ">
+    <div className="border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-darkTheme ">
       {!(minimal || minimalWithPagination) && (
         <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-3">
           <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -139,7 +131,7 @@ export function CustomerProfileTable<TData extends object>({
                     if (e.key === "Enter") applyFilters();
                   }}
                   placeholder={searchPlaceholder}
-                  className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-[#D5D7DA] outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+                  className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-gray-300 outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
                 />
 
                 {searchText && (
@@ -184,7 +176,7 @@ export function CustomerProfileTable<TData extends object>({
                       onClick={() => onFilterStatus(option.key)}
                       className={`text-xs h-9 sm:h-10 px-3 w-full sm:w-[90px] ${
                         statusFilter === option.key
-                          ? "bg-[#FAFAFA] text-black"
+                          ? "bg-gray-50 text-black"
                           : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
                       } ${idx > 0 ? "sm:border-l" : ""}`}
                     >
@@ -202,7 +194,7 @@ export function CustomerProfileTable<TData extends object>({
       <div className="overflow-x-auto">
         <table className="w-full table-auto text-sm text-center">
           {table.getRowModel().rows.length > 0 ? (
-            <thead className="bg-white dark:bg-[#121418] dark:border-gray-800 dark:text-white">
+            <thead className="bg-white dark:bg-darkTheme dark:border-gray-800 dark:text-white">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
@@ -288,20 +280,20 @@ export function CustomerProfileTable<TData extends object>({
               ) : (
                 <tr>
                   <td colSpan={columns.length} className="p-0">
-                    <div className="h-[220px] sm:h-[244px] flex items-center justify-center border-[#E9EAEB]">
+                    <div className="h-[220px] sm:h-[244px] flex items-center justify-center border-gray-200">
                       <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
                         <div className="w-[352px] h-[196px] gap-6">
                           <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
-                            <div className="w-12 h-12 rounded-[28px] border-[8px] border-[#EFF8FF] bg-[#D1E9FF] flex items-center justify-center dark:border-gray-700 ">
+                            <div className="w-12 h-12 rounded-[28px] border-[8px] border-blue-50 bg-blue-100 flex items-center justify-center dark:border-gray-700 ">
                               <Suspense>
                                 <SearchIcon className="text-blue-700" />
                               </Suspense>
                             </div>
                             <div className="w-[352px] h-[68px] flex flex-col items-center gap-1">
-                              <h1 className="text-[#181D27] text-[16px] leading-[24px] font-semibold text-center h-[24px] dark:text-white">
+                              <h1 className="text-gray-900 text-[16px] leading-[24px] font-semibold text-center h-[24px] dark:text-white">
                                 No {title} found
                               </h1>
-                              <p className="text-[#535862] text-[14px] leading-[20px] text-center h-[40px] pt-1">
+                              <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
                                 Your search "{searchText}" did not match any{" "}
                                 {title.toLowerCase()}. Please try again or
                                 create and add a new{" "}
@@ -313,7 +305,7 @@ export function CustomerProfileTable<TData extends object>({
                             <button
                               type="button"
                               onClick={onClearSearch}
-                              className="w-[170px] h-10 border border-[#D5D7DA] rounded-[8px] px-4 text-[#414651] text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black"
+                              className="w-[170px] h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black"
                             >
                               Clear search
                             </button>
@@ -323,7 +315,7 @@ export function CustomerProfileTable<TData extends object>({
                               className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
                             >
                               <Suspense>
-                                <PlusIcon />
+                                <PlusIcon className="text-white"/>
                               </Suspense>
                               Add New{" "}
                               {title.includes("Rules") ? "Rule" : "Item"}

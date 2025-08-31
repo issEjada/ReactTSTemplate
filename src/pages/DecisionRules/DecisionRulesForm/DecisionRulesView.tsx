@@ -48,11 +48,6 @@ const DecisionRulesView = () => {
         { title: "Event Name", value: ruleData?.eventName },
         { title: "Status", value: ruleData?.status },
         { title: "Description", value: ruleData?.description },
-        // { title: "Creation Timestamp", value: ruleData?.creationTimestamp },
-        // {
-        //   title: "Last Updated Timestamp",
-        //   value: ruleData?.lastUpdatedTimestamp,
-        // },
         { title: "Condition", value: ruleData?.condition },
       ]}
       actions={[

@@ -36,7 +36,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             top-0 left-1/2 -translate-x-1/2
             w-[400px] h-[400px]
             pointer-events-none select-none
-            z-0
+            z-0 text-gray-200 dark:text-gray-500
           "
         />
       </Suspense>
@@ -52,7 +52,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
               minimal ? "top-[48%]" : "top-[32%]"
             } -translate-x-1/2 -translate-y-1/2`}
           >
-            <div className="flex items-center justify-center bg-white border border-[#D5D7DA] rounded-[16px] p-[4px]">
+            <div className="flex items-center justify-center bg-white border border-gray-300 rounded-[16px] p-[4px]">
               <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[2px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
                 {icon}
               </div>

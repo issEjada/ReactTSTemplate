@@ -71,8 +71,8 @@ const RuleMenu = ({
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY, // below button
-        left: rect.right - 143 + window.scrollX, // align right
+        top: rect.bottom + window.scrollY, 
+        left: rect.right - 143 + window.scrollX, 
       });
     }
     setOpen((prev) => !prev);
@@ -132,7 +132,7 @@ const RuleMenu = ({
       {open &&
         createPortal(
           <div
-            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-[#E9EAEB] bg-white font-medium text-[#414651] shadow-lg dark:bg-[#121418] dark:border-gray-800 dark:text-white"
+            className="rule-menu-portal absolute z-[9999] w-[143px] rounded-[8px] border border-gray-200 bg-white font-medium text-gray-700 shadow-lg dark:bg-darkTheme dark:border-gray-800 dark:text-white"
             style={{
               top: coords.top,
               left: coords.left,
@@ -146,7 +146,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon />
+              <ViewIcon className="text-gray-700"/>
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -203,7 +203,6 @@ export const DecisionRulesTable = () => {
     itemsPerPage,
     setCurrentPage,
     handleSearchSubmit,
-    // setItemsPerPage,
     filters,
     setFilters,
     loadingState,
@@ -310,7 +309,7 @@ export const DecisionRulesTable = () => {
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
             >
-              <PlusIcon className="w-[20px] h-[20px]" />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
               Add New Rule
             </button>
           )}
@@ -323,7 +322,7 @@ export const DecisionRulesTable = () => {
 
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
-          icon={<RuleIcon className="sm:w-[28px] sm:h-[28px]" />}
+          icon={<RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding decision rules"
           description={
             <>
@@ -333,7 +332,7 @@ export const DecisionRulesTable = () => {
             </>
           }
           buttonText="Add New Decision Rule"
-          buttonIcon={<PlusIcon className="w-[20px] h-[20px]" />}
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px] text-white" />}
           onButtonClick={handleAddNewRule}
         />
       ) : (

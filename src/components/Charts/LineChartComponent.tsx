@@ -21,7 +21,7 @@ const data = [
 export default function LineChartComponent() {
   const { isDarkMode } = useContext(ThemeContext);
   return (
-    <div className="p-4 bg-gray-50 rounded-2xl  w-[844px] dark:bg-[#121418] dark:border-gray-800 ">
+    <div className="p-4 bg-gray-50 rounded-2xl  w-[844px] dark:bg-darkTheme dark:border-gray-800 ">
       <div className="flex items-center justify-start gap-8 mb-4 ml-5">
         <p className=" text-black font-semibold text-14 dark:text-white">
           Threat Detection Timeline

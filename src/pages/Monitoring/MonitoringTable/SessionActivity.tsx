@@ -43,7 +43,6 @@ type LineChartContent = {
 };
 
 export default function SessionActivity({ data = [] }: LineChartContent) {
-  // same domain logic
   const allVals = data.flatMap((d) => [d?.Viewed ?? 0, d?.NotViewed ?? 0]);
   const yMin = Math.min(0, ...(allVals.length ? allVals : [0]));
   const yMax = Math.max(1, ...(allVals.length ? allVals : [1]));
@@ -66,26 +65,26 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
   }, []);
 
   // keep the original look; give each point some space (~90px) so labels/dots don’t collide
-  const naturalWidth = Math.max(560, data.length * 90); // 560px min keeps your original spacing
-  const innerWidth = Math.max(containerWidth, naturalWidth); // if container is smaller, allow scroll
+  const naturalWidth = Math.max(560, data.length * 90); 
+  const innerWidth = Math.max(containerWidth, naturalWidth);
 
   return (
-    <div className="bg-white dark:bg-[#121418] dark:border-gray-800 p-4 sm:p-6 w-full border border-[#E9EAEB] rounded-[12px] shadow-[0_1px_2px_0_#0A0D120F,0_1px_3px_0_#0A0D121A]">
+    <div className="bg-white dark:bg-darkTheme dark:border-gray-800 p-4 sm:p-6 w-full border border-gray-200 rounded-[12px] shadow-[0_1px_2px_0_#0A0D120F,0_1px_3px_0_#0A0D121A]">
       {/* header/legend unchanged */}
       <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4">
         <p className="text-black dark:text-white font-semibold text-[16px] leading-[20px]">
           Sessions Activity Overview
         </p>
-        <div className="h-[20px] w-px bg-[#1C1C1C33] dark:bg-white" />
+        <div className="h-[20px] w-px bg-gray-950/20 dark:bg-white" />
         <div className="flex flex-wrap items-center gap-3 text-sm font-medium">
-          <div className="flex items-center gap-2 text-[#1C1C1C] font-normal">
-            <span className="w-2 h-2 rounded-full bg-[#1637C4]" />
+          <div className="flex items-center gap-2 text-gray-950 font-normal">
+            <span className="w-2 h-2 rounded-full bg-blue-700" />
             <span className="dark:text-white">
               Viewed Sessions{" "}
               <strong className="font-semibold">{viewedTotal}</strong>
             </span>
           </div>
-          <div className="flex items-center gap-2 text-[#1C1C1C] font-normal">
+          <div className="flex items-center gap-2 text-gray-950 font-normal">
             <span className="w-2 h-2 rounded-full bg-[#F79009]" />
             <span className="dark:text-white">
               Not Viewed Sessions{" "}

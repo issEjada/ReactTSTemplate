@@ -23,14 +23,12 @@ const LoginForm = () => {
 
   const onSubmit = async (data: FormLoginValues) => {
     setIsLoading(true);
-    console.log("Submitting login form", data, data.remember);
     try {
       await authContext.login(data.name, data.password, data.remember);
       await delay(1000);
       navigate("/");
     } catch (error) {
       setErrorMsg((error as Error).message);
-      console.log("authError", error);
     } finally {
       setIsLoading(false);
     }

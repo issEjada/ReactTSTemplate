@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
@@ -94,7 +93,6 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "country",
     cell: (info) => {
       const value = String(info.getValue());
-      // Capitalize first letter, rest lowercase
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
@@ -109,7 +107,6 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "city",
     cell: (info) => {
       const value = String(info.getValue());
-      // Capitalize first letter, rest lowercase
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
@@ -146,7 +143,6 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "date",
     cell: (info) => {
       const value = String(info.getValue());
-      // Capitalize first letter, rest lowercase
       const date = new Date(value);
       const formattedDate = date.toLocaleDateString("en-GB"); // '02/07/2025'
 
@@ -252,12 +248,6 @@ export const MonitoringTable = () => {
     [data]
   );
 
-  const table = useReactTable<Session>({
-    data: sessionsData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getRowId: (row) => row.id.toString(),
-  });
 
   const isFilterActive = useMemo(
     () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
@@ -266,7 +256,7 @@ export const MonitoringTable = () => {
 
   const handleClearSearch = () => {
     setSearchText("");
-    setFilters(undefined); // Changed from {} to undefined to match type
+    setFilters(undefined);
     setStatusFilter("All");
     setCurrentPage(1);
   };
@@ -283,10 +273,9 @@ export const MonitoringTable = () => {
     return <FullScreenSpinner />;
   }
 
-  console.log("Monitoring Table Data:", table);
 
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-[#000000] dark:border-gray-800 dark:text-white">
+    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
       <div className="pt-5 px-6 pb-[18px]">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
           <div>

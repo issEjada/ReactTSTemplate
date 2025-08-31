@@ -8,7 +8,7 @@ export type MetricCardProps = {
 
 const MetricCard: React.FC<MetricCardProps> = ({ title, value, icon }) => {
   return (
-    <div className="w-full bg-white dark:bg-[#121418] border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-4 flex items-center justify-between shadow-sm">
+    <div className="w-full bg-white dark:bg-darkTheme border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-4 flex items-center justify-between shadow-sm">
       <div>
         <p className="text-xs text-gray-600 dark:text-gray-400">{title}</p>
         <p className="text-2xl font-semibold text-gray-600 dark:text-white mt-1">{value}</p>

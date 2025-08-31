@@ -13,7 +13,7 @@ const DonutTooltip = ({ active, payload, total }: RCTooltipProps) => {
   if (!active || !payload?.length || total <= 0) return null;
   const pct = ((payload[0].value / total) * 100).toFixed(1);
   return (
-    <div className="px-2 py-[2px] rounded-md bg-[#111827] w-[50%] text-white text-[11px] shadow">
+    <div className="px-2 py-[2px] rounded-md bg-gray-800 text-white text-[11px] shadow">
       {pct}%
     </div>
   );
@@ -41,7 +41,7 @@ export default function PieChartComponent() {
   ];
 
   return (
-    <div className="flex w-full h-[200px] p-6   dark:bg-[#121418]">
+    <div className="flex w-full h-[200px] p-6   dark:bg-darkTheme">
       <div className="flex items-center justify-center w-[183px] h-[183px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -82,11 +82,11 @@ export default function PieChartComponent() {
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: COLORS.all }}
             />
-            <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+            <span className="text-gray-950 dark:text-gray-300 text-[12px]">
               Sessions
             </span>
           </div>
-          <div className="text-[#101828] dark:text-gray-300 ml-auto text-[12px]">
+          <div className="text-gray-950 dark:text-gray-300 ml-auto text-[12px]">
             {total}
           </div>
         </div>
@@ -97,11 +97,11 @@ export default function PieChartComponent() {
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: COLORS.viewed }}
             />
-            <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+            <span className="text-gray-950 dark:text-gray-300 text-[12px]">
               Viewed
             </span>
           </div>
-          <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+          <span className="text-gray-950 dark:text-gray-300 text-[12px]">
             {viewed}
           </span>
         </div>
@@ -112,11 +112,11 @@ export default function PieChartComponent() {
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: COLORS.notViewed }}
             />
-            <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+            <span className="text-gray-950 dark:text-gray-300 text-[12px]">
               Not Viewed
             </span>
           </div>
-          <span className="text-[#101828] dark:text-gray-300 text-[12px]">
+          <span className="text-gray-950 dark:text-gray-300 text-[12px]">
             {notViewed}
           </span>
         </div>

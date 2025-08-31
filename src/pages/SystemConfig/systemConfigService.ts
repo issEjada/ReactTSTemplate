@@ -60,7 +60,7 @@ export interface Attribute {
 
 export interface Value {
   id?: string;
-  [key: string]: string | number | undefined; // Dynamic keys based on attributes
+  [key: string]: string | number | undefined; 
 }
 
 export interface Meta {

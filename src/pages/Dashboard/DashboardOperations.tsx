@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AppRoutes } from "../../routes/AppRoutes";
 
 const ActivityIcon = React.lazy(
-  () => import(`/src/assets/svg/activity.svg?react`)
+  () => import(`/src/assets/svg/monitoring.svg?react`)
 );
 
 const DashboardOperations: React.FC = () => {
@@ -11,10 +11,10 @@ const DashboardOperations: React.FC = () => {
     <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-[16px] px-6 ">
       {/* Left: Title + Subtitle */}
       <div className="flex flex-col">
-        <h1 className="text-[14px] font-semibold text-[#000000] leading-[24px] dark:text-white">
+        <h1 className="text-[14px] font-semibold text-black leading-[24px] dark:text-white">
           Security Operations Dashboard
         </h1>
-        <p className="text-[14px] text-[#535862] leading-[20px] dark:text-gray-500">
+        <p className="text-[14px] text-gray-600 leading-[20px] dark:text-gray-500">
           Real-Time monitoring and decision management
         </p>
       </div>
