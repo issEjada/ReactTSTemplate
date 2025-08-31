@@ -27,6 +27,7 @@ export const useSystemConfigDetails = () => {
     { key: string; node: string }[]
   >([]);
   const [data, setData] = useState<Value[]>([]);
+  const [perviousData, setPrevData] = useState<Value[]>([]);
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [loadingState, setloadingState] = useState<LoadingState>();
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +67,7 @@ export const useSystemConfigDetails = () => {
       .then((response) => {
         setAttributes(response.properties.attributes);
         setData(response.properties.values);
+        setPrevData(response.properties.values);
         setTotalCount(response.properties.meta.totalItems || 0);
       })
       .catch((err) => {
@@ -224,12 +226,12 @@ export const useSystemConfigDetails = () => {
         setIsScoringPopupOpen(false);
         setIsSuccessPopupOpen(true);
       })
-      .catch(async (error) => {
+      .catch((error) => {
+        setData(perviousData);
         setError(`${error}`);
         setIsErrorPopupOpen(true);
         setPopupMode("error");
         setIsSuccessPopupOpen(false);
-        await fetchData();
       })
       .finally(() => setloadingState(LoadingState.Success));
   };
