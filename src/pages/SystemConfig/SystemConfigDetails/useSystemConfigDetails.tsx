@@ -27,7 +27,6 @@ export const useSystemConfigDetails = () => {
     { key: string; node: string }[]
   >([]);
   const [data, setData] = useState<Value[]>([]);
-  const [perviousData, setPrevData] = useState<Value[]>([]);
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [loadingState, setloadingState] = useState<LoadingState>();
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +66,6 @@ export const useSystemConfigDetails = () => {
       .then((response) => {
         setAttributes(response.properties.attributes);
         setData(response.properties.values);
-        setPrevData(response.properties.values);
         setTotalCount(response.properties.meta.totalItems || 0);
       })
       .catch((err) => {
@@ -196,7 +194,7 @@ export const useSystemConfigDetails = () => {
         ];
       } else {
         // If popupFields is empty, use all existing IDs from the stored values (array)
-        valueObjects = data.map((val: Value) => ({
+        valueObjects = (formValues as Value[]).map((val: Value) => ({
           id: val.id,
           ...Object.fromEntries(
             Object.entries(val)
@@ -227,10 +225,8 @@ export const useSystemConfigDetails = () => {
         setIsSuccessPopupOpen(true);
       })
       .catch((error) => {
-        setData(perviousData);
         setError(`${error}`);
         setIsErrorPopupOpen(true);
-        setPopupMode("error");
         setIsSuccessPopupOpen(false);
       })
       .finally(() => setloadingState(LoadingState.Success));

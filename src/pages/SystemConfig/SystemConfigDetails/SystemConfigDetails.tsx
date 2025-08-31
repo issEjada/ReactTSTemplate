@@ -260,8 +260,7 @@ export const SystemConfigDetails = () => {
       >
         <ScoringDimensionForm
           popupTitle={rowProps.name}
-          content={data}
-          setContent={setData}
+          data={data}
           onSave={handleSave}
           onCancel={() => setIsScoringPopupOpen(false)}
         />
