@@ -203,7 +203,7 @@ export function CustomerProfileTable<TData extends object>({
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap "
+                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap rounded-lg "
                     >
                       <div className="flex items-center justify-start gap-2">
                         <span>
