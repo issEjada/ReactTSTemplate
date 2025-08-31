@@ -60,7 +60,6 @@ export const SystemConfigDetails = () => {
     setIsSuccessPopupOpen,
     handleDescriptionUpdate,
     handleUpdateScoring,
-    setData,
     setIsScoringPopupOpen,
     isScoringPopupOPen,
     setError,
@@ -95,9 +94,6 @@ export const SystemConfigDetails = () => {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {rowProps.name}
           </h2>
-          <div className="ml-2 text-blue-50 bg-blue-100 px-1 py-1 rounded-full">
-            <EditIcon className="sm:w-[15px] sm:h-[15px] text-blue-700" />
-          </div>
         </div>
       </div>
 
@@ -122,7 +118,11 @@ export const SystemConfigDetails = () => {
         onClick={() => handleDescriptionUpdate(configDesc)}
         disabled={configDesc === rowProps.desc}
         className={`my-7 self-end w-[150px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800
-            ${configDesc === rowProps.desc ? " cursor-not-allowed" : ""}`}
+            ${
+              configDesc === rowProps.desc
+                ? " opacity-80 cursor-not-allowed"
+                : ""
+            }`}
       >
         Save description
       </button>
@@ -150,10 +150,10 @@ export const SystemConfigDetails = () => {
             <button
               type="button"
               onClick={handleAddConfirm}
-              className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
+              className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
               <Suspense>
-                <PlusBorderIcon className="w-4 h-4 text-gray-700" />
+                <PlusBorderIcon className="w-4 h-4 text-gray-700 dark:text-white" />
               </Suspense>
               {attributes ? `Add ${attributes[0]?.name}` : "Add New Item"}
             </button>
@@ -222,7 +222,7 @@ export const SystemConfigDetails = () => {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className={`${"w-[100px]"} h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
+          className={`${"w-[100px]"} h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
         >
           Back
         </button>
@@ -367,14 +367,14 @@ const getColumns = (
                     setPopupMode("update");
                     setIsPopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5 cursor-pointer"
                 />
                 <DeleteIcon
                   onClick={() => {
                     setItemToDelete(rowData.id);
                     setIsDeletePopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-gray-400 ml-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 ml-5 cursor-pointer"
                 />
               </>
             ) : (
@@ -392,7 +392,7 @@ const getColumns = (
                     setPopupMode("update");
                     setIsPopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5 cursor-pointer"
                 />
                 {/* show Update Pop  */}
               </>
