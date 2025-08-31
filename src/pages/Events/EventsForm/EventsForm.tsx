@@ -84,11 +84,11 @@ const EventsForm = () => {
                   placeholder="Event Name"
                   disabled={isViewing}
                   className={`text-sm rounded-[8px] shadow-sm px-[14px] py-[10px] w-[556px] h-[44px] font-medium focus:outline-none focus:ring-2
-                    ${
-                      fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
-                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-                    }
+                     ${
+                       fieldState.error
+                         ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                         : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
+                     }
                     ${isViewing ? "bg-[#F9FAFB] text-[#A0A0A0]" : ""}
                   `}
                 />

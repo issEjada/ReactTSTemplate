@@ -152,17 +152,13 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium focus:outline-none focus:ring-2
-                    ${
-                      fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
-                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-                    }
-                    ${
-                      isViewing
-                        ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
-                        : ""
-                    }
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+            focus:outline-none focus:ring-2
+                     ${
+                       fieldState.error
+                         ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                         : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
+                     }             
                   `}
                 />
                 {fieldState.error && (
@@ -219,18 +215,15 @@ const DecisionForm = () => {
                 <input
                   {...field}
                   placeholder="Criteria Name"
-                  disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] w-[320px] h-[44px] focus:outline-none focus:ring-2
-                    ${
-                      fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
-                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-                    }
-                    ${
-                      isViewing
-                        ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
-                        : ""
-                    }
+                  disabled={screenAction === "view"}
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+            focus:outline-none focus:ring-2
+            ${
+              fieldState.error
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
+            }
+               
                   `}
                 />
               )}

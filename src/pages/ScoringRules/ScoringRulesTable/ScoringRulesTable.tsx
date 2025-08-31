@@ -142,7 +142,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700" />
+              <ViewIcon className="text-gray-700 dark:text-white" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>

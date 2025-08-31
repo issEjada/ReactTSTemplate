@@ -38,7 +38,7 @@ const RuleForm = () => {
     popupType,
     popupMessage,
     setScreenAction,
-    loadingState, 
+    loadingState,
     isFormValid,
     formValues,
   } = useViewScoringRules();
@@ -171,11 +171,6 @@ const RuleForm = () => {
               fieldState.error
                 ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
                 : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-            }
-            ${
-              screenAction === "view"
-                ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
-                : ""
             }
             `}
                 />
