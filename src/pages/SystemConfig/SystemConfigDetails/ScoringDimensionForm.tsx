@@ -7,8 +7,7 @@ const EditPopupIcon = React.lazy(
 );
 
 interface ScoringDimensionFormProps {
-  content: Value[];
-  setContent: React.Dispatch<React.SetStateAction<Value[]>>;
+  data: Value[];
   onSave: (values: Value[]) => void;
   onCancel: () => void;
   popupTitle: string;
@@ -20,11 +19,11 @@ interface FieldError {
 
 export const ScoringDimensionForm = ({
   onCancel,
-  content,
-  setContent,
+  data,
   onSave,
   popupTitle,
 }: ScoringDimensionFormProps) => {
+  const [content, setContent] = useState<Value[]>(data);
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const [fieldErrors, setFieldErrors] = useState<Record<string, FieldError>>(
     {}
