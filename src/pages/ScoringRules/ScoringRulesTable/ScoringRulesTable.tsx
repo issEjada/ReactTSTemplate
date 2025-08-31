@@ -142,7 +142,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700 dark:text-white" />
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -156,8 +156,8 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <EditIcon className="h-4 w-4" />
-              <span className="text-[14px]">Edit Rule</span>
+              <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <span className="text-[14px] whitespace-nowrap">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
             <button
@@ -168,7 +168,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,

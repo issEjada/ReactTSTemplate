@@ -17,7 +17,9 @@ import { AppRoutes } from "../../../routes/AppRoutes";
 import type { EventFormValues } from "../eventsServices";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
-const UpdateIcon = React.lazy(() => import("../../../assets/svg/update.svg?react"));
+const UpdateIcon = React.lazy(
+  () => import("../../../assets/svg/update.svg?react")
+);
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 const MobileIcon = React.lazy(
@@ -56,7 +58,9 @@ const DevicePill: React.FC<{ device: string }> = ({ device }) => {
         {key === "MOBILE_SDK_MD" && (
           <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {key === "WEB_SDK_MD" && <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />}
+        {key === "WEB_SDK_MD" && (
+          <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
+        )}
         {key === "3DS_MICROSITE_SDK_MD" && (
           <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
@@ -146,7 +150,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700"/>
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -160,7 +164,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <UpdateIcon className="text-gray-700"/>
+              <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Update Event</span>
             </button>
           </div>,

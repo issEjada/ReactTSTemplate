@@ -71,8 +71,8 @@ const RuleMenu = ({
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY, 
-        left: rect.right - 143 + window.scrollX, 
+        top: rect.bottom + window.scrollY,
+        left: rect.right - 143 + window.scrollX,
       });
     }
     setOpen((prev) => !prev);
@@ -146,7 +146,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700"/>
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -160,7 +160,7 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <EditIcon />
+              <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -172,7 +172,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,

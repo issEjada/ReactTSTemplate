@@ -60,7 +60,8 @@ export function DynamicFilterForm<T extends FieldValues>({
                       type="text"
                       placeholder={field.placeholder}
                       className="w-full h-[44px] p-2 border border-gray-300 rounded-md text-sm
-                           dark:bg-darkTheme dark:border-gray-800 mt-2 mb-2"
+                           dark:bg-darkTheme dark:border-gray-800 mt-2 mb-2
+                           autofill:!bg-darkTheme"
                     />
                   )}
                 />

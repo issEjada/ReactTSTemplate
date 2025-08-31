@@ -171,19 +171,17 @@ const DecisionForm = () => {
           />
         </div>
 
-        {!isAdding && (
+        {(screenAction === "view" || screenAction === "edit") && (
           <div className="flex gap-4 ml-auto mr-12">
-            {!isEditing && (
-              <>
-                <button
-                  type="button"
-                  onClick={handleDeleteClick}
-                  className="flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
-                >
-                  Delete Rule
-                </button>
-              </>
-            )}
+            <>
+              <button
+                type="button"
+                onClick={handleDeleteClick}
+                className="flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
+              >
+                Delete Rule
+              </button>
+            </>
           </div>
         )}
       </div>

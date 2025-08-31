@@ -1,7 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import AboutUsImg from "../assets/png/aboutUsImg.png";
+import { AppRoutes } from "../routes/AppRoutes";
 
 const AboutUs: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative bg-white text-gray-800  py-8 md:px-6 dark:bg-black">
       <div className="max-w-6xl grid md:grid-cols-1 gap-12 items-end">
@@ -18,7 +22,12 @@ const AboutUs: React.FC = () => {
               "As fraudsters evolve, so must their hunters."
             </blockquote>
           </div>
-          <button className="absolute  right-6 bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-800 transition duration-300 z-50">
+          <button
+            className="absolute  right-6 bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-800 transition duration-300 z-50"
+            onClick={() => {
+              navigate(AppRoutes.support);
+            }}
+          >
             Contact Us
           </button>
         </div>
