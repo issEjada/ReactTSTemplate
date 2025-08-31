@@ -60,7 +60,6 @@ export const SystemConfigDetails = () => {
     setIsSuccessPopupOpen,
     handleDescriptionUpdate,
     handleUpdateScoring,
-    setData,
     setIsScoringPopupOpen,
     isScoringPopupOPen,
     setError,
