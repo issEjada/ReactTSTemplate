@@ -18,7 +18,6 @@ const SearchIcon = React.lazy(
 const FilterIcon = React.lazy(
   () => import("../../assets/svg/Filters.svg?react")
 );
-const PlusIcon = React.lazy(() => import("../../assets/svg/plus.svg?react"));
 const ArrowIcon = React.lazy(
   () => import("../../assets/svg/ArrowUp.svg?react")
 );
@@ -50,6 +49,7 @@ interface DynamicTableProps<TData extends object> {
   loadingState?: LoadingState;
   headerRightExtra?: React.ReactNode;
   headerLeft?: React.ReactNode;
+  areFiltersApplied: boolean; // New prop
 }
 
 export function CustomerProfileTable<TData extends object>({
@@ -63,7 +63,6 @@ export function CustomerProfileTable<TData extends object>({
   onFilterStatus,
   statusFilter,
   onClearSearch,
-  onAddNewItem,
   error,
   title,
   searchText,
@@ -79,6 +78,7 @@ export function CustomerProfileTable<TData extends object>({
   loadingState,
   headerLeft = false,
   headerRightExtra = false,
+  areFiltersApplied, // Destructure new prop
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable<TData>({
@@ -293,33 +293,35 @@ export function CustomerProfileTable<TData extends object>({
                               <h1 className="text-gray-900 text-[16px] leading-[24px] font-semibold text-center h-[24px] dark:text-white">
                                 No {title} found
                               </h1>
-                              <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
-                                Your search "{searchText}" did not match any{" "}
-                                {title.toLowerCase()}. Please try again or
-                                create and add a new{" "}
-                                {title.includes("Rules") ? "rule" : "item"}.
-                              </p>
+
+                              <>
+                                <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
+                                  Your search "{searchText}" did not match any{" "}
+                                  {title.toLowerCase()}. Please try again.
+                                </p>
+
+                                <div className="w-[352px] flex flex-row gap-3 pt-6 justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={onClearSearch}
+                                    disabled={
+                                      !searchText &&
+                                      !areFiltersApplied &&
+                                      totalCount === 0
+                                    }
+                                    className={`w-[170px] h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black ${
+                                      !searchText &&
+                                      !areFiltersApplied &&
+                                      totalCount === 0
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : ""
+                                    }`}
+                                  >
+                                    Clear search
+                                  </button>
+                                </div>
+                              </>
                             </div>
-                          </div>
-                          <div className="w-[352px] flex flex-row gap-3 pt-6">
-                            <button
-                              type="button"
-                              onClick={onClearSearch}
-                              className="w-[170px] h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black"
-                            >
-                              Clear search
-                            </button>
-                            <button
-                              type="button"
-                              onClick={onAddNewItem}
-                              className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
-                            >
-                              <Suspense>
-                                <PlusIcon className="text-white"/>
-                              </Suspense>
-                              Add New{" "}
-                              {title.includes("Rules") ? "Rule" : "Item"}
-                            </button>
                           </div>
                         </div>
                       </div>
