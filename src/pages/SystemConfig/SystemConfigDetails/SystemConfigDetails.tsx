@@ -244,14 +244,16 @@ export const SystemConfigDetails = () => {
         isOpen={isPopupOpen}
         className="md:w-[30%] lg:w-[35%] w-[90%]"
       >
-        <SystemConfigForm
-          mode={popupMode}
-          fields={popupFields}
-          popupTitle={rowProps.name}
-          onSave={handleSave}
-          onCancel={() => setIsPopupOpen(false)}
-          addRow={rowProps.allowAddRow}
-        />
+        <Suspense fallback={<FullScreenSpinner />}>
+          <SystemConfigForm
+            mode={popupMode}
+            fields={popupFields}
+            popupTitle={rowProps.name}
+            onSave={handleSave}
+            onCancel={() => setIsPopupOpen(false)}
+            addRow={rowProps.allowAddRow}
+          />
+        </Suspense>
       </PopupLayout>
 
       <PopupLayout
