@@ -6,14 +6,14 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import type { ViewSessionsFormValues } from "../pages/Monitoring/MonitoringFilter/useMonitoringFilter";
 import FullScreenSpinner from "./FullScreenSpinner";
 import type { LoadingState } from "../types/types";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../routes/AppRoutes";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
 const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
-
 const ArrowIcon = React.lazy(() => import("../assets/svg/ArrowUp.svg?react"));
 
 interface DynamicTableProps<TData extends object> {
@@ -42,6 +42,9 @@ interface DynamicTableProps<TData extends object> {
   minimal?: boolean;
   minimalWithPagination?: boolean;
   loadingState?: LoadingState;
+  headerRightExtra?: React.ReactNode;
+  headerLeft?: React.ReactNode;
+  isCustomerProfile?: boolean;
 }
 
 export function DynamicTable<TData extends object>({
@@ -65,12 +68,18 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
+  isMonitoringTable = false,
   onRowClick,
   minimal = false,
   minimalWithPagination = false,
+  headerLeft = false,
+  headerRightExtra = false,
+  isCustomerProfile = false,
   loadingState,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const navigate = useNavigate();
+
   const table = useReactTable<TData>({
     data,
     columns,
@@ -78,9 +87,13 @@ export function DynamicTable<TData extends object>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    getRowId: (originalRow: ViewSessionsFormValues, index) =>
+    getRowId: (originalRow: any, index) =>
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
+
+  if (loadingState === "loading") {
+    return <FullScreenSpinner />;
+  }
 
   if (error) {
     return (
@@ -94,94 +107,101 @@ export function DynamicTable<TData extends object>({
     const col = table.getColumn(columnId);
     if (!col) return;
     col.toggleSorting(col.getIsSorted() === "asc");
-
-    if (loadingState === "loading") {
-      return <FullScreenSpinner />;
-    }
   };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-800 rounded-lg dark:bg-darkTheme ">
+    <div
+      className={`border border-gray-200 ${
+        isCustomerProfile
+          ? "dark:border-gray-800 rounded-lg bg-white dark:bg-darkTheme"
+          : "bg-white dark:border-gray-800 rounded-lg dark:bg-darkTheme"
+      }`}
+    >
       {!(minimal || minimalWithPagination) && (
-        <div
-          className={`px-4  sm:px-6 ${
-            applyFilters ? "py-4 sm:py-6" : ""
-          }  flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 flex-wrap`}
-        >
-          <div className="w-full sm:w-auto">
-            {showStatusFilter &&
-              onFilterStatus &&
-              statusFilter &&
-              statusFilterOptions && (
-                <div className="rounded-lg overflow-hidden border border-gray-300 sm:divide-y-0 divide-y divide-gray-300 sm:flex sm:space-x-0">
-                  {statusFilterOptions.map((option, idx) => (
+        <div className="px-4 sm:px-6 py-4 sm:py-6">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="min-w-[120px] flex items-center gap-3">
+              {headerLeft}
+              {showStatusFilter &&
+                onFilterStatus &&
+                statusFilter &&
+                statusFilterOptions && (
+                  <div className="inline-flex rounded-lg overflow-hidden border border-gray-300">
+                    {statusFilterOptions.map((option, idx) => (
+                      <button
+                        key={option.key}
+                        onClick={() => onFilterStatus(option.key)}
+                        className={`text-xs h-9 sm:h-10 px-3 w-[90px] ${
+                          statusFilter === option.key
+                            ? "bg-gray-50 text-black"
+                            : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
+                        } ${idx > 0 ? "border-l" : ""}`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+              {applyFilters && (
+                <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
+                  <button
+                    type="button"
+                    title="Search"
+                    onClick={applyFilters}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    <Suspense fallback={<FullScreenSpinner />}>
+                      <SearchIcon className="w-5 h-5" />
+                    </Suspense>
+                  </button>
+
+                  <input
+                    type="text"
+                    value={searchText}
+                    onChange={(e) => setSearchText?.(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && applyFilters) applyFilters();
+                    }}
+                    placeholder={searchPlaceholder}
+                    className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-gray-300 outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
+                  />
+
+                  {searchText && onClearSearch && (
                     <button
-                      key={option.key}
-                      onClick={() => onFilterStatus(option.key)}
-                      className={`text-xs h-9 sm:h-10 px-3 w-full sm:w-[90px] ${
-                        statusFilter === option.key
-                          ? "bg-gray-50 text-black"
-                          : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
-                      } ${idx > 0 ? "sm:border-l" : ""}`}
+                      onClick={onClearSearch}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                      aria-label="Clear search"
                     >
-                      {option.label}
+                      &#10005;
                     </button>
-                  ))}
+                  )}
                 </div>
               )}
-          </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
-            {applyFilters && (
-              <div className="relative flex-1 min-w-[180px] sm:min-w-[240px] md:min-w-[400px] max-w-full h-10">
+              {filterComponent && openFilterModal && (
                 <button
-                  type="button"
-                  title="Search"
-                  onClick={applyFilters}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                  className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
+                  onClick={openFilterModal}
                 >
                   <Suspense fallback={<FullScreenSpinner />}>
-                    <SearchIcon className="w-5 h-5" />
+                    <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
                   </Suspense>
+                  <span className="hidden sm:inline">Filter</span>
                 </button>
+              )}
 
-                <input
-                  type="text"
-                  value={searchText}
-                  onChange={(e) =>
-                    setSearchText ? setSearchText(e.target.value) : null
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") applyFilters();
-                  }}
-                  placeholder={searchPlaceholder}
-                  className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-gray-300 outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
-                />
-
-                {searchText && (
-                  <button
-                    onClick={() => (onClearSearch ? onClearSearch() : null)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
-                    aria-label="Clear search"
-                  >
-                    &#10005;
-                  </button>
-                )}
-              </div>
-            )}
-
-            {filterComponent && (
-              <button
-                className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
-                onClick={openFilterModal}
-              >
-                <Suspense fallback={<FullScreenSpinner />}>
-                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
-                </Suspense>
-                <span className="hidden sm:inline">Filter</span>
-              </button>
-            )}
+              {headerRightExtra && (
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
+                  {headerRightExtra}
+                </div>
+              )}
+            </div>
           </div>
+
+          <div className="w-full sm:w-auto"></div>
         </div>
       )}
 
@@ -190,11 +210,17 @@ export function DynamicTable<TData extends object>({
       <div className="overflow-x-auto">
         <table
           className={`w-full table-auto text-sm text-center ${
-            minimal ? "min-w-[710px]" : "min-w-[900px]"
+            isCustomerProfile ? "" : minimal ? "min-w-[710px]" : "min-w-[900px]"
           }`}
         >
           {table.getRowModel().rows.length > 0 ? (
-            <thead className="bg-gray-25 text-gray-600 dark:bg-darkTheme dark:border-gray-800 dark:text-white">
+            <thead
+              className={`${
+                isCustomerProfile
+                  ? "bg-white dark:bg-darkTheme dark:border-gray-800 dark:text-white"
+                  : "bg-gray-25 text-gray-600 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
+              }`}
+            >
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
@@ -217,21 +243,23 @@ export function DynamicTable<TData extends object>({
                         {(header.id === "deviceId" ||
                           header.id === "sessionId" ||
                           header.id === "name" ||
-                          header.id == "configName" ||
+                          header.id === "configName" ||
                           header.id === "id") && (
                           <button
                             title="Sort"
                             onClick={() => onArrowClick(header.column.id)}
                           >
-                            <ArrowIcon
-                              className={`stroke-gray-600 dark:stroke-white   ${
-                                header.column.getIsSorted() === "asc"
-                                  ? "transform rotate-180 transition-transform"
-                                  : header.column.getIsSorted() === "desc" &&
-                                    "transform rotate-0 transition-transform"
-                              }
-                              `}
-                            />
+                            <Suspense fallback={<FullScreenSpinner />}>
+                              <ArrowIcon
+                                className={`stroke-gray-600 dark:stroke-white ${
+                                  header.column.getIsSorted() === "asc"
+                                    ? "transform rotate-180 transition-transform"
+                                    : header.column.getIsSorted() === "desc"
+                                    ? "transform rotate-0 transition-transform"
+                                    : ""
+                                }`}
+                              />
+                            </Suspense>
                           </button>
                         )}
                       </div>
@@ -241,7 +269,7 @@ export function DynamicTable<TData extends object>({
               ))}
             </thead>
           ) : (
-            <div className="border-t border-gray-200 dark:border-gray-800 h-[1px] w-full"></div>
+            <div className="border-t border-gray-200 dark:border-gray-800 h-[1px] w-full" />
           )}
 
           <tbody>
@@ -249,14 +277,25 @@ export function DynamicTable<TData extends object>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  {...(onRowClick && {
-                    onClick: () => onRowClick(row.original),
-                  })}
-                  className={`border-t  dark:border-gray-800 ${
-                    onRowClick
-                      ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                  {...(isCustomerProfile && isMonitoringTable
+                    ? {
+                        onClick: () => {
+                          const { id } = row.original as {
+                            id: string | number;
+                          };
+                          navigate(AppRoutes.monitoringView, {
+                            state: { id: id.toString() },
+                          });
+                        },
+                      }
+                    : onRowClick && {
+                        onClick: () => onRowClick(row.original),
+                      })}
+                  className={`border-t dark:border-gray-800 ${
+                    isCustomerProfile || onRowClick
+                      ? "hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
                       : ""
-                  } `}
+                  }`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
@@ -278,7 +317,7 @@ export function DynamicTable<TData extends object>({
                     <div className="w-[512px] h-[196px] flex items-center justify-center pt-6 pb-6">
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
-                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-blue-50 bg-blue-100 flex items-center justify-center  dark:border-gray-700 ">
+                          <div className="w-12 h-12 rounded-[28px] border-[8px] border-blue-50 bg-blue-100 flex items-center justify-center dark:border-gray-700">
                             <Suspense fallback={<FullScreenSpinner />}>
                               <SearchIcon className="text-blue-700" />
                             </Suspense>
@@ -287,37 +326,66 @@ export function DynamicTable<TData extends object>({
                             <h1 className="text-gray-900 text-[16px] leading-[24px] font-semibold text-center h-[24px] dark:text-white">
                               No {title} found
                             </h1>
-                            <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
-                              Your search "{searchText}" did not match any{" "}
-                              {title.toLowerCase()}. Please try again or create
-                              and add a new{" "}
-                              {title.includes("Rules") ? "rule" : "item"}.
-                            </p>
+                            {isCustomerProfile ? (
+                              <>
+                                <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
+                                  Your search "{searchText}" did not match any{" "}
+                                  {title.toLowerCase()}. Please try again.
+                                </p>
+                                <div className="w-[352px] flex flex-row gap-3 pt-6 justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={onClearSearch}
+                                    disabled={!searchText && totalCount === 0}
+                                    className={`w-[170px] h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black ${
+                                      !searchText && totalCount === 0
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : ""
+                                    }`}
+                                  >
+                                    Clear search
+                                  </button>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
+                                  Your search "{searchText}" did not match any{" "}
+                                  {title.toLowerCase()}. Please try again or
+                                  create and add a new{" "}
+                                  {title.includes("Rules") ? "rule" : "item"}.
+                                </p>
+                                <div className="w-[352px] flex flex-row gap-3 pt-6">
+                                  <button
+                                    type="button"
+                                    onClick={onClearSearch}
+                                    className={`${
+                                      onAddNewItem ? "w-[170px]" : "w-full"
+                                    } h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
+                                  >
+                                    Clear search
+                                  </button>
+                                  {onAddNewItem && (
+                                    <button
+                                      type="button"
+                                      onClick={onAddNewItem}
+                                      className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
+                                    >
+                                      <Suspense
+                                        fallback={<FullScreenSpinner />}
+                                      >
+                                        <PlusIcon className="text-white" />
+                                      </Suspense>
+                                      Add New{" "}
+                                      {title.includes("Rules")
+                                        ? "Rule"
+                                        : "Item"}
+                                    </button>
+                                  )}
+                                </div>
+                              </>
+                            )}
                           </div>
-                        </div>
-                        <div className="w-[352px] flex flex-row gap-3 pt-6">
-                          <button
-                            type="button"
-                            onClick={onClearSearch}
-                            className={`${
-                              onAddNewItem ? "w-[170px]" : "w-full"
-                            } h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
-                          >
-                            Clear search
-                          </button>
-                          {onAddNewItem && (
-                            <button
-                              type="button"
-                              onClick={onAddNewItem}
-                              className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
-                            >
-                              <Suspense fallback={<FullScreenSpinner />}>
-                                <PlusIcon className="text-white" />
-                              </Suspense>
-                              Add New{" "}
-                              {title.includes("Rules") ? "Rule" : "Item"}
-                            </button>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -328,6 +396,7 @@ export function DynamicTable<TData extends object>({
           </tbody>
         </table>
       </div>
+
       {!minimal && (
         <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
           <div className="text-center sm:text-left">
@@ -340,12 +409,11 @@ export function DynamicTable<TData extends object>({
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg 
-          ${
-            currentPage === 1
-              ? "dark:text-white cursor-not-allowed opacity-50"
-              : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-          }`}
+                className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg ${
+                  currentPage === 1
+                    ? "dark:text-white cursor-not-allowed opacity-50"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+                }`}
               >
                 Previous
               </button>
@@ -356,12 +424,11 @@ export function DynamicTable<TData extends object>({
                   )
                 }
                 disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-                className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg 
-          ${
-            currentPage === Math.ceil(totalCount / itemsPerPage)
-              ? "dark:text-white cursor-not-allowed opacity-50"
-              : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-          }`}
+                className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg ${
+                  currentPage === Math.ceil(totalCount / itemsPerPage)
+                    ? "dark:text-white cursor-not-allowed opacity-50"
+                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
+                }`}
               >
                 Next
               </button>

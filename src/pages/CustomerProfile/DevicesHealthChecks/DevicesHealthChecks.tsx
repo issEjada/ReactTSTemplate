@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useRef, useEffect, Suspense } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { DynamicTable } from "../../../components/DynamicTable";
 
 const DateIcon = React.lazy(() => import("../../../assets/svg/Date.svg?react"));
 
@@ -196,8 +196,9 @@ export const DevicesHealthChecks: React.FC = () => {
 
   return (
     <div className="px-5 overflow-x-auto">
-      <CustomerProfileTable<FlattenedHealthResponse>
+      <DynamicTable<FlattenedHealthResponse>
         title="Devices Health Check"
+        isCustomerProfile={true}
         headerLeft={
           <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
             Devices Health Check

@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import MetricCard from "./MetricCard";
-import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { ActionPopup } from "./ActionsPopup";
+import { DynamicTable } from "../../../components/DynamicTable";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -169,7 +169,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   const { actionAnalyticsData, errorValidation, loadingState } =
     useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
 
-
   const columns: ColumnDef<FormattedAnalyticData>[] = [
     {
       accessorKey: "eventName",
@@ -260,7 +259,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     return <span className="text-red-500">{errorValidation}</span>;
   }
 
-
   return (
     <div className="flex flex-col gap-4">
       {/* KPI Cards */}
@@ -270,7 +268,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfTotalActions || 0
           }
-          icon={<TotalActionIcon className="text-blue-700"/>}
+          icon={<TotalActionIcon className="text-blue-700" />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
@@ -278,13 +276,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfAcceptedActions || 0
           }
-          icon={<AcceptedIcon className="text-success-600"/>}
+          icon={<AcceptedIcon className="text-success-600" />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="MFA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfMFAActions || 0}
-          icon={<MfaIcon className="text-warning-600"/>}
+          icon={<MfaIcon className="text-warning-600" />}
           className="w-full md:w-[370px]"
         />
 
@@ -294,7 +292,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
             actionAnalyticsData?.actionsAnalytics
               .numberOfAuthenticatedActions || 0
           }
-          icon={<AuthActionIcon className="text-purple-700"/>}
+          icon={<AuthActionIcon className="text-purple-700" />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
@@ -302,7 +300,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfRejectedActions || 0
           }
-          icon={<RejectedIcon className="text-red-600"/>}
+          icon={<RejectedIcon className="text-red-600" />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
@@ -332,7 +330,8 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
 
         <div className="px-5 pb-5 overflow-x-auto">
           <div className="overflow-x-auto">
-            <CustomerProfileTable<FormattedAnalyticData>
+            <DynamicTable<FormattedAnalyticData>
+              isCustomerProfile={true}
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}

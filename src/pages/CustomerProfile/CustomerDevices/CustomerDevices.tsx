@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CustomerProfileTable } from "../CustomerProfileTable";
 import CustomerDevicesFilter from "../CustomerProfileFilter/CustomerDevicesFilter";
 import { useCustomerDevices } from "./useCustomerDevices";
 import type { SDKCustomerDeviceInfo } from "../customerProfileServices";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { DynamicTable } from "../../../components/DynamicTable";
 
 export type CustomerDevicesProps = {
   userInfo: {
-  userId?: string;
-  clientUserId?: string;
-  userMobileNumber?: string;
+    userId?: string;
+    clientUserId?: string;
+    userMobileNumber?: string;
   };
 };
 
@@ -27,8 +27,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
     setCurrentPage,
     loadingState,
     errorValidation,
-  } = useCustomerDevices({userInfo});
-
+  } = useCustomerDevices({ userInfo });
 
   const columns = useMemo<ColumnDef<SDKCustomerDeviceInfo>[]>(
     () => [
@@ -62,8 +61,9 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
 
   return (
     <div className="px-5 pb-5 overflow-x-auto">
-      <CustomerProfileTable<SDKCustomerDeviceInfo>
+      <DynamicTable<SDKCustomerDeviceInfo>
         title="Customer Devices"
+        isCustomerProfile={true}
         headerLeft={
           <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
             Customer Devices
