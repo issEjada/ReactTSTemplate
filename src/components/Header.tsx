@@ -51,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       localStorage.removeItem(ConstantKeys.accessToken);
       sessionStorage.removeItem(ConstantKeys.rememberMe);
       localStorage.removeItem(ConstantKeys.rememberMe);
+      localStorage.removeItem("customerProfileMobileNumber");
       setIsAuthenticated(false);
     }, 1000);
   };

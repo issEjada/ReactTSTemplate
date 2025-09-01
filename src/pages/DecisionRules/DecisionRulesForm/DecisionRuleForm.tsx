@@ -80,7 +80,7 @@ const DecisionForm = () => {
 
   const handleCancel = () => {
     reset();
-    navigate("/decision-rules");
+    navigate(-1);
   };
 
   const handleEditClick = () => {
@@ -393,7 +393,7 @@ const DecisionForm = () => {
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules");
+                navigate(-1);
               }}
             />
           )}

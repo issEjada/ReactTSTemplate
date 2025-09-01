@@ -95,7 +95,7 @@ const RuleForm = () => {
 
   const handleCancel = () => {
     reset();
-    navigate("/scoring-rules");
+    navigate(-1);
   };
 
   const handleEditClick = () => {
@@ -405,7 +405,7 @@ const RuleForm = () => {
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules");
+                  navigate(-1);
                 }}
               />
             )}
@@ -438,7 +438,7 @@ const RuleForm = () => {
               isDeleting
               onConfirm={() => {
                 setIsDeletePopupOpen(false);
-                navigate("/scoring-rules");
+                navigate(-1);
               }}
               onCancel={() => {
                 setIsDeletePopupOpen(false);

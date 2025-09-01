@@ -33,7 +33,7 @@ const EventsForm = () => {
 
   const handleCancel = () => {
     reset();
-    navigate("/events");
+    navigate(-1);
   };
 
   const handleEditClick = () => {
@@ -249,7 +249,7 @@ const EventsForm = () => {
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate("/events");
+                navigate(-1);
               }}
             />
           </LayoutPopup>

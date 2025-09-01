@@ -9,7 +9,7 @@ const DecisionRulesView = () => {
   const { ruleData, loadingState, setScreenAction } = useViewDecisionRules();
 
   const handleCancel = () => {
-    navigate("/decision-rules");
+    navigate(-1);
   };
 
   const handleEditClick = () => {

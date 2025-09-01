@@ -9,7 +9,7 @@ const ScoringRuleView = () => {
   const { ruleData, loadingState, setScreenAction } = useViewScoringRules();
 
   const handleCancel = () => {
-    navigate("/scoring-rules");
+    navigate(-1);
   };
 
   const handleEditClick = () => {
