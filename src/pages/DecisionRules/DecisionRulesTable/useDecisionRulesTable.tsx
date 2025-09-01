@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import type {
-  DecisionRulesFormValues,
-  DeleteRuleByIdPayload,
-  UpdateDecisionPayload,
-} from "../decisionRulesServices";
 import {
   DecisionRulesServices,
+  type DecisionRulesFormValues,
+  type UpdateDecisionPayload,
   type GetDecisionDataPayload,
   type GetDecisionRulesItem,
 } from "../decisionRulesServices";
 
 import { cleanObject } from "../../../utils/helpers";
-import { LoadingState } from "../../../types/types";
+import { LoadingState, type DeleteRuleByIdPayload } from "../../../types/types";
 
 export const useDecisionRulesTable = () => {
   const [data, setData] = useState<GetDecisionRulesItem[]>([]);
@@ -111,7 +108,7 @@ export const useDecisionRulesTable = () => {
 
     try {
       await DecisionRulesServices.updateDecisionRule(payload, id);
-      await fetchDecisionData(); 
+      await fetchDecisionData();
       setloadingState(LoadingState.Success);
     } catch (err) {
       console.error("Failed to update decision rule status:", err);

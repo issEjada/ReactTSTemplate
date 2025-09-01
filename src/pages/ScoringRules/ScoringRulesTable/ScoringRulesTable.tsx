@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
 import { useScoringRulesTable } from "./useScoringRulesTable";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
@@ -219,7 +219,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
 
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewScoringRulesFormValues = {
       ...filters,
     };
 
@@ -237,7 +237,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewScoringRulesFormValues = {
       ...filters,
       name: searchText.trim(),
     };

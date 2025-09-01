@@ -9,9 +9,11 @@ import type {
   GetDecisionRuleByIdResponse,
   GetEventDropDownsPayload,
   UpdateDecisionPayload,
-  GetDecisionRuleByIdPayload,
-  DeleteRuleByIdPayload,
 } from "../decisionRulesServices";
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../../types/types";
 import {
   getDropDownsValue,
   type DropDownsAttributes,
@@ -147,7 +149,7 @@ export const useViewDecisionRules = () => {
 
   const fetchRuleData = async (id: number) => {
     setloadingState(LoadingState.Loading);
-    const data: GetDecisionRuleByIdPayload = {
+    const data: GetRuleByIdPayload = {
       id: id,
     };
     await DecisionRulesServices.getDecisionRulesById(data)

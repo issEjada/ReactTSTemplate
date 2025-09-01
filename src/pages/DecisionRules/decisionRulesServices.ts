@@ -6,7 +6,10 @@ import type {
   GetDropDownsResponse,
 } from "../../services/dropdownServices";
 import type { GetRulesParameterResponse } from "../ScoringRules/scoringRulesServices";
-
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../types/types";
 export interface DecisionRulesFormValues {
   id?: string;
   name?: string;
@@ -38,9 +41,6 @@ export interface GetDecisionDataPayload {
   status?: string;
   fromCreationTimestamp?: string;
   toCreationTimestamp?: string;
-}
-export interface GetDecisionRuleByIdPayload {
-  id: number;
 }
 
 export interface CreateDecisionPayload {
@@ -108,10 +108,6 @@ export interface GetDecisionRuleByIdResponse {
   lastUpdatedTimestamp: string;
 }
 
-export interface DeleteRuleByIdPayload {
-  id: number;
-}
-
 export const DecisionRulesServices = {
   getDecisionData: async (
     data: GetDecisionDataPayload
@@ -139,7 +135,7 @@ export const DecisionRulesServices = {
   },
 
   getDecisionRulesById(
-    data: GetDecisionRuleByIdPayload
+    data: GetRuleByIdPayload
   ): Promise<GetDecisionRuleByIdResponse> {
     return httpClient
       .get(

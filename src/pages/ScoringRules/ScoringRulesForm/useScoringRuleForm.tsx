@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import type {
   DropDownCategory,
   DropDownValue,
@@ -9,18 +8,21 @@ import type {
 } from "../../../services/dropdownServices";
 import {
   type CreateRulesPayload,
-  type DeleteRuleByIdPayload,
-  type GetRuleByIdPayload,
   type GetRulesParametersPayload,
   type UpdateRulesPayload,
   type GetRuleByIdResponse,
   type GetRulesParameterResponse,
+  type ViewScoringRulesFormValues,
   ScoringRulesServices,
 } from "../scoringRulesServices";
 import { useLocation } from "react-router-dom";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { LoadingState } from "../../../types/types";
 import { formatTime } from "../../../utils/helpers";
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../../types/types";
 
 function useViewScoringRules() {
   const [editorContent, setEditorContent] = useState("");
@@ -60,7 +62,7 @@ function useViewScoringRules() {
   const isAdding = useMemo(() => !id && !screenAction, [id, screenAction]);
 
   const { control, handleSubmit, formState, watch, setValue, reset } =
-    useForm<ViewRulesFormValues>({
+    useForm<ViewScoringRulesFormValues>({
       mode: "onTouched",
       defaultValues: {
         id: 0,
@@ -323,7 +325,7 @@ function useViewScoringRules() {
     }
   }, [ruleData, reset, setValue]);
 
-  const onSubmit = (data: ViewRulesFormValues) => {
+  const onSubmit = (data: ViewScoringRulesFormValues) => {
     if (isAdding) {
       setloadingState(LoadingState.Loading);
       const body: CreateRulesPayload = {

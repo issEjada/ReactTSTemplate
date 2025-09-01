@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
@@ -196,7 +196,7 @@ const RuleForm = () => {
 
       <div className="flex flex-col gap-[12px] h-[412px] w-[1440px] gap-y-[24px] mb-[16px]">
         <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.eventSourceDevice"
             label="Event Source Device"
@@ -213,7 +213,7 @@ const RuleForm = () => {
             required
           />
 
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.scheme"
             label="Scheme"
@@ -230,7 +230,7 @@ const RuleForm = () => {
             required
           />
 
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.aspectCode"
             label="Aspect"
@@ -249,7 +249,7 @@ const RuleForm = () => {
         </div>
 
         <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.controlCode"
             label="Control"
@@ -266,7 +266,7 @@ const RuleForm = () => {
             required
           />
 
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.platform"
             label="Platform"
@@ -285,7 +285,7 @@ const RuleForm = () => {
         </div>
 
         <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="status"
             label="Status"
@@ -297,7 +297,7 @@ const RuleForm = () => {
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="riskLevel"
             label="Risk Level"

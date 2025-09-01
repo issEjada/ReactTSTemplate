@@ -1,17 +1,14 @@
-import {
-  useScoringRulesFilter,
-  type ViewRulesFormValues,
-} from "./useScoringRulesFilter";
+import { useScoringRulesFilter } from "./useScoringRulesFilter";
 import {
   DynamicFilterForm,
   type FilterField,
 } from "../../../components/Filter/DynamicFilter";
-
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 export interface RulesFilterProps {
   isOpen: boolean;
   closeDrawer: () => void;
-  handleSearchSubmit: (searchData: ViewRulesFormValues) => void;
-  filterData: ViewRulesFormValues | undefined;
+  handleSearchSubmit: (searchData: ViewScoringRulesFormValues) => void;
+  filterData: ViewScoringRulesFormValues | undefined;
 }
 
 export const ScoringRulesFilterForm = ({
@@ -34,7 +31,7 @@ export const ScoringRulesFilterForm = ({
   } = useScoringRulesFilter(closeDrawer, filterData, handleSearchSubmit);
 
   // 👇 Fields config
-  const fields: FilterField<ViewRulesFormValues>[] = [
+  const fields: FilterField<ViewScoringRulesFormValues>[] = [
     {
       type: "text",
       name: "name",
@@ -97,7 +94,7 @@ export const ScoringRulesFilterForm = ({
   ];
 
   return (
-    <DynamicFilterForm<ViewRulesFormValues>
+    <DynamicFilterForm<ViewScoringRulesFormValues>
       title="Filter Scoring Rules"
       isOpen={isOpen}
       closeDrawer={closeDrawer}

@@ -34,3 +34,11 @@ export const LoadingState = {
 } as const;
 
 export type LoadingState = (typeof LoadingState)[keyof typeof LoadingState];
+
+export interface GetRuleByIdPayload {
+  id: number;
+}
+
+export interface DeleteRuleByIdPayload {
+  id: number;
+}
