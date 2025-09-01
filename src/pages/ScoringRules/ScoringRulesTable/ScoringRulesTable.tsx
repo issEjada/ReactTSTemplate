@@ -8,7 +8,6 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
-import { useScoringRulesTable } from "./useScoringRulesTable";
 import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/LayoutPopup";
@@ -17,6 +16,7 @@ import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import { useScoringRulesTable } from "./useScoringRulesTable";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -192,8 +192,9 @@ const RuleMenu = ({
   );
 };
 
-export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
+export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean, toggleHandler?: (id: number, currentStatus: string) => void }> = ({
   fromDashboard = false,
+  toggleHandler
 }) => {
   const {
     data = [],
@@ -208,8 +209,8 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     refetch,
     handleSearchSubmit,
     deleteRule,
-    handleToggleStatus,
-  } = useScoringRulesTable();
+    handleToggleStatus
+  } = useScoringRulesTable()
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
@@ -262,7 +263,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   };
 
   const columns = useMemo(
-    () => getColumns(handleToggleStatus, handleDeleteRule),
+    () => getColumns((fromDashboard ? (toggleHandler ?? handleToggleStatus) : handleToggleStatus), handleDeleteRule),
     [handleToggleStatus, handleDeleteRule]
   );
 

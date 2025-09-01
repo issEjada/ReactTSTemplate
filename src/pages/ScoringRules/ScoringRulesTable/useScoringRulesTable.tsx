@@ -55,7 +55,6 @@ export const useScoringRulesTable = () => {
     ScoringRulesServices.deleteRuleById(id)
       .then(() => {
         fetchData();
-        setloadingState(LoadingState.Success);
       })
       .catch((err) => {
         console.error("Delete error:", err);
@@ -73,7 +72,7 @@ export const useScoringRulesTable = () => {
     try {
       await ScoringRulesServices.updateRule(payload, id);
       fetchData();
-      setloadingState(LoadingState.Success);
+      //setloadingState(LoadingState.Success);
     } catch (err) {
       console.error("Failed to update rule status:", err);
       setError("Failed to update rule status.");
