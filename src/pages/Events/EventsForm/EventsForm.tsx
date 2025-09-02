@@ -2,8 +2,8 @@ import { useState, lazy, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../../../components/DropDown";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import PopupLayout from "../../../components/Popup/PopupLayout";
+import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import { useViewEvents } from "./useEventForm";
 import type { EventFormValues } from "../eventsServices";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
@@ -236,8 +236,8 @@ const EventsForm = () => {
       {/* Confirm / Delete Popups */}
 
       <div>
-        <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
-          <RulesPopupJsx
+        <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
+          <DynamicPopupJsx
             title="Event"
             isAdding={isAdding && popupType === "successModal"}
             isEditing={isEditing && popupType === "successModal"}
@@ -251,7 +251,7 @@ const EventsForm = () => {
               navigate(-1);
             }}
           />
-        </LayoutPopup>
+        </PopupLayout>
       </div>
     </form>
   );

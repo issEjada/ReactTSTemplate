@@ -11,7 +11,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DecisionRulesFilter } from "../DecisionRulesFilter/DecisionRulesFilterJsx";
 import { useDecisionRulesTable } from "./useDecisionRulesTable";
 import { DynamicTable } from "../../../components/DynamicTable";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";

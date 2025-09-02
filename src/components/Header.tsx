@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
 import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
-import PopupLayout from "./Popup/LayoutPopup";
+import PopupLayout from "./Popup/PopupLayout";
 import FullScreenSpinner from "./FullScreenSpinner";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
 

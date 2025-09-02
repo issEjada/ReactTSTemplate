@@ -6,7 +6,7 @@ interface PopupProps {
   className?: string;
 }
 
-const LayoutPopup: React.FC<PopupProps> = ({
+const PopupLayout: React.FC<PopupProps> = ({
   isOpen,
   children,
   className = "w-full",
@@ -35,4 +35,4 @@ const LayoutPopup: React.FC<PopupProps> = ({
   );
 };
 
-export default LayoutPopup;
+export default PopupLayout;

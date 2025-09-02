@@ -16,7 +16,7 @@ import { TableFallback } from "../../../components/TableFallback";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import type { EventFormValues } from "../eventsServices";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
@@ -418,7 +418,7 @@ export const EventsTable = () => {
         />
       )}
 
-      <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+      <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
         <DynamicPopupJsx
           title="Event"
           isError={popupType === "errorModal"}
@@ -427,7 +427,7 @@ export const EventsTable = () => {
             setIsPopupOpen(false);
           }}
         />
-      </LayoutPopup>
+      </PopupLayout>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { Attribute } from "../systemConfigService";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import SystemConfigPopup from "../../../components/Popup/SystemConfigPopup";
 import { SystemConfigForm } from "./SystemConfigForm";
 import { ScoringDimensionForm } from "./ScoringDimensionForm";

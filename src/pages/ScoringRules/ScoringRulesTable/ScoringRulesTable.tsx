@@ -11,7 +11,7 @@ import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilter
 import { useScoringRulesTable } from "./useScoringRulesTable";
 import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { DynamicTable } from "../../../components/DynamicTable";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";

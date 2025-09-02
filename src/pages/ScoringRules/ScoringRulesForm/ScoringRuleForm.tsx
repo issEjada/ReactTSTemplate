@@ -4,11 +4,10 @@ import { Controller } from "react-hook-form";
 import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -128,13 +127,13 @@ const RuleForm = () => {
       {loadingState === "loading" && <FullScreenSpinner />}
 
       {showConfirmModal && (
-        <LayoutPopup isOpen={showConfirmModal} className="w-[30%]">
+        <PopupLayout isOpen={showConfirmModal} className="w-[30%]">
           <RulesPopupJsx
             isConfirm
             onConfirm={handleConfirmClear}
             onCancel={() => setShowConfirmModal(false)}
           />
-        </LayoutPopup>
+        </PopupLayout>
       )}
 
       <div className="h-auto flex flex-row items-start px-6 py-5">

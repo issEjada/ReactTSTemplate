@@ -7,7 +7,7 @@ import DropdownMenu from "../../../components/DropDown";
 import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { LoadingState } from "../../../types/types";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 
 const ConditionIcon = lazy(
@@ -117,13 +117,13 @@ const DecisionForm = () => {
       className="flex flex-col gap-[16px]"
     >
       {showConfirmModal && (
-        <LayoutPopup isOpen={showConfirmModal} className="w-[30%]">
+        <PopupLayout isOpen={showConfirmModal} className="w-[30%]">
           <RulesPopupJsx
             isConfirm
             onConfirm={handleConfirmClear}
             onCancel={() => setShowConfirmModal(false)}
           />
-        </LayoutPopup>
+        </PopupLayout>
       )}
       <div className="h-auto flex flex-row items-start px-6 py-5">
         <div className="flex flex-col gap-2">
@@ -381,7 +381,7 @@ const DecisionForm = () => {
 
       {/* Success / Error Popup */}
       {isPopupOpen && (
-        <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+        <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
           {isAdding && popupType === "successModal" && (
             <RulesPopupJsx
               title="Decision Rule"
@@ -414,12 +414,12 @@ const DecisionForm = () => {
               onCancel={() => setIsPopupOpen(false)}
             />
           )}
-        </LayoutPopup>
+        </PopupLayout>
       )}
 
       {/* Delete Popup */}
       {isDeletePopupOpen && (
-        <LayoutPopup isOpen={isDeletePopupOpen} className="w-[30%]">
+        <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
           <RulesPopupJsx
             title="Decision Rule"
             isDeleting
@@ -432,7 +432,7 @@ const DecisionForm = () => {
               setIsDeletePopupOpen(false);
             }}
           />
-        </LayoutPopup>
+        </PopupLayout>
       )}
     </form>
   );
