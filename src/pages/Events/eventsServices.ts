@@ -15,8 +15,8 @@ export interface EventFormValues {
 }
 
 export interface EventIdentifierInterface {
-  eventSourceDevice: string;
-  scheme: string;
+  eventSourceDevice?: string;
+  scheme?: string;
 }
 
 export interface GetEventDataPayload {

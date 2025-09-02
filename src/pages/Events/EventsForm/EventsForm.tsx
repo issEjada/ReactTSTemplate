@@ -235,26 +235,24 @@ const EventsForm = () => {
 
       {/* Confirm / Delete Popups */}
 
-      {isPopupOpen && (
-        <div>
-          <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
-            <RulesPopupJsx
-              title="Event"
-              isAdding={isAdding && popupType === "successModal"}
-              isEditing={isEditing && popupType === "successModal"}
-              isError={popupType === "errorModal"}
-              errorMessage={popupMessage}
-              onConfirm={() => {
-                setIsPopupOpen(false);
-              }}
-              onCancel={() => {
-                setIsPopupOpen(false);
-                navigate(-1);
-              }}
-            />
-          </LayoutPopup>
-        </div>
-      )}
+      <div>
+        <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+          <RulesPopupJsx
+            title="Event"
+            isAdding={isAdding && popupType === "successModal"}
+            isEditing={isEditing && popupType === "successModal"}
+            isError={popupType === "errorModal"}
+            errorMessage={popupMessage}
+            onConfirm={() => {
+              setIsPopupOpen(false);
+            }}
+            onCancel={() => {
+              setIsPopupOpen(false);
+              navigate(-1);
+            }}
+          />
+        </LayoutPopup>
+      </div>
     </form>
   );
 };
