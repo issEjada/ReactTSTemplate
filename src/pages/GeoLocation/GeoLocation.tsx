@@ -71,7 +71,7 @@ const GeoLocation: React.FC = () => {
   const uploadGeoLocationAPI = async () => {
     setloadingState(LoadingState.Loading);
     const data: GeoLocationFiles = {
-      geoLocationsFile: file,
+      geolite2Zip: file,
     };
 
     try {
