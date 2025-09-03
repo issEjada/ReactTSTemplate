@@ -224,7 +224,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
           decodeURIComponent(name);
 
         return (
-          <span key={name} className="flex items-center space-x-2">
+          <span key={name} className="flex items-center space-x-4">
             {isLast ? (
               <span className="text-black dark:text-white font-normal capitalize">
                 {label}
