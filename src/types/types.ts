@@ -42,3 +42,18 @@ export interface GetRuleByIdPayload {
 export interface DeleteRuleByIdPayload {
   id: number;
 }
+
+export interface Option {
+  key: string;
+  node: string;
+}
+
+export interface FieldError {
+  isValid: boolean;
+  message: string;
+}
+
+export interface PaginationMeta {
+  totalPages: number;
+  totalItems: number;
+}

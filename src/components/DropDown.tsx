@@ -5,11 +5,7 @@ const ChevronDown = React.lazy(
   () => import("../assets/svg/ChevronDown.svg?react")
 );
 import FullScreenSpinner from "./FullScreenSpinner";
-
-interface Option {
-  key: string;
-  node: string;
-}
+import type { Option } from "../types/types";
 
 interface DropdownMenuProps<T extends FieldValues> {
   control: Control<T>;

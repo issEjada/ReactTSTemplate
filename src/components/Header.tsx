@@ -168,11 +168,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
 export default Header;
 
-interface BreadcrumbProps {
-  onSidebarIconClick: () => void;
-}
-
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({
+export const Breadcrumb: React.FC<HeaderProps> = ({
   onSidebarIconClick,
 }) => {
   const location = useLocation();

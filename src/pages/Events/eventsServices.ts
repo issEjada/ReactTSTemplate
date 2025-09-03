@@ -1,5 +1,6 @@
 import { getHeaders, httpClient } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
+import type { PaginationMeta } from "../../types/types";
 
 export interface EventFormValues {
   id?: number;
@@ -66,11 +67,6 @@ export interface EventData {
 export interface GetEventsResponse {
   data: EventData;
   meta: PaginationMeta;
-}
-
-export interface PaginationMeta {
-  totalPages: number;
-  totalItems: number;
 }
 
 export class EventsServices {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { Value } from "../systemConfigService";
 import { validateNumberRange } from "./ValidationSchema";
+import type { FieldError } from "../../../types/types";
 
 const EditPenIcon = React.lazy(
   () => import("../../../assets/svg/EditPen.svg?react")
@@ -11,10 +12,6 @@ interface ScoringDimensionFormProps {
   onSave: (values: Value[]) => void;
   onCancel: () => void;
   popupTitle: string;
-}
-interface FieldError {
-  isValid: boolean;
-  message: string;
 }
 
 export const ScoringDimensionForm = ({
