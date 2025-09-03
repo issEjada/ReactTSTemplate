@@ -20,7 +20,7 @@ import EventsForm from "../pages/Events/EventsForm/EventsForm";
 import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
-import GeoLocation from "../pages/GeoLocation/geoLocation";
+import GeoLocation from "../pages/GeoLocation/GeoLocation";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
