@@ -332,15 +332,17 @@ export const EventsTable = () => {
           </h2>
 
           {totalCount !== 0 && (
-            <button
-              onClick={handleAddNewEvent}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
-            >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
-                <PlusIcon className="w-[20px] h-[20px] text-white" />
-              </Suspense>
-              Add New Event
-            </button>
+            <div className="ml-auto">
+              <button
+                onClick={handleAddNewEvent}
+                className="bg-blue-700 hover:bg-blue-800 text-white   rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
+              >
+                <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                  <PlusIcon className="w-[20px] h-[20px] text-white" />
+                </Suspense>
+                Add New Event
+              </button>
+            </div>
           )}
         </div>
 
