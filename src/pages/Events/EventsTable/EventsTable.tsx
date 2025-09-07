@@ -266,6 +266,13 @@ export const EventsTable = () => {
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const applyFilters = () => {
     const newFilters: EventFormValues = {
@@ -309,10 +316,9 @@ export const EventsTable = () => {
     return "ALL";
   }, [filters]);
 
-  if (loadingState === "loading") {
+  if (loadingState === "loading" && isInitialLoad) {
     return <Spinner />;
   }
-
   return (
     <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
       <div className="pt-5 px-6 pb-[18px]">
@@ -415,6 +421,7 @@ export const EventsTable = () => {
           applyFilters={applyFilters}
           searchPlaceholder="Search Event Name"
           showStatusFilter={true}
+          loadingState={loadingState}
         />
       )}
 

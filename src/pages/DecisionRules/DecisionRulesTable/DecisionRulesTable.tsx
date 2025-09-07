@@ -225,6 +225,14 @@ export const DecisionRulesTable = () => {
     "All" | "ENABLED" | "DISABLED"
   >("All");
 
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
+
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
 
@@ -295,7 +303,7 @@ export const DecisionRulesTable = () => {
     [filters, searchText]
   );
 
-  if (loadingState === "loading") {
+  if (loadingState === "loading" && isInitialLoad) {
     return <Spinner />;
   }
 

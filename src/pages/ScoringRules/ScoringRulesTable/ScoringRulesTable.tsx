@@ -288,7 +288,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   );
 
   if (loadingState === "loading" && isInitialLoad) {
-    return <Spinner mode="fullscreen" size="md" message="table loading" />;
+    return <Spinner />;
   }
   const handleAddNewRule = () => {
     navigate("/scoring-rules/new-rule");

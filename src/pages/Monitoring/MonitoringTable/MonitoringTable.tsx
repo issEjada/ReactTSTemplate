@@ -1,4 +1,10 @@
-import React, { useState, useMemo, useCallback, Suspense } from "react";
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  Suspense,
+  useEffect,
+} from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
@@ -175,7 +181,7 @@ const getColumns = (): ColumnDef<Session>[] => [
 export const MonitoringTable = () => {
   const {
     data = [],
-    isLoading,
+    loadingState,
     error,
     totalCount,
     currentPage,
@@ -194,6 +200,14 @@ export const MonitoringTable = () => {
   const [statusFilter, setStatusFilter] = useState<
     "All" | "VIEWED" | "NOT_VIEWED"
   >("All");
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const onFilterStatus = (status: "All" | "VIEWED" | "NOT_VIEWED") => {
     setStatusFilter(status);
@@ -268,7 +282,7 @@ export const MonitoringTable = () => {
     );
   }
 
-  if (isLoading) {
+  if (loadingState === "loading" && isInitialLoad) {
     return <Spinner />;
   }
 
@@ -310,6 +324,7 @@ export const MonitoringTable = () => {
         <>
           <DynamicTable<Session>
             data={sessionsData}
+            loadingState={loadingState}
             columns={columns}
             filterComponent={
               <MonitoringFilterForm
