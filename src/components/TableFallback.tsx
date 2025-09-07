@@ -42,7 +42,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         />
       </Suspense>
 
-      <div className="relative z-10 flex flex-col gap-20">
+      <div className="relative z-8 flex flex-col gap-20">
         <div
           className={`flex items-center justify-center w-[80px] ${
             minimal ? "h-[80px]" : ""

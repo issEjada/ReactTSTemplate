@@ -23,7 +23,7 @@ const AboutUs: React.FC = () => {
             </blockquote>
           </div>
           <button
-            className="absolute  right-6 bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-800 transition duration-300 z-50"
+            className="absolute  right-6 bg-blue-700 w-[125px] h-[48px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-800 transition duration-300 z-8"
             onClick={() => {
               navigate(AppRoutes.support);
             }}

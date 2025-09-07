@@ -12,8 +12,10 @@ const FiltersIcon = React.lazy(
   () => import("../../assets/svg/Filters.svg?react")
 );
 
-
-export const MobileSideBar: React.FC<{ isClosed: boolean, setIsClosed: (value: boolean) => void }> = ({ isClosed, setIsClosed }) => {
+export const MobileSideBar: React.FC<{
+  isClosed: boolean;
+  setIsClosed: (value: boolean) => void;
+}> = ({ isClosed, setIsClosed }) => {
   return (
     <>
       <div
@@ -23,17 +25,18 @@ export const MobileSideBar: React.FC<{ isClosed: boolean, setIsClosed: (value: b
       >
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
-            <Suspense fallback={<Spinner />}>
-              <FiltersIcon className="text-gray-700 self-end" onClick={()=> setIsClosed(true)}/>
-            </Suspense>
+          <Suspense fallback={<Spinner />}>
+            <FiltersIcon
+              className="text-gray-700 self-end"
+              onClick={() => setIsClosed(true)}
+            />
+          </Suspense>
           <div
             className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
           >
-            <Suspense fallback={<Spinner />}>
-              <LogoWithTextIcon
-                className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
-              />
-            </Suspense>
+            <LogoWithTextIcon
+              className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
+            />{" "}
           </div>
           <div
             className={`h-[1px] bg-gray-950/10 mb-3 transition-all duration-300 dark:bg-gray-800 ${
@@ -134,7 +137,7 @@ export const MobileSideBar: React.FC<{ isClosed: boolean, setIsClosed: (value: b
             />
 
             <div
-              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 text-gray-700 overflow-hidden justify-between duration-700 mt-1 px-2 ${
+              className={`flex rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-8 text-gray-700 overflow-hidden justify-between duration-700 mt-1 px-2 ${
                 isClosed
                   ? " translate-x-[-10%] h-20"
                   : " items-center translate-x-0 h-9"

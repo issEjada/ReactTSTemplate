@@ -198,7 +198,7 @@ export const ActionPopup: React.FC<PopupProps> = ({
         className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className="relative z-10 w-[720px] max-w-5xl bg-white dark:bg-[#0B0E13] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl bg-black/40 backdrop-blur-[2px]">
+      <div className="relative z-8 w-[720px] max-w-5xl bg-white dark:bg-[#0B0E13] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl bg-black/40 backdrop-blur-[2px]">
         <div className="flex items-center justify-between px-5 py-4 border-b dark:border-gray-800">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white">
             {title ||

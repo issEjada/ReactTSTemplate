@@ -29,9 +29,9 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
       <NavLink
         to={item.url!}
         className={({ isActive }) =>
-          `flex px-2 items-center rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-10 justify-start   ${
+          `flex px-2 items-center rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-8 justify-start   ${
             isActive
-              ? "h-11 py-2 bg-blue-700 dark:bg-gray-800 text-white font-semibold relative z-10 before:absolute before:z-20 before:bg-white before:w-2 before:h-full before:-left-8 before:top-0 before:bottom-0 before:rounded-lg gap-[3px] "
+              ? "h-11 py-2 bg-blue-700 dark:bg-gray-800 text-white font-semibold relative z-8 before:absolute before:z-20 before:bg-white before:w-2 before:h-full before:-left-8 before:top-0 before:bottom-0 before:rounded-lg gap-[3px] "
               : "text-gray-900 h-9 dark:text-gray-500"
           } w-full
           `

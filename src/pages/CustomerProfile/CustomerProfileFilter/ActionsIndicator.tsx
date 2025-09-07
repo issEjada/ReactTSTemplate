@@ -63,7 +63,7 @@ export const ActionIndicator: React.FC<PopupProps> = ({
     <div className="fixed inset-0 z-[1000] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={onClose} />
 
-      <div className="relative z-10 w-[90vw] max-w-2xl bg-white dark:bg-[#0B0E13] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl">
+      <div className="relative z-8 w-[90vw] max-w-2xl bg-white dark:bg-[#0B0E13] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl">
         <div className="flex items-center justify-between px-5 py-4  dark:border-gray-800">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
           <button

@@ -80,7 +80,7 @@ const HealthCheckDateButton: React.FC<{
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-10 w-[250px]">
+        <div className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-8 w-[250px]">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">
