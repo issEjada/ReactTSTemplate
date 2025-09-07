@@ -20,9 +20,10 @@ export const API = {
   actionAnalytics: "/user-profile/v1/actions-analytics",
   customerDevices: "/users/sdks/search",
   unBlockDevices: "/users/fpts",
-  healthCheck:"/sdks/health-check-records",
+  healthCheck: "/sdks/health-check-records",
   events: "/events-management/v1/events/search",
   getEventeById: "/events-management/v1/events",
   systemConfiguration: "/system-configurations/v1/search",
   systemConfigurationById: "/system-configurations/v1",
+  geoLocation: "/v1/geolocation/geolite2/data/upload",
 };

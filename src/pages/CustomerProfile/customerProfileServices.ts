@@ -1,10 +1,6 @@
 import { httpClient, getHeaders } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
-
-export interface PaginationMeta {
-  totalPages: number;
-  totalItems: number;
-}
+import type { PaginationMeta } from "../../types/types";
 
 export interface CustomerInsightsPayload {
   userId?: string;

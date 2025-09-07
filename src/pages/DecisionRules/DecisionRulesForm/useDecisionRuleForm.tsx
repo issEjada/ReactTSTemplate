@@ -9,9 +9,11 @@ import type {
   GetDecisionRuleByIdResponse,
   GetEventDropDownsPayload,
   UpdateDecisionPayload,
-  GetDecisionRuleByIdPayload,
-  DeleteRuleByIdPayload,
 } from "../decisionRulesServices";
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../../types/types";
 import {
   getDropDownsValue,
   type DropDownsAttributes,
@@ -38,7 +40,6 @@ export const useViewDecisionRules = () => {
   >();
   const [ruleData, setRuleData] = useState<GetDecisionRuleByIdResponse>();
   const [popupType, setPopupType] = useState<string>("");
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [popupMessage, setPopupMessage] = useState<string>();
 
   const [loadingState, setloadingState] = useState<LoadingState>(
@@ -147,7 +148,7 @@ export const useViewDecisionRules = () => {
 
   const fetchRuleData = async (id: number) => {
     setloadingState(LoadingState.Loading);
-    const data: GetDecisionRuleByIdPayload = {
+    const data: GetRuleByIdPayload = {
       id: id,
     };
     await DecisionRulesServices.getDecisionRulesById(data)
@@ -256,7 +257,6 @@ export const useViewDecisionRules = () => {
       DecisionRulesServices.createDecisionRule(bodyData)
         .then(() => {
           setPopupType("successModal");
-          setIsPopupOpen(true);
           setPopupMessage(
             "The Decision Rule Details have been successfully Created."
           );
@@ -266,7 +266,6 @@ export const useViewDecisionRules = () => {
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
           setPopupMessage(error);
-          setIsPopupOpen(true);
         });
     }
 
@@ -285,7 +284,6 @@ export const useViewDecisionRules = () => {
         .then(() => {
           setloadingState(LoadingState.Success);
           setPopupType("successModal");
-          setIsPopupOpen(true);
           setPopupMessage(
             "The Decision Rule Details have been successfully updated."
           );
@@ -294,7 +292,6 @@ export const useViewDecisionRules = () => {
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
           setPopupMessage(error);
-          setIsPopupOpen(true);
         });
     }
   };
@@ -308,15 +305,14 @@ export const useViewDecisionRules = () => {
       .then(() => {
         setloadingState(LoadingState.Success);
         setPopupType("successModal");
-        setIsPopupOpen(true);
+
         setPopupMessage("The Decision Rule have been successfully deleted.");
       })
       .catch((error) => {
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
         setPopupMessage(error);
-        setIsPopupOpen(true);
-        throw error; // Re-throw the error to be caught by the caller
+        throw error;
       });
   };
 
@@ -344,8 +340,6 @@ export const useViewDecisionRules = () => {
     screenAction,
     deleteDecisionRule,
     popupType,
-    isPopupOpen,
-    setIsPopupOpen,
     popupMessage,
     setPopupType,
     loadingState,

@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
 import { LoadingState } from "../../../types/types";
 import DynamicView from "../../../components/DynamicView";
+import Spinner from "../../../components/Spinner";
 
 const ScoringRuleView = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const ScoringRuleView = () => {
   };
 
   if (loadingState === LoadingState.Loading) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (

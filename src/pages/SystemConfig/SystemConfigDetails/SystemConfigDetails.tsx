@@ -6,12 +6,13 @@ import {
 import { DynamicTable } from "../../../components/DynamicTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Attribute } from "../systemConfigService";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import SystemConfigPopup from "../../../components/Popup/SystemConfigPopup";
 import { SystemConfigForm } from "./SystemConfigForm";
 import { ScoringDimensionForm } from "./ScoringDimensionForm";
+import { TableFallback } from "../../../components/TableFallback";
+import Spinner from "../../../components/Spinner";
 
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -20,9 +21,6 @@ const DeleteIcon = React.lazy(
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/settings.svg?react")
-);
-const BackgroundCircle = React.lazy(
-  () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
 
 const PlusBorderIcon = React.lazy(
@@ -84,7 +82,7 @@ export const SystemConfigDetails = () => {
 
   const navigate = useNavigate();
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -162,40 +160,17 @@ export const SystemConfigDetails = () => {
       </div>
 
       {totalCount === 0 ? (
-        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
-          {/* Wrapper for icon + background */}
-          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
-            {/* Background Circle positioned behind */}
-            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
-              <BackgroundCircle
-                className="
-                        absolute
-                        left-1/2 top-[28%]
-                        -translate-x-1/2 -translate-y-1/2
-                        w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
-                        h-[400px]
-                        pointer-events-none select-none
-                        z-0 text-gray-200 dark:text-gray-500
-                      "
-              />
-            </div>
-
-            {/* Lock Icon in styled border */}
-            <div className="relative z-10 flex items-center justify-center bg-white border border-gray-300 rounded-[16px] gap-[8px] p-[4px]">
-              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-              </div>
-            </div>
-          </div>
-
-          {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
-            You don’t have any {rowProps.name} yet
-          </h3>
-          <p className="text-sm text-gray-500 mb-6">
-            You don’t have any {rowProps.name} added yet.
-          </p>
-        </div>
+        <TableFallback
+          icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
+          title="Start adding System Configuration"
+          description={
+            <>
+              You don’t have any {rowProps.name} yet
+              <br />
+              You don’t have any {rowProps.name} added yet.
+            </>
+          }
+        />
       ) : (
         <DynamicTable<{ [key: string]: any }>
           data={(data ?? []).map((value) => {
@@ -244,7 +219,15 @@ export const SystemConfigDetails = () => {
         isOpen={isPopupOpen}
         className="md:w-[30%] lg:w-[35%] w-[90%]"
       >
-        <Suspense fallback={<FullScreenSpinner />}>
+        <Suspense
+          fallback={
+            <Spinner
+              mode="overlay"
+              size="md"
+              overlayClassName="h-full w-full bg-transparent"
+            />
+          }
+        >
           <SystemConfigForm
             mode={popupMode}
             fields={popupFields}

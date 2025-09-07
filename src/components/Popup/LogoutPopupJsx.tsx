@@ -1,5 +1,5 @@
 import React, { useState, Suspense } from "react";
-import FullScreenSpinner from "../FullScreenSpinner";
+import Spinner from "../Spinner";
 
 const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
@@ -36,7 +36,7 @@ const LogoutPopup = ({
     <div className="flex items-start gap-4 ">
       {/* Icon */}
       <div className="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-gray-200 border-2 border-gray-100 text-blue-700 mt-1 dark:bg-blueGray-500 dark:border-blueGray-400 dark:text-blueGray-100">
-        <Suspense fallback={<FullScreenSpinner />}>
+        <Suspense fallback={<Spinner />}>
           <AlertIcon className="w-6 h-6" />
         </Suspense>
       </div>

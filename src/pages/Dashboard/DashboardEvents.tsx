@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PieChartComponent from "../../components/Charts/PieChartComponent";
 import useEventsTable from "../Events/EventsTable/useEventsTable";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const MobileIcon = React.lazy(() => import(`/src/assets/svg/Mobile.svg?react`));
 
@@ -37,7 +37,7 @@ const DashboardEvents: React.FC = () => {
   };
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (

@@ -3,6 +3,7 @@ import type { Value } from "../systemConfigService";
 import type { FieldConfig } from "./useSystemConfigDetails";
 import { validations } from "./ValidationSchema";
 import PopupDropdownMenu from "./PopupDropDownsMenue";
+import type { FieldError } from "../../../types/types";
 
 const EditPenIcon = React.lazy(
   () => import("../../../assets/svg/EditPen.svg?react")
@@ -16,10 +17,6 @@ interface SystemConfigFormProps {
   onCancel: () => void;
   addRow: boolean;
   popupTitle: string;
-}
-interface FieldError {
-  isValid: boolean;
-  message: string;
 }
 
 export const SystemConfigForm = ({

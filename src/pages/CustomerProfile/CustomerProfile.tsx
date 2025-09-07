@@ -7,7 +7,7 @@ import React from "react";
 import CustomerInformationFilter from "./CustomerProfileFilter/CustomerInformationFilter";
 import { useCustomProfile } from "./useCustomProfile";
 import type { CustomerInsightsPayload } from "./customerProfileServices";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const MobileIcon = React.lazy(
   () => import("../../../src/assets/svg/Mobile.svg?react")
@@ -71,7 +71,7 @@ export const CustomerProfile = () => {
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -199,7 +199,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("customerInsights")}
               >
-                <CustomerInsightsIcon className={`${currentSection === "customerInsights" ? "text-blueGray-500" : "text-gray-500"}`} />
+                <CustomerInsightsIcon
+                  className={`${
+                    currentSection === "customerInsights"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerInsights"
@@ -218,7 +224,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("actionAnalytics")}
               >
-                <ActionAnalyticsIcon className={`${currentSection === "actionAnalytics" ? "text-blueGray-500" : "text-gray-500"}`} />
+                <ActionAnalyticsIcon
+                  className={`${
+                    currentSection === "actionAnalytics"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "actionAnalytics"
@@ -237,7 +249,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("customerDevices")}
               >
-                <CustomerDevicesIcon className={`${currentSection === "customerDevices" ? "text-blueGray-500" : "text-gray-500"}`} />
+                <CustomerDevicesIcon
+                  className={`${
+                    currentSection === "customerDevices"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerDevices"
@@ -256,7 +274,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("devicesHealthChecks")}
               >
-                <DevicesHealthChecksIcon className={`w-[23px] ${currentSection === "devicesHealthChecks" ? "text-blueGray-500" : "text-gray-500"}`}/>
+                <DevicesHealthChecksIcon
+                  className={`w-[23px] ${
+                    currentSection === "devicesHealthChecks"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "devicesHealthChecks"

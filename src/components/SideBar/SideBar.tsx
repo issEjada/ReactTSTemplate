@@ -3,7 +3,7 @@ import { SideBarItemsGroup } from "./SideBarItem";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import { ThemeModeIcon } from "../../context/ThemeProvider";
-import FullScreenSpinner from "../FullScreenSpinner";
+import Spinner from "../Spinner";
 
 const LogoWithTextIcon = React.lazy(
   () => import("../../assets/svg/logo_with_text.svg?react")
@@ -23,7 +23,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           <div
             className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
           >
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner />}>
               <LogoWithTextIcon
                 className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
                   isClosed && "w-[140px]"
@@ -93,6 +93,12 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                   text: "Monitoring",
                   icon: "monitoring",
                   url: AppRoutes.monitoring,
+                },
+                {
+                  pageTitle: "Geo Location",
+                  text: "Geo Location",
+                  icon: "MostUsedTargetCountry",
+                  url: AppRoutes.geoLocation,
                 },
               ]}
             />

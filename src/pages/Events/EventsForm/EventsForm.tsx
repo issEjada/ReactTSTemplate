@@ -2,11 +2,11 @@ import { useState, lazy, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../../../components/DropDown";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
-import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import PopupLayout from "../../../components/Popup/PopupLayout";
+import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import { useViewEvents } from "./useEventForm";
 import type { EventFormValues } from "../eventsServices";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import Spinner from "../../../components/Spinner";
 
 const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
@@ -53,7 +53,7 @@ const EventsForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
-      {loadingState === "loading" && <FullScreenSpinner />}
+      {loadingState === "loading" && <Spinner />}
 
       {/* Header / Title + Edit / Delete */}
       <div className="h-[130px] flex flex-row items-start px-6 py-[44px] gap-6">
@@ -235,26 +235,24 @@ const EventsForm = () => {
 
       {/* Confirm / Delete Popups */}
 
-      {isPopupOpen && (
-        <div>
-          <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
-            <RulesPopupJsx
-              title="Event"
-              isAdding={isAdding && popupType === "successModal"}
-              isEditing={isEditing && popupType === "successModal"}
-              isError={popupType === "errorModal"}
-              errorMessage={popupMessage}
-              onConfirm={() => {
-                setIsPopupOpen(false);
-              }}
-              onCancel={() => {
-                setIsPopupOpen(false);
-                navigate(-1);
-              }}
-            />
-          </LayoutPopup>
-        </div>
-      )}
+      <div>
+        <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
+          <DynamicPopupJsx
+            title="Event"
+            isAdding={isAdding && popupType === "successModal"}
+            isEditing={isEditing && popupType === "successModal"}
+            isError={popupType === "errorModal"}
+            errorMessage={popupMessage}
+            onConfirm={() => {
+              setIsPopupOpen(false);
+            }}
+            onCancel={() => {
+              setIsPopupOpen(false);
+              navigate(-1);
+            }}
+          />
+        </PopupLayout>
+      </div>
     </form>
   );
 };

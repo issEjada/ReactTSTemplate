@@ -1,9 +1,9 @@
 import React, { useState, useContext, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import FullScreenSpinner from "../components/FullScreenSpinner";
 import { AuthContext } from "../context/Context";
 import type { FormLoginValues } from "../types/types";
+import Spinner from "../components/Spinner";
 
 const SupportIcon = React.lazy(
   () => import(`/src/assets/svg/support.svg?react`)
@@ -36,12 +36,12 @@ const LoginForm = () => {
   return (
     <>
       <div className="flex  mx-auto min-h-screen">
-        {isLoading && <FullScreenSpinner />}
+        {isLoading && <Spinner />}
 
         <div className=" flex-1 flex flex-col  justify-center items-center relative w-1/2">
           <div className="w-[360px] mt-24 -ml-6">
             <div className="mb-10">
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner />}>
                 <LogoWithText className=" dark:text-white" />
               </Suspense>
             </div>
@@ -140,7 +140,7 @@ const LoginForm = () => {
         <div className="bg-black flex-1 relative pt-8 pr-14  w-1/2">
           <div className="text-end">
             <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg text-xs ">
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner />}>
                 <SupportIcon />
               </Suspense>
               Need Help!

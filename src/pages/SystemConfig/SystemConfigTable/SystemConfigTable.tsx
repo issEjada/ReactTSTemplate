@@ -5,9 +5,9 @@ import {
 } from "./useSystemConfigTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DynamicTable } from "../../../components/DynamicTable";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import Spinner from "../../../components/Spinner";
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/settings.svg?react")
@@ -69,7 +69,7 @@ export const SystemConfigTable = () => {
   const columns = useMemo(() => getColumns(handleViewSystemConfig), []);
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import FullScreenSpinner from "../FullScreenSpinner";
+import Spinner from "../Spinner";
 
 const CloseXIcon = React.lazy(
   () => import("../../assets/svg/closeX.svg?react")
@@ -41,7 +41,7 @@ export default function FilterLayout({
             title="Close"
             aria-label="Close"
           >
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <CloseXIcon className=" w-[10px] h-[10px] dark:text-white" />
             </Suspense>
           </button>

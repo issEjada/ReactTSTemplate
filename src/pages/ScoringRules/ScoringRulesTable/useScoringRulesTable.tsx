@@ -4,8 +4,8 @@ import {
   type GetScoringRulesItemInterface,
   type GetScoringRulesListResponse,
   type UpdateRulesPayload,
+  type ViewScoringRulesFormValues,
 } from "../scoringRulesServices";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import { cleanObject } from "../../../utils/helpers";
 import { LoadingState } from "../../../types/types";
 
@@ -17,13 +17,13 @@ export const useScoringRulesTable = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<ViewRulesFormValues | undefined>(
-    undefined
-  );
+  const [filters, setFilters] = useState<
+    ViewScoringRulesFormValues | undefined
+  >(undefined);
 
-  const handleSearchSubmit = (searchData: ViewRulesFormValues) => {
+  const handleSearchSubmit = (searchData: ViewScoringRulesFormValues) => {
     const filteredData = cleanObject(searchData);
-    setFilters(filteredData as ViewRulesFormValues);
+    setFilters(filteredData as ViewScoringRulesFormValues);
     setCurrentPage(1);
   };
 

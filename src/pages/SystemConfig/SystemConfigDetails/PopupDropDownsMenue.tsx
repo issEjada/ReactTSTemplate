@@ -1,12 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
+import type { Option } from "../../../types/types";
 const ChevronDown = React.lazy(
   () => import("../../../assets/svg/ChevronDown.svg?react")
 );
 
-interface Option {
-  key: string;
-  node: string;
-}
 
 interface PopupDropdownMenuProps {
   label: string;

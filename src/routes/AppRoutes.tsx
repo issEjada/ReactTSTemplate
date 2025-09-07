@@ -25,4 +25,5 @@ export const AppRoutes = {
   aboutUs: "/about-us",
   support: "/support",
   customerProfile: "/customer-profile",
+  geoLocation :"/geoLocation"
 };

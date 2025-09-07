@@ -13,9 +13,11 @@ import { createPortal } from "react-dom";
 import EventsFilter from "../EventsFilter/EventsFilterJsx";
 import useEventsTable from "./useEventsTable";
 import { TableFallback } from "../../../components/TableFallback";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import type { EventFormValues } from "../eventsServices";
+import PopupLayout from "../../../components/Popup/PopupLayout";
+import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import Spinner from "../../../components/Spinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const UpdateIcon = React.lazy(
@@ -30,6 +32,9 @@ const DesktopIcon = React.lazy(
   () => import("../../../assets/svg/Desktop.svg?react")
 );
 const WebIcon = React.lazy(() => import("../../../assets/svg/web.svg?react"));
+const AnyDeviceIcon = React.lazy(
+  () => import("../../../assets/svg/any-device.svg?react")
+);
 
 const EventIcon = React.lazy(
   () => import("../../../assets/svg/events.svg?react")
@@ -41,29 +46,29 @@ type EventRow = {
   name: string;
   description: string;
   status: string;
-  scheme: string;
-  eventSourceDevice: string;
+  scheme: string | undefined;
+  eventSourceDevice: string | undefined;
   createdAt: string;
 };
 
-const DevicePill: React.FC<{ device: string }> = ({ device }) => {
-  const key = /web/i.test(device)
-    ? "3DS_MICROSITE_SDK_MD"
-    : /desk/i.test(device)
-    ? "WEB_SDK_MD"
-    : "MOBILE_SDK_MD";
-
+const DevicePill = ({ device }: { device: string }) => {
+  if (!device) {
+    return null;
+  }
   return (
     <span className="inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
-        {key === "MOBILE_SDK_MD" && (
+        {device === "MOBILE_SDK_MD" && (
           <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {key === "WEB_SDK_MD" && (
+        {device === "WEB_SDK_MD" && (
           <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {key === "3DS_MICROSITE_SDK_MD" && (
+        {device === "3DS_MICROSITE_SDK_MD" && (
           <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
+        )}
+        {device === "ANY_SDK_MD" && (
+          <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
       </span>
       <span className="text-[14px] leading-[20px] dark:text-white">
@@ -165,7 +170,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Update Event</span>
@@ -246,21 +251,28 @@ export const EventsTable = () => {
     setFilters,
     totalCount,
     loadingState,
+    isPopupOpen,
+    setIsPopupOpen,
+    popupType,
+    popupMessage,
   } = useEventsTable();
 
   const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
-  const [deviceFilter, setDeviceFilter] = useState<
-    "All" | "Mobile" | "Desktop" | "Web"
-  >("All");
-
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const columns = useMemo(() => getColumns(), []);
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const applyFilters = () => {
     const newFilters: EventFormValues = {
@@ -279,7 +291,6 @@ export const EventsTable = () => {
   const handleClearSearch = () => {
     setSearchText("");
     setFilters({});
-    setDeviceFilter("All");
     setCurrentPage(1);
   };
 
@@ -287,10 +298,27 @@ export const EventsTable = () => {
     navigate(AppRoutes.addEvents);
   };
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
-  }
+  const handleDeviceFilter = (device: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      identifier: {
+        ...prevFilters?.identifier,
+        eventSourceDevice: device === "ALL" ? undefined : device,
+      },
+    }));
+    setCurrentPage(1);
+  };
 
+  const getDeviceFilterValue = useMemo(() => {
+    if (filters?.identifier?.eventSourceDevice) {
+      return filters.identifier.eventSourceDevice;
+    }
+    return "ALL";
+  }, [filters]);
+
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
+  }
   return (
     <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
       <div className="pt-5 px-6 pb-[18px]">
@@ -312,7 +340,7 @@ export const EventsTable = () => {
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 h-[40px] rounded-[8px] text-sm font-semibold flex items-center gap-2"
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
               </Suspense>
               <span className="text-[14px]">Add New Event</span>
@@ -323,21 +351,21 @@ export const EventsTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }
-          title="Start adding decision rules"
+          title="Start adding Events"
           description={
             <>
               You don’t have any Events yet.
               <br />
-              Start monitoring by adding new evemts now"
+              Start monitoring by adding new events now"
             </>
           }
           buttonText="Add New Event"
           buttonIcon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
             </Suspense>
           }
@@ -368,15 +396,14 @@ export const EventsTable = () => {
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
-          onFilterStatus={(v) =>
-            setDeviceFilter(v as "All" | "Mobile" | "Desktop" | "Web")
-          }
-          statusFilter={deviceFilter}
+          onFilterStatus={handleDeviceFilter}
+          statusFilter={getDeviceFilterValue}
           statusFilterOptions={[
-            { key: "All", label: "View all" },
-            { key: "Mobile", label: "Mobile" },
-            { key: "Desktop", label: "Desktop" },
-            { key: "Web", label: "Web" },
+            { key: "ALL", label: "View all" },
+            { key: "MOBILE_SDK_MD", label: "Mobile" },
+            { key: "WEB_SDK_MD", label: "Desktop" },
+            { key: "3DS_MICROSITE_SDK_MD", label: "Web" },
+            { key: "ANY_SDK_MD", label: "Any" },
           ]}
           onRowClick={(rowData) => {
             const { id } = rowData as { id: string | number };
@@ -394,8 +421,20 @@ export const EventsTable = () => {
           applyFilters={applyFilters}
           searchPlaceholder="Search Event Name"
           showStatusFilter={true}
+          loadingState={loadingState}
         />
       )}
+
+      <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
+        <DynamicPopupJsx
+          title="Event"
+          isError={popupType === "errorModal"}
+          errorMessage={popupMessage}
+          onCancel={() => {
+            setIsPopupOpen(false);
+          }}
+        />
+      </PopupLayout>
     </div>
   );
 };

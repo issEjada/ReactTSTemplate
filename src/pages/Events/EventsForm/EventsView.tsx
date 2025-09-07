@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useViewEvents } from "./useEventForm";
 import DynamicView from "../../../components/DynamicView";
 import { extractDateAndTime } from "../../../utils/helpers";
+import Spinner from "../../../components/Spinner";
 
 const EventView = () => {
   const { setScreenAction, loadingState, eventData } = useViewEvents();
@@ -21,7 +21,7 @@ const EventView = () => {
   };
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
   const creationTimestamp = extractDateAndTime(
     eventData?.creationTimestamp || ""

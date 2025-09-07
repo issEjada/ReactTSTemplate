@@ -1,4 +1,4 @@
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import Spinner from "../../../components/Spinner";
 import { useMonitoringView } from "./useMonitoringView";
 
 const MonitoringView = () => {
@@ -21,7 +21,7 @@ const MonitoringView = () => {
   return (
     <>
       {isLoading ? (
-        <FullScreenSpinner />
+        <Spinner />
       ) : (
         <div className="w-full min-h-screen flex flex-col pt-6 px-2 sm:px-4 md:px-6 gap-2">
           <div className="w-full px-1 py-5">

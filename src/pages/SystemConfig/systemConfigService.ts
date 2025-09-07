@@ -1,5 +1,6 @@
 import { httpClient, getHeaders } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
+import type { PaginationMeta } from "../../types/types";
 
 export interface GetConfigurationDataPayload {
   maxPageSize?: number;
@@ -26,11 +27,6 @@ export interface ConfigurationData {
   systemConfigurations: GetConfigurationItem[];
 }
 
-export interface PaginationMeta {
-  totalPages: number;
-  totalItems: number;
-}
-
 export interface GetConfigurationResponse {
   data: ConfigurationData;
   meta: PaginationMeta;
@@ -48,7 +44,7 @@ export interface GetConfigurationByIdResponse {
 export interface Properties {
   attributes: Attribute[];
   values: Value[];
-  meta: Meta;
+  meta: PaginationMeta;
 }
 
 export interface Attribute {
@@ -61,11 +57,6 @@ export interface Attribute {
 export interface Value {
   id?: string;
   [key: string]: string | number | undefined; 
-}
-
-export interface Meta {
-  totalPages: number;
-  totalItems: number;
 }
 
 export const SystemConfigServices = {

@@ -8,15 +8,15 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
+import { useScoringRulesTable } from "./useScoringRulesTable";
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { DynamicTable } from "../../../components/DynamicTable";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
-import { useScoringRulesTable } from "./useScoringRulesTable";
+import Spinner from "../../../components/Spinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -192,10 +192,10 @@ const RuleMenu = ({
   );
 };
 
-export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean, toggleHandler?: (id: number, currentStatus: string) => void }> = ({
-  fromDashboard = false,
-  toggleHandler
-}) => {
+export const ScoringRulesTable: React.FC<{
+  fromDashboard?: boolean;
+  toggleHandler?: (id: number, currentStatus: string) => void;
+}> = ({ fromDashboard = false, toggleHandler }) => {
   const {
     data = [],
     loadingState,
@@ -209,18 +209,25 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean, toggleHandle
     refetch,
     handleSearchSubmit,
     deleteRule,
-    handleToggleStatus
-  } = useScoringRulesTable()
+    handleToggleStatus,
+  } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
     "All" | "ENABLED" | "DISABLED"
   >("All");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
 
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewScoringRulesFormValues = {
       ...filters,
     };
 
@@ -238,7 +245,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean, toggleHandle
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewScoringRulesFormValues = {
       ...filters,
       name: searchText.trim(),
     };
@@ -263,7 +270,13 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean, toggleHandle
   };
 
   const columns = useMemo(
-    () => getColumns((fromDashboard ? (toggleHandler ?? handleToggleStatus) : handleToggleStatus), handleDeleteRule),
+    () =>
+      getColumns(
+        fromDashboard
+          ? toggleHandler ?? handleToggleStatus
+          : handleToggleStatus,
+        handleDeleteRule
+      ),
     [handleToggleStatus, handleDeleteRule]
   );
 
@@ -281,8 +294,8 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean, toggleHandle
     [filters, searchText]
   );
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
   }
   const handleAddNewRule = () => {
     navigate("/scoring-rules/new-rule");

@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useRef, useEffect, Suspense } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { DynamicTable } from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
 
 const DateIcon = React.lazy(() => import("../../../assets/svg/Date.svg?react"));
 
@@ -191,7 +191,7 @@ export const DevicesHealthChecks: React.FC = () => {
   };
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
