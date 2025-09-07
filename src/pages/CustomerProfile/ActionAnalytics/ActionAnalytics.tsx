@@ -262,14 +262,14 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   return (
     <div className="flex flex-col gap-4">
       {/* KPI Cards */}
-      <div className="flex flex-col md:flex-row gap-4 flex-wrap justify-around">
+      <div className="flex flex-row gap-4 flex-wrap justify-around">
         <MetricCard
           title="Total Actions"
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfTotalActions || 0
           }
           icon={<TotalActionIcon className="text-blue-700" />}
-          className="w-full md:w-[370px]"
+          className="w-full sm:w-[200px] w-[200px] md:w-[370px]"
         />
         <MetricCard
           title="Accepted Actions"
@@ -277,13 +277,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
             actionAnalyticsData?.actionsAnalytics.numberOfAcceptedActions || 0
           }
           icon={<AcceptedIcon className="text-success-600" />}
-          className="w-full md:w-[370px]"
+          className="w-full w-[200px] md:w-[370px]"
         />
         <MetricCard
           title="MFA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfMFAActions || 0}
           icon={<MfaIcon className="text-warning-600" />}
-          className="w-full md:w-[370px]"
+          className="w-full w-[200px] md:w-[370px]"
         />
 
         <MetricCard
@@ -293,7 +293,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
               .numberOfAuthenticatedActions || 0
           }
           icon={<AuthActionIcon className="text-purple-700" />}
-          className="w-full md:w-[370px]"
+          className="w-full w-[200px] md:w-[370px]"
         />
         <MetricCard
           title="Rejected Actions"
@@ -301,13 +301,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
             actionAnalyticsData?.actionsAnalytics.numberOfRejectedActions || 0
           }
           icon={<RejectedIcon className="text-red-600" />}
-          className="w-full md:w-[370px]"
+          className="w-full w-[200px] md:w-[370px]"
         />
         <MetricCard
           title="SCA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
           icon={<ScaIcon className="text-blueLight-600" />}
-          className="w-full md:w-[370px]"
+          className="w-full w-[200px] md:w-[370px]"
         />
       </div>
 

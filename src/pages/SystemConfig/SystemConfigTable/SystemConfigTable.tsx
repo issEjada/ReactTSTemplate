@@ -90,7 +90,7 @@ export const SystemConfigTable = () => {
         </p>
       </div>
 
-      {totalCount === 0 && !filters ? (
+      {totalCount === 0 || !filters ? (
         <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
           {/* Wrapper for icon + background */}
           <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
