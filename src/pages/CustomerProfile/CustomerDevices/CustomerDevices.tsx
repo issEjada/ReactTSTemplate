@@ -3,8 +3,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import CustomerDevicesFilter from "../CustomerProfileFilter/CustomerDevicesFilter";
 import { useCustomerDevices } from "./useCustomerDevices";
 import type { SDKCustomerDeviceInfo } from "../customerProfileServices";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { DynamicTable } from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
 
 export type CustomerDevicesProps = {
   userInfo: {
@@ -52,7 +52,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
   };
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   if (errorValidation) {

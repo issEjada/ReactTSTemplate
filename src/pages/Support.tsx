@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import FullScreenSpinner from "../components/FullScreenSpinner";
+import Spinner from "../components/Spinner";
 
 const EmailIcon = React.lazy(() => import(`/src/assets/svg/mail.svg?react`));
 const PhoneIcon = React.lazy(() => import(`/src/assets/svg/phone.svg?react`));
@@ -23,7 +23,7 @@ const Support: React.FC = () => {
         <div className="flex flex-col gap-[16px] w-full md:w-[556px]">
           <div className="flex items-center gap-[12px]">
             <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-blue-50 bg-blue-100 dark:bg-gray-800 dark:border-gray-700 flex items-center justify-center">
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner />}>
                 <EmailIcon className="text-blue-700 dark:text-white" />
               </Suspense>
             </div>
@@ -43,7 +43,7 @@ const Support: React.FC = () => {
         <div className="flex flex-col gap-[16px] w-full md:w-[556px]">
           <div className="flex items-center gap-[12px]">
             <div className="w-[48px] h-[48px] rounded-[28px] border-[8px] border-blue-50 bg-blue-100 dark:bg-gray-800 dark:border-gray-700 flex items-center justify-center">
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner />}>
                 <PhoneIcon className="text-blue-700 dark:text-white" />
               </Suspense>
             </div>

@@ -6,13 +6,13 @@ import {
 import { DynamicTable } from "../../../components/DynamicTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Attribute } from "../systemConfigService";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import SystemConfigPopup from "../../../components/Popup/SystemConfigPopup";
 import { SystemConfigForm } from "./SystemConfigForm";
 import { ScoringDimensionForm } from "./ScoringDimensionForm";
 import { TableFallback } from "../../../components/TableFallback";
+import Spinner from "../../../components/Spinner";
 
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -82,7 +82,7 @@ export const SystemConfigDetails = () => {
 
   const navigate = useNavigate();
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -219,7 +219,15 @@ export const SystemConfigDetails = () => {
         isOpen={isPopupOpen}
         className="md:w-[30%] lg:w-[35%] w-[90%]"
       >
-        <Suspense fallback={<FullScreenSpinner />}>
+        <Suspense
+          fallback={
+            <Spinner
+              mode="overlay"
+              size="md"
+              overlayClassName="h-full w-full bg-transparent"
+            />
+          }
+        >
           <SystemConfigForm
             mode={popupMode}
             fields={popupFields}

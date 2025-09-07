@@ -13,10 +13,10 @@ import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import Spinner from "../../../components/Spinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -215,6 +215,13 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   const [statusFilter, setStatusFilter] = useState<
     "All" | "ENABLED" | "DISABLED"
   >("All");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
@@ -280,8 +287,8 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     [filters, searchText]
   );
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner mode="fullscreen" size="md" message="table loading" />;
   }
   const handleAddNewRule = () => {
     navigate("/scoring-rules/new-rule");

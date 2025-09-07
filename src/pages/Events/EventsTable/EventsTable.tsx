@@ -13,11 +13,11 @@ import { createPortal } from "react-dom";
 import EventsFilter from "../EventsFilter/EventsFilterJsx";
 import useEventsTable from "./useEventsTable";
 import { TableFallback } from "../../../components/TableFallback";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import type { EventFormValues } from "../eventsServices";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import Spinner from "../../../components/Spinner";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const UpdateIcon = React.lazy(
@@ -170,7 +170,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Update Event</span>
@@ -310,7 +310,7 @@ export const EventsTable = () => {
   }, [filters]);
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -334,7 +334,7 @@ export const EventsTable = () => {
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 h-[40px] rounded-[8px] text-sm font-semibold flex items-center gap-2"
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
               </Suspense>
               <span className="text-[14px]">Add New Event</span>
@@ -345,7 +345,7 @@ export const EventsTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }
@@ -359,7 +359,7 @@ export const EventsTable = () => {
           }
           buttonText="Add New Event"
           buttonIcon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
             </Suspense>
           }

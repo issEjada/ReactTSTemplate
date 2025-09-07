@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useViewDecisionRules } from "./useDecisionRuleForm";
 import { LoadingState } from "../../../types/types";
 import DynamicView from "../../../components/DynamicView";
+import Spinner from "../../../components/Spinner";
 
 const DecisionRulesView = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const DecisionRulesView = () => {
   };
 
   if (loadingState === LoadingState.Loading) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   if (loadingState === LoadingState.Error || !ruleData) {

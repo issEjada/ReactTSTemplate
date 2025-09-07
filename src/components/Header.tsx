@@ -4,11 +4,10 @@ import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
 import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
 import PopupLayout from "./Popup/PopupLayout";
-import FullScreenSpinner from "./FullScreenSpinner";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
-
 import { ThemeContext } from "../context/Context";
 import { ThemeModeIcon } from "../context/ThemeProvider";
+import Spinner from "./Spinner";
 
 const SideBarIcon = React.lazy(
   () => import(`/src/assets/svg/Sidebar.svg?react`)
@@ -66,14 +65,14 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
   return (
     <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-darkTheme dark:border-gray-800">
-      {isLoading && <FullScreenSpinner />}
+      {isLoading && <Spinner mode="overlay" size="md" />}
       {/* Left: Breadcrumbs */}
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
       <div className="flex items-start gap-5">
         {/* Search Bar */}
         <div className="relative hidden md:flex items-center">
-          <Suspense fallback={<FullScreenSpinner />}>
+          <Suspense fallback={<Spinner mode="inline" size="sm" />}>
             <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
           </Suspense>
           <input
@@ -114,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <Suspense fallback={<FullScreenSpinner />}>
+                      <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                         <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       </Suspense>
                       View Profile
@@ -122,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <Suspense fallback={<FullScreenSpinner />}>
+                      <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                         <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       </Suspense>
                       Settings
@@ -137,7 +136,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                     onClick={handleOpenPopup}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
-                    <Suspense fallback={<FullScreenSpinner />}>
+                    <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                       <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                     </Suspense>
                     Logout
@@ -168,9 +167,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
 export default Header;
 
-export const Breadcrumb: React.FC<HeaderProps> = ({
-  onSidebarIconClick,
-}) => {
+export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter(Boolean);
 
@@ -197,7 +194,7 @@ export const Breadcrumb: React.FC<HeaderProps> = ({
 
   return (
     <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-      <Suspense fallback={<FullScreenSpinner />}>
+      <Suspense fallback={<Spinner mode="inline" size="sm" />}>
         <SideBarIcon
           className="text-black dark:text-white cursor-pointer"
           onClick={onSidebarIconClick}

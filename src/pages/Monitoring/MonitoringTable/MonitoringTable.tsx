@@ -3,13 +3,13 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
 import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import SessionActivity from "./SessionActivity";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../../components/Spinner";
 
 const ShieldIcon = React.lazy(
   () => import("../../../assets/svg/shieldG.svg?react")
@@ -269,7 +269,7 @@ export const MonitoringTable = () => {
   }
 
   if (isLoading) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -293,7 +293,7 @@ export const MonitoringTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }

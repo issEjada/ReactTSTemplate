@@ -3,9 +3,9 @@ import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import MetricCard from "./MetricCard";
 import { useActionAnalytics } from "./useActionAnalytics";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { ActionPopup } from "./ActionsPopup";
 import { DynamicTable } from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -252,7 +252,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     })) ?? [];
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   if (errorValidation) {

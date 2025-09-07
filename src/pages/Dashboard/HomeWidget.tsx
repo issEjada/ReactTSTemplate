@@ -2,7 +2,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { useDashboard } from "./useDashboard";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const ShieldIcon = React.lazy(
   () => import("../../assets/svg/ShieldG.svg?react")
@@ -108,7 +108,7 @@ const HomeWidgetGroup: React.FC = () => {
   }, [data]);
 
   if (loading) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   if (error) {

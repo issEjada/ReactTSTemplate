@@ -6,7 +6,7 @@ import {
 import { LoadingState } from "../../types/types";
 import PopupLayout from "../../components/Popup/PopupLayout";
 import DynamicPopupJsx from "../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const GeoLocation: React.FC = () => {
   const [dragActive, setDragActive] = useState(false);
@@ -89,7 +89,7 @@ const GeoLocation: React.FC = () => {
   };
 
   if (loadingState === LoadingState.Loading) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (

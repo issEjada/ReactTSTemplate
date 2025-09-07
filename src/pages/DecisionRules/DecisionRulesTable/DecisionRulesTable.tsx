@@ -13,11 +13,11 @@ import { useDecisionRulesTable } from "./useDecisionRulesTable";
 import { DynamicTable } from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import Spinner from "../../../components/Spinner";
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -147,7 +147,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px] whitespace-nowrap">
@@ -163,7 +163,7 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Edit Rule</span>
@@ -177,7 +177,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Delete</span>
@@ -296,7 +296,7 @@ export const DecisionRulesTable = () => {
   );
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -316,7 +316,7 @@ export const DecisionRulesTable = () => {
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
             >
-              <Suspense fallback={<FullScreenSpinner />}>
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
               </Suspense>
               Add New Rule
@@ -332,7 +332,7 @@ export const DecisionRulesTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }
@@ -346,7 +346,7 @@ export const DecisionRulesTable = () => {
           }
           buttonText="Add New Decision Rule"
           buttonIcon={
-            <Suspense fallback={<FullScreenSpinner />}>
+            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
               <PlusIcon className="w-[20px] h-[20px] text-white" />
             </Suspense>
           }

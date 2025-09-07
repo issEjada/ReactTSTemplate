@@ -6,8 +6,8 @@ import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEd
 import { useNavigate } from "react-router-dom";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
+import Spinner from "../../../components/Spinner";
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -124,7 +124,7 @@ const RuleForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
-      {loadingState === "loading" && <FullScreenSpinner />}
+      {loadingState === "loading" && <Spinner />}
 
       {showConfirmModal && (
         <PopupLayout isOpen={showConfirmModal} className="w-[30%]">

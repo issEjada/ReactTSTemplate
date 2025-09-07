@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useViewDecisionRules } from "./useDecisionRuleForm";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import DropdownMenu from "../../../components/DropDown";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { LoadingState } from "../../../types/types";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import Spinner from "../../../components/Spinner";
 
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
@@ -108,7 +108,7 @@ const DecisionForm = () => {
   }, [popupType, loadingState]);
 
   if (loadingState === LoadingState.Loading && !isAdding) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (

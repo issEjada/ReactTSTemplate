@@ -6,7 +6,7 @@ import PopupLayout from "../../../components/Popup/PopupLayout";
 import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import { useViewEvents } from "./useEventForm";
 import type { EventFormValues } from "../eventsServices";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import Spinner from "../../../components/Spinner";
 
 const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
@@ -53,7 +53,7 @@ const EventsForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
-      {loadingState === "loading" && <FullScreenSpinner />}
+      {loadingState === "loading" && <Spinner />}
 
       {/* Header / Title + Edit / Delete */}
       <div className="h-[130px] flex flex-row items-start px-6 py-[44px] gap-6">
