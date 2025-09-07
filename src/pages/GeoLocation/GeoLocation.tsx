@@ -94,7 +94,7 @@ const GeoLocation: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white h-screen overflow-hidden">
-      <h2 className="text-lg font-semibold text-gray-700 mb-3">
+      <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">
         Please Upload Geolocation
       </h2>
 
@@ -104,8 +104,8 @@ const GeoLocation: React.FC = () => {
         className={`flex flex-col items-center justify-center w-full h-full max-h-[50vh] border-2 border-dashed rounded-xl cursor-pointer transition
           ${
             dragActive
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-300 bg-white shadow-md hover:border-blue-500 hover:bg-blue-50"
+              ? "border-blue-500 bg-blue-50 dark:bg-gray-800 dark:border-gray-400"
+              : "border-gray-300 bg-white shadow-md hover:border-blue-500 hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-600 dark:hover:border-gray-400"
           }`}
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
@@ -144,7 +144,7 @@ const GeoLocation: React.FC = () => {
           </div>
         ) : (
           <>
-            <span className="text-gray-600 text-sm">
+            <span className="text-gray-600 text-sm dark:text-gray-200">
               Click or Drag to upload
             </span>
             <span className="text-gray-400 text-xs">ZIP files only</span>
