@@ -5,7 +5,7 @@ import Header from "./Header";
 import { MobileSideBar } from "./SideBar/MobileSideBar";
 
 export const Layout = () => {
-  const [isClosed, setIsClosed] = useState<boolean>(true);
+  const [isClosed, setIsClosed] = useState<boolean>(false);
 
   const handleSidebarIconClick = () => {
     setIsClosed(!isClosed);
