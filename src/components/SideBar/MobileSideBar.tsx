@@ -5,8 +5,8 @@ import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import { ThemeModeIcon } from "../../context/ThemeProvider";
 import Spinner from "../Spinner";
 
-const LogoWithTextIcon = React.lazy(
-  () => import("../../assets/svg/logo_with_text.svg?react")
+const AnotherLogoWithTextIcon = React.lazy(
+  () => import("../../assets/svg/logo_with_text_copy.svg?react")
 );
 const FiltersIcon = React.lazy(
   () => import("../../assets/svg/Filters.svg?react")
@@ -25,18 +25,18 @@ export const MobileSideBar: React.FC<{
       >
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
-          <Suspense fallback={<Spinner />}>
+          <div
+            className={`flex justify-between items-center gap-2 overflow-hidden pt-[8px] pb-[6px]`}
+          >
+            <AnotherLogoWithTextIcon
+              className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
+            />
+                      <Suspense fallback={<Spinner />}>
             <FiltersIcon
-              className="text-gray-700 self-end"
+              className="text-gray-700"
               onClick={() => setIsClosed(true)}
             />
           </Suspense>
-          <div
-            className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
-          >
-            <LogoWithTextIcon
-              className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
-            />{" "}
           </div>
           <div
             className={`h-[1px] bg-gray-950/10 mb-3 transition-all duration-300 dark:bg-gray-800 ${
