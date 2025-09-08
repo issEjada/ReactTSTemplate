@@ -1,12 +1,20 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import SideBar from "./SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import { MobileSideBar } from "./SideBar/MobileSideBar";
 
 export const Layout = () => {
-  const [isClosed, setIsClosed] = useState<boolean>(window.innerWidth < 768 ? true : false);
+  const [isClosed, setIsClosed] = useState<boolean>(() => {
+    const saved = localStorage.getItem("isClosed");
+    if (saved !== null) return JSON.parse(saved);
 
+    return window.innerWidth < 768;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isClosed", JSON.stringify(isClosed));
+  }, [isClosed]);
   const handleSidebarIconClick = () => {
     setIsClosed(!isClosed);
   };
