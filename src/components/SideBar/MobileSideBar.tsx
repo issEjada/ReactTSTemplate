@@ -31,12 +31,12 @@ export const MobileSideBar: React.FC<{
             <AnotherLogoWithTextIcon
               className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
             />
-                      <Suspense fallback={<Spinner />}>
-            <FiltersIcon
-              className="text-gray-700 dark:text-white"
-              onClick={() => setIsClosed(true)}
-            />
-          </Suspense>
+            <Suspense fallback={<Spinner />}>
+              <FiltersIcon
+                className="text-gray-700 dark:text-white"
+                onClick={() => setIsClosed(true)}
+              />
+            </Suspense>
           </div>
           <div
             className={`h-[1px] bg-gray-950/10 mb-3 transition-all duration-300 dark:bg-gray-800 ${
@@ -45,6 +45,7 @@ export const MobileSideBar: React.FC<{
           ></div>
           <div className="pb-3">
             <SideBarItemsGroup
+              setIsClosed={setIsClosed}
               items={[
                 {
                   pageTitle: "Dashboard",
@@ -64,6 +65,7 @@ export const MobileSideBar: React.FC<{
               Developer
             </span>
             <SideBarItemsGroup
+              setIsClosed={setIsClosed}
               items={[
                 {
                   pageTitle: "Scoring Rules",
@@ -119,6 +121,7 @@ export const MobileSideBar: React.FC<{
               Account
             </span>
             <SideBarItemsGroup
+              setIsClosed={setIsClosed}
               items={[
                 {
                   pageTitle: "About Us",
