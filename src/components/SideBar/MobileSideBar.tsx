@@ -33,7 +33,7 @@ export const MobileSideBar: React.FC<{
             />
                       <Suspense fallback={<Spinner />}>
             <FiltersIcon
-              className="text-gray-700"
+              className="text-gray-700 dark:text-white"
               onClick={() => setIsClosed(true)}
             />
           </Suspense>
