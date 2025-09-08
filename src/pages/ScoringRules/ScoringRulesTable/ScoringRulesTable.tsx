@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   useCallback,
+  Suspense,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -294,48 +295,36 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     navigate("/scoring-rules/new-rule");
   };
   return (
-    <div
-      className={` bg-white dark:bg-black${
-        fromDashboard
-          ? " h-full dark:bg-black flex-grow"
-          : " pt-[50px] p-6 w-full overflow-hidden"
-      }`}
-    >
+   <div className="p-6 bg-white shadow-sm dark:bg-black">
       {" "}
-      <div className="flex items-center justify-between mb-6 ">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Scoring Rules{" "}
-            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Rule
-              {totalCount !== 1 && "s"}
-            </span>
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Keep track of customers and their security levels.
-          </p>
-        </div>
-        {totalCount !== 0 && !fromDashboard && (
-          <div className="ml-auto">
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
+          {/* Left side: Title + description */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              Scoring Rules{" "}
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                {totalCount} Rule{totalCount !== 1 && "s"}
+              </span>
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Keep track of customers and their security levels.
+            </p>
+          </div>
+
+          {/* Right side: Button */}
+          {totalCount !== 0 && (
             <button
               onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
+              className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
-              <PlusIcon className="w-[20px] h-[20px] text-white" />
+              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                <PlusIcon className="w-[20px] h-[20px] text-white" />
+              </Suspense>
               Add New Rule
             </button>
-          </div>
-        )}
-
-        {fromDashboard && (
-          <button
-            onClick={handleAddNewRule}
-            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
-            aria-label="Add New Rule"
-          >
-            <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
-          </button>
-        )}
+          )}
+        </div>
       </div>
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
