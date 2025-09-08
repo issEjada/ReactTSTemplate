@@ -97,7 +97,7 @@ const GeoLocation: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6 shadow-sm dark:bg-black dark:border-gray-800 dark:text-white h-screen overflow-hidden">
+    <div className="flex flex-col gap-6 p-6  shadow-sm dark:bg-black dark:border-gray-800 dark:text-white h-screen overflow-hidden">
       <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 pt-6">
         Please Upload Geo Location
         <p className="text-sm text-gray-500 mt-1">
@@ -108,7 +108,7 @@ const GeoLocation: React.FC = () => {
       {/* Drag & Drop / Browse Area */}
       <label
         htmlFor="file-upload"
-        className={`flex flex-col items-center justify-center w-full h-full max-h-[50vh] border-2 border-dashed rounded-xl cursor-pointer transition
+        className={`flex flex-col items-center justify-center w-[70%] h-full max-h-[50vh] border-2 border-dashed rounded-xl cursor-pointer transition
           ${
             dragActive
               ? "border-blue-500 bg-blue-50 dark:bg-gray-800 dark:border-gray-400"
@@ -157,7 +157,7 @@ const GeoLocation: React.FC = () => {
       </label>
 
       {/* Upload Button */}
-      <div className="flex justify-end">
+      <div className="flex justify-end w-[70%]">
         {file && (
           <button
             onClick={handleUpload}
