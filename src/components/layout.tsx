@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideBar from "./SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
@@ -6,6 +6,11 @@ import { MobileSideBar } from "./SideBar/MobileSideBar";
 
 export const Layout = () => {
   const [isClosed, setIsClosed] = useState<boolean>(false);
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsClosed(true);
+    }
+  }, []);
 
   const handleSidebarIconClick = () => {
     setIsClosed(!isClosed);
