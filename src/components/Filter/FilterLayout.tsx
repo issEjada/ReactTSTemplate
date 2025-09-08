@@ -28,8 +28,8 @@ export default function FilterLayout({
       `}
     >
       <div
-        className={`flex flex-col fixed bg-white rounded-lg shadow-lg p-6 top-0 right-0 w-1/2 h-[100vh] overflow-y-auto dark:bg-darkTheme dark:border-gray-800
-          transform transition-transform duration-300
+        className={`flex flex-col fixed bg-white rounded-lg shadow-lg p-6 bottom-0 md:top-0 right-0 w-full md:w-1/2 h-[90vh] md:h-[100vh] overflow-y-auto dark:bg-darkTheme dark:border-gray-800
+          transform transition-transform duration-300 rounded-t-lg md:rounded-none
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
