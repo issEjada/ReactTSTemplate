@@ -125,7 +125,7 @@ const DecisionForm = () => {
           />
         </PopupLayout>
       )}
-      <div className="h-auto flex flex-row items-start px-6 py-5">
+      <div className="relative h-auto md:flex md:flex-row items-start px-6 pt-5 md:py-5">
         <div className="flex flex-col gap-2">
           <label
             htmlFor="ruleName"
@@ -152,7 +152,7 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
                      ${
                        fieldState.error
@@ -187,12 +187,12 @@ const DecisionForm = () => {
       </div>
 
       {/* Dropdowns */}
-      <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <div className="w-[368px] h-[120px]">
+      <div className="relative flex flex-col md:gap-[12px] md:h-[400px] w-full md:gap-y-[20px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 md:py-5 gap-[16px]">
+          <div className="w-full md:w-[368px] md:h-[120px]">
             <label
               htmlFor="criteriaName"
-              className="block text-sm font-medium text-gray-700 mb-[6px] mt-[20.8px] dark:text-white"
+              className="block text-sm font-medium text-gray-700 mb-[6px] mt-4 md:mt-[20.8px] dark:text-white"
             >
               Criteria Name
               {isAdding && (
@@ -214,7 +214,7 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Criteria Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
@@ -256,7 +256,7 @@ const DecisionForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center px-6 py-5 gap-[16px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center px-6 py-5 gap-[16px]">
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
             name="decision"
@@ -265,7 +265,7 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
@@ -277,13 +277,13 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={isViewing || isEditing || eventNameValues.length === 0}
             required
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center px-6 py-5 gap-[16px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center px-6 py-5 gap-[16px]">
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
             name="status"
@@ -292,13 +292,13 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[49.3%]"
+            className="w-full md:w-[49.3%]"
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
         </div>
 
-        <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
+        <div className="w-full md:w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
             className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white"
@@ -329,7 +329,7 @@ const DecisionForm = () => {
       </div>
 
       {/* Conditions Editor */}
-      <div className="flex items-center gap-2 pl-6 pt-[36px]">
+      <div className="relative flex items-center gap-2 pl-6 pt-[36px]">
         <div className="flex justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full">
           <ConditionIcon className="object-contain text-blue-700" />
         </div>
@@ -344,7 +344,7 @@ const DecisionForm = () => {
           isReadOnly={isViewing}
         />
       ) : (
-        <div className="px-6 py-4 text-red-500">
+        <div className="relative px-6 py-4 text-red-500">
           Please complete all required fields to enable the Conditions.
           <ul className="mt-4">
             {Object.entries(formValues!).map(([field, isValid]) =>
@@ -362,7 +362,7 @@ const DecisionForm = () => {
       )}
 
       {/* Actions */}
-      <div className="flex justify-end gap-4 px-6 pb-6">
+      <div className="relative flex justify-end gap-4 px-6 pb-6">
         <button
           type="submit"
           disabled={isViewing}
