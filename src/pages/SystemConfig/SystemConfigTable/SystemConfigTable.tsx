@@ -88,7 +88,7 @@ export const SystemConfigTable = () => {
         </p>
       </div>
 
-      {totalCount > 0 && !filters ? (
+      {totalCount == 0 && !filters ? (
         <TableFallback
           icon={
             <Suspense>

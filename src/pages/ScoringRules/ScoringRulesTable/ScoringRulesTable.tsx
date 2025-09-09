@@ -36,6 +36,7 @@ type Rule = {
   description: string;
   status: "ENABLED" | "DISABLED";
   riskLevel: "Low" | "Medium" | "High";
+  aspectCode: string;
 };
 
 const RuleMenu = ({
@@ -354,6 +355,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             description: item.description ?? "",
             status: item.status as "ENABLED" | "DISABLED",
             riskLevel: item.riskLevel as "Low" | "Medium" | "High",
+            aspectCode: item.identifier.aspectCode ?? "",
           }))}
           columns={columns}
           filterComponent={
@@ -442,12 +444,14 @@ const getColumns = (
   {
     header: "Rule Name",
     accessorKey: "name",
-    cell: (info) => (
+    cell: ({ row }) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
+          {String(row.original.name ?? "")}
         </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
+        <span className="text-xs text-gray-500 dark:text-white">
+          {row.original.aspectCode}
+        </span>
       </div>
     ),
   },
