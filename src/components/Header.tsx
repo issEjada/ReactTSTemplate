@@ -12,7 +12,7 @@ import Spinner from "./Spinner";
 const SideBarIcon = React.lazy(
   () => import(`/src/assets/svg/Sidebar.svg?react`)
 );
-const SearchIcon = React.lazy(() => import(`/src/assets/svg/Search.svg?react`));
+
 const SettingsIcon = React.lazy(
   () => import(`/src/assets/svg/settings.svg?react`)
 );
