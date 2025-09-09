@@ -137,7 +137,7 @@ const RuleForm = () => {
       )}
 
       <div className="relative h-auto md:flex md:flex-row items-start px-6 pt-5 md:py-5">
-        <div className="flex flex-col gap-2">
+        <div className="block flex-col gap-2 md:w-[352px] ">
           <label
             htmlFor="ruleName"
             className="block text-md font-medium text-gray-700 mb-2 dark:text-white"

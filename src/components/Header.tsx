@@ -90,10 +90,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
-        <div
-          ref={headerRef}
-          className="relative flex items-center space-x-4"
-        >
+        <div ref={headerRef} className="relative flex items-center space-x-4">
           {/* Profile */}
           <div
             className="flex items-center space-x-2 cursor-pointer"
@@ -197,7 +194,7 @@ export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   };
 
   return (
-    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+    <div className="flex items-center space-x-2 lg:space-x-4 text-sm text-gray-500 dark:text-gray-400">
       <Suspense fallback={<Spinner mode="inline" size="sm" />}>
         <SideBarIcon
           className="text-black dark:text-white cursor-pointer"
