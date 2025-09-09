@@ -71,21 +71,6 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
       <div className="flex items-start gap-5">
-        {/* Search Bar */}
-        <div className="relative hidden md:flex items-center">
-          <Suspense fallback={<Spinner mode="inline" size="sm" />}>
-            <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
-          </Suspense>
-          <input
-            type="text"
-            placeholder="Search"
-            className="pl-8 pr-9 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
-          />
-          <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">
-            ⌘/
-          </kbd>
-        </div>
-
         <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
