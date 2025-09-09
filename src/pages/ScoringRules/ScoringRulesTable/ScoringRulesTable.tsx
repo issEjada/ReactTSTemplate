@@ -295,7 +295,11 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     navigate("/scoring-rules/new-rule");
   };
   return (
-   <div className="p-6 bg-white shadow-sm dark:bg-black">
+    <div
+      className={`p-6 bg-white ${
+        fromDashboard ? "" : "shadow-sm"
+      } dark:bg-black w-full xl:w-[62%]`}
+    >
       {" "}
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
