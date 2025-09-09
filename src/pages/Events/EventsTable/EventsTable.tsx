@@ -55,6 +55,7 @@ const DevicePill = ({ device }: { device: string }) => {
   if (!device) {
     return null;
   }
+
   return (
     <span className="inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
@@ -62,12 +63,15 @@ const DevicePill = ({ device }: { device: string }) => {
           <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
         {device === "WEB_SDK_MD" && (
-          <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
-        {device === "3DS_MICROSITE_SDK_MD" && (
           <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
+        {device === "3DS_MICROSITE_SDK_MD" && (
+          <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
+        )}
         {device === "ANY_SDK_MD" && (
+          <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
+        )}
+        {device === "CLIENT_MD" && (
           <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
       </span>
@@ -339,7 +343,7 @@ export const EventsTable = () => {
           {/* Right side: Button */}
           {totalCount !== 0 && (
             <button
-               onClick={handleAddNewEvent}
+              onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
               <Suspense fallback={<Spinner mode="inline" size="sm" />}>
@@ -404,9 +408,10 @@ export const EventsTable = () => {
           statusFilterOptions={[
             { key: "ALL", label: "View all" },
             { key: "MOBILE_SDK_MD", label: "Mobile" },
-            { key: "WEB_SDK_MD", label: "Desktop" },
-            { key: "3DS_MICROSITE_SDK_MD", label: "Web" },
-            { key: "ANY_SDK_MD", label: "Any" },
+            { key: "WEB_SDK_MD", label: "Web" },
+            { key: "3DS_MICROSITE_SDK_MD", label: "3DS Authentication Page" },
+            { key: "ANY_SDK_MD", label: "Any Device" },
+            { key: "CLIENT_MD", label: "Any" },
           ]}
           onRowClick={(rowData) => {
             const { id } = rowData as { id: string | number };
