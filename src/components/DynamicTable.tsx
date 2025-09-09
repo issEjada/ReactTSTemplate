@@ -250,7 +250,8 @@ export function DynamicTable<TData extends object>({
                           header.id === "sessionId" ||
                           header.id === "name" ||
                           header.id === "configName" ||
-                          header.id === "id") && (
+                          header.id === "id" ||
+                          header.index == 0) && (
                           <button
                             title="Sort"
                             onClick={() => onArrowClick(header.column.id)}
