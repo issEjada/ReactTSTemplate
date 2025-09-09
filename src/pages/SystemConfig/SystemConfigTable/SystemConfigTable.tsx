@@ -96,13 +96,7 @@ export const SystemConfigTable = () => {
             </Suspense>
           }
           title="You don’t have any configurations yet"
-          description={
-            <>
-              You don’t have any configurations added yet
-              <br />
-              Start configuring your system now.
-            </>
-          }
+          description={<>Start configuring your system now.</>}
         />
       ) : (
         <DynamicTable<SystemConfig>
