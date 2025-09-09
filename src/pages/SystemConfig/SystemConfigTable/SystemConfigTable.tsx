@@ -79,7 +79,7 @@ export const SystemConfigTable = () => {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             System Configurations
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Rule
+              {totalCount} System Configuration
               {totalCount !== 1 && "s"}
             </span>
           </h2>
