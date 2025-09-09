@@ -90,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
-        <div ref={headerRef} className="relative flex items-center space-x-4">
+        <div ref={headerRef} className="relative hidden md:flex items-center space-x-4">
           {/* Profile */}
           <div
             className="flex items-center space-x-2 cursor-pointer"

@@ -1,9 +1,15 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useContext, useState } from "react";
 import { SideBarItemsGroup } from "./SideBarItem";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import { ThemeModeIcon } from "../../context/ThemeProvider";
 import Spinner from "../Spinner";
+import { useHeader } from "../useHeader";
+import { AuthContext } from "../../context/Context";
+import { ConstantKeys } from "../../constants/ConstantKeys.constants";
+import PopupLayout from "../Popup/PopupLayout";
+import LogoutPopupJsx from "../Popup/LogoutPopupJsx";
+
 
 const AnotherLogoWithTextIcon = React.lazy(
   () => import("../../assets/svg/logo_with_text_copy.svg?react")
@@ -11,11 +17,53 @@ const AnotherLogoWithTextIcon = React.lazy(
 const FiltersIcon = React.lazy(
   () => import("../../assets/svg/Filters.svg?react")
 );
-
+const SettingsIcon = React.lazy(
+  () => import(`../../assets/svg/settings.svg?react`)
+);
+const ProfileIcon = React.lazy(
+  () => import(`../../assets/svg/profile.svg?react`)
+);
+const LogoutIcon = React.lazy(() => import(`/src/assets/svg/logout.svg?react`));
 export const MobileSideBar: React.FC<{
   isClosed: boolean;
   setIsClosed: (value: boolean) => void;
 }> = ({ isClosed, setIsClosed }) => {
+  
+  const { logout } = useContext(AuthContext);
+  const { headerRef, showDropdown, toggleDropdown } = useHeader();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [, setIsLoading] = useState<boolean>(false);
+  const [, setIsAuthenticated] = useState(false);
+  const [dontShowLogoutPopup, setDontShowLogoutPopup] = useState(() => {
+    return localStorage.getItem("dontShowLogoutPopup") === "true";
+  });
+    const handleSetDontShowLogoutPopup = (value: boolean) => {
+    setDontShowLogoutPopup(value);
+    localStorage.setItem("dontShowLogoutPopup", String(value));
+  };
+    const handleLogout = () => {
+      setIsPopupOpen(false);
+      setIsLoading(true);
+      setTimeout(() => {
+        logout();
+        setIsLoading(false);
+        sessionStorage.removeItem(ConstantKeys.accessToken);
+        localStorage.removeItem(ConstantKeys.accessToken);
+        sessionStorage.removeItem(ConstantKeys.rememberMe);
+        localStorage.removeItem(ConstantKeys.rememberMe);
+        localStorage.removeItem("customerProfileMobileNumber");
+        localStorage.removeItem("isClosed");
+        setIsAuthenticated(false);
+      }, 1000);
+    };
+  
+  const handleOpenPopup = () => {
+    if (!dontShowLogoutPopup) {
+      setIsPopupOpen(true);
+    } else {
+      handleLogout();
+    }
+  };
   return (
     <>
       <div
@@ -174,6 +222,76 @@ export const MobileSideBar: React.FC<{
               </div>
             </div>
           </div>
+                  <div ref={headerRef} className="relative flex items-center space-x-4">
+                    {/* Profile */}
+                    <div
+                      className="flex items-center space-x-2 cursor-pointer"
+                      onClick={() => toggleDropdown("user")}
+                    >
+                      <img
+                        src="https://i.pravatar.cc/40"
+                        alt="Avatar"
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <div className="text-sm">
+                        <div className="font-medium text-gray-800 dark:text-white text-[12px]">
+                          Ahmed Abdullah
+                        </div>
+                        <div className="text-gray-500 dark:text-gray-400 text-[10px] leading-[18px] w-[123px] overflow-hidden">
+                          a.abdullah@company.com
+                        </div>
+                      </div>
+                      {showDropdown.user && (
+                        <div className="absolute top-[-150px] left-[-12px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
+                          <div className="flex flex-col space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                                <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                                  <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                                </Suspense>
+                                View Profile
+                              </button>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                                <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                                  <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                                </Suspense>
+                                Settings
+                              </button>
+                            </div>
+                          </div>
+          
+                          <div className="h-[3px] bg-gray-200 w-full mb-3 mt-2"></div>
+          
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={handleOpenPopup}
+                              className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
+                            >
+                              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                                <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
+                              </Suspense>
+                              Logout
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                          <div>
+          <PopupLayout
+            isOpen={isPopupOpen}
+            className="md:w-[38%] lg:w-[35%] w-[90%]"
+          >
+            <LogoutPopupJsx
+              onCancel={() => setIsPopupOpen(false)}
+              onConfirm={handleLogout}
+              dontShowPreference={dontShowLogoutPopup}
+              onSetDontShowPreference={handleSetDontShowLogoutPopup}
+            />
+          </PopupLayout>
+        </div>
         </div>
       </div>
     </>
