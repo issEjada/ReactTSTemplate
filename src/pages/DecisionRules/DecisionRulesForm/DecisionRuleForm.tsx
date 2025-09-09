@@ -125,11 +125,11 @@ const DecisionForm = () => {
           />
         </PopupLayout>
       )}
-      <div className="relative h-auto md:flex md:flex-row items-start px-6 pt-5 md:py-5">
+      <div className="px-6 pt-8 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
         <div className="flex flex-col gap-2">
           <label
             htmlFor="ruleName"
-            className="block text-md font-medium text-gray-700 mb-2 dark:text-white"
+            className="block text-md font-medium text-gray-700 mb-1 dark:text-white"
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Decision Rule
@@ -152,7 +152,7 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px]  w-full md:w-[344px]  h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
                      ${
                        fieldState.error
@@ -192,7 +192,7 @@ const DecisionForm = () => {
           <div className="w-full md:w-[368px] md:h-[120px]">
             <label
               htmlFor="criteriaName"
-              className="block text-sm font-medium text-gray-700 mb-[6px] mt-4 md:mt-[20.8px] dark:text-white"
+              className="block text-sm font-medium text-gray-700 mb-[6px] mt-2 md:mt-[20.8px] dark:text-white"
             >
               Criteria Name
               {isAdding && (
@@ -214,7 +214,7 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Criteria Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full md:w-[344px]  h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
