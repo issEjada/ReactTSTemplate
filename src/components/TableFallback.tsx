@@ -60,17 +60,17 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between mt-10 items-center gap-[0.8rem]">
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
+        <div className="flex flex-col justify-between mt-10 items-center gap-[4px]">
+          <h3 className="text-lg font-medium text-gray-900 mt-[44px] dark:text-white">
             {title}
           </h3>
           <p className="text-sm text-gray-500 mb-6 text-center">
             {description}
           </p>
           {buttonText && (
-  <button
-    onClick={onButtonClick}
-    className="
+            <button
+              onClick={onButtonClick}
+              className="
       bg-blue-700 hover:bg-blue-800 text-white 
       px-4 py-2 rounded-[8px] text-sm font-medium 
       flex items-center justify-center gap-2
@@ -79,11 +79,11 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
       w-full max-w-[352px] 
       sm:w-[352px] 
     "
-  >
-    {buttonIcon && <span>{buttonIcon}</span>}
-    <span>{buttonText}</span>
-  </button>
-)}
+            >
+              {buttonIcon && <span>{buttonIcon}</span>}
+              <span>{buttonText}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
