@@ -310,19 +310,25 @@ export const DecisionRulesTable = () => {
   return (
     <div className="p-6 bg-white shadow-sm dark:bg-black">
       <div className="mb-6">
-        <div className="flex items-center justify-between pt-5">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Decision Rules{" "}
-            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Rule
-              {totalCount !== 1 && "s"}
-            </span>
-          </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
+          {/* Left side: Title + description */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              Decision Rules{" "}
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                {totalCount} Rule{totalCount !== 1 && "s"}
+              </span>
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Keep track of customers and their security levels.
+            </p>
+          </div>
 
+          {/* Right side: Button */}
           {totalCount !== 0 && (
             <button
               onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
+              className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
               <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
@@ -331,10 +337,6 @@ export const DecisionRulesTable = () => {
             </button>
           )}
         </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
       </div>
 
       {totalCount === 0 && !isFilterActive ? (

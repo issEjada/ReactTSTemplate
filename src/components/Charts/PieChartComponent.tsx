@@ -41,7 +41,7 @@ export default function PieChartComponent() {
   ];
 
   return (
-    <div className="flex w-full h-[200px] p-6   dark:bg-darkTheme">
+    <div className="flex flex-col gap-4 md:gap-0 md:flex-row items-center w-full h-[310px] md:h-[200px] p-3 md:p-6 dark:bg-darkTheme">
       <div className="flex items-center justify-center w-[183px] h-[183px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -75,7 +75,7 @@ export default function PieChartComponent() {
         </ResponsiveContainer>
       </div>
 
-      <div className="flex flex-col justify-center items ml-6 space-y-3 w-[45%] text-sm dark:text-white">
+      <div className="flex flex-col justify-center items md:ml-6 space-y-3 w-[80%] md:w-[45%] text-sm dark:text-white">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span

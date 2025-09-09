@@ -3,14 +3,13 @@ import { ScoringRulesTable } from "../ScoringRules/ScoringRulesTable/ScoringRule
 import DashboardOperations from "./DashboardOperations.js";
 import DashboardEvents from "./DashboardEvents.js";
 import { useScoringRulesTable } from "../ScoringRules/ScoringRulesTable/useScoringRulesTable.js";
-import FullScreenSpinner from "../../components/FullScreenSpinner.js";
+import Spinner from "../../components/Spinner.js";
 const Home = () => {
-
   const values = useScoringRulesTable();
-  console.log("loading States", values.loadingState)
+  console.log("loading States", values.loadingState);
 
   if (values.loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -21,8 +20,8 @@ const Home = () => {
       {/* Widgets */}
 
       <HomeWidgetGroup />
-      <div className="flex h-[584px] gap-[24px] mt-[24px] flex-wrap">
-        <ScoringRulesTable fromDashboard={true} toggleHandler={values.handleToggleStatus}/>
+      <div className="mb-[60px] flex gap-[24px] mt-[24px] max-xl:flex-wrap">
+        <ScoringRulesTable fromDashboard={true} />
         <DashboardEvents />
       </div>
 

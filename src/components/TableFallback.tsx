@@ -42,7 +42,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         />
       </Suspense>
 
-      <div className="relative z-10 flex flex-col gap-20">
+      <div className="relative z-8 flex flex-col gap-20">
         <div
           className={`flex items-center justify-center w-[80px] ${
             minimal ? "h-[80px]" : ""
@@ -68,14 +68,22 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             {description}
           </p>
           {buttonText && (
-            <button
-              onClick={onButtonClick}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[352px] h-10 flex items-center justify-center gap-2"
-            >
-              {buttonIcon && <span>{buttonIcon}</span>}
-              <span>{buttonText}</span>
-            </button>
-          )}
+  <button
+    onClick={onButtonClick}
+    className="
+      bg-blue-700 hover:bg-blue-800 text-white 
+      px-4 py-2 rounded-[8px] text-sm font-medium 
+      flex items-center justify-center gap-2
+      h-full
+      max-h-10 
+      w-full max-w-[352px] 
+      sm:w-[352px] 
+    "
+  >
+    {buttonIcon && <span>{buttonIcon}</span>}
+    <span>{buttonText}</span>
+  </button>
+)}
         </div>
       </div>
     </div>

@@ -212,7 +212,11 @@ export function DynamicTable<TData extends object>({
         )}
         <table
           className={`w-full table-auto text-sm text-center ${
-            isCustomerProfile ? "" : minimal ? "min-w-[710px]" : "min-w-[900px]"
+            isCustomerProfile
+              ? ""
+              : minimal
+              ? "min-w-[710px] h-[435px]"
+              : "min-w-[900px]"
           }`}
         >
           {table.getRowModel().rows.length > 0 ? (

@@ -116,7 +116,7 @@ const HomeWidgetGroup: React.FC = () => {
   }
 
   return (
-    <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {widgetData.map((item, index) => (
         <HomeWidget
           key={index}

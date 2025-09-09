@@ -92,8 +92,8 @@ export const ConditionEditor = ({
   };
 
   return (
-    <div className="flex h-[766px] gap-2 pl-6">
-      <div className="w-[400px]  border-gray-300 border rounded-lg flex flex-col dark:bg-darkTheme dark:border-gray-800">
+    <div className="flex flex-col md:flex-row md:h-[766px] gap-2 pl-6 pr-6 md:pr-0">
+      <div className="w-full md:w-[400px]  border-gray-300 border rounded-lg flex flex-col dark:bg-darkTheme dark:border-gray-800">
         <div className="border-b border-gray-300 shadow-md dark:bg-darkTheme dark:border-gray-800">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700 dark:text-white">
@@ -144,7 +144,7 @@ export const ConditionEditor = ({
           ></ConditionItem>
         </div>
       </div>
-      <div className="w-[680px]  border-gray-300 border rounded-lg flex flex-col dark:bg-darkTheme dark:border-gray-800">
+      <div className="w-full md:w-[680px] border-gray-300 border rounded-lg flex flex-col dark:bg-darkTheme dark:border-gray-800">
         <div className="border-b border-gray-300  dark:bg-darkTheme dark:border-gray-800">
           <div className="flex justify-between items-center p-4">
             <h2 className="text-lg font-medium text-gray-700 dark:text-white">

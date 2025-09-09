@@ -8,6 +8,10 @@ import PopupLayout from "../../components/Popup/PopupLayout";
 import DynamicPopupJsx from "../../components/Popup/DynamicPopupJsx";
 import Spinner from "../../components/Spinner";
 
+const ZipFileIcon = React.lazy(
+  () => import("../../assets/svg/zip-file.svg?react")
+);
+
 const GeoLocation: React.FC = () => {
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -93,39 +97,29 @@ const GeoLocation: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white h-screen overflow-hidden">
-      <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">
-        Please Upload Geolocation
+    <div className="flex flex-col gap-6 p-6  shadow-sm dark:bg-black dark:border-gray-800 dark:text-white h-screen overflow-hidden">
+      <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 pt-6">
+        Please Upload Geo Location
+        <p className="text-sm text-gray-500 mt-1">
+          Upload ZIP File to Update Geo Location
+        </p>
       </h2>
 
       {/* Drag & Drop / Browse Area */}
       <label
         htmlFor="file-upload"
-        className={`flex flex-col items-center justify-center w-full h-full max-h-[50vh] border-2 border-dashed rounded-xl cursor-pointer transition
+        className={`flex flex-col items-center justify-center w-[70%] h-full max-h-[50vh] border-2 border-dashed rounded-xl cursor-pointer transition
           ${
             dragActive
               ? "border-blue-500 bg-blue-50 dark:bg-gray-800 dark:border-gray-400"
-              : "border-gray-300 bg-white shadow-md hover:border-blue-500 hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-600 dark:hover:border-gray-400"
+              : "border-gray-300 bg-gray-50 shadow-md hover:border-blue-500 hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-600 dark:hover:border-gray-400"
           }`}
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-10 h-10 text-gray-400 mb-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 16v-8m0 0l-3 3m3-3l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+        <ZipFileIcon className="w-8 h-8" />
 
         {file ? (
           <div className="flex items-center gap-2">
@@ -156,14 +150,14 @@ const GeoLocation: React.FC = () => {
         <input
           id="file-upload"
           type="file"
-          // accept=".zip"
+          accept=".zip"
           className="hidden"
           onChange={handleChange}
         />
       </label>
 
       {/* Upload Button */}
-      <div className="flex justify-end">
+      <div className="flex justify-end w-[70%]">
         {file && (
           <button
             onClick={handleUpload}

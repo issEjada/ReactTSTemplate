@@ -320,13 +320,14 @@ export const EventsTable = () => {
     return <Spinner />;
   }
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
-      <div className="pt-5 px-6 pb-[18px]">
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
+    <div className="p-6 bg-white shadow-sm dark:bg-black">
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
+          {/* Left side: Title + description */}
           <div>
-            <h2 className="text-lg text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
               Events Management{" "}
-              <span className="ml-2 text-blue-700 bg-blue-50 px-[8px] py-[2px] rounded-full text-[12px]">
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
                 {totalCount} Event{totalCount !== 1 && "s"}
               </span>
             </h2>
@@ -335,19 +336,21 @@ export const EventsTable = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Right side: Button */}
+          {totalCount !== 0 && (
             <button
-              onClick={handleAddNewEvent}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 h-[40px] rounded-[8px] text-sm font-semibold flex items-center gap-2"
+               onClick={handleAddNewEvent}
+              className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
               <Suspense fallback={<Spinner mode="inline" size="sm" />}>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
               </Suspense>
-              <span className="text-[14px]">Add New Event</span>
+              Add New Event
             </button>
-          </div>
+          )}
         </div>
       </div>
+
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={

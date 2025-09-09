@@ -27,7 +27,7 @@ const PopupLayout: React.FC<PopupProps> = ({
 
       {/* Popup Content */}
       <div
-        className={`relative bg-white dark:bg-black rounded-xl shadow-2xl ${className} p-6  z-10`}
+        className={`relative bg-white dark:bg-black rounded-xl shadow-2xl ${className} p-6  z-8`}
       >
         {children}
       </div>

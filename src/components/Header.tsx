@@ -51,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       sessionStorage.removeItem(ConstantKeys.rememberMe);
       localStorage.removeItem(ConstantKeys.rememberMe);
       localStorage.removeItem("customerProfileMobileNumber");
+      localStorage.removeItem("isClosed");
       setIsAuthenticated(false);
     }, 1000);
   };
@@ -89,7 +90,10 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
-        <div ref={headerRef} className="relative flex items-center space-x-4">
+        <div
+          ref={headerRef}
+          className="relative flex items-center space-x-4"
+        >
           {/* Profile */}
           <div
             className="flex items-center space-x-2 cursor-pointer"
@@ -200,42 +204,45 @@ export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
           onClick={onSidebarIconClick}
         />
       </Suspense>
+      {window.innerWidth >= 768 && (
+        <>
+          <Link
+            to="/"
+            className="text-gray-950/40 dark:text-gray-400 hover:underline"
+          >
+            Dashboard
+          </Link>
+          <span className="text-gray-950/20 dark:text-gray-700">/</span>
 
-      <Link
-        to="/"
-        className="text-gray-950/40 dark:text-gray-400 hover:underline"
-      >
-        Dashboard
-      </Link>
-      <span className="text-gray-950/20 dark:text-gray-700">/</span>
+          {fullPath.map((name, index) => {
+            const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
+            const isLast = index === fullPath.length - 1;
+            const label =
+              customBreadcrumbLabels[name.toLowerCase()] ||
+              decodeURIComponent(name);
 
-      {fullPath.map((name, index) => {
-        const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
-        const isLast = index === fullPath.length - 1;
-        const label =
-          customBreadcrumbLabels[name.toLowerCase()] ||
-          decodeURIComponent(name);
-
-        return (
-          <span key={name} className="flex items-center space-x-4">
-            {isLast ? (
-              <span className="text-black dark:text-white font-normal capitalize">
-                {label}
+            return (
+              <span key={name} className="flex items-center space-x-4">
+                {isLast ? (
+                  <span className="text-black dark:text-white font-normal capitalize">
+                    {label}
+                  </span>
+                ) : (
+                  <>
+                    <Link
+                      to={routeTo}
+                      className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
+                    >
+                      {label}
+                    </Link>
+                    <span>/</span>
+                  </>
+                )}
               </span>
-            ) : (
-              <>
-                <Link
-                  to={routeTo}
-                  className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
-                >
-                  {label}
-                </Link>
-                <span>/</span>
-              </>
-            )}
-          </span>
-        );
-      })}
+            );
+          })}
+        </>
+      )}
     </div>
   );
 };

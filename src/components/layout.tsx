@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState} from "react";
 import SideBar from "./SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
+import { MobileSideBar } from "./SideBar/MobileSideBar";
 
 export const Layout = () => {
-  const [isClosed, setIsClosed] = useState<boolean>(false);
+  const [isClosed, setIsClosed] = useState<boolean>(() => {
+    const saved = localStorage.getItem("isClosed");
+    if (saved !== null) return JSON.parse(saved);
 
+    return window.innerWidth < 768;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isClosed", JSON.stringify(isClosed));
+  }, [isClosed]);
   const handleSidebarIconClick = () => {
     setIsClosed(!isClosed);
   };
@@ -14,13 +23,17 @@ export const Layout = () => {
     <div className="min-h-screen ">
       <div className="flex">
         <div>
-          <div className="text-white h-screen fixed border-r border-r-[1px] border-r-gray-950/10 dark:border-gray-800 bg-white z-10">
+          <div className={`transition-all duration-300 ease-in-out text-white h-screen fixed border-r border-r-[1px] border-r-gray-950/10 dark:border-gray-800 bg-white z-10
+          ${!isClosed ? "w-full sm:w-[unset]" : "w-0"}
+          `
+          }>
             <SideBar isClosed={isClosed} />
+            <MobileSideBar isClosed={isClosed} setIsClosed={setIsClosed}/>
           </div>
         </div>
         <div
           className={`flex-1 dark:bg-black ${
-            isClosed ? "ml-[110px]" : "ml-64"
+            isClosed ? "md:ml-[110px]" : "md:ml-64"
           } transition-all duration-300 overflow-auto`}
         >
           <Header onSidebarIconClick={handleSidebarIconClick} />

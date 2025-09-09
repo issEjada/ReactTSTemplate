@@ -136,7 +136,7 @@ const RuleForm = () => {
         </PopupLayout>
       )}
 
-      <div className="h-auto flex flex-row items-start px-6 py-5">
+      <div className="relative h-auto md:flex md:flex-row items-start px-6 pt-5 md:py-5">
         <div className="flex flex-col gap-2">
           <label
             htmlFor="ruleName"
@@ -164,7 +164,7 @@ const RuleForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
@@ -193,8 +193,8 @@ const RuleForm = () => {
         )}
       </div>
 
-      <div className="flex flex-col gap-[12px] h-[412px] w-[1440px] gap-y-[24px] mb-[16px]">
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
+      <div className="relative flex flex-col md:gap-[12px] md:h-[400px] w-full md:gap-y-[20px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 md:py-5 gap-[16px]">
           <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.eventSourceDevice"
@@ -247,7 +247,7 @@ const RuleForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className=" w-full md:w-[1136px] md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.controlCode"
@@ -283,7 +283,7 @@ const RuleForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 py-5 gap-[16px]">
           <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="status"
@@ -292,7 +292,7 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
@@ -304,13 +304,13 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={screenAction === "view" || riskLevelValues.length === 0}
             required
           />
         </div>
 
-        <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
+        <div className="w-full md:w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
             className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white"
