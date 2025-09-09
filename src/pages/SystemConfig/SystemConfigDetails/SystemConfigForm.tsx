@@ -249,7 +249,7 @@ export const SystemConfigForm = ({
           onClick={onCancel}
           className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
         >
-          Back
+          Cancel
         </button>
         <button
           onClick={() => onSave(fieldValues)}
@@ -258,7 +258,7 @@ export const SystemConfigForm = ({
             isSaveDisabled ? " cursor-not-allowed" : ""
           }`}
         >
-          Save Changes
+          Confirm
         </button>
       </div>
     </div>

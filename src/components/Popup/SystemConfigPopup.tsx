@@ -98,7 +98,7 @@ const SystemConfigPopup = ({
               onClick={onConfirm}
               className="flex-1 px-4 py-2 rounded-[8px] bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
             >
-              Create New Rule
+              Add New
             </button>
           </>
         )}
