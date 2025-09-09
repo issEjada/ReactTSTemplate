@@ -22,14 +22,17 @@ const getIconComponent = (iconName: string | undefined) => {
   return iconComponentCache[iconName];
 };
 
-export const SidebarItem: React.FC<SidebarItemProps> = ({ setIsClosed, item }) => {
+export const SidebarItem: React.FC<SidebarItemProps> = ({
+  setIsClosed,
+  item,
+}) => {
   const IconComponent = getIconComponent(item?.icon);
 
   return (
     <li className="flex flex-col justify-center">
       <NavLink
         to={item.url!}
-        onClick={()=>(setIsClosed(true))}
+        onClick={() => setIsClosed(true)}
         className={({ isActive }) =>
           `flex px-2 items-center rounded-lg border-s-transparent transition-all ease-in-out cursor-pointer relative z-8 justify-start   ${
             isActive
@@ -64,11 +67,14 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ setIsClosed, item }) =
 };
 
 export interface SidebarProps {
-  setIsClosed: (value: boolean) => void;
+  setIsClosed?: (value: boolean) => void;
   items: MenuItem[];
 }
 
-export const SideBarItemsGroup: React.FC<SidebarProps> = ({ setIsClosed, items }) => {
+export const SideBarItemsGroup: React.FC<SidebarProps> = ({
+  setIsClosed = () => {},
+  items,
+}) => {
   return (
     <div className="bg-primary-blue text-white w-full">
       <aside>
@@ -76,7 +82,11 @@ export const SideBarItemsGroup: React.FC<SidebarProps> = ({ setIsClosed, items }
           <div className="flex-1 overflow-y-auto ">
             <ul className={`flex flex-col gap-1`}>
               {items.map((item, idx) => (
-                <SidebarItem key={`${item.pageTitle}-${idx}`} item={item} setIsClosed={setIsClosed} />
+                <SidebarItem
+                  key={`${item.pageTitle}-${idx}`}
+                  item={item}
+                  setIsClosed={setIsClosed}
+                />
               ))}
             </ul>
           </div>
