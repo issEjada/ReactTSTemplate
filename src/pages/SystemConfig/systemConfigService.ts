@@ -52,11 +52,12 @@ export interface Attribute {
   name: string;
   editable: boolean;
   hasLov: boolean;
+  mandatory: boolean;
 }
 
 export interface Value {
   id?: string;
-  [key: string]: string | number | undefined; 
+  [key: string]: string | number | undefined;
 }
 
 export const SystemConfigServices = {

@@ -9,7 +9,6 @@ const EditPenIcon = React.lazy(
   () => import("../../../assets/svg/EditPen.svg?react")
 );
 
-
 interface SystemConfigFormProps {
   mode: "add" | "update" | "error";
   fields: FieldConfig[];
@@ -64,7 +63,8 @@ export const SystemConfigForm = ({
     fields.forEach((field, index) => {
       // First field is required
       if (
-        index === 0 &&
+        field.mandatory &&
+        fieldValues[field.key] &&
         (fieldValues[field.key] === "" || fieldValues[field.key] === undefined)
       ) {
         errors[field.key] = {
@@ -183,7 +183,7 @@ export const SystemConfigForm = ({
   return (
     <div>
       <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-blue-100 border border-blue-50 border-8">
-        <EditPenIcon className="text-blue-700"/>
+        <EditPenIcon className="text-blue-700" />
       </div>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">

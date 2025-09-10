@@ -18,6 +18,7 @@ export interface FieldConfig {
   key: string;
   value: string | number;
   hasLov?: boolean;
+  mandatory?: boolean;
   options?: { key: string; node: string }[];
   disabled?: boolean;
 }
