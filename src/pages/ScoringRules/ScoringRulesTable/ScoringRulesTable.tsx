@@ -297,6 +297,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
   const handleAddNewRule = () => {
     navigate("/scoring-rules/new-rule");
   };
+
   return (
     <div
       className={`p-6 bg-white ${
@@ -360,7 +361,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
         />
       ) : (
         <DynamicTable<Rule>
-          data={data.map((item) => ({
+          data={(fromDashboard ? data.slice(0, 5) : data).map((item) => ({
             id: item.id,
             name: item.name ?? "",
             description: item.description ?? "",
