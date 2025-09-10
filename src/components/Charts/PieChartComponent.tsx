@@ -1,7 +1,7 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { useContext, useMemo } from "react";
 import { ThemeContext } from "../../context/Context";
-import { useSessionActivity } from "../../pages/Monitoring/MonitoringTable/useSessionActivity";
+import { useDashboard } from "../../pages/Dashboard/useDashboard";
 
 type RCTooltipProps = {
   active?: boolean;
@@ -21,7 +21,7 @@ const DonutTooltip = ({ active, payload, total }: RCTooltipProps) => {
 
 export default function PieChartComponent() {
   const { isDarkMode } = useContext(ThemeContext);
-  const { statisticsData } = useSessionActivity();
+  const { data } = useDashboard();
 
   const COLORS = useMemo(
     () =>
@@ -31,13 +31,13 @@ export default function PieChartComponent() {
     [isDarkMode]
   );
 
-  const total = statisticsData?.totalSessions ?? 100;
-  const viewed = statisticsData?.viewedSessions ?? 50;
-  const notViewed = statisticsData?.notViewedSessions ?? 50;
+  const total = data?.events.totalRules ?? 100;
+  const active = data?.events.activeRules ?? 50;
+  const inactive = data?.events.inactiveRules ?? 50;
 
-  const data = [
-    { name: "Viewed", value: viewed },
-    { name: "Not Viewed", value: notViewed },
+  const eventsData = [
+    { name: "Active", value: active },
+    { name: "Inactive", value: inactive },
   ];
 
   return (
@@ -46,7 +46,7 @@ export default function PieChartComponent() {
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={data}
+              data={eventsData}
               cx="50%"
               cy="50%"
               innerRadius={52}
@@ -65,7 +65,7 @@ export default function PieChartComponent() {
               content={({ active, payload }) => (
                 <DonutTooltip
                   active={active}
-                  payload={payload as any}
+                  payload={payload as Array<{ value: number }>}
                   total={total}
                 />
               )}
@@ -83,7 +83,7 @@ export default function PieChartComponent() {
               style={{ backgroundColor: COLORS.all }}
             />
             <span className="text-gray-950 dark:text-gray-300 text-[12px]">
-              Sessions
+              Events
             </span>
           </div>
           <div className="text-gray-950 dark:text-gray-300 ml-auto text-[12px]">
@@ -98,11 +98,11 @@ export default function PieChartComponent() {
               style={{ backgroundColor: COLORS.viewed }}
             />
             <span className="text-gray-950 dark:text-gray-300 text-[12px]">
-              Viewed
+              Active
             </span>
           </div>
           <span className="text-gray-950 dark:text-gray-300 text-[12px]">
-            {viewed}
+            {active}
           </span>
         </div>
 
@@ -113,11 +113,11 @@ export default function PieChartComponent() {
               style={{ backgroundColor: COLORS.notViewed }}
             />
             <span className="text-gray-950 dark:text-gray-300 text-[12px]">
-              Not Viewed
+              Inactive
             </span>
           </div>
           <span className="text-gray-950 dark:text-gray-300 text-[12px]">
-            {notViewed}
+            {inactive}
           </span>
         </div>
       </div>

@@ -19,7 +19,7 @@ const DashboardEvents: React.FC = () => {
   const { data, loadingState } = useEventsTable();
 
   useEffect(() => {
-    const formattedEvents = data.map((e: any) => ({
+    const formattedEvents = data.map((e) => ({
       id: e.id,
       name: e.name,
     }));
