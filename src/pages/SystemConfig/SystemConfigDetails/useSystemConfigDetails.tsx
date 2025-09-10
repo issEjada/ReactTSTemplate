@@ -46,12 +46,13 @@ export const useSystemConfigDetails = () => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const location = useLocation();
-  const rowProps: {
+  const initialRowProps: {
     id: string;
     name: string;
     desc: string;
     allowAddRow: boolean;
   } = location.state;
+  const [rowProps, setRowProps] = useState(initialRowProps);
   const [configDesc, setConfigDesc] = useState<string>(rowProps.desc);
 
   const fetchData = async () => {
@@ -68,6 +69,8 @@ export const useSystemConfigDetails = () => {
         setAttributes(response.properties.attributes);
         setData(response.properties.values);
         setTotalCount(response.properties.meta.totalItems || 0);
+        setConfigDesc(response.description);
+        setRowProps((prev) => ({ ...prev, desc: response.description }));
       })
       .catch((err) => {
         console.error("Failed to fetch system Configuration:", err);
@@ -241,6 +244,7 @@ export const useSystemConfigDetails = () => {
     await SystemConfigServices.updateConfiguration(rowProps.id, payload)
       .then(() => {
         setConfigDesc(newDescription);
+        setRowProps((prev) => ({ ...prev, desc: newDescription }));
         setPopupMode("update");
         setIsSuccessPopupOpen(true);
       })
