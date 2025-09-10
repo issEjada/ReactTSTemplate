@@ -320,17 +320,26 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           </div>
 
           {/* Right side: Button */}
-          {totalCount !== 0 && (
-            <button
-              onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
-            >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
-                <PlusIcon className="w-[20px] h-[20px] text-white" />
-              </Suspense>
-              Add New Rule
-            </button>
-          )}
+          {totalCount !== 0 &&
+            (fromDashboard ? (
+              <button
+                onClick={handleAddNewRule}
+                className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
+                aria-label="Add New Rule"
+              >
+                <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
+              </button>
+            ) : (
+              <button
+                onClick={handleAddNewRule}
+                className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
+              >
+                <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                  <PlusIcon className="w-[20px] h-[20px] text-white" />
+                </Suspense>
+                Add New Rule
+              </button>
+            ))}
         </div>
       </div>
       {totalCount === 0 && !isFilterActive ? (
