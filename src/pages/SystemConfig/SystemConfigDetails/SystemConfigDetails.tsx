@@ -315,6 +315,30 @@ const getColumns = (
       const displayValue = attribute.hasLov
         ? dropDownOptions.find((option) => option.key === node)?.node || node
         : node;
+
+      if (attribute.key === "riskLevel") {
+        const colorMap: Record<string, string> = {
+          Low: "text-gray-700 bg-gray-100",
+          Moderate: "text-warning-700 bg-warning-50",
+          Medium: "text-warning-700 bg-warning-50",
+          High: "text-red-700 bg-red-50",
+          Extreme: "text-red-700 bg-red-50",
+        };
+
+        const displayValue = attribute.hasLov
+          ? dropDownOptions.find((option) => option.key === node)?.node || node
+          : node;
+
+        return (
+          <span
+            className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+              colorMap[displayValue] || "text-gray-700"
+            }`}
+          >
+            {displayValue}
+          </span>
+        );
+      }
       return (
         <span className="font-medium text-gray-900  dark:text-white">
           {displayValue}
