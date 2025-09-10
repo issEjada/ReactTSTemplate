@@ -287,13 +287,13 @@ export const MonitoringTable = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
-      <div className="pt-5 px-6 pb-[18px]">
+    <div className="flex flex-col gap-3 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
+      <div className="pt-5  pb-[18px]">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
           <div>
-            <h2 className="text-lg text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               Monitor Activity Sessions{" "}
-              <span className="ml-2 text-blue-700 bg-blue-50 px-[8px] py-[2px] rounded-full text-[12px]">
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
                 {totalCount} Active Session{totalCount !== 1 && "s"}
               </span>
             </h2>
