@@ -173,6 +173,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     {
       accessorKey: "eventName",
       header: "Event Name",
+      meta: {
+        isSorted: true,
+      },
       cell: (i) => i.getValue(),
     },
     {

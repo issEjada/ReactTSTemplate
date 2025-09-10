@@ -447,10 +447,16 @@ const getColumns = (
   {
     header: "ID",
     accessorKey: "id",
+    meta: {
+      isSorted: true,
+    },
   },
   {
     header: "Rule Name",
     accessorKey: "name",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">

@@ -16,9 +16,15 @@ const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
 const PlusIcon = React.lazy(() => import("../assets/svg/plus.svg?react"));
 const ArrowIcon = React.lazy(() => import("../assets/svg/ArrowUp.svg?react"));
 
+type CustomColumnMeta = {
+  isSorted?: boolean;
+};
+export type CustomColumnDef<TData extends object> = ColumnDef<TData, any> & {
+  meta?: CustomColumnMeta;
+};
 interface DynamicTableProps<TData extends object> {
   data: TData[];
-  columns: ColumnDef<TData>[];
+  columns: CustomColumnDef<TData>[];
   filterComponent?: React.ReactNode;
   totalCount: number;
   currentPage: number;
@@ -246,12 +252,8 @@ export function DynamicTable<TData extends object>({
                                 header.getContext()
                               )}
                         </span>
-                        {(header.id === "deviceId" ||
-                          header.id === "sessionId" ||
-                          header.id === "name" ||
-                          header.id === "configName" ||
-                          header.id === "id" ||
-                        (header.index == 0 && header.id != "OFF/ON")) && (
+                        {(header.column.columnDef as CustomColumnDef<TData>)
+                          .meta?.isSorted && (
                           <button
                             title="Sort"
                             onClick={() => onArrowClick(header.column.id)}

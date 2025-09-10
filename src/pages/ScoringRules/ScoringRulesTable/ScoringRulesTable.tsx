@@ -7,11 +7,13 @@ import React, {
   Suspense,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import type { ColumnDef } from "@tanstack/react-table";
 import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
 import { useScoringRulesTable } from "./useScoringRulesTable";
 import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
-import { DynamicTable } from "../../../components/DynamicTable";
+import {
+  DynamicTable,
+  type CustomColumnDef,
+} from "../../../components/DynamicTable";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import { createPortal } from "react-dom";
@@ -410,7 +412,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 const getColumns = (
   onToggleStatus: (id: number, currentStatus: string) => void,
   onDelete: (id: number) => void
-): ColumnDef<Rule>[] => [
+): CustomColumnDef<Rule>[] => [
   {
     header: "OFF/ON",
     cell: ({ row }) => {
@@ -440,10 +442,16 @@ const getColumns = (
   {
     header: "ID",
     accessorKey: "id",
+    meta: {
+      isSorted: true,
+    },
   },
   {
     header: "Rule Name",
     accessorKey: "name",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">

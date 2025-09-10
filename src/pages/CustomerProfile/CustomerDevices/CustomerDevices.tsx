@@ -31,7 +31,13 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
 
   const columns = useMemo<ColumnDef<SDKCustomerDeviceInfo>[]>(
     () => [
-      { header: "Mobile #", accessorKey: "userMobileNumber" },
+      {
+        header: "Mobile #",
+        accessorKey: "userMobileNumber",
+        meta: {
+          isSorted: true,
+        },
+      },
       { header: "User ID", accessorKey: "userId" },
       { header: "Client ID", accessorKey: "clientUserId" },
       { header: "Device ID", accessorKey: "deviceUniqueId" },

@@ -187,10 +187,19 @@ const EventMenu = ({ row }: { row: EventRow }) => {
 };
 
 const getColumns = (): ColumnDef<EventRow>[] => [
-  { header: "Code", accessorKey: "code" },
+  {
+    header: "Code",
+    accessorKey: "code",
+    meta: {
+      isSorted: true,
+    },
+  },
   {
     header: "Event Name",
     accessorKey: "name",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium dark:text-white">

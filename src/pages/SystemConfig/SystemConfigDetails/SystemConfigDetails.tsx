@@ -304,9 +304,12 @@ const getColumns = (
 ): ColumnDef<{ [key: string]: any }>[] => {
   if (!attributes.length) return [];
 
-  const dynamicColumns = attributes.map((attribute) => ({
+  const dynamicColumns = attributes.map((attribute, index) => ({
     header: attribute.name,
     accessorKey: attribute.key,
+    meta: {
+      isSorted: index == 0,
+    },
     cell: (row: any) => {
       const node = row.cell.getValue() as string;
       const displayValue = attribute.hasLov

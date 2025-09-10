@@ -148,6 +148,9 @@ const getColumns = (
   {
     header: "Configuration Name",
     accessorKey: "configName",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">

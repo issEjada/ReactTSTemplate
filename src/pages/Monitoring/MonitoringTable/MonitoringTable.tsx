@@ -38,6 +38,9 @@ const getColumns = (): ColumnDef<Session>[] => [
   {
     header: "Session ID",
     accessorKey: "sessionId",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
@@ -49,6 +52,9 @@ const getColumns = (): ColumnDef<Session>[] => [
   {
     header: "Device ID",
     accessorKey: "deviceId",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
       <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">

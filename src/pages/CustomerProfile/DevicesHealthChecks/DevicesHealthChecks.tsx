@@ -168,7 +168,13 @@ export const DevicesHealthChecks: React.FC = () => {
 
   const columns = useMemo<ColumnDef<FlattenedHealthResponse>[]>(
     () => [
-      { header: "Device ID", accessorKey: "uniqueId" },
+      {
+        header: "Device ID",
+        accessorKey: "uniqueId",
+        meta: {
+          isSorted: true,
+        },
+      },
       { header: "Manufacturers", accessorKey: "manufacturer" },
       { header: "Model", accessorKey: "model" },
       { header: "App Installation ID", accessorKey: "appInstallationId" },
