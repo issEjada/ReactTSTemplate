@@ -85,7 +85,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 {
                   pageTitle: "Customer Profile",
                   text: "Customer Profile",
-                  icon: "settings",
+                  icon: "profile",
                   url: AppRoutes.customerProfile,
                 },
                 {
