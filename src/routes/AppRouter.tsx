@@ -16,8 +16,6 @@ import DecisionRulesView from "../pages/DecisionRules/DecisionRulesForm/Decision
 import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
 import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
 import EventsTable from "../pages/Events/EventsTable/EventsTable";
-import EventsForm from "../pages/Events/EventsForm/EventsForm";
-import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
 import GeoLocation from "../pages/GeoLocation/GeoLocation";
@@ -217,7 +215,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.editEvents,
         element: (
           <ProtectedRoute>
-            <EventsForm />
+            <EventDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
