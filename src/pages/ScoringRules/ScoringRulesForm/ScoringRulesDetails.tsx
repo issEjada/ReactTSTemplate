@@ -105,10 +105,6 @@ const ScoringRulesDetails = () => {
     });
   };
 
-  const handleDeleteClick = () => {
-    setIsDeletePopupOpen(true);
-  };
-
   const handleConfirmClear = () => {
     setEditorContent("");
     setShowConfirmModal(false);
@@ -217,15 +213,6 @@ const ScoringRulesDetails = () => {
             )}
           />
         </div>
-        {(screenAction === "view" || screenAction === "edit") && (
-          <button
-            type="button"
-            onClick={handleDeleteClick}
-            className="ml-auto mr-12  flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
-          >
-            Delete Rule
-          </button>
-        )}
       </div>
 
       <div className="relative flex flex-col md:gap-[12px] md:h-[400px] w-full md:gap-y-[20px]">
