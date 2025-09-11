@@ -8,13 +8,13 @@ import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import useViewScoringRules from "./useScoringRuleForm";
 import Spinner from "../../../components/Spinner";
+import DynamicView from "../../../components/DynamicView"; // Added for DynamicView
+import { LoadingState } from "../../../types/types"; // Added for LoadingState
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
-const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
-
-const RuleForm = () => {
+const ScoringRulesDetails = () => {
   const {
     handleSubmit,
     onSubmit,
@@ -40,6 +40,7 @@ const RuleForm = () => {
     loadingState,
     isFormValid,
     formValues,
+    ruleData, // Added ruleData for view mode
   } = useViewScoringRules();
 
   const navigate = useNavigate();
@@ -99,7 +100,9 @@ const RuleForm = () => {
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/scoring-rules/edit-rule");
+    navigate("/scoring-rules/edit-rule", {
+      state: { id: ruleData?.id, action: "edit" },
+    });
   };
 
   const handleDeleteClick = () => {
@@ -112,20 +115,60 @@ const RuleForm = () => {
   };
 
   useEffect(() => {
-    if (popupType === "successModal" && loadingState === "success") {
+    if (popupType === "successModal" && loadingState === LoadingState.Success) {
       setIsPopupOpen(true);
-    } else if (popupType === "errorModal" && loadingState === "error") {
+    } else if (
+      popupType === "errorModal" &&
+      loadingState === LoadingState.Error
+    ) {
       setIsPopupOpen(true);
     }
   }, [popupType, loadingState]);
+
+  if (loadingState === LoadingState.Loading) {
+    return <Spinner />;
+  }
+
+  if (screenAction === "view") {
+    return (
+      <DynamicView
+        title="Scoring Rule details"
+        fields={[
+          { title: "Rule Name", value: ruleData?.name },
+          { title: "Risk Level", value: ruleData?.riskLevel },
+          { title: "Description", value: ruleData?.description },
+          {
+            title: "Event Source Device",
+            value: ruleData?.identifier?.eventSourceDevice,
+          },
+          { title: "Scheme", value: ruleData?.identifier?.scheme },
+          { title: "Aspect Code", value: ruleData?.identifier.aspectCode },
+          { title: "Control", value: ruleData?.identifier.controlCode },
+          { title: "Platform", value: ruleData?.identifier.platform },
+          { title: "Status", value: ruleData?.status },
+          { title: "Condition", value: ruleData?.condition },
+        ]}
+        actions={[
+          {
+            label: "Back",
+            onClick: () => handleCancel(),
+            variant: "secondary",
+          },
+          {
+            label: "Update Rule",
+            onClick: handleEditClick,
+            variant: "primary",
+          },
+        ]}
+      />
+    );
+  }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
-      {loadingState === "loading" && <Spinner />}
-
       {showConfirmModal && (
         <PopupLayout isOpen={showConfirmModal} className="w-[30%]">
           <RulesPopupJsx
@@ -144,14 +187,6 @@ const RuleForm = () => {
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Rule Name
-            {screenAction === "view" && (
-              <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-blue-50 p-[8px] gap-[4px]"
-                onClick={handleEditClick}
-              >
-                <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
-              </div>
-            )}
           </label>
           <Controller
             name="name"
@@ -450,4 +485,4 @@ const RuleForm = () => {
   );
 };
 
-export default RuleForm;
+export default ScoringRulesDetails;

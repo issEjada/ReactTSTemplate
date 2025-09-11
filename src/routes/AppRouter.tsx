@@ -9,14 +9,13 @@ import AboutUs from "../pages/AboutUs";
 import { ScoringRulesTable } from "../pages/ScoringRules/ScoringRulesTable/ScoringRulesTable";
 import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringTable";
 import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
-import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
+import ScoringRulesDetails from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesDetails";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
 import DecisionRulesDetails from "../pages/DecisionRules/DecisionRulesForm/DecisionRulesDetails";
 import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
 import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
 import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
-import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
 import GeoLocation from "../pages/GeoLocation/GeoLocation";
 import EventDetails from "../pages/Events/EventsForm/EventDetails";
 
@@ -123,7 +122,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.addScoringRule,
         element: (
           <ProtectedRoute>
-            <RuleForm />
+            <ScoringRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -132,7 +131,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewScoringRule,
         element: (
           <ProtectedRoute>
-            <ScoringRuleView />
+            <ScoringRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -141,7 +140,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.editScoringRule,
         element: (
           <ProtectedRoute>
-            <RuleForm />
+            <ScoringRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
