@@ -84,6 +84,7 @@ export function DynamicTable<TData extends object>({
   loadingState,
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [submittedText, setSubmittedText] = useState<string>("");
   const navigate = useNavigate();
 
   const table = useReactTable<TData>({
@@ -151,7 +152,10 @@ export function DynamicTable<TData extends object>({
                   <button
                     type="button"
                     title="Search"
-                    onClick={applyFilters}
+                    onClick={() => {
+                      applyFilters();
+                      setSubmittedText(searchText || "");
+                    }}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                   >
                     <Suspense>
@@ -164,7 +168,10 @@ export function DynamicTable<TData extends object>({
                     value={searchText}
                     onChange={(e) => setSearchText?.(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" && applyFilters) applyFilters();
+                      if (e.key === "Enter" && applyFilters) {
+                        applyFilters();
+                        setSubmittedText(searchText || "");
+                      }
                     }}
                     placeholder={searchPlaceholder}
                     className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-gray-300 outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
@@ -172,7 +179,12 @@ export function DynamicTable<TData extends object>({
 
                   {searchText && onClearSearch && (
                     <button
-                      onClick={onClearSearch}
+                      onClick={() => {
+                        if (onClearSearch) {
+                          onClearSearch();
+                        }
+                        setSubmittedText("");
+                      }}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                       aria-label="Clear search"
                     >
@@ -338,13 +350,18 @@ export function DynamicTable<TData extends object>({
                             {isCustomerProfile ? (
                               <>
                                 <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
-                                  Your search "{searchText}" did not match any{" "}
-                                  {title.toLowerCase()}. Please try again.
+                                  Your search "{submittedText}" did not match
+                                  any {title.toLowerCase()}. Please try again.
                                 </p>
                                 <div className="w-[352px] flex flex-row gap-3 pt-6 justify-center">
                                   <button
                                     type="button"
-                                    onClick={onClearSearch}
+                                    onClick={() => {
+                                      if (onClearSearch) {
+                                        onClearSearch();
+                                      }
+                                      setSubmittedText("");
+                                    }}
                                     disabled={!searchText && totalCount === 0}
                                     className={`w-[170px] h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black ${
                                       !searchText && totalCount === 0
@@ -359,15 +376,20 @@ export function DynamicTable<TData extends object>({
                             ) : (
                               <>
                                 <p className="text-gray-600 text-[14px] leading-[20px] text-center h-[40px] pt-1">
-                                  Your search "{searchText}" did not match any{" "}
-                                  {title.toLowerCase()}. Please try again or
+                                  Your search "{submittedText}" did not match
+                                  any {title.toLowerCase()}. Please try again or
                                   create and add a new{" "}
                                   {title.includes("Rules") ? "rule" : "item"}.
                                 </p>
                                 <div className="w-[352px] flex flex-row gap-3 pt-6">
                                   <button
                                     type="button"
-                                    onClick={onClearSearch}
+                                    onClick={() => {
+                                      if (onClearSearch) {
+                                        onClearSearch();
+                                      }
+                                      setSubmittedText("");
+                                    }}
                                     className={`${
                                       onAddNewItem ? "w-[170px]" : "w-full"
                                     } h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
