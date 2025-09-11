@@ -3,7 +3,7 @@ import { SideBarItemsGroup } from "./SideBarItem";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import { ThemeModeIcon } from "../../context/ThemeProvider";
-import Spinner from "../Spinner";
+
 const AnotherLogoWithTextIcon = React.lazy(
   () => import("../../assets/svg/logo_with_text_copy.svg?react")
 );

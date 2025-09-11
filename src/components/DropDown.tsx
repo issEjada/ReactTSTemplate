@@ -5,7 +5,6 @@ const ChevronDown = React.lazy(
   () => import("../assets/svg/ChevronDown.svg?react")
 );
 import type { Option } from "../types/types";
-import Spinner from "./Spinner";
 
 interface DropdownMenuProps<T extends FieldValues> {
   control: Control<T>;

@@ -58,7 +58,13 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
   };
 
   if (loadingState === "loading") {
-    return <Spinner />;
+    return (
+      <Spinner
+        mode="overlay"
+        size="sm"
+        overlayClassName="h-full w-full bg-transparent"
+      />
+    );
   }
 
   if (errorValidation) {
@@ -76,6 +82,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
           </h2>
         }
         data={customerDevicesData?.data.userSdkRecords || []}
+        loadingState={loadingState}
         columns={columns}
         totalCount={customerDevicesData?.meta.totalItems || 0}
         currentPage={currentPage}

@@ -255,7 +255,13 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     })) ?? [];
 
   if (loadingState === "loading") {
-    return <Spinner />;
+    return (
+      <Spinner
+        mode="overlay"
+        size="sm"
+        overlayClassName="h-full w-full bg-transparent"
+      />
+    );
   }
 
   if (errorValidation) {

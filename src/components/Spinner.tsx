@@ -21,7 +21,7 @@ export default function Spinner({
   message = "Loading...",
   size = "md",
   className = "",
-  overlayClassName = "h-full w-full bg-transparent",
+  overlayClassName,
 }: SpinnerProps) {
   if (!show) return null;
 

@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import Spinner from "../Spinner";
 
 const CloseXIcon = React.lazy(
   () => import("../../assets/svg/closeX.svg?react")

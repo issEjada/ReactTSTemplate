@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import Spinner from "./Spinner";
 
 const BackgroundCircle = React.lazy(
   () => import("../assets/svg/BackgroundCircle.svg?react")

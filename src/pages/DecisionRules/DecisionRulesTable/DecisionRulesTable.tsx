@@ -390,6 +390,7 @@ export const DecisionRulesTable = () => {
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
           title="Decision Rules"
+          loadingState={loadingState}
           error={error}
           searchText={searchText}
           setSearchText={setSearchText}
