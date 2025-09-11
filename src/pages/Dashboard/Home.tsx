@@ -14,7 +14,7 @@ const Home = () => {
       {/* Widgets */}
 
       <HomeWidgetGroup />
-      <div className="flex gap-[24px] mt-[24px] max-xl:flex-wrap">
+      <div className="flex gap-[24px] max-xl:flex-wrap">
         <ScoringRulesTable fromDashboard={true} />
         <DashboardEvents />
       </div>

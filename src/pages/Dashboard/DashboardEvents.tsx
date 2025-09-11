@@ -68,7 +68,7 @@ const DashboardEvents: React.FC = () => {
           {events.slice(0, 3).map((ev) => (
             <div
               key={ev.id}
-              className="flex items-center justify-between rounded-lg border-b border-gray-200 dark:border-gray-800 px-3 py-3"
+              className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-3 py-3"
             >
               <div className="flex items-center gap-2">
                 <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
