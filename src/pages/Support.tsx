@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import Spinner from "../components/Spinner";
 
 const EmailIcon = React.lazy(() => import(`/src/assets/svg/mail.svg?react`));
 const PhoneIcon = React.lazy(() => import(`/src/assets/svg/phone.svg?react`));
