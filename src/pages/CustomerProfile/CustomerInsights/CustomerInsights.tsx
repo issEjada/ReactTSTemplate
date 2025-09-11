@@ -90,7 +90,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
       />
       <ExpandableCard
         icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
-        label="Trusted Device IP's"
+        label="Trusted Device IPs"
         data={insightsData?.userInsights?.trustedDeviceIPs}
       />
       <ExpandableCard
@@ -130,7 +130,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
       />
       <ExpandableCard
         icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
-        label="Trusted 3DS Page IP's"
+        label="Trusted 3DS Page IPs"
         data={insightsData?.userInsights?.trusted3DSPageIPs}
       />
       <ExpandableCard
