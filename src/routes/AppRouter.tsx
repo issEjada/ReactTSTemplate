@@ -11,8 +11,7 @@ import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringT
 import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
 import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
-import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
-import DecisionRulesView from "../pages/DecisionRules/DecisionRulesForm/DecisionRulesView";
+import DecisionRulesDetails from "../pages/DecisionRules/DecisionRulesForm/DecisionRulesDetails";
 import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
 import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
 import EventsTable from "../pages/Events/EventsTable/EventsTable";
@@ -160,7 +159,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.addDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRuleForm />
+            <DecisionRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -169,7 +168,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRulesView />
+            <DecisionRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -178,7 +177,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.editDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRuleForm />
+            <DecisionRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,

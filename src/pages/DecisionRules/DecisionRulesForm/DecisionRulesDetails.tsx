@@ -9,13 +9,14 @@ import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEd
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import Spinner from "../../../components/Spinner";
+import DynamicView from "../../../components/DynamicView";
 
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
 const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
-const DecisionForm = () => {
+const DecisionRulesDetails = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -50,6 +51,7 @@ const DecisionForm = () => {
     screenAction,
     eventSourceDeviceValues,
     reset,
+    ruleData,
   } = useViewDecisionRules();
 
   useEffect(() => {
@@ -85,6 +87,11 @@ const DecisionForm = () => {
 
   const handleEditClick = () => {
     setScreenAction("edit");
+    if (isViewing) {
+      navigate("/decision-rules/edit-rule", {
+        state: { id: ruleData?.id, action: "edit" },
+      });
+    }
   };
 
   const handleDeleteClick = () => {
@@ -109,6 +116,50 @@ const DecisionForm = () => {
 
   if (loadingState === LoadingState.Loading && !isAdding) {
     return <Spinner />;
+  }
+
+  if (isViewing) {
+    if (loadingState === LoadingState.Error || !ruleData) {
+      return (
+        <div className="w-full min-h-screen flex items-center justify-center">
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            Decision Rule not found or an error occurred.
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <DynamicView
+        title="Decision Rule details"
+        fields={[
+          { title: "Rule Name", value: ruleData?.name },
+          { title: "Criteria Name", value: ruleData?.criteriaName },
+          {
+            title: "Event Source Device",
+            value: ruleData?.identifier?.eventSourceDevice,
+          },
+          { title: "Scheme", value: ruleData?.identifier?.scheme },
+          { title: "Decision", value: ruleData?.decision },
+          { title: "Event Name", value: ruleData?.eventName },
+          { title: "Status", value: ruleData?.status },
+          { title: "Description", value: ruleData?.description },
+          { title: "Condition", value: ruleData?.condition },
+        ]}
+        actions={[
+          {
+            label: "Back",
+            onClick: () => handleCancel(),
+            variant: "secondary",
+          },
+          {
+            label: "Update Rule",
+            onClick: handleEditClick,
+            variant: "primary",
+          },
+        ]}
+      />
+    );
   }
 
   return (
@@ -177,7 +228,7 @@ const DecisionForm = () => {
               <button
                 type="button"
                 onClick={handleDeleteClick}
-                className="flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
+                className="flex items-center gap-[4px] px-[16px] py-[10px] h-[42px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
               >
                 Delete Rule
               </button>
@@ -438,4 +489,4 @@ const DecisionForm = () => {
   );
 };
 
-export default DecisionForm;
+export default DecisionRulesDetails;
