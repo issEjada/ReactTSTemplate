@@ -8,7 +8,7 @@ const ActivityIcon = React.lazy(
 
 const DashboardOperations: React.FC = () => {
   return (
-    <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-[16px] px-6 ">
+    <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-[16px] ps-2">
       {/* Left: Title + Subtitle */}
       <div className="flex flex-col">
         <h1 className="text-[14px] font-semibold text-black leading-[24px] dark:text-white">
