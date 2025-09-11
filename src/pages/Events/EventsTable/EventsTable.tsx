@@ -274,6 +274,7 @@ export const EventsTable = () => {
 
   const [searchText, setSearchText] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const columns = useMemo(() => getColumns(), []);
 
@@ -305,6 +306,7 @@ export const EventsTable = () => {
     setSearchText("");
     setFilters({});
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   const handleAddNewEvent = () => {
@@ -320,6 +322,7 @@ export const EventsTable = () => {
       },
     }));
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const getDeviceFilterValue = useMemo(() => {
@@ -350,7 +353,7 @@ export const EventsTable = () => {
           </div>
 
           {/* Right side: Button */}
-          {totalCount !== 0 && (
+          {(totalCount !== 0 || !isFilterActive || isSearching) && (
             <button
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
@@ -364,7 +367,7 @@ export const EventsTable = () => {
         </div>
       </div>
 
-      {totalCount === 0 && !isFilterActive ? (
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
             <Suspense>

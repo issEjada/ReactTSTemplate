@@ -324,7 +324,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           </div>
 
           {/* Right side: Button */}
-          {(totalCount !== 0 || !isFilterActive || isFilterActive) &&
+          {(totalCount !== 0 || !isFilterActive || isSearching) &&
             (fromDashboard ? (
               <button
                 onClick={handleAddNewRule}

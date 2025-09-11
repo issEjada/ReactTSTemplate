@@ -202,6 +202,7 @@ export const MonitoringTable = () => {
   const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
     "All" | "VIEWED" | "NOT_VIEWED"
@@ -230,6 +231,7 @@ export const MonitoringTable = () => {
 
     setFilters(newFilters);
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
@@ -278,6 +280,7 @@ export const MonitoringTable = () => {
     setFilters(undefined);
     setStatusFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   if (error) {
@@ -310,7 +313,7 @@ export const MonitoringTable = () => {
           </div>
         </div>
       </div>
-      {totalCount === 0 && !isFilterActive ? (
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
             <Suspense>
