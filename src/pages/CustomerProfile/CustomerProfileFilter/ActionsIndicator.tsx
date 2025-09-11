@@ -2,14 +2,25 @@ import React, { useEffect, Suspense } from "react";
 import { createPortal } from "react-dom";
 import MetricCard from "./MetricCard";
 
-const TotalActionIcon   = React.lazy(() => import("../../../assets/svg/TAction.svg?react"));
-const AuthActionIcon    = React.lazy(() => import("../../../assets/svg/shieldG.svg?react")); 
-const AcceptedIcon      = React.lazy(() => import("../../../assets/svg/Check.svg?react")); 
-const RejectedIcon      = React.lazy(() => import("../../../assets/svg/ActiveAlerts.svg?react"));
-const MfaIcon           = React.lazy(() => import("../../../assets/svg/MFA.svg?react")); 
-const ScaIcon           = React.lazy(() => import("../../../assets/svg/LockIcon.svg?react")); 
-const CloseIcon         = React.lazy(() => import("../../../assets/svg/closeX.svg?react"));
-
+const TotalActionIcon = React.lazy(
+  () => import("../../../assets/svg/TAction.svg?react")
+);
+const AuthActionIcon = React.lazy(
+  () => import("../../../assets/svg/shieldG.svg?react")
+);
+const AcceptedIcon = React.lazy(
+  () => import("../../../assets/svg/Check.svg?react")
+);
+const RejectedIcon = React.lazy(
+  () => import("../../../assets/svg/ActiveAlerts.svg?react")
+);
+const MfaIcon = React.lazy(() => import("../../../assets/svg/MFA.svg?react"));
+const ScaIcon = React.lazy(
+  () => import("../../../assets/svg/LockIcon.svg?react")
+);
+const CloseIcon = React.lazy(
+  () => import("../../../assets/svg/closeX.svg?react")
+);
 
 type MetricId = "total" | "auth" | "accepted" | "rejected" | "mfa" | "sca";
 
@@ -21,21 +32,49 @@ type PopupProps = {
   values?: Partial<Record<MetricId, number | string>>;
 };
 
-
 const METRICS_DEF: Array<{
   id: MetricId;
   title: string;
   Icon: React.ComponentType<{ className?: string }>;
   className?: string;
 }> = [
-  { id: "total",    title: "Total Actions",          Icon: TotalActionIcon, className: "text-blue-700" },
-  { id: "auth",     title: "Authenticated Actions",  Icon: AuthActionIcon, className: "text-purple-700" },
-  { id: "accepted", title: "Accepted Actions",       Icon: AcceptedIcon, className: "text-success-600" },
-  { id: "rejected", title: "Rejected Actions",       Icon: RejectedIcon, className: "text-red-600" },
-  { id: "mfa",      title: "MFA Actions",            Icon: MfaIcon, className: "text-warning-600" },
-  { id: "sca",      title: "SCA Actions",            Icon: ScaIcon, className:"text-blueLight-600" },
+  {
+    id: "total",
+    title: "Total Actions",
+    Icon: TotalActionIcon,
+    className: "text-blue-700",
+  },
+  {
+    id: "auth",
+    title: "Authenticated Actions",
+    Icon: AuthActionIcon,
+    className: "text-purple-700",
+  },
+  {
+    id: "accepted",
+    title: "Accepted Actions",
+    Icon: AcceptedIcon,
+    className: "text-success-600",
+  },
+  {
+    id: "rejected",
+    title: "Rejected Actions",
+    Icon: RejectedIcon,
+    className: "text-red-600",
+  },
+  {
+    id: "mfa",
+    title: "MFA Actions",
+    Icon: MfaIcon,
+    className: "text-warning-600",
+  },
+  {
+    id: "sca",
+    title: "SCA Actions",
+    Icon: ScaIcon,
+    className: "text-blueLight-600",
+  },
 ];
-
 
 export const ActionIndicator: React.FC<PopupProps> = ({
   isOpen,
@@ -56,16 +95,21 @@ export const ActionIndicator: React.FC<PopupProps> = ({
     id,
     title,
     value: values?.[id] ?? 0,
-    icon: <Icon className={className}/>,
+    icon: <Icon className={className} />,
   }));
 
   return createPortal(
     <div className="fixed inset-0 z-[1000] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
+        onClick={onClose}
+      />
 
       <div className="relative z-8 w-[90vw] max-w-2xl bg-white dark:bg-[#0B0E13] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl">
         <div className="flex items-center justify-between px-5 py-4  dark:border-gray-800">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
+          <h2 className="text-base font-semibold text-gray-900 dark:text-white">
+            {title}
+          </h2>
           <button
             onClick={onClose}
             aria-label="Close"
@@ -77,9 +121,14 @@ export const ActionIndicator: React.FC<PopupProps> = ({
 
         {/* Content */}
         <div className="p-5 space-y-3">
-          <Suspense fallback={null}>
+          <Suspense>
             {rows.map((m) => (
-              <MetricCard key={m.id} title={m.title} value={m.value} icon={m.icon} />
+              <MetricCard
+                key={m.id}
+                title={m.title}
+                value={m.value}
+                icon={m.icon}
+              />
             ))}
           </Suspense>
         </div>

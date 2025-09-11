@@ -147,7 +147,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+              <Suspense>
                 <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px] whitespace-nowrap">
@@ -163,7 +163,7 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+              <Suspense>
                 <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Edit Rule</span>
@@ -177,7 +177,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+              <Suspense>
                 <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Delete</span>
@@ -330,7 +330,7 @@ export const DecisionRulesTable = () => {
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+              <Suspense>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
               </Suspense>
               Add New Rule
@@ -342,7 +342,7 @@ export const DecisionRulesTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+            <Suspense>
               <RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }
@@ -356,7 +356,7 @@ export const DecisionRulesTable = () => {
           }
           buttonText="Add New Decision Rule"
           buttonIcon={
-            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+            <Suspense>
               <PlusIcon className="w-[20px] h-[20px] text-white" />
             </Suspense>
           }

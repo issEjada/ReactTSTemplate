@@ -140,7 +140,7 @@ const LoginForm = () => {
         <div className="bg-black flex-1 relative pt-8 pr-14  w-1/2">
           <div className="text-end">
             <button className="text-white inline-flex gap-2 items-center justify-center px-3 py-2 bg-gray-800 rounded-lg text-xs ">
-              <Suspense fallback={<Spinner />}>
+              <Suspense>
                 <SupportIcon />
               </Suspense>
               Need Help!

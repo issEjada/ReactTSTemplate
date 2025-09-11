@@ -313,7 +313,7 @@ export const MonitoringTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+            <Suspense>
               <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }

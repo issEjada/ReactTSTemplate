@@ -63,48 +63,60 @@ const TRUSTED_DEF: {
   title: string;
   Icon: React.ReactNode;
 }[] = [
-  { id: "averageAmount", title: "Average Amount", Icon: <AverageAmountIcon className="text-blue-700"/> },
-  { id: "maxAmount", title: "Max Amount", Icon: <ArrowRiseIcon className="text-blue-700"/> },
-  { id: "minAmount", title: "Min Amount", Icon: <ArrowRiseIcon className="text-blue-700 rotate-180" /> },
+  {
+    id: "averageAmount",
+    title: "Average Amount",
+    Icon: <AverageAmountIcon className="text-blue-700" />,
+  },
+  {
+    id: "maxAmount",
+    title: "Max Amount",
+    Icon: <ArrowRiseIcon className="text-blue-700" />,
+  },
+  {
+    id: "minAmount",
+    title: "Min Amount",
+    Icon: <ArrowRiseIcon className="text-blue-700 rotate-180" />,
+  },
   {
     id: "mostUsedTargetCountry",
     title: "Most Used Target Country",
-    Icon: <MapIcon className="text-blue-700"/>,
+    Icon: <MapIcon className="text-blue-700" />,
   },
   {
     id: "mostUsedTargetMerchant",
     title: "Most Used Target Merchant",
-    Icon: <TargetIcon className="text-blue-700"/>,
+    Icon: <TargetIcon className="text-blue-700" />,
   },
   {
     id: "mostUsedTargetBank",
     title: "Most Used Target Bank",
-    Icon: <CoinIcon className="text-blue-700"/>,
+    Icon: <CoinIcon className="text-blue-700" />,
   },
   {
     id: "trustedTargetCountries",
     title: "Trusted Targeted Countries",
-    Icon: <CountryIcon className="text-blue-700"/>,
+    Icon: <CountryIcon className="text-blue-700" />,
   },
   {
     id: "trustedTargetMerchants",
     title: "Trusted Targeted Merchants",
-    Icon: <TargetIcon className="text-blue-700"/>,
+    Icon: <TargetIcon className="text-blue-700" />,
   },
   {
     id: "trustedTargetBanks",
     title: "Trusted Targeted Banks",
-    Icon: <CoinIcon className="text-blue-700"/>,
+    Icon: <CoinIcon className="text-blue-700" />,
   },
   {
     id: "mostUsedMaskedCard",
     title: "Most Used Masked Card",
-    Icon: <CardIcon className="text-blue-700"/>,
+    Icon: <CardIcon className="text-blue-700" />,
   },
   {
     id: "trustedMaskedCards",
     title: "Trusted Masked Cards",
-    Icon: <CardIcon className="text-blue-700"/>,
+    Icon: <CardIcon className="text-blue-700" />,
   },
 ];
 
@@ -168,7 +180,6 @@ export const ActionPopup: React.FC<PopupProps> = ({
   title,
   values,
 }) => {
-
   const metricRows = METRICS_DEF.map(({ id, title, Icon }) => ({
     id,
     title,
@@ -216,7 +227,7 @@ export const ActionPopup: React.FC<PopupProps> = ({
         </div>
 
         <div className="p-5 space-y-5 max-h-[700px] overflow-y-auto">
-          <Suspense fallback={null}>
+          <Suspense>
             {mode === "trustedIndicators" ? (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 ">

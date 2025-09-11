@@ -174,7 +174,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+              <Suspense>
                 <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
               </Suspense>
               <span className="text-[14px]">Update Event</span>
@@ -355,7 +355,7 @@ export const EventsTable = () => {
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
-              <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+              <Suspense>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
               </Suspense>
               Add New Event
@@ -367,7 +367,7 @@ export const EventsTable = () => {
       {totalCount === 0 && !isFilterActive ? (
         <TableFallback
           icon={
-            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+            <Suspense>
               <EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
             </Suspense>
           }
@@ -381,7 +381,7 @@ export const EventsTable = () => {
           }
           buttonText="Add New Event"
           buttonIcon={
-            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+            <Suspense>
               <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
             </Suspense>
           }
