@@ -41,7 +41,7 @@ const LoginForm = () => {
         <div className=" flex-1 flex flex-col  justify-center items-center relative w-1/2">
           <div className="w-[360px] mt-24 -ml-6">
             <div className="mb-10">
-              <Suspense fallback={<Spinner />}>
+              <Suspense>
                 <LogoWithText className=" dark:text-white" />
               </Suspense>
             </div>

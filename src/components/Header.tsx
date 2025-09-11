@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                      <Suspense>
                         <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       </Suspense>
                       View Profile
@@ -107,7 +107,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                      <Suspense>
                         <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       </Suspense>
                       Settings
@@ -122,7 +122,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                     onClick={handleOpenPopup}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
-                    <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                    <Suspense>
                       <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                     </Suspense>
                     Logout
@@ -180,7 +180,7 @@ export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
   return (
     <div className="flex items-center space-x-2 lg:space-x-4 text-sm text-gray-500 dark:text-gray-400">
-      <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+      <Suspense>
         <SideBarIcon
           className="text-black dark:text-white cursor-pointer"
           onClick={onSidebarIconClick}

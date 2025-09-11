@@ -154,7 +154,7 @@ export function DynamicTable<TData extends object>({
                     onClick={applyFilters}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                   >
-                    <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                    <Suspense>
                       <SearchIcon className="w-5 h-5" />
                     </Suspense>
                   </button>
@@ -187,7 +187,7 @@ export function DynamicTable<TData extends object>({
                   className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                   onClick={openFilterModal}
                 >
-                  <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                  <Suspense>
                     <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
                   </Suspense>
                   <span className="hidden sm:inline">Filter</span>
@@ -258,9 +258,7 @@ export function DynamicTable<TData extends object>({
                             title="Sort"
                             onClick={() => onArrowClick(header.column.id)}
                           >
-                            <Suspense
-                              fallback={<Spinner mode="inline" size="sm" />}
-                            >
+                            <Suspense>
                               <ArrowIcon
                                 className={`stroke-gray-600 dark:stroke-white ${
                                   header.column.getIsSorted() === "asc"
@@ -329,9 +327,7 @@ export function DynamicTable<TData extends object>({
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
                           <div className="w-12 h-12 rounded-[28px] border-[8px] border-blue-50 bg-blue-100 flex items-center justify-center dark:border-gray-700">
-                            <Suspense
-                              fallback={<Spinner mode="inline" size="sm" />}
-                            >
+                            <Suspense>
                               <SearchIcon className="text-blue-700" />
                             </Suspense>
                           </div>
@@ -384,11 +380,7 @@ export function DynamicTable<TData extends object>({
                                       onClick={onAddNewItem}
                                       className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
                                     >
-                                      <Suspense
-                                        fallback={
-                                          <Spinner mode="inline" size="sm" />
-                                        }
-                                      >
+                                      <Suspense>
                                         <PlusIcon className="text-white" />
                                       </Suspense>
                                       Add New{" "}

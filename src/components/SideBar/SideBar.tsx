@@ -23,7 +23,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           <div
             className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
           >
-            <Suspense fallback={<Spinner />}>
+            <Suspense>
               <LogoWithTextIcon
                 className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
                   isClosed && "w-[140px]"

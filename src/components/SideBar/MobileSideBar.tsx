@@ -15,7 +15,6 @@ export const MobileSideBar: React.FC<{
   isClosed: boolean;
   setIsClosed: (value: boolean) => void;
 }> = ({ isClosed, setIsClosed }) => {
-
   return (
     <>
       <div
@@ -31,7 +30,7 @@ export const MobileSideBar: React.FC<{
             <AnotherLogoWithTextIcon
               className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
             />
-            <Suspense fallback={<Spinner />}>
+            <Suspense>
               <FiltersIcon
                 className="text-gray-700 dark:text-white"
                 onClick={() => setIsClosed(true)}

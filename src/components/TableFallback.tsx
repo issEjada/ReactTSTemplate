@@ -30,7 +30,7 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         minimal ? "h-[437px]" : "h-[600px]"
       } flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden`}
     >
-      <Suspense fallback={<Spinner />}>
+      <Suspense>
         <BackgroundCircle
           className="
             absolute

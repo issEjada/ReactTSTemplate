@@ -99,7 +99,7 @@ const DropdownMenu = <T extends FieldValues>({
                   {options.find((opt) => opt.key === value)?.node ||
                     `Choose ${label}`}
                 </span>
-                <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+                <Suspense>
                   <ChevronDown className="w-[10px] h-5 object-contain text-gray-500" />
                 </Suspense>
               </div>

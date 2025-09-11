@@ -41,7 +41,7 @@ export default function FilterLayout({
             title="Close"
             aria-label="Close"
           >
-            <Suspense fallback={<Spinner mode="inline" size="sm" />}>
+            <Suspense>
               <CloseXIcon className=" w-[10px] h-[10px] dark:text-white" />
             </Suspense>
           </button>
