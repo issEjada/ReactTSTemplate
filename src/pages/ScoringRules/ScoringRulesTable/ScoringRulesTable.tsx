@@ -215,6 +215,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     handleToggleStatus,
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
     "All" | "ENABLED" | "DISABLED"
@@ -242,6 +243,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 
     setFilters(newFilters);
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
@@ -284,6 +286,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     setFilters({});
     setStatusFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   const isFilterActive = useMemo(
@@ -321,7 +324,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           </div>
 
           {/* Right side: Button */}
-          {totalCount !== 0 &&
+          {(totalCount !== 0 || !isFilterActive || isFilterActive) &&
             (fromDashboard ? (
               <button
                 onClick={handleAddNewRule}
@@ -343,7 +346,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             ))}
         </div>
       </div>
-      {totalCount === 0 && !isFilterActive ? (
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           minimal={fromDashboard}
           icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}

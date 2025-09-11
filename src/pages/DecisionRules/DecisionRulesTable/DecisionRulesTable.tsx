@@ -224,6 +224,7 @@ export const DecisionRulesTable = () => {
   const [statusFilter, setStatusFilter] = useState<
     "All" | "ENABLED" | "DISABLED"
   >("All");
+  const [isSearching, setIsSearching] = useState(false);
 
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -248,6 +249,7 @@ export const DecisionRulesTable = () => {
 
     setFilters(newFilters);
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
@@ -296,6 +298,7 @@ export const DecisionRulesTable = () => {
     setFilters({});
     setStatusFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   const isFilterActive = useMemo(
@@ -325,7 +328,7 @@ export const DecisionRulesTable = () => {
           </div>
 
           {/* Right side: Button */}
-          {totalCount !== 0 && (
+          {(totalCount !== 0 || !isFilterActive || isSearching) && (
             <button
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
@@ -339,7 +342,7 @@ export const DecisionRulesTable = () => {
         </div>
       </div>
 
-      {totalCount === 0 && !isFilterActive ? (
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
             <Suspense>
