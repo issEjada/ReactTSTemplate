@@ -14,11 +14,11 @@ const Home = () => {
       {/* Widgets */}
 
       <HomeWidgetGroup />
-      <div className="flex gap-[24px] max-xl:flex-wrap">
+      <div className="flex gap-[24px] max-xl:flex-wrap justify-between">
         <ScoringRulesTable fromDashboard={true} />
         <DashboardEvents />
       </div>
-      <div className="px-4">
+      <div className="">
         <SessionActivity
           data={(sessionActivityData ?? []).map((item) => ({
             Month: item.month ?? "",

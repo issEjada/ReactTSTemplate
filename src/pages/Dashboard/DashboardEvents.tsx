@@ -41,7 +41,7 @@ const DashboardEvents: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col min-w-[35%] mt-[44px]">
+    <div className="flex flex-col min-w-[35%] mt-[20px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 px-5">
         <div>

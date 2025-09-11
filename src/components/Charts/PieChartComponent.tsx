@@ -42,7 +42,7 @@ export default function PieChartComponent() {
 
   return (
     <div className="flex flex-col gap-4 md:gap-0 md:flex-row items-center w-full h-[310px] md:h-[200px] p-3 md:p-6 dark:bg-darkTheme">
-      <div className="flex items-center justify-center w-[183px] h-[183px]">
+      <div className="flex items-center justify-center w-[200px] h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
