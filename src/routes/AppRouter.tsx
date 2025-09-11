@@ -21,6 +21,7 @@ import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
 import GeoLocation from "../pages/GeoLocation/GeoLocation";
+import EventDetails from "../pages/Events/EventsForm/EventDetails";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -198,7 +199,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.addEvents,
         element: (
           <ProtectedRoute>
-            <EventsForm />
+            <EventDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -207,7 +208,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewEvents,
         element: (
           <ProtectedRoute>
-            <EventsView />
+            <EventDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
