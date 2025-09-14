@@ -135,7 +135,7 @@ const EventDetails = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mb-[60px]">
       {loadingState === "loading" && <Spinner />}
 
       <div className="px-6 pt-8 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
