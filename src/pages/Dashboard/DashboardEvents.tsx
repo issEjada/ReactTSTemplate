@@ -92,7 +92,7 @@ const DashboardEvents: React.FC = () => {
 
         <div className="mb-2">
           {" "}
-          <PieChartComponent />{" "}
+          <PieChartComponent type="events" />{" "}
         </div>
       </div>
     </div>

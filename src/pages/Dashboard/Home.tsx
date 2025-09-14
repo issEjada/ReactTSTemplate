@@ -2,10 +2,8 @@ import HomeWidgetGroup from "./HomeWidget.js";
 import { ScoringRulesTable } from "../ScoringRules/ScoringRulesTable/ScoringRulesTable.js";
 import DashboardOperations from "./DashboardOperations.js";
 import DashboardEvents from "./DashboardEvents.js";
-import SessionActivity from "../Monitoring/MonitoringTable/SessionActivity.js";
-import { useSessionActivity } from "../Monitoring/MonitoringTable/useSessionActivity.js";
+import PieChartComponent from "../../components/Charts/PieChartComponent.js";
 const Home = () => {
-  const { sessionActivityData } = useSessionActivity();
   return (
     <div className="flex flex-col gap-[28px] ps-6 pe-4 pb-2">
       <div className="mt-[24px]">
@@ -19,13 +17,7 @@ const Home = () => {
         <DashboardEvents />
       </div>
       <div className="">
-        <SessionActivity
-          data={(sessionActivityData ?? []).map((item) => ({
-            Month: item.month ?? "",
-            Viewed: item.viewedSessions ?? 0,
-            NotViewed: item.notViewedSessions ?? 0,
-          }))}
-        />
+        <PieChartComponent type="session" />
       </div>
 
       {/* Line Chart */}
