@@ -61,6 +61,7 @@ const useEventsTable = () => {
         setPopupMessage(error);
         setIsPopupOpen(true);
         setloadingState(LoadingState.Error);
+        setFilters(undefined);
       });
   };
 
