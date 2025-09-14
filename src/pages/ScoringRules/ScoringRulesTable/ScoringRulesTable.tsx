@@ -471,7 +471,12 @@ const getColumns = (
           {String(row.original.name ?? "")}
         </span>
         <span className="text-xs text-gray-500 dark:text-white">
-          {row.original.aspectCode}
+          {Array.isArray(row.original.aspectCode) &&
+          row.original.aspectCode.length > 0
+            ? row.original.aspectCode
+                .map((item: { value: string }) => item.value)
+                .join(", ")
+            : ""}
         </span>
       </div>
     ),
