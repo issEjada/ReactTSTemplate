@@ -303,12 +303,12 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 
   return (
     <div
-      className={`p-6 bg-white ${
-        fromDashboard ? "xl:w-[62%] pt-0" : "shadow-sm"
+      className={`py-6 pe-6 bg-white ${
+        fromDashboard ? "xl:w-[62%] pt-0" : "shadow-sm ps-6"
       } dark:bg-black w-full`}
     >
       {" "}
-      <div className="mb-6">
+      <div className="mb-6 ps-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
           {/* Left side: Title + description */}
           <div>
