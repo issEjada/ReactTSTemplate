@@ -209,11 +209,11 @@ const getColumns = (): ColumnDef<EventRow>[] => [
     ),
   },
   { header: "Description", accessorKey: "description" },
-  { header: "Scheme", accessorKey: "scheme" },
+  { header: "Scheme", accessorKey: "scheme.value" },
 
   {
     header: "Device",
-    accessorKey: "eventSourceDevice",
+    accessorKey: "eventSourceDevice.key",
     cell: (info) => <DevicePill device={String(info.getValue() ?? "")} />,
   },
 

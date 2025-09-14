@@ -2,7 +2,11 @@ import React from "react";
 
 interface Field {
   title: string;
-  value?: string | number | null;
+  value?:
+    | string
+    | number
+    | null
+    | { key: string; value: string | number | null };
 }
 
 interface ActionButton {
@@ -53,7 +57,11 @@ const DynamicView: React.FC<DynamicViewProps> = ({
                 {field.title}
               </span>
               <span className="text-base font-normal text-gray-500 break-all">
-                {field.value ?? "—"}
+                {typeof field.value === "object" &&
+                field.value !== null &&
+                "value" in field.value
+                  ? String(field.value.value)
+                  : field.value ?? "—"}
               </span>
             </div>
           ))}
