@@ -57,10 +57,24 @@ const DynamicView: React.FC<DynamicViewProps> = ({
                 {field.title}
               </span>
               <span className="text-base font-normal text-gray-500 break-all">
-                {typeof field.value === "object" &&
-                field.value !== null &&
-                "value" in field.value
+                {Array.isArray(field.value)
+                  ? field.value.length > 0
+                    ? field.value.map((item, idx) => (
+                        <span key={idx} className="mr-2">
+                          {typeof item === "object" &&
+                          item !== null &&
+                          "value" in item
+                            ? String(item.value)
+                            : String(item)}
+                        </span>
+                      ))
+                    : "—"
+                  : typeof field.value === "object" &&
+                    field.value !== null &&
+                    "value" in field.value
                   ? String(field.value.value)
+                  : typeof field.value === "object" && field.value !== null
+                  ? JSON.stringify(field.value) // ✅ ensure it's string, not object
                   : field.value ?? "—"}
               </span>
             </div>
