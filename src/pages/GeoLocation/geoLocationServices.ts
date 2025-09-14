@@ -1,9 +1,25 @@
-import { API } from "../../constants/ConstantKeys.constants";
-import { getHeaders, httpClient } from "../../services/api/httpClient";
-
+// import { API } from "../../constants/ConstantKeys.constants";
+import { httpClient } from "../../services/api/httpClient";
+import SecureStorage from "react-secure-storage";
+import { ConstantKeys } from "../../constants/ConstantKeys.constants";
 export interface GeoLocationFiles {
   geolite2Zip: File | null;
 }
+
+export const getHeaders = () => {
+  const secureToken = SecureStorage.getItem(ConstantKeys.accessToken);
+  const localToken = localStorage.getItem(ConstantKeys.accessToken);
+  const token =
+    typeof secureToken === "string" && secureToken
+      ? secureToken
+      : typeof localToken === "string" && localToken
+      ? localToken
+      : "";
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  };
+};
 
 export class geoLocationServices {
   static uploadGeoLocationFile(data: GeoLocationFiles) {
@@ -16,7 +32,7 @@ export class geoLocationServices {
 
     return httpClient
       .post(
-        `${import.meta.env.VITE_API_BASE_URL}${API.geoLocation}`,
+        `https://api.alphas.com:14280/alphas-backoffice/v1/geolocation/geolite2/data/upload`,
         formData,
         {
           headers: {

@@ -65,7 +65,7 @@ export function DynamicTable<TData extends object>({
   statusFilter,
   onClearSearch,
   onAddNewItem,
-  error,
+  // error,
   title,
   searchText,
   setSearchText,
@@ -98,13 +98,13 @@ export function DynamicTable<TData extends object>({
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
 
-  if (error) {
-    return (
-      <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-        {error}
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
+  //       {error}
+  //     </div>
+  //   );
+  // }
 
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);
