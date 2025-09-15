@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense } from "react";
 import { createPortal } from "react-dom";
-import MetricCard from "./MetricCard";
+import MetricCard from "../ActionAnalytics/MetricCard";
 
 const TotalActionIcon = React.lazy(
   () => import("../../../assets/svg/TAction.svg?react")
