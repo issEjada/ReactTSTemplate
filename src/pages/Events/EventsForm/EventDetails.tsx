@@ -102,7 +102,6 @@ const EventDetails = () => {
         title="Event Details"
         fields={[
           { title: "Event Name", value: eventData?.name },
-          { title: "Event Code", value: eventData?.code },
           { title: "Description", value: eventData?.description },
           {
             title: "Event Source Device",
@@ -135,7 +134,10 @@ const EventDetails = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mb-[60px]">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-4 mb-[60px]"
+    >
       {loadingState === "loading" && <Spinner />}
 
       <div className="px-6 pt-8 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
@@ -196,41 +198,6 @@ const EventDetails = () => {
       </div>
 
       <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
-        {/* Event Code */}
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white">
-            Event Code<span className="text-red-500"> *</span>
-          </label>
-          <Controller
-            name="code"
-            control={control}
-            rules={{ required: "Event code is required." }}
-            render={({ field, fieldState }) => (
-              <div className="flex flex-col">
-                <input
-                  {...field}
-                  placeholder="Enter event code"
-                  disabled={isViewing}
-                  className={`${inputBase} ${
-                    fieldState.error
-                      ? "border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
-                      : "border-gray-300 bg-white text-gray-600 dark:bg-darkTheme dark:border-gray-800"
-                  } ${
-                    isViewing
-                      ? "bg-[#F9FAFB] text-[#A0A0A0]"
-                      : "dark:text-white"
-                  }`}
-                />
-                {fieldState.error && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {fieldState.error.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-        </div>
-
         <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.eventSourceDevice"
@@ -243,9 +210,7 @@ const EventDetails = () => {
           disabled={isViewing || isEditing}
           required
         />
-      </div>
 
-      <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
         <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.scheme"
@@ -258,7 +223,9 @@ const EventDetails = () => {
           disabled={isViewing || isEditing}
           required
         />
+      </div>
 
+      <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
         <DropdownMenu<EventFormValues>
           control={control}
           name="status"
