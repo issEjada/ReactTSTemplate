@@ -319,10 +319,10 @@ const getColumns = (
       if (attribute.key === "riskLevel") {
         const colorMap: Record<string, string> = {
           Low: "text-gray-700 bg-gray-100",
-          Moderate: "text-warning-700 bg-warning-50",
-          Medium: "text-warning-700 bg-warning-50",
-          High: "text-red-700 bg-red-50",
-          Extreme: "text-red-700 bg-red-50",
+          Moderate: "text-warning-600 bg-warning-50",
+          Medium: "text-warning-700 bg-warning-100",
+          High: "text-red-500 bg-red-200",
+          Extreme: "text-red-100 bg-red-700",
         };
 
         const displayValue = attribute.hasLov

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { Controller } from "react-hook-form";
+import React, { useEffect, useRef, useState } from "react";
+import { Controller, useWatch } from "react-hook-form";
 import type { Control, Path, FieldValues } from "react-hook-form";
 import FilterLayout from "./FilterLayout";
 import DropdownMenu from "../DropDown";
 
 export interface FilterField<T> {
-  type: "text" | "dropdown" | "date";
+  type: "text" | "dropdown" | "date" | "time";
   name: Path<T>;
   label: string;
   placeholder?: string;
@@ -32,6 +32,7 @@ export function DynamicFilterForm<T extends FieldValues>({
   onSubmit,
 }: DynamicFilterFormProps<T>) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,7 +61,7 @@ export function DynamicFilterForm<T extends FieldValues>({
                       type="text"
                       placeholder={field.placeholder}
                       className="w-full h-[44px] px-[14px] py-[10px] border border-gray-300 rounded-md placeholder:text-base placeholder:text-gray-500
-                           dark:bg-darkTheme dark:border-gray-800 mt-2 mb-2"
+                               dark:bg-darkTheme dark:border-gray-800 mt-2 mb-2"
                     />
                   )}
                 />
@@ -93,11 +94,10 @@ export function DynamicFilterForm<T extends FieldValues>({
                       {...inputField}
                       type="date"
                       className="w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
-                           border border-gray-300 uppercase
-                           dark:bg-darkTheme dark:border-gray-800
-                           dark:placeholder:text-gray-500
-                           dark:text-gray-500
-                           [color-scheme:light] dark:[color-scheme:dark]"
+                               border border-gray-300 uppercase
+                               dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                               dark:placeholder:text-gray-500
+                               [color-scheme:light] dark:[color-scheme:dark]"
                     />
                   )}
                 />
@@ -105,10 +105,46 @@ export function DynamicFilterForm<T extends FieldValues>({
             );
           }
 
+          if (field.type === "time") {
+            return (
+              <div key={field.name} className="mb-3">
+                <label className="text-sm font-medium">{field.label}</label>
+                <div className="flex items-center gap-2 mt-2">
+                  <Controller
+                    control={control}
+                    name={field.name}
+                    render={({ field: inputField }) => (
+                      <input
+                        {...inputField}
+                        type="time"
+                        step="1"
+                        placeholder="select time"
+                        className={`flex-1 h-[44px] px-[14px] py-[10px] border rounded-md 
+                          ${
+                            errors[field.name as string]
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          }
+                           dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                               dark:placeholder:text-gray-500
+                               [color-scheme:light] dark:[color-scheme:dark]`}
+                      />
+                    )}
+                  />
+                </div>
+                {errors[field.name as string] && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors[field.name as string]}
+                  </p>
+                )}
+              </div>
+            );
+          }
+
           return null;
         })}
 
-        <div className="mt-auto  py-2">
+        <div className="mt-auto py-2">
           <div className="flex justify-end gap-2">
             <button
               type="submit"
@@ -120,8 +156,8 @@ export function DynamicFilterForm<T extends FieldValues>({
               type="button"
               onClick={handleClear}
               className="text-sm text-gray-700 hover:underline hover:bg-gray-100
-                 dark:text-white dark:hover:bg-white dark:hover:text-black
-                 border border-gray-200 rounded-md px-4 py-2"
+                     dark:text-white dark:hover:bg-white dark:hover:text-black
+                     border border-gray-200 rounded-md px-4 py-2"
             >
               Clear
             </button>

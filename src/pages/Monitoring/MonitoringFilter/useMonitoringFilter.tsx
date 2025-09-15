@@ -31,6 +31,8 @@ export interface ViewSessionsFormValues {
   status?: "VIEWED" | "NOT_VIEWED" | "";
   fromDate?: string;
   toDate?: string;
+  fromTime?: string;
+  toTime?: string;
   scheme?: string;
   eventSourceDevice?: string;
   eventName?: string;
@@ -62,8 +64,10 @@ export const useMonitoringFilter = (
     country: undefined,
     city: undefined,
     status: undefined,
-    fromDate: undefined,
-    toDate: undefined,
+    fromDate: "",
+    toDate: "",
+    fromTime: "",
+    toTime: "",
     eventSourceDevice: undefined,
     eventName: undefined,
     scheme: undefined,
