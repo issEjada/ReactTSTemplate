@@ -308,7 +308,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       } dark:bg-black w-full`}
     >
       {" "}
-      <div className="mb-6 ps-6">
+      <div className="mb-6 px-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
           {/* Left side: Title + description */}
           <div>
@@ -336,10 +336,10 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             ) : (
               <button
                 onClick={handleAddNewRule}
-                className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
+                className="bg-blue-700 dark:bg-gray-800 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
               >
                 <Suspense>
-                  <PlusIcon className="w-[20px] h-[20px] text-white" />
+                  <PlusIcon className="w-[20px] h-[20px] text-white dark:text-gray-100" />
                 </Suspense>
                 Add New Rule
               </button>
