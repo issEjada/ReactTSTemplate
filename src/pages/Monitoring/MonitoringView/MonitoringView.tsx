@@ -1,8 +1,22 @@
+import { useMemo } from "react";
+import {
+  DynamicTable,
+  type CustomColumnDef,
+} from "../../../components/DynamicTable";
 import Spinner from "../../../components/Spinner";
+import type { EventItem } from "../monitoringServices";
 import { useMonitoringView } from "./useMonitoringView";
 
 const MonitoringView = () => {
-  const { data, isLoading } = useMonitoringView();
+  const {
+    data,
+    isLoading,
+    currentPage,
+    setCurrentPage,
+    itemsPerPage,
+    totalCount,
+    error,
+  } = useMonitoringView();
 
   const date = new Date(data?.lastUpdatedTimestamp || "");
   const formattedDate = date.toLocaleDateString("en-GB");
@@ -17,6 +31,47 @@ const MonitoringView = () => {
   const trimmedTime = `${formattedTime.split(":")[0]}:${
     formattedTime.split(":")[1]
   }:00 ${formattedTime.split(" ")[1]}`;
+
+  const columns: CustomColumnDef<EventItem>[] = [
+    { accessorKey: "eventCode", header: "Event Code" },
+    {
+      accessorKey: "eventName",
+      header: "Event Name",
+      meta: { isSorted: true },
+    },
+    {
+      accessorKey: "transactionId",
+      header: "Transaction Id",
+      meta: { isSorted: true },
+    },
+    { accessorKey: "transactionAmount", header: "Transaction Amount" },
+    { accessorKey: "transactionCurrency", header: "Transaction Currency" },
+    { accessorKey: "maskedCard", header: "Masked Card" },
+    { accessorKey: "ip", header: "IP" },
+    { accessorKey: "country", header: "Country" },
+    { accessorKey: "city", header: "City" },
+    { accessorKey: "phoneNumber", header: "Phone Number" },
+    { accessorKey: "riskScore", header: "Risk Score" },
+  ];
+
+  const eventsData: EventItem[] = useMemo(
+    () =>
+      data?.events.data?.map((item) => ({
+        eventCode: item.eventCode,
+        eventName: item.eventName,
+        transactionId: item.transactionId,
+        transactionAmount: item.transactionAmount,
+        transactionCurrency: item.transactionCurrency,
+        maskedCard: item.maskedCard,
+        phoneNumber: item.phoneNumber,
+        riskScore: item.riskScore,
+        eventTimestamp: item.eventTimestamp,
+        ip: item.ip,
+        country: item.country,
+        city: item.city,
+      })) || [],
+    [data]
+  );
 
   return (
     <>
@@ -227,6 +282,17 @@ const MonitoringView = () => {
               </div>
             </div>
           </div>
+          <DynamicTable<EventItem>
+            data={eventsData}
+            isMonitoringTable
+            columns={columns}
+            totalCount={totalCount}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            setCurrentPage={setCurrentPage}
+            title="Events Data"
+            error={error}
+          />
         </div>
       )}
     </>

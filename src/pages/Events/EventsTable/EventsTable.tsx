@@ -59,19 +59,19 @@ const DevicePill = ({ device }: { device: string }) => {
   return (
     <span className="inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
-        {device === "MOBILE_SDK_MD" && (
+        {device === "Mobile" && (
           <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {device === "WEB_SDK_MD" && (
+        {device === "Web" && (
           <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {device === "3DS_MICROSITE_SDK_MD" && (
+        {device === "3DS Authentication Page" && (
           <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {device === "ANY_SDK_MD" && (
+        {device === "Any Device" && (
           <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
-        {device === "CLIENT_MD" && (
+        {device === "Any" && (
           <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
         )}
       </span>
@@ -213,7 +213,7 @@ const getColumns = (): ColumnDef<EventRow>[] => [
 
   {
     header: "Device",
-    accessorKey: "eventSourceDevice.key",
+    accessorKey: "eventSourceDevice.value",
     cell: (info) => <DevicePill device={String(info.getValue() ?? "")} />,
   },
 
