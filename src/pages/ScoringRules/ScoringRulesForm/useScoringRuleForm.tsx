@@ -216,7 +216,7 @@ function useViewScoringRules() {
   }, [isViewing, isEditing, id]);
 
   useEffect(() => {
-    if (selectedEventSource && isEditing) {
+    if (selectedEventSource && !isViewing) {
       setAspectValues([]);
       setControleValues([]);
 
@@ -230,7 +230,7 @@ function useViewScoringRules() {
   }, [selectedEventSource]);
 
   useEffect(() => {
-    if (selectedEventSource && selectedScheme && isEditing) {
+    if (selectedEventSource && selectedScheme && !isViewing) {
       setAspectValues([]);
       setControleValues([]);
 
@@ -248,7 +248,7 @@ function useViewScoringRules() {
   }, [selectedScheme]);
 
   useEffect(() => {
-    if (selectedEventSource && selectedScheme && selectedAspect && isEditing) {
+    if (selectedEventSource && selectedScheme && selectedAspect && !isViewing) {
       setControleValues([]);
       fetchDropDownsValues([
         {
@@ -273,7 +273,7 @@ function useViewScoringRules() {
       selectedScheme &&
       selectedAspect &&
       selectedControl &&
-      isEditing
+      !isViewing
     ) {
       setPlatformValues([]);
       fetchDropDownsValues([
@@ -304,7 +304,7 @@ function useViewScoringRules() {
       selectedEventSource &&
       selectedScheme &&
       selectedAspect &&
-      isEditing
+      !isViewing
     ) {
       fetchParameterData();
     }
