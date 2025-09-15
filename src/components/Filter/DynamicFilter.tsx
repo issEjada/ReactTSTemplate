@@ -94,8 +94,9 @@ export function DynamicFilterForm<T extends FieldValues>({
                       type="date"
                       className="w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
                            border border-gray-300 uppercase
-                           dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                           dark:bg-darkTheme dark:border-gray-800
                            dark:placeholder:text-gray-500
+                           dark:text-gray-500
                            [color-scheme:light] dark:[color-scheme:dark]"
                     />
                   )}

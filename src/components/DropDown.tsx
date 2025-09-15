@@ -80,7 +80,7 @@ const DropdownMenu = <T extends FieldValues>({
                   ${
                     disabled
                       ? "text-gray-700 cursor-not-allowed"
-                      : "cursor-pointer dark:text-white"
+                      : "cursor-pointer dark:text-gray-500"
                   }
                 `}
                 onClick={toggleDropdown}
@@ -90,7 +90,7 @@ const DropdownMenu = <T extends FieldValues>({
                     ${
                       disabled
                         ? "text-gray-400 cursor-not-allowed"
-                        : "cursor-pointer dark:text-white"
+                        : "cursor-pointer dark:text-gray-500"
                     }
                   
                   `}
