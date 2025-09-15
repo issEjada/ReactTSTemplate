@@ -116,7 +116,7 @@ export function DynamicTable<TData extends object>({
       className={`relative border border-gray-200 ${
         isCustomerProfile
           ? "dark:border-gray-800 rounded-lg bg-white dark:bg-darkTheme"
-          : "bg-white dark:border-gray-800 rounded-lg dark:bg-darkTheme"
+          : "bg-white dark:border-gray-800 rounded-lg dark:bg-darkTheme overflow-auto"
       }`}
     >
       {!(minimal || minimalWithPagination) && (
@@ -220,7 +220,9 @@ export function DynamicTable<TData extends object>({
 
       {!minimal && filterComponent}
 
-      <div className="overflow-x-auto relative">
+      <div className={`overflow-x-auto relative
+        ${minimal && " h-[435px]"}
+        `}>
         {loadingState === "loading" && (
           <Spinner
             mode="overlay"
@@ -233,7 +235,7 @@ export function DynamicTable<TData extends object>({
             isCustomerProfile
               ? ""
               : minimal
-              ? "min-w-[710px] h-[435px]"
+              ? "min-w-[710px]"
               : "min-w-[900px]"
           }`}
         >
@@ -248,12 +250,15 @@ export function DynamicTable<TData extends object>({
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
-                  className="border-b dark:border-gray-800"
+                  className="border-b dark:border-gray-800 dark:bg-gray-800"
                 >
-                  {headerGroup.headers.map((header) => (
+                  {headerGroup.headers.map((header, index) => (
                     <th
                       key={header.id}
-                      className="px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap rounded-lg"
+                      className={`px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap
+                        ${index === 0 && minimal && " rounded-tl-lg "}
+                        ${index === headerGroup.headers.length - 1 && minimal && " rounded-tr-lg "}
+                        `}
                     >
                       <div className="flex items-center justify-start gap-2">
                         <span>
