@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import App from "../App";
@@ -18,17 +19,33 @@ import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 import GeoLocation from "../pages/GeoLocation/GeoLocation";
 import EventDetails from "../pages/Events/EventsForm/EventDetails";
+import Spinner from "../components/Spinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const token =
-    sessionStorage.getItem(ConstantKeys.accessToken) ||
-    localStorage.getItem(ConstantKeys.accessToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (!token) {
+  useEffect(() => {
+    const token =
+      sessionStorage.getItem(ConstantKeys.accessToken) ||
+      localStorage.getItem(ConstantKeys.accessToken);
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Spinner show={true} mode="fullscreen" />;
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to={AppRoutes.login} />;
   }
 
