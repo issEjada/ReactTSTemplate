@@ -136,13 +136,13 @@ const getColumns = (): ColumnDef<Session>[] => [
         <span
           className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
             info.getValue() === "VIEWED"
-              ? "bg-green-100 text-green-700"
+              ? "bg-success-700 text-success-50"
               : "bg-gray-200 text-gray-700"
           }`}
         >
           <div
             className={`rounded-full bg-black w-[6px] h-[6px] ${
-              info.getValue() === "VIEWED" ? "bg-green-500" : "bg-gray-500"
+              info.getValue() === "VIEWED" ? "bg-success-400" : "bg-gray-500"
             }`}
           ></div>
           {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
