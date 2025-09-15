@@ -94,7 +94,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                   url: AppRoutes.monitoring,
                 },
                 {
-                  pageTitle: "Geo Location",
+                  pageTitle: "Geolocation",
                   text: "Geo Location",
                   icon: "MostUsedTargetCountry",
                   url: AppRoutes.geoLocation,
