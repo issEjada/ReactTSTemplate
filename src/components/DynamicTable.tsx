@@ -318,17 +318,27 @@ export function DynamicTable<TData extends object>({
                       : ""
                   }`}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="px-4 h-[56px] sm:h-[72px] align-middle text-left whitespace-nowrap"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    const cellValue = cell.getValue();
+                    return (
+                      <td
+                        key={cell.id}
+                        className="px-4 h-[56px] sm:h-[72px] align-middle text-left whitespace-nowrap"
+                      >
+                        {typeof cellValue === "string" &&
+                        cellValue.length > 20 ? (
+                          <span title={cellValue}>
+                            {cellValue.substring(0, 20)}...
+                          </span>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))
             ) : (
