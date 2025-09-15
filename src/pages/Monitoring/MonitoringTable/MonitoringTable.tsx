@@ -312,7 +312,7 @@ export const MonitoringTable = () => {
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               Monitor Activity Sessions{" "}
               <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-                {totalCount} Active Session{totalCount !== 1 && "s"}
+                {totalCount} Activity Session{totalCount !== 1 && "s"}
               </span>
             </h2>
 
