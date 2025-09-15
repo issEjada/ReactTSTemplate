@@ -501,7 +501,7 @@ const getColumns = (
             info.getValue() === "ENABLED" ? "bg-success-500 dark:bg-success-400" : "bg-gray-500"
           }`}
         ></div>
-        {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
+        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
       </span>
     ),
   },
