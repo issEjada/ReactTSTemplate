@@ -220,9 +220,11 @@ export function DynamicTable<TData extends object>({
 
       {!minimal && filterComponent}
 
-      <div className={`overflow-x-auto relative
+      <div
+        className={`overflow-x-auto relative
         ${minimal && " h-[435px]"}
-        `}>
+        `}
+      >
         {loadingState === "loading" && (
           <Spinner
             mode="overlay"
@@ -232,11 +234,7 @@ export function DynamicTable<TData extends object>({
         )}
         <table
           className={`w-full table-auto text-sm text-center ${
-            isCustomerProfile
-              ? ""
-              : minimal
-              ? "min-w-[710px]"
-              : "min-w-[900px]"
+            isCustomerProfile ? "" : minimal ? "min-w-[710px]" : "min-w-[900px]"
           }`}
         >
           {table.getRowModel().rows.length > 0 ? (
@@ -257,7 +255,11 @@ export function DynamicTable<TData extends object>({
                       key={header.id}
                       className={`px-4 h-[56px] sm:h-[72px] font-medium text-left whitespace-nowrap
                         ${index === 0 && minimal && " rounded-tl-lg "}
-                        ${index === headerGroup.headers.length - 1 && minimal && " rounded-tr-lg "}
+                        ${
+                          index === headerGroup.headers.length - 1 &&
+                          minimal &&
+                          " rounded-tr-lg "
+                        }
                         `}
                     >
                       <div className="flex items-center justify-start gap-2">
@@ -325,13 +327,15 @@ export function DynamicTable<TData extends object>({
                 >
                   {row.getVisibleCells().map((cell) => {
                     const cellValue = cell.getValue();
+                    const columnIndex = cell.column.getIndex();
                     return (
                       <td
                         key={cell.id}
                         className="px-4 h-[56px] sm:h-[72px] align-middle text-left whitespace-nowrap"
                       >
                         {typeof cellValue === "string" &&
-                        cellValue.length > 20 ? (
+                        cellValue.length > 20 &&
+                        columnIndex > 2 ? (
                           <span title={cellValue}>
                             {cellValue.substring(0, 20)}...
                           </span>
