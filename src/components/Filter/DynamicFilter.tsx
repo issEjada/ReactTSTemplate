@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Controller, useWatch } from "react-hook-form";
+import React, { useEffect, useRef } from "react";
+import { Controller } from "react-hook-form";
 import type { Control, Path, FieldValues } from "react-hook-form";
 import FilterLayout from "./FilterLayout";
 import DropdownMenu from "../DropDown";
@@ -32,7 +32,6 @@ export function DynamicFilterForm<T extends FieldValues>({
   onSubmit,
 }: DynamicFilterFormProps<T>) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -120,11 +119,6 @@ export function DynamicFilterForm<T extends FieldValues>({
                         step="1"
                         placeholder="select time"
                         className={`flex-1 h-[44px] px-[14px] py-[10px] border rounded-md 
-                          ${
-                            errors[field.name as string]
-                              ? "border-red-500"
-                              : "border-gray-300"
-                          }
                            dark:bg-darkTheme dark:border-gray-800 dark:text-white
                                dark:placeholder:text-gray-500
                                [color-scheme:light] dark:[color-scheme:dark]`}
@@ -132,11 +126,6 @@ export function DynamicFilterForm<T extends FieldValues>({
                     )}
                   />
                 </div>
-                {errors[field.name as string] && (
-                  <p className="text-sm text-red-600 mt-1">
-                    {errors[field.name as string]}
-                  </p>
-                )}
               </div>
             );
           }

@@ -186,7 +186,35 @@ const EventMenu = ({ row }: { row: EventRow }) => {
   );
 };
 
-const getColumns = (): ColumnDef<EventRow>[] => [
+const getColumns = (
+  onToggleStatus: (id: number, currentStatus: string) => void
+): ColumnDef<EventRow>[] => [
+  {
+    header: "OFF/ON",
+    cell: ({ row }) => {
+      const status = row.original.status;
+
+      const isActive = status === "ENABLED";
+      return (
+        <div className="flex justify-content flex-start">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleStatus(row.original.id, status);
+            }}
+            className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
+            ${isActive ? "bg-green-600" : "bg-gray-300"}`}
+            aria-label="Toggle Rule Status"
+          >
+            <div
+              className={`w-4 h-4 rounded-full bg-white transition-transform duration-300 transform
+            ${isActive ? "translate-x-4" : "translate-x-0"}`}
+            />
+          </button>
+        </div>
+      );
+    },
+  },
   {
     header: "Code",
     accessorKey: "code",
@@ -268,6 +296,7 @@ export const EventsTable = () => {
     setIsPopupOpen,
     popupType,
     popupMessage,
+    handleToggleStatus,
   } = useEventsTable();
 
   const navigate = useNavigate();
@@ -276,7 +305,10 @@ export const EventsTable = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
-  const columns = useMemo(() => getColumns(), []);
+  const columns = useMemo(
+    () => getColumns(handleToggleStatus), // Pass the destructured handleToggleStatus
+    [handleToggleStatus] // Add dependencies
+  );
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);

@@ -45,10 +45,10 @@ export interface CreateEventPayload {
 }
 
 export interface UpdateEventPayload {
-  name: string;
-  identifier: EventIdentifierInterface;
-  description: string;
-  status: string;
+  name?: string;
+  identifier?: EventIdentifierInterface;
+  description?: string;
+  status?: string;
 }
 
 export interface GetEventsItem {

@@ -17,6 +17,7 @@ import { AppRoutes } from "../../../routes/AppRoutes";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import MetricCard from "../../CustomerProfile/ActionAnalytics/MetricCard";
+import { formatTime } from "../../../utils/helpers";
 
 const ShieldIcon = React.lazy(
   () => import("../../../assets/svg/shieldG.svg?react")
@@ -38,7 +39,8 @@ export type Session = {
   country: string;
   city: string;
   status: "VIEWED" | "NOT_VIEWED";
-  date: string;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 };
 
 const getColumns = (): ColumnDef<Session>[] => [
@@ -160,35 +162,17 @@ const getColumns = (): ColumnDef<Session>[] => [
     },
   },
   {
-    header: "Date & Time",
-    accessorKey: "date",
-    cell: (info) => {
-      const value = String(info.getValue());
-      const date = new Date(value);
-      const formattedDate = date.toLocaleDateString("en-GB"); // '02/07/2025'
-
-      // Format time as HH:MM:SS AM/PM
-      const formattedTime = date.toLocaleTimeString("en-US", {
-        hour12: true,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }); // '03:24:06 AM'
-
-      // If you want to trim seconds to always show `00` as in your example
-      const trimmedTime = `${formattedTime.split(":")[0]}:${
-        formattedTime.split(":")[1]
-      }:00 ${formattedTime.split(" ")[1]}`;
-      return (
-        <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
-            {formattedDate}
-          </span>
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
-            {trimmedTime}
-          </span>
-        </div>
-      );
+    header: "Creation Time",
+    accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
     },
   },
 ];
@@ -274,7 +258,8 @@ export const MonitoringTable = () => {
         country: item.country,
         city: item.city,
         status: item.status,
-        date: item.lastUpdatedTimestamp,
+        creationTimestamp: formatTime(item.creationTimestamp),
+        lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp),
       })),
     [data]
   );
@@ -327,19 +312,19 @@ export const MonitoringTable = () => {
           title="Total Sessions"
           value={statisticsData?.totalSessions || 0}
           icon={<ShieldIcon className="text-blue-700" />}
-          className="w-full sm:w-[200px] w-[200px] md:w-[370px]"
+          className="w-full sm:w-[200px]  md:w-[370px]"
         />
         <MetricCard
           title="Viewed"
           value={statisticsData?.viewedSessions || 0}
           icon={<Threatblock className="text-success-600" />}
-          className="w-full w-[200px] md:w-[370px]"
+          className="w-full  md:w-[370px]"
         />
         <MetricCard
           title="Not Viewed"
           value={statisticsData?.notViewedSessions || 0}
           icon={<ActiveAlerts className="text-warning-600" />}
-          className="w-full w-[200px] md:w-[370px]"
+          className="w-full md:w-[370px]"
         />
       </div>
       {totalCount === 0 && !isFilterActive && !isSearching ? (

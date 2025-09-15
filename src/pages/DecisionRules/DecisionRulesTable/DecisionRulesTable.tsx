@@ -35,6 +35,7 @@ type DecisionRule = {
   status: "ENABLED" | "DISABLED";
   scheme: string;
   eventSourceDevice: string;
+  decision: string;
 };
 
 const RuleMenu = ({
@@ -374,6 +375,7 @@ export const DecisionRulesTable = () => {
             status: item.status as "ENABLED" | "DISABLED",
             scheme: item.identifier.scheme,
             eventSourceDevice: item.identifier.eventSourceDevice,
+            decision: item.decision,
           }))}
           columns={columns}
           filterComponent={
@@ -461,14 +463,6 @@ const getColumns = (
     meta: {
       isSorted: true,
     },
-    cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
-      </div>
-    ),
   },
   {
     header: "Description",
@@ -487,7 +481,9 @@ const getColumns = (
       >
         <div
           className={`rounded-full bg-black w-[6px] h-[6px] ${
-            info.getValue() === "ENABLED" ? "bg-success-500 dark:bg-success-400" : "bg-gray-500"
+            info.getValue() === "ENABLED"
+              ? "bg-success-500 dark:bg-success-400"
+              : "bg-gray-500"
           }`}
         ></div>
         {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
@@ -495,28 +491,16 @@ const getColumns = (
     ),
   },
   {
+    header: "Decision",
+    accessorKey: "decision",
+  },
+  {
     header: "Scheme",
-    accessorKey: "scheme",
-    cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
-      </div>
-    ),
+    accessorKey: "scheme.value",
   },
   {
     header: "Event Source Device",
-    accessorKey: "eventSourceDevice",
-    cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
-      </div>
-    ),
+    accessorKey: "eventSourceDevice.value",
   },
   {
     header: "",
