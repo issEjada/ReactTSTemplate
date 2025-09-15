@@ -227,7 +227,7 @@ export const useViewDecisionRules = () => {
   }, [ruleData, reset]);
 
   useEffect(() => {
-    if (selectedEventSource && selectedScheme) {
+    if (selectedEventSource && selectedScheme && isEditing) {
       fetchEventDropDownsData();
       fetchParameterData();
     }
