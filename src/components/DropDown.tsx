@@ -95,7 +95,8 @@ const DropdownMenu = <T extends FieldValues>({
                   
                   `}
                 >
-                  {options.find((opt) => opt.key === value.key)?.node ||
+                  {options.find((opt) => opt.key === value)?.node ||
+                    options.find((opt) => opt.key === value.key)?.node ||
                     `Choose ${label}`}
                 </span>
                 <Suspense>
