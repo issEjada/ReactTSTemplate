@@ -261,7 +261,7 @@ export function DynamicTable<TData extends object>({
                         `}
                     >
                       <div className="flex items-center justify-start gap-2">
-                        <span>
+                        <span className="dark:text-gray-400">
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -277,7 +277,7 @@ export function DynamicTable<TData extends object>({
                           >
                             <Suspense>
                               <ArrowIcon
-                                className={`stroke-gray-600 dark:stroke-white ${
+                                className={`text-gray-600 dark:text-gray-400 ${
                                   header.column.getIsSorted() === "asc"
                                     ? "transform rotate-180 transition-transform"
                                     : header.column.getIsSorted() === "desc"
