@@ -16,9 +16,16 @@ import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
+import MetricCard from "../../CustomerProfile/ActionAnalytics/MetricCard";
 
 const ShieldIcon = React.lazy(
   () => import("../../../assets/svg/shieldG.svg?react")
+);
+const Threatblock = React.lazy(
+  () => import("../../../assets/svg/Threatblock.svg?react")
+);
+const ActiveAlerts = React.lazy(
+  () => import("../../../assets/svg/ActiveAlerts.svg?react")
 );
 
 export type Session = {
@@ -142,7 +149,9 @@ const getColumns = (): ColumnDef<Session>[] => [
         >
           <div
             className={`rounded-full bg-black w-[6px] h-[6px] ${
-              info.getValue() === "VIEWED" ? "bg-success-500 dark:bg-success-400" : "bg-gray-500"
+              info.getValue() === "VIEWED"
+                ? "bg-success-500 dark:bg-success-400"
+                : "bg-gray-500"
             }`}
           ></div>
           {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
@@ -198,7 +207,7 @@ export const MonitoringTable = () => {
     handleSearchSubmit,
   } = useMonitoringTable();
 
-  const { sessionActivityData } = useSessionActivity();
+  const { sessionActivityData, statisticsData } = useSessionActivity();
   const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
@@ -312,6 +321,26 @@ export const MonitoringTable = () => {
             </p>
           </div>
         </div>
+      </div>
+      <div className="flex flex-row gap-6 justify-around">
+        <MetricCard
+          title="Total Sessions"
+          value={statisticsData?.totalSessions || 0}
+          icon={<ShieldIcon className="text-blue-700" />}
+          className="w-full sm:w-[200px] w-[200px] md:w-[370px]"
+        />
+        <MetricCard
+          title="Viewed"
+          value={statisticsData?.viewedSessions || 0}
+          icon={<Threatblock className="text-success-600" />}
+          className="w-full w-[200px] md:w-[370px]"
+        />
+        <MetricCard
+          title="Not Viewed"
+          value={statisticsData?.notViewedSessions || 0}
+          icon={<ActiveAlerts className="text-warning-600" />}
+          className="w-full w-[200px] md:w-[370px]"
+        />
       </div>
       {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
