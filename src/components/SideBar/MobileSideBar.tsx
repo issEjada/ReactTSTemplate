@@ -103,8 +103,8 @@ export const MobileSideBar: React.FC<{
                   url: AppRoutes.monitoring,
                 },
                 {
-                  pageTitle: "Geo Location",
-                  text: "Geo Location",
+                  pageTitle: "Geolocation",
+                  text: "Geolocation",
                   icon: "MostUsedTargetCountry",
                   url: AppRoutes.geoLocation,
                 },

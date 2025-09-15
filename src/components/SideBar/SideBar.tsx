@@ -95,7 +95,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 },
                 {
                   pageTitle: "Geolocation",
-                  text: "Geo Location",
+                  text: "Geolocation",
                   icon: "MostUsedTargetCountry",
                   url: AppRoutes.geoLocation,
                 },
