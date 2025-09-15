@@ -99,9 +99,9 @@ const GeoLocation: React.FC = () => {
   return (
     <div className="flex flex-col gap-6 p-6  shadow-sm dark:bg-black dark:border-gray-800 dark:text-white h-screen overflow-hidden">
       <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 pt-6">
-        Please Upload Geo Location
+        Please Upload Geolocation
         <p className="text-sm text-gray-500 mt-1">
-          Upload ZIP File to Update Geo Location
+          Upload ZIP File to Update Geolocation
         </p>
       </h2>
 
