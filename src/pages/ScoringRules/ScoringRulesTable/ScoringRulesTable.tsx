@@ -498,7 +498,9 @@ const getColumns = (
       >
         <div
           className={`rounded-full bg-black w-[6px] h-[6px] ${
-            info.getValue() === "ENABLED" ? "bg-success-500 dark:bg-success-400" : "bg-gray-500"
+            info.getValue() === "ENABLED"
+              ? "bg-success-500 dark:bg-success-400"
+              : "bg-gray-500"
           }`}
         ></div>
         {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
@@ -512,10 +514,10 @@ const getColumns = (
       const value = String(info.getValue());
       const colorMap: Record<string, string> = {
         Low: "text-gray-700 bg-gray-100",
-        Moderate: "text-warning-700 bg-warning-50",
-        Medium: "text-warning-700 bg-warning-50",
-        High: "text-red-700 bg-red-50",
-        Extreme: "text-red-700 bg-red-50",
+        Moderate: "text-warning-600 bg-warning-50",
+        Medium: "text-warning-700 bg-warning-100",
+        High: "text-red-500 bg-red-200",
+        Extreme: "text-red-100 bg-red-700",
       };
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
