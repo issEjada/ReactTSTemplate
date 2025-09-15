@@ -481,13 +481,13 @@ const getColumns = (
       <span
         className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
-            ? "bg-success-700 text-success-50"
+            ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
             : "bg-gray-200 text-gray-700"
         }`}
       >
         <div
           className={`rounded-full bg-black w-[6px] h-[6px] ${
-            info.getValue() === "ENABLED" ? "bg-success-400" : "bg-gray-500"
+            info.getValue() === "ENABLED" ? "bg-success-500 dark:bg-success-400" : "bg-gray-500"
           }`}
         ></div>
         {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
