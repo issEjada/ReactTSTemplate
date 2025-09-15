@@ -265,7 +265,13 @@ const EventDetails = () => {
             isEditing={isEditing && popupType === "successModal"}
             isError={popupType === "errorModal"}
             errorMessage={popupMessage}
-            onConfirm={() => setIsPopupOpen(false)}
+            onConfirm={() => {
+              setIsPopupOpen(false);
+              if (isAdding) {
+                reset();
+                // navigate("/events");
+              }
+            }}
             onCancel={() => {
               setIsPopupOpen(false);
               navigate(-1);
