@@ -5,7 +5,7 @@ import DashboardEvents from "./DashboardEvents.js";
 import PieChartComponent from "../../components/Charts/PieChartComponent.js";
 const Home = () => {
   return (
-    <div className="flex flex-col gap-[28px] ps-6 pe-4 pb-2">
+    <div className="flex flex-col gap-[28px] ps-6 pe-4 pb-[300px]">
       <div className="mt-[24px]">
         <DashboardOperations />
       </div>
