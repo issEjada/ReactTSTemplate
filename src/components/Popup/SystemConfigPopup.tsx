@@ -53,11 +53,11 @@ const SystemConfigPopup = ({
 
   const icon =
     isError || isDeleting ? (
-      <Suspense fallback={<Spinner />}>
+      <Suspense>
         <AlertIcon className="w-6 h-6" />
       </Suspense>
     ) : (
-      <Suspense fallback={<Spinner />}>
+      <Suspense>
         <CheckIcon className="w-6 h-6 text-success-600" />
       </Suspense>
     );

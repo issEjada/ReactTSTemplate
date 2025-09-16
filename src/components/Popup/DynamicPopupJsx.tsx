@@ -69,15 +69,15 @@ const DynamicPopupJsx = ({
     : "";
 
   const icon = isConfirm ? (
-    <Suspense fallback={<Spinner />}>
+    <Suspense>
       <AlertTraingletIcon className="w-5 h-5" />
     </Suspense>
   ) : isError || isDeleting ? (
-    <Suspense fallback={<Spinner />}>
+    <Suspense>
       <AlertIcon className="w-5 h-5" />
     </Suspense>
   ) : (
-    <Suspense fallback={<Spinner />}>
+    <Suspense>
       <CheckIcon className="w-5 h-5 text-success-600" />
     </Suspense>
   );

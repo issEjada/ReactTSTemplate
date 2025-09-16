@@ -321,7 +321,7 @@ export function DynamicTable<TData extends object>({
                       })}
                   className={`border-t dark:border-gray-800 ${
                     isCustomerProfile || onRowClick
-                      ? "hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+                      ? "hover:bg-gray-50 dark:hover:bg-gray-900 cursor-pointer"
                       : ""
                   }`}
                 >

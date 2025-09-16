@@ -95,36 +95,30 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               </div>
             </div>
             {showDropdown.user && (
-              <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
+              <div className="absolute top-[34px] right-[-20px] mt-2  bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <Suspense>
-                        <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
-                      </Suspense>
+                      <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       View Profile
                     </button>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
-                      <Suspense>
-                        <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
-                      </Suspense>
+                      <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       Settings
                     </button>
                   </div>
                 </div>
 
-                <div className="h-[3px] bg-gray-200 w-full mb-3 mt-2"></div>
+                <div className="h-[3px] bg-gray-200 dark:bg-gray-700 my-2 -mx-2" />
 
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={handleOpenPopup}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
-                    <Suspense>
-                      <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
-                    </Suspense>
+                    <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                     Logout
                   </button>
                 </div>

@@ -49,7 +49,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
           {title}
         </Link>
         <div className="w-[36px] h-[36px] p-[4px] bg-gray-950/5 dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
-          <Suspense fallback={<div className="w-7 h-7 bg-gray-300 rounded" />}>
+          <Suspense>
             <Icon className={`w-[28px] h-[28px] ${myClass}`} />
           </Suspense>
         </div>
