@@ -138,7 +138,10 @@ const DecisionRulesDetails = () => {
           { title: "Scheme", value: ruleData?.identifier?.scheme },
           { title: "Decision", value: ruleData?.decision },
           { title: "Event Name", value: ruleData?.eventName },
-          { title: "Status", value: ruleData?.status },
+          {
+            title: "Status",
+            value: ruleData?.status === "ENABLED" ? "Active" : "Inactive",
+          },
           { title: "Description", value: ruleData?.description },
           { title: "Condition", value: ruleData?.condition },
         ]}
@@ -180,14 +183,6 @@ const DecisionRulesDetails = () => {
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Decision Rule
-            {isViewing && (
-              <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-blue-50 p-[8px] gap-[4px"
-                onClick={handleEditClick}
-              >
-                <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
-              </div>
-            )}
           </label>
           <Controller
             name="name"
@@ -199,7 +194,7 @@ const DecisionRulesDetails = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px]  w-full md:w-[344px]  h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base placeholder-gray-500 text-gray-700 rounded-[8px] shadow-sm px-[14px] py-[10px]  w-full md:w-[344px]  h-[44px] cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
                      ${
                        fieldState.error
@@ -247,7 +242,7 @@ const DecisionRulesDetails = () => {
                   {...field}
                   placeholder="Criteria Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full md:w-[344px]  h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base placeholder-gray-500 text-gray-700 rounded-[8px] shadow-sm px-[14px] py-[10px] w-full md:w-[344px]  h-[44px] font-medium cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error

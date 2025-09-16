@@ -77,21 +77,19 @@ const DropdownMenu = <T extends FieldValues>({
                       ? "border-red-500 text-red-500"
                       : "border-gray-300 text-gray-500"
                   }
-                  ${
-                    disabled
-                      ? "text-gray-700 cursor-not-allowed"
-                      : "cursor-pointer dark:text-gray-500"
-                  }
+                  ${disabled ? " cursor-not-allowed" : "cursor-pointer"}
                 `}
                 onClick={toggleDropdown}
               >
                 <span
-                  className={` 
-                    ${
-                      disabled
-                        ? "text-gray-400 cursor-not-allowed"
-                        : "cursor-pointer dark:text-gray-500"
-                    }
+                  className={`
+                   ${
+                     disabled
+                       ? "text-gray-400 dark:text-gray-400 cursor-not-allowed"
+                       : !value
+                       ? "text-gray-500 dark:text-gray-200" // placeholder
+                       : "text-gray-600 dark:text-white" // selected
+                   }
                   
                   `}
                 >

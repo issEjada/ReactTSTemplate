@@ -141,7 +141,10 @@ const ScoringRulesDetails = () => {
           { title: "Aspect Code", value: ruleData?.identifier.aspectCode },
           { title: "Control", value: ruleData?.identifier.controlCode },
           { title: "Platform", value: ruleData?.identifier.platform },
-          { title: "Status", value: ruleData?.status },
+          {
+            title: "Status",
+            value: ruleData?.status === "ENABLED" ? "Active" : "Inactive",
+          },
           { title: "Condition", value: ruleData?.condition },
         ]}
         actions={[
@@ -195,7 +198,7 @@ const ScoringRulesDetails = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base text-gray-700 placeholder-gray-500 rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
