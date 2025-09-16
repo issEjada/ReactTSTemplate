@@ -68,9 +68,7 @@ const useEventsTable = () => {
     })
       .then((result: GetEventsResponse) => {
         setData(result.data.events || []);
-        setTotalCount(
-          result.meta?.totalPages ? result.meta.totalPages * itemsPerPage : 0
-        );
+        setTotalCount(result.meta.totalItems);
 
         setloadingState(LoadingState.Success);
       })

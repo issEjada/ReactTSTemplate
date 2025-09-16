@@ -50,29 +50,24 @@ type EventRow = {
   createdAt: string;
 };
 
+const iconClasses = "w-[20px] h-[20px] text-blue-700 dark:text-blue-600";
+
+const deviceIcons: Record<string, React.ReactNode> = {
+  Mobile: <MobileIcon className={iconClasses} />,
+  Web: <WebIcon className={iconClasses} />,
+  "3DS Authentication Page": <DesktopIcon className={iconClasses} />,
+  "Any Device": <AnyDeviceIcon className={iconClasses} />,
+  Any: <AnyDeviceIcon className={iconClasses} />,
+};
+
 const DevicePill = ({ device }: { device: string }) => {
-  if (!device) {
-    return null;
-  }
+  if (!device) return null;
 
   return (
     <span className="inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
-        {device === "Mobile" && (
-          <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
-        {device === "Web" && (
-          <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
-        {device === "3DS Authentication Page" && (
-          <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
-        {device === "Any Device" && (
-          <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
-        {device === "Any" && (
-          <AnyDeviceIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
+        {/* ✅ Render from map, fallback to AnyDeviceIcon */}
+        {deviceIcons[device] || <AnyDeviceIcon className={iconClasses} />}
       </span>
       <span className="text-[14px] leading-[20px] dark:text-white">
         {device}
@@ -173,7 +168,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-                <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Update Event</span>
             </button>
           </div>,
@@ -387,7 +382,7 @@ export const EventsTable = () => {
               onClick={handleAddNewEvent}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
-                <PlusIcon className="w-[20px] h-[20px] text-white" />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
               Add New Event
             </button>
           )}
@@ -396,9 +391,7 @@ export const EventsTable = () => {
 
       {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
-          icon={
-              <EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-          }
+          icon={<EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding Events"
           description={
             <>
@@ -408,9 +401,7 @@ export const EventsTable = () => {
             </>
           }
           buttonText="Add New Event"
-          buttonIcon={
-              <PlusIcon className="w-[20px] h-[20px] text-white" />
-          }
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px] text-white" />}
           onButtonClick={handleAddNewEvent}
         />
       ) : (

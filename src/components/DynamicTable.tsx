@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -158,7 +158,7 @@ export function DynamicTable<TData extends object>({
                     }}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                   >
-                      <SearchIcon className="w-5 h-5" />
+                    <SearchIcon className="w-5 h-5" />
                   </button>
 
                   <input
@@ -197,7 +197,7 @@ export function DynamicTable<TData extends object>({
                   className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                   onClick={openFilterModal}
                 >
-                    <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
+                  <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
                   <span className="hidden sm:inline">Filter</span>
                 </button>
               )}
@@ -273,15 +273,15 @@ export function DynamicTable<TData extends object>({
                             title="Sort"
                             onClick={() => onArrowClick(header.column.id)}
                           >
-                              <ArrowIcon
-                                className={`text-gray-600 dark:text-gray-400 ${
-                                  header.column.getIsSorted() === "asc"
-                                    ? "transform rotate-180 transition-transform"
-                                    : header.column.getIsSorted() === "desc"
-                                    ? "transform rotate-0 transition-transform"
-                                    : ""
-                                }`}
-                              />
+                            <ArrowIcon
+                              className={`text-gray-600 dark:text-gray-400 ${
+                                header.column.getIsSorted() === "asc"
+                                  ? "transform rotate-180 transition-transform"
+                                  : header.column.getIsSorted() === "desc"
+                                  ? "transform rotate-0 transition-transform"
+                                  : ""
+                              }`}
+                            />
                           </button>
                         )}
                       </div>
@@ -322,13 +322,14 @@ export function DynamicTable<TData extends object>({
                   {row.getVisibleCells().map((cell) => {
                     const cellValue = cell.getValue();
                     const columnIndex = cell.column.getIndex();
+
                     return (
                       <td
                         key={cell.id}
                         className="px-4 h-[56px] sm:h-[72px] align-middle text-left whitespace-nowrap"
                       >
                         {typeof cellValue === "string" &&
-                        cellValue.length > 20 &&
+                        cellValue.length > 23 &&
                         columnIndex > 2 ? (
                           <span title={cellValue}>
                             {cellValue.substring(0, 20)}...
@@ -352,7 +353,7 @@ export function DynamicTable<TData extends object>({
                       <div className="w-[352px] h-[196px] gap-6">
                         <div className="w-[352px] h-[132px] flex flex-col items-center gap-4">
                           <div className="w-12 h-12 rounded-[28px] border-[8px] border-blue-50 bg-blue-100 flex items-center justify-center dark:border-gray-700">
-                              <SearchIcon className="text-blue-700" />
+                            <SearchIcon className="text-blue-700" />
                           </div>
                           <div className="w-[352px] h-[68px] flex flex-col items-center gap-1">
                             <h1 className="text-gray-900 text-[16px] leading-[24px] font-semibold text-center h-[24px] dark:text-white">
@@ -413,7 +414,7 @@ export function DynamicTable<TData extends object>({
                                       onClick={onAddNewItem}
                                       className="w-[170px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800"
                                     >
-                                        <PlusIcon className="text-white" />
+                                      <PlusIcon className="text-white" />
                                       Add New{" "}
                                       {title.includes("Rules")
                                         ? "Rule"
