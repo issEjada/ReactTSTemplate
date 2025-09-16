@@ -67,7 +67,7 @@ const HealthCheckDateButton: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((s) => !s)}
-        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 flex items-center gap-2 hover:bg-gray-100  dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
+        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
       >
         Date
         <Suspense
@@ -80,7 +80,10 @@ const HealthCheckDateButton: React.FC<{
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-8 w-[250px]">
+        <div
+          className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-50 w-[250px]
+                     animate-fadeIn"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">
@@ -109,7 +112,7 @@ const HealthCheckDateButton: React.FC<{
                 onChange={handleDateTimeChange("toTimestamp")}
                 min={dateTimeRange.fromTimestamp}
                 title="Select end date and time"
-                className={` w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
+                className={`w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
                            border border-gray-300 uppercase
                            dark:bg-darkTheme dark:border-gray-800 dark:text-white
                            dark:placeholder:text-gray-500
