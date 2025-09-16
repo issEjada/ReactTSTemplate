@@ -423,7 +423,7 @@ const getColumns = (
 
       const isActive = status === "ENABLED";
       return (
-        <div className="flex justify-start">
+        <div className="flex justify-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -464,6 +464,7 @@ const getColumns = (
     header: "Status",
     accessorKey: "status",
     cell: (info) => (
+      <div className="w-full flex justify-center">
       <span
         className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
           info.getValue() === "ENABLED"
@@ -480,6 +481,7 @@ const getColumns = (
         ></div>
         {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
       </span>
+      </div>
     ),
   },
   {

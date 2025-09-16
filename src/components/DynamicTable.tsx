@@ -258,7 +258,7 @@ export function DynamicTable<TData extends object>({
                         }
                         `}
                     >
-                      <div className="flex items-center justify-start gap-2">
+                      <div className="flex items-center justify-center gap-2">
                         <span className="dark:text-gray-400">
                           {header.isPlaceholder
                             ? null
@@ -326,7 +326,7 @@ export function DynamicTable<TData extends object>({
                     return (
                       <td
                         key={cell.id}
-                        className="px-4 h-[56px] sm:h-[72px] align-middle text-left whitespace-nowrap"
+                        className="px-4 h-[56px] sm:h-[72px] align-middle text-center whitespace-nowrap"
                       >
                         {typeof cellValue === "string" &&
                         cellValue.length > 23 &&

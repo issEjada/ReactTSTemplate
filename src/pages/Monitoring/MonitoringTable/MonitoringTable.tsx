@@ -133,6 +133,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "status",
     cell: (info) => {
       return (
+        <div className="w-full flex justify-center">
         <span
           className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
             info.getValue() === "VIEWED"
@@ -149,6 +150,7 @@ const getColumns = (): ColumnDef<Session>[] => [
           ></div>
           {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
         </span>
+        </div>
       );
     },
   },

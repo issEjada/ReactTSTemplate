@@ -190,7 +190,7 @@ const getColumns = (
 
       const isActive = status === "ENABLED";
       return (
-        <div className="flex justify-content flex-start">
+        <div className="flex justify-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
