@@ -17,6 +17,7 @@ import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import Spinner from "../../../components/Spinner";
+import { formatTime } from "../../../utils/helpers";
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -35,6 +36,8 @@ type DecisionRule = {
   scheme: string;
   eventSourceDevice: string;
   decision: string;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 };
 
 const RuleMenu = ({
@@ -363,6 +366,8 @@ export const DecisionRulesTable = () => {
             scheme: item.identifier.scheme,
             eventSourceDevice: item.identifier.eventSourceDevice,
             decision: item.decision,
+            creationTimestamp: formatTime(item.creationTimestamp ?? ""),
+            lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp ?? ""),
           }))}
           columns={columns}
           filterComponent={
@@ -488,6 +493,34 @@ const getColumns = (
   {
     header: "Event Source Device",
     accessorKey: "eventSourceDevice.value",
+  },
+    {
+    header: "Creation Time",
+    accessorKey: "creationTimestamp",
+    cell: ({ row }) => {
+      const value = String(row.original.creationTimestamp);
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap`}
+        >
+          {value}
+        </span>
+      );
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    cell: ({ row }) => {
+      const value = String(row.original.lastUpdatedTimestamp);
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap`}
+        >
+          {value}
+        </span>
+      );
+    },
   },
   {
     header: "",
