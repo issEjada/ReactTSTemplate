@@ -417,7 +417,7 @@ export const EventsTable = () => {
           buttonText="Add New Event"
           buttonIcon={
             <Suspense>
-              <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
             </Suspense>
           }
           onButtonClick={handleAddNewEvent}
