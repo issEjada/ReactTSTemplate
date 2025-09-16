@@ -400,7 +400,7 @@ const DecisionRulesDetails = () => {
         <button
           type="button"
           onClick={handleCancel}
-          className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] hover:bg-gray-100 transition duration-100"
+          className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] hover:bg-gray-100 dark:hover:text-black  transition duration-100"
         >
           Cancel
         </button>
