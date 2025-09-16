@@ -399,7 +399,7 @@ const RuleForm = () => {
                 isEditing
                 onCancel={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules");
+                  navigate(-1);
                 }}
               />
             )}
