@@ -14,7 +14,6 @@ import DynamicView from "../../../components/DynamicView";
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
-const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
 const DecisionRulesDetails = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -242,7 +241,7 @@ const DecisionRulesDetails = () => {
                   {...field}
                   placeholder="Criteria Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base placeholder-gray-500 text-gray-700 rounded-[8px] shadow-sm px-[14px] py-[10px] w-full md:w-[344px]  h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base placeholder-gray-500 text-gray-700 rounded-[8px] shadow-sm px-[14px] py-[10px]  w-full md:w-[344px]  h-[44px] cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
