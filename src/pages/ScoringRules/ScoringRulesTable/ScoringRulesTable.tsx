@@ -328,7 +328,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             (fromDashboard ? (
               <button
                 onClick={handleAddNewRule}
-                className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-gray-800 dark:border-gray-800 shadow-[0px_1px_2px_0px_#0A0D120D]"
+                className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center dark:bg-gray-800 dark:border-gray-800 shadow-[0px_1px_2px_0px_#0A0D120D]"
                 aria-label="Add New Rule"
               >
                 <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
@@ -336,7 +336,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
             ) : (
               <button
                 onClick={handleAddNewRule}
-                className="bg-blue-700 dark:bg-gray-800 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
+                className="bg-blue-700  hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
               >
                 <Suspense>
                   <PlusIcon className="w-[20px] h-[20px] text-white dark:text-gray-100" />
