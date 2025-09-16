@@ -165,8 +165,7 @@ export const SystemConfigDetails = () => {
           title="Start adding System Configuration"
           description={
             <>
-              You don’t have any {rowProps.name} yet
-              <br />
+
               You don’t have any {rowProps.name} added yet.
             </>
           }
