@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  useCallback,
-  useEffect,
-} from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
@@ -67,9 +62,6 @@ const getColumns = (): ColumnDef<Session>[] => [
       <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">
           {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 h-[20px] overflow-hidden">
-          category
         </span>
       </div>
     ),
@@ -329,7 +321,7 @@ export const MonitoringTable = () => {
       {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
-              <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+            <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
           }
           title="Start adding decision rules"
           description={
