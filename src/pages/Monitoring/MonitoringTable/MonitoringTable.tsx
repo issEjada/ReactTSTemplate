@@ -364,7 +364,6 @@ export const MonitoringTable = () => {
             onFilterStatus={onFilterStatus as (status: string) => void}
             statusFilter={statusFilter}
             onClearSearch={handleClearSearch}
-            onAddNewItem={() => {}}
             error={error}
             title="Monitor Activity Sessions"
             searchText={searchText}
