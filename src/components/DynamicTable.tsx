@@ -164,10 +164,13 @@ export function DynamicTable<TData extends object>({
                   <input
                     type="text"
                     value={searchText}
-                    onChange={(e) => setSearchText?.(e.target.value)}
+                    onChange={(e) => {
+                      setSearchText?.(e.target.value);
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && applyFilters) {
                         applyFilters();
+                        console.log("mdmsmdms", searchText)
                         setSubmittedText(searchText || "");
                       }
                     }}
