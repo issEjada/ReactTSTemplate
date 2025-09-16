@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-  Suspense,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
@@ -338,9 +337,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 onClick={handleAddNewRule}
                 className="bg-blue-700  hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
               >
-                <Suspense>
                   <PlusIcon className="w-[20px] h-[20px] text-white dark:text-gray-100" />
-                </Suspense>
                 Add New Rule
               </button>
             ))}

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, Suspense } from "react";
+import React, { useRef, useEffect, useState} from "react";
 import { Controller } from "react-hook-form";
 import type { Path, Control, FieldValues } from "react-hook-form";
 const ChevronDown = React.lazy(
@@ -97,9 +97,7 @@ const DropdownMenu = <T extends FieldValues>({
                     options.find((opt) => opt.key === value.key)?.node ||
                     `Choose ${label}`}
                 </span>
-                <Suspense>
                   <ChevronDown className="w-[10px] h-5 object-contain text-gray-500" />
-                </Suspense>
               </div>
 
               {/* Dropdown Menu */}

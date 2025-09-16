@@ -1,4 +1,4 @@
-import React, { useContext, useState, Suspense } from "react";
+import React, { useContext, useState} from "react";
 import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
@@ -174,12 +174,10 @@ export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
   return (
     <div className="flex items-center space-x-2 lg:space-x-4 text-sm text-gray-500 dark:text-gray-400">
-      <Suspense>
         <SideBarIcon
           className="text-black dark:text-white cursor-pointer"
           onClick={onSidebarIconClick}
         />
-      </Suspense>
       {window.innerWidth >= 768 && (
         <>
           <Link

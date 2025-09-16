@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { SideBarItemsGroup } from "./SideBarItem";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
@@ -22,13 +22,11 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           <div
             className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
           >
-            <Suspense>
               <LogoWithTextIcon
                 className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
                   isClosed && "w-[140px]"
                 }`}
               />
-            </Suspense>
           </div>
           <div
             className={`h-[1px] bg-gray-950/10 mb-3 transition-all duration-300 dark:bg-gray-800 ${

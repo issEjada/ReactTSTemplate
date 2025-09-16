@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useState } from "react";
+import {useCallback, useState } from "react";
 import { CustomerInsights } from "./CustomerInsights/CustomerInsights";
 import { ActionAnalytics } from "./ActionAnalytics/ActionAnalytics";
 import { CustomerDevices } from "./CustomerDevices/CustomerDevices";
@@ -88,9 +88,7 @@ export const CustomerProfile = () => {
               onClick={applyFilters}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
             >
-              <Suspense>
                 <SearchIcon className="w-5 h-5" />
-              </Suspense>
             </button>
 
             <input
@@ -128,9 +126,7 @@ export const CustomerProfile = () => {
             className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             onClick={openFilterModal}
           >
-            <Suspense>
               <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
-            </Suspense>
             <span className="hidden sm:inline">Filter</span>
           </button>
         </div>

@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 const BackgroundCircle = React.lazy(
   () => import("../assets/svg/BackgroundCircle.svg?react")
@@ -29,7 +29,6 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         minimal ? "h-[437px]" : "h-[600px]"
       } flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden`}
     >
-      <Suspense>
         <BackgroundCircle
           className="
             absolute
@@ -39,7 +38,6 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             z-0 text-gray-200 dark:text-gray-500
           "
         />
-      </Suspense>
 
       <div className="relative z-8 flex flex-col gap-20">
         <div

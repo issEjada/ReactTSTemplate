@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 const CloseXIcon = React.lazy(
   () => import("../../assets/svg/closeX.svg?react")
@@ -40,9 +40,7 @@ export default function FilterLayout({
             title="Close"
             aria-label="Close"
           >
-            <Suspense>
               <CloseXIcon className=" w-[10px] h-[10px] dark:text-white" />
-            </Suspense>
           </button>
         </div>
         {children}

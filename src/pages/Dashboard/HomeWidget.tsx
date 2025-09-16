@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { useDashboard } from "./useDashboard";
@@ -49,9 +49,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
           {title}
         </Link>
         <div className="w-[36px] h-[36px] p-[4px] bg-gray-950/5 dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
-          <Suspense>
             <Icon className={`w-[28px] h-[28px] ${myClass}`} />
-          </Suspense>
         </div>
       </div>
 

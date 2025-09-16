@@ -138,9 +138,9 @@ export const SystemConfigDetails = () => {
             onClick={handleUpdateScoring}
             className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
           >
-            <Suspense>
+       
               <EditIcon className="w-4 h-4" />
-            </Suspense>
+       
             Update Dimensions
           </button>
         ) : (
@@ -150,9 +150,9 @@ export const SystemConfigDetails = () => {
               onClick={handleAddConfirm}
               className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <Suspense>
+            
                 <PlusBorderIcon className="w-4 h-4 text-gray-700 dark:text-white" />
-              </Suspense>
+             
               {attributes ? `Add ${attributes[0]?.name}` : "Add New Item"}
             </button>
           )

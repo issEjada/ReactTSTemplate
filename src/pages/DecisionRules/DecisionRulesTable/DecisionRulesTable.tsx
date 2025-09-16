@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-  Suspense,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -148,9 +147,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <Suspense>
                 <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
-              </Suspense>
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -164,9 +161,7 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <Suspense>
                 <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
-              </Suspense>
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -178,9 +173,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <Suspense>
                 <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
-              </Suspense>
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,
@@ -334,9 +327,7 @@ export const DecisionRulesTable = () => {
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
-              <Suspense>
                 <PlusIcon className="w-[20px] h-[20px] text-white" />
-              </Suspense>
               Add New Rule
             </button>
           )}
@@ -346,9 +337,7 @@ export const DecisionRulesTable = () => {
       {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
-            <Suspense>
               <RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-            </Suspense>
           }
           title="Start adding decision rules"
           description={
@@ -360,9 +349,7 @@ export const DecisionRulesTable = () => {
           }
           buttonText="Add New Decision Rule"
           buttonIcon={
-            <Suspense>
               <PlusIcon className="w-[20px] h-[20px] text-white" />
-            </Suspense>
           }
           onButtonClick={handleAddNewRule}
         />

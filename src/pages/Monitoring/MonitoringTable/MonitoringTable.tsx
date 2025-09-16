@@ -2,7 +2,6 @@ import React, {
   useState,
   useMemo,
   useCallback,
-  Suspense,
   useEffect,
 } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -330,9 +329,7 @@ export const MonitoringTable = () => {
       {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
-            <Suspense>
               <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-            </Suspense>
           }
           title="Start adding decision rules"
           description={

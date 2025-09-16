@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect} from "react";
 import { createPortal } from "react-dom";
 import MetricCard from "../ActionAnalytics/MetricCard";
 
@@ -121,7 +121,6 @@ export const ActionIndicator: React.FC<PopupProps> = ({
 
         {/* Content */}
         <div className="p-5 space-y-3">
-          <Suspense>
             {rows.map((m) => (
               <MetricCard
                 key={m.id}
@@ -130,7 +129,6 @@ export const ActionIndicator: React.FC<PopupProps> = ({
                 icon={m.icon}
               />
             ))}
-          </Suspense>
         </div>
 
         {/* Footer */}

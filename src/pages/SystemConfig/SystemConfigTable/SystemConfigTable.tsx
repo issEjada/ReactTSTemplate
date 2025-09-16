@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useState } from "react";
+import React, {useMemo, useState } from "react";
 import {
   useSystemConfigTable,
   type ConfigurationFormValues,
@@ -91,9 +91,9 @@ export const SystemConfigTable = () => {
       {totalCount == 0 && !filters ? (
         <TableFallback
           icon={
-            <Suspense>
+          
               <SettingsIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-            </Suspense>
+            
           }
           title="You don’t have any configurations yet"
           description={<>Start configuring your system now.</>}
