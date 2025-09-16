@@ -202,6 +202,7 @@ function useViewScoringRules() {
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
         setPopupMessage(error.message);
+        setParametersData(undefined); // Clear parameters data on error
       });
   };
 
@@ -325,9 +326,11 @@ function useViewScoringRules() {
           ruleData.identifier.controlCode || ""
         );
       }, 1);
-      setEditorContent(ruleData.condition);
+      if (!editorContent || editorContent === "") {
+        setEditorContent(ruleData.condition);
+      }
     }
-  }, [ruleData, reset, setValue]);
+  }, [ruleData, reset, setValue, editorContent]); // Add editorContent to dependencies
 
   const onSubmit = (data: ViewScoringRulesFormValues) => {
     if (isAdding) {
