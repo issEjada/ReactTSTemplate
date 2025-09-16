@@ -55,7 +55,7 @@ const DashboardEvents: React.FC = () => {
 
         <button
           onClick={handleAddNewEvent}
-          className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
+          className="h-10 w-10 rounded-xl ml-auto bg-gray-100   shadow-sm hover:bg-gray-200 flex items-center justify-center dark:bg-gray-800 dark:border-gray-800 dark:hover:bg-gray-600"
           aria-label="Add New Rule"
         >
           <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
