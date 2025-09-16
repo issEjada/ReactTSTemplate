@@ -7,8 +7,10 @@ import {
 
 export const useActionAnalytics = (
   userMobileNumber: string,
+  userId: string,
+  clientId: string,
   currentPage: number,
-  itemsPerPage: number,
+  itemsPerPage: number
 ) => {
   const [actionAnalyticsData, setActionAnalyticsData] =
     useState<ActionAnalyticsResponse>();
@@ -17,13 +19,14 @@ export const useActionAnalytics = (
     "loading" | "success" | "error"
   >("success");
 
-
   const fetchActionAnalyticsData = async () => {
     setLoadingState("loading");
     const data: ActionAnalyticsPayload = {
       userMobileNumber: userMobileNumber,
+      clientUserId: clientId,
+      userId: userId,
       page: currentPage,
-      maxPageSize: itemsPerPage
+      maxPageSize: itemsPerPage,
     };
     await CustomerClient.getActionsAnalyticsData(data)
       .then((value) => {

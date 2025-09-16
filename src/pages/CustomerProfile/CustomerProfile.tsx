@@ -299,6 +299,8 @@ export const CustomerProfile = () => {
               {currentSection === "actionAnalytics" && (
                 <ActionAnalytics
                   userMobileNumber={insightsData?.userInfo?.mobileNumber}
+                  userId={insightsData?.userInfo?.userId}
+                  clientId={insightsData?.userInfo?.clientUserId}
                 />
               )}
               {currentSection === "customerDevices" && (

@@ -152,10 +152,14 @@ function RowMenu({
 
 type ActionAnalyticsProps = {
   userMobileNumber: string;
+  userId: string;
+  clientId: string;
 };
 
 export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   userMobileNumber,
+  userId,
+  clientId,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [popUpType, setPopUpType] = useState<
@@ -165,9 +169,16 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   const [itemsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
+  console.log(clientId, userId);
 
   const { actionAnalyticsData, errorValidation, loadingState } =
-    useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
+    useActionAnalytics(
+      userMobileNumber,
+      userId,
+      clientId,
+      currentPage,
+      itemsPerPage
+    );
 
   const columns: ColumnDef<FormattedAnalyticData>[] = [
     {
