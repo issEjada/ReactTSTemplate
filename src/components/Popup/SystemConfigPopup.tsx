@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import Spinner from "../Spinner";
 
 const CheckIcon = React.lazy(() => import(`/src/assets/svg/Check.svg?react`));
 const AlertIcon = React.lazy(
