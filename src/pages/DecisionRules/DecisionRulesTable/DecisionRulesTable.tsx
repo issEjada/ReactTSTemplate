@@ -150,7 +150,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-                <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -164,7 +164,7 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-                <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -176,7 +176,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-                <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,
@@ -330,7 +330,7 @@ export const DecisionRulesTable = () => {
               onClick={handleAddNewRule}
               className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
-                <PlusIcon className="w-[20px] h-[20px] text-white" />
+              <PlusIcon className="w-[20px] h-[20px] text-white" />
               Add New Rule
             </button>
           )}
@@ -339,9 +339,7 @@ export const DecisionRulesTable = () => {
 
       {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
-          icon={
-              <RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-          }
+          icon={<RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding decision rules"
           description={
             <>
@@ -351,9 +349,7 @@ export const DecisionRulesTable = () => {
             </>
           }
           buttonText="Add New Decision Rule"
-          buttonIcon={
-              <PlusIcon className="w-[20px] h-[20px] text-white" />
-          }
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px] text-white" />}
           onButtonClick={handleAddNewRule}
         />
       ) : (
@@ -465,22 +461,22 @@ const getColumns = (
     accessorKey: "status",
     cell: (info) => (
       <div className="w-full flex justify-center">
-      <span
-        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
-          info.getValue() === "ENABLED"
-            ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
-            : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        <div
-          className={`rounded-full bg-black w-[6px] h-[6px] ${
+        <span
+          className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
             info.getValue() === "ENABLED"
-              ? "bg-success-500 dark:bg-success-400"
-              : "bg-gray-500"
+              ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
+              : "bg-gray-200 text-gray-700"
           }`}
-        ></div>
-        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
-      </span>
+        >
+          <div
+            className={`rounded-full bg-black w-[6px] h-[6px] ${
+              info.getValue() === "ENABLED"
+                ? "bg-success-500 dark:bg-success-400"
+                : "bg-gray-500"
+            }`}
+          ></div>
+          {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        </span>
       </div>
     ),
   },
@@ -496,9 +492,12 @@ const getColumns = (
     header: "Event Source Device",
     accessorKey: "eventSourceDevice.value",
   },
-    {
+  {
     header: "Creation Time",
     accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => {
       const value = String(row.original.creationTimestamp);
       return (
@@ -513,6 +512,9 @@ const getColumns = (
   {
     header: "Last Updated Time",
     accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => {
       const value = String(row.original.lastUpdatedTimestamp);
       return (

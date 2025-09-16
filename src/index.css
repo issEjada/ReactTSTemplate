@@ -7,3 +7,38 @@
     @apply bg-white text-gray-900 dark:bg-black dark:text-gray-100;
   }
 }
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+*:hover,
+*:focus,
+*:focus-within,
+*:active {
+  scrollbar-color: #9ca3af transparent; /* show while interacting */
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+:hover::-webkit-scrollbar-thumb,
+:focus::-webkit-scrollbar-thumb,
+:active::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* only visible while scrolling/hover */
+}

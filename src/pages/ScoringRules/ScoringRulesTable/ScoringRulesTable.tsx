@@ -340,7 +340,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
                 onClick={handleAddNewRule}
                 className="bg-blue-700  hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
               >
-                  <PlusIcon className="w-[20px] h-[20px] text-white dark:text-gray-100" />
+                <PlusIcon className="w-[20px] h-[20px] text-white dark:text-gray-100" />
                 Add New Rule
               </button>
             ))}
@@ -492,22 +492,22 @@ const getColumns = (
     accessorKey: "status",
     cell: (info) => (
       <div className="w-full flex justify-center">
-      <span
-        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
-          info.getValue() === "ENABLED"
-            ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
-            : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        <div
-          className={`rounded-full bg-black w-[6px] h-[6px] ${
+        <span
+          className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
             info.getValue() === "ENABLED"
-              ? "bg-success-500 dark:bg-success-400"
-              : "bg-gray-500"
+              ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
+              : "bg-gray-200 text-gray-700"
           }`}
-        ></div>
-        {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
-      </span>
+        >
+          <div
+            className={`rounded-full bg-black w-[6px] h-[6px] ${
+              info.getValue() === "ENABLED"
+                ? "bg-success-500 dark:bg-success-400"
+                : "bg-gray-500"
+            }`}
+          ></div>
+          {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        </span>
       </div>
     ),
   },
@@ -539,6 +539,9 @@ const getColumns = (
   {
     header: "Creation Time",
     accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => {
       const value = String(row.original.creationTimestamp);
       return (
@@ -553,6 +556,9 @@ const getColumns = (
   {
     header: "Last Updated Time",
     accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => {
       const value = String(row.original.lastUpdatedTimestamp);
       return (
