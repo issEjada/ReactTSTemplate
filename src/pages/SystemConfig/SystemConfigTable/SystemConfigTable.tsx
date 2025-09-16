@@ -1,4 +1,4 @@
-import React, {useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState } from "react";
 import {
   useSystemConfigTable,
   type ConfigurationFormValues,
@@ -65,8 +65,15 @@ export const SystemConfigTable = () => {
   };
 
   const columns = useMemo(() => getColumns(handleViewSystemConfig), []);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  if (loadingState === "loading") {
+  useEffect(() => {
+      if (loadingState === "success" && isInitialLoad) {
+        setIsInitialLoad(false);
+      }
+    }, [loadingState, isInitialLoad]);
+
+  if (loadingState === "loading" && isInitialLoad) {
     return <Spinner />;
   }
 
