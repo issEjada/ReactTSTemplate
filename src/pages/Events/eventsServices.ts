@@ -59,6 +59,7 @@ export interface GetEventsItem {
   status: string;
   identifier: EventIdentifierInterface;
   creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 }
 
 export interface EventData {

@@ -17,6 +17,7 @@ import type { EventFormValues } from "../eventsServices";
 import PopupLayout from "../../../components/Popup/PopupLayout";
 import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
 import Spinner from "../../../components/Spinner";
+import { formatTime } from "../../../utils/helpers";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const UpdateIcon = React.lazy(
@@ -47,7 +48,8 @@ type EventRow = {
   status: string;
   scheme: string | undefined;
   eventSourceDevice: string | undefined;
-  createdAt: string;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 };
 
 const iconClasses = "w-[20px] h-[20px] text-blue-700 dark:text-blue-600";
@@ -239,31 +241,16 @@ const getColumns = (
 
   {
     header: "Creation Time",
-    accessorKey: "createdAt",
-    cell: (info) => {
-      const value = String(info.getValue() ?? "");
-      const d = new Date(value);
-      const date = isNaN(d.getTime()) ? "-" : d.toLocaleDateString("en-GB");
-      const tRaw = isNaN(d.getTime())
-        ? "-"
-        : d.toLocaleTimeString("en-US", {
-            hour12: true,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-      const time =
-        tRaw !== "-" && tRaw.includes(":")
-          ? `${tRaw.split(":")[0]}:${tRaw.split(":")[1]}:00 ${
-              tRaw.split(" ")[1]
-            }`
-          : "-";
-      return (
-        <div className="flex flex-col">
-          <span className="text-xs font-medium dark:text-white">{date}</span>
-          <span className="text-xs font-medium dark:text-white">{time}</span>
-        </div>
-      );
+    accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
     },
   },
   {
@@ -415,6 +402,8 @@ export const EventsTable = () => {
             scheme: item.identifier.scheme,
             eventSourceDevice: item.identifier.eventSourceDevice,
             createdAt: item.creationTimestamp,
+            creationTimestamp: formatTime(item.creationTimestamp),
+            lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp),
           }))}
           columns={columns}
           filterComponent={
