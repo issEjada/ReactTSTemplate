@@ -483,6 +483,24 @@ const getColumns = (
   {
     header: "Decision",
     accessorKey: "decision",
+    cell: (info) => {
+      const value = String(info.getValue());
+      const colorMap: Record<string, string> = {
+        MFA: "text-blue-700 bg-blue-100 dark:bg-blue-900 dark:text-blue-100",
+        SCA: "text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-100",
+        REJECT: "text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-100",
+      };
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+            colorMap[value] ||
+            "text-gray-700 bg-gray-100 dark:bg-gray-800 dark:text-gray-200"
+          }`}
+        >
+          {value}
+        </span>
+      );
+    },
   },
   {
     header: "Scheme",
