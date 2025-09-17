@@ -107,7 +107,11 @@ export function DynamicTable<TData extends object>({
   });
   const selectedDisplay = useWatch({ control, name: "display" });
   const pageSizeOptions = [5, 10, 25, 50, 100];
-  const availableOptions = pageSizeOptions.filter((opt) => opt <= itemsPerPage);
+  const maxOption =
+    pageSizeOptions.find((opt) => opt >= itemsPerPage) ?? itemsPerPage;
+
+  // build list of options up to that ceiling
+  const availableOptions = pageSizeOptions.filter((opt) => opt <= maxOption);
 
   useEffect(() => {
     if (itemsPerPage && selectedDisplay) {
