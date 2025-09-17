@@ -82,11 +82,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             className="flex items-center space-x-2 cursor-pointer"
             onClick={() => toggleDropdown("user")}
           >
-            <img
-              src="https://i.pravatar.cc/40"
-              alt="Avatar"
-              className="w-8 h-8 rounded-full"
-            />
+            <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
             <div className="text-sm">
               <div className="font-medium text-gray-800 dark:text-white text-[12px]">
                 Ahmed Abdullah

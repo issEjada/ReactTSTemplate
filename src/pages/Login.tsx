@@ -102,7 +102,7 @@ const LoginForm = () => {
                   Remember me
                 </label>
                 <a
-                  href="#"
+                  href="/forget-password"
                   className="text-blue-700 font-bold hover:underline text-sm"
                 >
                   Forgot Password?
@@ -124,7 +124,7 @@ const LoginForm = () => {
             <div className="mt-9 text-sm text-gray-600 text-center">
               Don’t have an account?
               <a
-                href="#"
+                href="/sign-up"
                 className="text-blue-700 font-bold hover:underline mx-2"
               >
                 Sign up
