@@ -27,6 +27,16 @@ const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 const RuleIcon = React.lazy(
   () => import("../../../assets/svg/EmptyDecisions.svg?react")
 );
+const MobileIcon = React.lazy(
+  () => import("../../../assets/svg/mobile.svg?react")
+);
+const DesktopIcon = React.lazy(
+  () => import("../../../assets/svg/Desktop.svg?react")
+);
+const WebIcon = React.lazy(() => import("../../../assets/svg/web.svg?react"));
+const AnyDeviceIcon = React.lazy(
+  () => import("../../../assets/svg/any-device.svg?react")
+);
 
 type DecisionRule = {
   id: number;
@@ -38,6 +48,32 @@ type DecisionRule = {
   decision: string;
   creationTimestamp: string;
   lastUpdatedTimestamp: string;
+};
+
+const iconClasses = "w-[20px] h-[20px] text-blue-700 dark:text-blue-600";
+
+const deviceIcons: Record<string, React.ReactNode> = {
+  Mobile: <MobileIcon className={iconClasses} />,
+  Web: <WebIcon className={iconClasses} />,
+  "3DS Authentication Page": <DesktopIcon className={iconClasses} />,
+  "Any Device": <AnyDeviceIcon className={iconClasses} />,
+  Any: <AnyDeviceIcon className={iconClasses} />,
+};
+
+const DevicePill = ({ device }: { device: string }) => {
+  if (!device) return null;
+
+  return (
+    <span className="inline-flex items-center gap-[10px]">
+      <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
+        {/* ✅ Render from map, fallback to AnyDeviceIcon */}
+        {deviceIcons[device] || <AnyDeviceIcon className={iconClasses} />}
+      </span>
+      <span className="text-[14px] leading-[20px] dark:text-white">
+        {device}
+      </span>
+    </span>
+  );
 };
 
 const RuleMenu = ({
@@ -509,6 +545,7 @@ const getColumns = (
   {
     header: "Event Source Device",
     accessorKey: "eventSourceDevice.value",
+    cell: (info) => <DevicePill device={String(info.getValue() ?? "")} />,
   },
   {
     header: "Creation Time",
