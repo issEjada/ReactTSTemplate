@@ -86,8 +86,11 @@ export const useViewDecisionRules = () => {
   const filteredIdentifier = Object.fromEntries(
     Object.entries(identifier).map(([field, obj]) => [field, obj?.key ?? ""])
   );
-  const selectedScheme = filteredIdentifier["scheme"];
-  const selectedEventSource = filteredIdentifier["eventSourceDevice"];
+  const selectedScheme =
+    filteredIdentifier["scheme"] || watch("identifier.scheme");
+  const selectedEventSource =
+    filteredIdentifier["eventSourceDevice"] ||
+    watch("identifier.eventSourceDevice");
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {

@@ -87,11 +87,17 @@ function useViewScoringRules() {
   const filteredIdentifier = Object.fromEntries(
     Object.entries(identifier).map(([field, obj]) => [field, obj?.key ?? ""])
   );
-  const selectedScheme = filteredIdentifier["scheme"];
-  const selectedAspect = filteredIdentifier["aspectCode"];
-  const selectedControl = filteredIdentifier["controlCode"];
-  const selectedEventSource = filteredIdentifier["eventSourceDevice"];
-  const selectedPlatForm = filteredIdentifier["platform"];
+  const selectedScheme =
+    filteredIdentifier["scheme"] || watch("identifier.scheme");
+  const selectedAspect =
+    filteredIdentifier["aspectCode"] || watch("identifier.aspectCode");
+  const selectedControl =
+    filteredIdentifier["controlCode"] || watch("identifier.controlCode");
+  const selectedEventSource =
+    filteredIdentifier["eventSourceDevice"] ||
+    watch("identifier.eventSourceDevice");
+  const selectedPlatForm =
+    filteredIdentifier["platform"] || watch("identifier.platform");
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
