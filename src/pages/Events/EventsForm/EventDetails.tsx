@@ -305,7 +305,13 @@ const EventDetails = () => {
             }}
             onCancel={() => {
               setIsPopupOpen(false);
+              if(isEditing){
+                reset();
+                navigate("/events");
+              }
+              else{
               navigate(-1);
+              }
             }}
           />
         </PopupLayout>
