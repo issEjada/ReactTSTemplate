@@ -1,4 +1,4 @@
-import {useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CustomerInsights } from "./CustomerInsights/CustomerInsights";
 import { ActionAnalytics } from "./ActionAnalytics/ActionAnalytics";
 import { CustomerDevices } from "./CustomerDevices/CustomerDevices";
@@ -38,10 +38,14 @@ const FilterIcon = React.lazy(
 );
 
 const MOBILE_NUMBER_STORAGE_KEY = "customerProfileMobileNumber";
+const CURRENT_SECTION_STORAGE_KEY = "customerProfileCurrentSection";
 
 export const CustomerProfile = () => {
-  const [currentSection, setCurrentSection] =
-    useState<string>("customerInsights");
+  const [currentSection, setCurrentSection] = useState<string>(() => {
+    return (
+      localStorage.getItem(CURRENT_SECTION_STORAGE_KEY) || "customerInsights"
+    );
+  });
   const [searchText, setSearchText] = useState(() => {
     const storedMobileNumber = localStorage.getItem(MOBILE_NUMBER_STORAGE_KEY);
     return storedMobileNumber || "";
@@ -70,6 +74,10 @@ export const CustomerProfile = () => {
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
+  useEffect(() => {
+    localStorage.setItem(CURRENT_SECTION_STORAGE_KEY, currentSection);
+  }, [currentSection]);
+
   if (loadingState === "loading") {
     return <Spinner />;
   }
@@ -88,7 +96,7 @@ export const CustomerProfile = () => {
               onClick={applyFilters}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
             >
-                <SearchIcon className="w-5 h-5" />
+              <SearchIcon className="w-5 h-5" />
             </button>
 
             <input
@@ -126,7 +134,7 @@ export const CustomerProfile = () => {
             className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             onClick={openFilterModal}
           >
-              <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
+            <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
             <span className="hidden sm:inline">Filter</span>
           </button>
         </div>

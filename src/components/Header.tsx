@@ -1,4 +1,4 @@
-import React, { useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
@@ -51,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       sessionStorage.removeItem(ConstantKeys.rememberMe);
       localStorage.removeItem(ConstantKeys.rememberMe);
       localStorage.removeItem("customerProfileMobileNumber");
+      localStorage.removeItem("customerProfileCurrentSection");
       localStorage.removeItem("isClosed");
       setIsAuthenticated(false);
     }, 1000);
@@ -174,10 +175,10 @@ export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
   return (
     <div className="flex items-center space-x-2 lg:space-x-4 text-sm text-gray-500 dark:text-gray-400">
-        <SideBarIcon
-          className="text-black dark:text-white cursor-pointer"
-          onClick={onSidebarIconClick}
-        />
+      <SideBarIcon
+        className="text-black dark:text-white cursor-pointer"
+        onClick={onSidebarIconClick}
+      />
       {window.innerWidth >= 768 && (
         <>
           <Link
