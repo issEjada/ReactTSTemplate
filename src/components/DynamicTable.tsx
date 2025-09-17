@@ -106,13 +106,15 @@ export function DynamicTable<TData extends object>({
     defaultValues: { display: String(itemsPerPage) },
   });
   const selectedDisplay = useWatch({ control, name: "display" });
+  console.log(selectedDisplay);
+  console.log(itemsPerPage);
 
   useEffect(() => {
-    if (setItemsPerPage && selectedDisplay) {
-      setItemsPerPage(Number(selectedDisplay));
+    if (itemsPerPage && selectedDisplay) {
+      setItemsPerPage?.(Number(selectedDisplay));
       setCurrentPage(1);
     }
-  }, [selectedDisplay, setItemsPerPage, setCurrentPage]);
+  }, [selectedDisplay, setItemsPerPage, setCurrentPage, itemsPerPage]);
 
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);

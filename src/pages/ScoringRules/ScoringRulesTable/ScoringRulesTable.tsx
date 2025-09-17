@@ -215,6 +215,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     handleSearchSubmit,
     deleteRule,
     handleToggleStatus,
+    setItemsPerPage,
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -386,6 +387,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}
           onFilterStatus={
             !fromDashboard ? (onFilterStatus as (s: string) => void) : undefined

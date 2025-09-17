@@ -63,7 +63,7 @@ export const useViewDecisionRules = () => {
   );
   const isAdding = useMemo(() => !id && !screenAction, [id, screenAction]);
 
-  const { control, handleSubmit, formState, reset, watch, getValues } =
+  const { control, handleSubmit, formState, reset, watch } =
     useForm<DecisionRulesFormValues>({
       mode: "onTouched",
       defaultValues: {
