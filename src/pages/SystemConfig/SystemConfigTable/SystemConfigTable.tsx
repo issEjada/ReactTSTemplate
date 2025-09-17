@@ -34,6 +34,7 @@ export const SystemConfigTable = () => {
     setCurrentPage,
     filters,
     setFilters,
+    setItemsPerPage,
   } = useSystemConfigTable();
 
   const [searchText, setSearchText] = useState("");
@@ -117,6 +118,7 @@ export const SystemConfigTable = () => {
           columns={columns}
           totalCount={totalCount}
           currentPage={currentPage}
+          setItemsPerPage={setItemsPerPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
           onClearSearch={handleClearSearch}

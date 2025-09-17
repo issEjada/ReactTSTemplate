@@ -63,6 +63,7 @@ export const SystemConfigDetails = () => {
     setError,
     isErrorPopupOpen,
     setIsErrorPopupOpen,
+    setItemsPerPage,
   } = useSystemConfigDetails();
 
   const columns = useMemo(
@@ -186,6 +187,7 @@ export const SystemConfigDetails = () => {
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
+          setItemsPerPage={setItemsPerPage}
           title="System configurations"
           error={error}
           searchPlaceholder="Search"
