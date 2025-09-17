@@ -420,7 +420,12 @@ const DecisionRulesDetails = () => {
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate(-1);
+                if (isEditing) {
+                  reset();
+                  navigate("/decision-rules");
+                } else {
+                  navigate(-1);
+                }
               }}
             />
           )}

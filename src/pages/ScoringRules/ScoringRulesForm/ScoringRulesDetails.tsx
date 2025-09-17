@@ -429,7 +429,12 @@ const ScoringRulesDetails = () => {
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
-                  navigate(-1);
+                  if (isEditing) {
+                    reset();
+                    navigate("/events");
+                  } else {
+                    navigate(-1);
+                  }
                 }}
               />
             )}
