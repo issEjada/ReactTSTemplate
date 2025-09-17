@@ -82,8 +82,12 @@ export const useViewDecisionRules = () => {
       },
     });
 
-  const selectedScheme = watch("identifier.scheme");
-  const selectedEventSource = watch("identifier.eventSourceDevice");
+  const identifier = watch().identifier!;
+  const filteredIdentifier = Object.fromEntries(
+    Object.entries(identifier).map(([field, obj]) => [field, obj?.key ?? ""])
+  );
+  const selectedScheme = filteredIdentifier["scheme"];
+  const selectedEventSource = filteredIdentifier["eventSourceDevice"];
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
@@ -171,7 +175,10 @@ export const useViewDecisionRules = () => {
 
   const fetchParameterData = async () => {
     const data: GetDecisionParametersPayload = {
-      identifier: watch().identifier!,
+      identifier: {
+        eventSourceDevice: selectedEventSource,
+        scheme: selectedScheme,
+      },
     };
 
     await DecisionRulesServices.getRulesParameters(data)
@@ -188,8 +195,8 @@ export const useViewDecisionRules = () => {
   const fetchEventDropDownsData = async () => {
     const data: GetEventDropDownsPayload = {
       identifier: {
-        eventSourceDevice: getValues("identifier.eventSourceDevice") || "",
-        scheme: getValues("identifier.scheme") || "",
+        eventSourceDevice: selectedEventSource,
+        scheme: selectedScheme,
       },
       status: "ENABLED",
     };
@@ -231,7 +238,7 @@ export const useViewDecisionRules = () => {
       fetchEventDropDownsData();
       fetchParameterData();
     }
-  }, [selectedEventSource, selectedScheme]);
+  }, [selectedEventSource, selectedScheme, isViewing]);
 
   const onSubmit = (data: DecisionRulesFormValues) => {
     if (isAdding) {
