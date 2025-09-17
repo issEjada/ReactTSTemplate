@@ -64,6 +64,7 @@ const EventDetails = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleCancel = () => {
+    setScreenAction("view");
     reset();
     navigate(-1);
   };
