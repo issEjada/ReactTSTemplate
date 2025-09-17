@@ -108,15 +108,14 @@ export function DynamicTable<TData extends object>({
   const selectedDisplay = useWatch({ control, name: "display" });
   const pageSizeOptions = [5, 10, 25, 50, 100];
   const current = Number(itemsPerPage);
-
-  // Find the ceiling (strictly greater than current)
   const ceiling = pageSizeOptions.find((opt) => opt > current);
-
-  // If no ceiling found, fallback to current
   const maxOption = ceiling ?? current;
-
-  // Build options up to that ceiling
-  const availableOptions = pageSizeOptions.filter((opt) => opt <= maxOption);
+  let availableOptions = pageSizeOptions.filter((opt) => opt <= maxOption);
+  if (!availableOptions.includes(itemsPerPage)) {
+    availableOptions = [itemsPerPage, ...availableOptions].sort(
+      (a, b) => a - b
+    );
+  }
 
   useEffect(() => {
     if (itemsPerPage && selectedDisplay) {
@@ -463,16 +462,16 @@ export function DynamicTable<TData extends object>({
           <div className="flex items-center gap-3">
             <label className="flex items-center gap-2">
               Display
-              <div className="w-[100px]">
+              <div className="w-[100px] relative z-10 overflow-visible">
                 <DropdownMenu
                   control={control}
                   name="display"
                   label=""
+                  portal={true}
                   options={availableOptions.map((opt) => ({
                     key: String(opt),
                     node: String(opt),
                   }))}
-                  placeholder="Rows"
                 />
               </div>
             </label>
