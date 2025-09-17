@@ -102,13 +102,17 @@ const EventDetails = () => {
         title="Event Details"
         fields={[
           { title: "Event Name", value: eventData?.name },
+          { title: "Event Code", value: eventData?.code },
           { title: "Description", value: eventData?.description },
           {
             title: "Event Source Device",
             value: eventData?.identifier?.eventSourceDevice,
           },
           { title: "Scheme", value: eventData?.identifier?.scheme },
-          { title: "Status", value: eventData?.status },
+          {
+            title: "Status",
+            value: eventData?.status === "ENABLED" ? "Active" : "Inactive",
+          },
           { title: "Creation Date", value: creationTimestamp.date },
           { title: "Creation Time", value: creationTimestamp.time },
           {
