@@ -83,11 +83,15 @@ function useViewScoringRules() {
       },
     });
 
-  const selectedScheme = watch("identifier.scheme");
-  const selectedAspect = watch("identifier.aspectCode");
-  const selectedControl = watch("identifier.controlCode");
-  const selectedEventSource = watch("identifier.eventSourceDevice");
-  const selectedPlatForm = watch("identifier.platform");
+  const identifier = watch().identifier!;
+  const filteredIdentifier = Object.fromEntries(
+    Object.entries(identifier).map(([field, obj]) => [field, obj?.key ?? ""])
+  );
+  const selectedScheme = filteredIdentifier["scheme"];
+  const selectedAspect = filteredIdentifier["aspectCode"];
+  const selectedControl = filteredIdentifier["controlCode"];
+  const selectedEventSource = filteredIdentifier["eventSourceDevice"];
+  const selectedPlatForm = filteredIdentifier["platform"];
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
@@ -191,7 +195,13 @@ function useViewScoringRules() {
   };
   const fetchParameterData = async () => {
     const data: GetRulesParametersPayload = {
-      identifier: watch().identifier!,
+      identifier: {
+        eventSourceDevice: selectedEventSource,
+        aspectCode: selectedAspect,
+        controlCode: selectedControl,
+        platform: selectedPlatForm,
+        scheme: selectedScheme,
+      },
     };
 
     await ScoringRulesServices.getRulesParameters(data)
@@ -315,6 +325,7 @@ function useViewScoringRules() {
     selectedScheme,
     selectedAspect,
     selectedControl,
+    isViewing,
   ]);
 
   useEffect(() => {
