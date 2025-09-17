@@ -267,6 +267,7 @@ function useViewScoringRules() {
   useEffect(() => {
     if (selectedEventSource && selectedScheme && selectedAspect && !isViewing) {
       setControleValues([]);
+      setValue("identifier.controlCode", "");
       fetchDropDownsValues([
         {
           key: "event_source_device",
