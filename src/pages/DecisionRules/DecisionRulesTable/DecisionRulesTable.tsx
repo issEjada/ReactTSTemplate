@@ -250,6 +250,7 @@ export const DecisionRulesTable = () => {
     refetch,
     totalCount,
     error,
+    setItemsPerPage,
     handleToggleStatus, // Destructure handleToggleStatus from the hook
   } = useDecisionRulesTable();
   const [searchText, setSearchText] = useState("");
@@ -413,6 +414,7 @@ export const DecisionRulesTable = () => {
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}
           onFilterStatus={onFilterStatus as (status: string) => void}
           statusFilter={statusFilter}

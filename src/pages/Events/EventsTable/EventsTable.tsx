@@ -276,6 +276,7 @@ export const EventsTable = () => {
     popupType,
     popupMessage,
     handleToggleStatus,
+    setItemsPerPage
   } = useEventsTable();
 
   const navigate = useNavigate();
@@ -417,6 +418,7 @@ export const EventsTable = () => {
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}
           onFilterStatus={handleDeviceFilter}
           statusFilter={getDeviceFilterValue}

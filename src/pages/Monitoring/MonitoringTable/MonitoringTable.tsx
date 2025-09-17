@@ -182,6 +182,7 @@ export const MonitoringTable = () => {
     filters,
     setFilters,
     handleSearchSubmit,
+    setItemsPerPage,
   } = useMonitoringTable();
 
   const { sessionActivityData, statisticsData } = useSessionActivity();
@@ -351,6 +352,7 @@ export const MonitoringTable = () => {
             totalCount={totalCount}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
             setCurrentPage={setCurrentPage}
             onFilterStatus={onFilterStatus as (status: string) => void}
             statusFilter={statusFilter}
