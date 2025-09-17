@@ -107,7 +107,6 @@ export function DynamicTable<TData extends object>({
   });
   const selectedDisplay = useWatch({ control, name: "display" });
   const pageSizeOptions = [5, 10, 25, 50, 100];
-
   const current = Number(itemsPerPage);
 
   // Find the ceiling (strictly greater than current)
@@ -479,7 +478,7 @@ export function DynamicTable<TData extends object>({
             </label>
 
             <span>
-              {totalCount === 0 ? 0 : itemsPerPage} results out of {totalCount}
+              {totalCount === 0 ? 0 : data.length} results out of {totalCount}
             </span>
           </div>
 

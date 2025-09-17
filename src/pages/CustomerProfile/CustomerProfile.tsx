@@ -52,8 +52,13 @@ export const CustomerProfile = () => {
   });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const { insightsData, setGlobalFilterData, errorValidation, loadingState } =
-    useCustomProfile();
+  const {
+    insightsData,
+    globalFilterData,
+    setGlobalFilterData,
+    errorValidation,
+    loadingState,
+  } = useCustomProfile();
 
   const applyFilters = () => {
     const searchData = {
@@ -78,16 +83,9 @@ export const CustomerProfile = () => {
     localStorage.setItem(CURRENT_SECTION_STORAGE_KEY, currentSection);
   }, [currentSection]);
 
-  const [filterData, setFilterData] = useState<CustomerInsightsPayload>({
-    userMobileNumber: "",
-    userId: "",
-    clientUserId: "",
-  });
-
   if (loadingState === "loading") {
     return <Spinner />;
   }
-  
 
   return (
     <div className="flex flex-col gap-2 w-full pt-6 pb-4 ps-6 pe-4">
@@ -130,21 +128,9 @@ export const CustomerProfile = () => {
           <CustomerInformationFilter
             isOpen={isFilterOpen}
             closeDrawer={closeFilterModal}
-            filterData={filterData} 
+            filterData={globalFilterData}
             handleSearchSubmit={(searchData) => {
               handleSearchSubmit(searchData);
-              setFilterData(searchData);
-              if (searchData.userMobileNumber) {
-                setSearchText(searchData.userMobileNumber);
-                localStorage.setItem(
-                  MOBILE_NUMBER_STORAGE_KEY,
-                  searchData.userMobileNumber
-                );
-              } else {
-                setSearchText("");
-                localStorage.removeItem(MOBILE_NUMBER_STORAGE_KEY);
-              }
-
               closeFilterModal();
               setCurrentSection("customerInsights");
             }}

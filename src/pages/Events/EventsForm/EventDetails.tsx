@@ -203,33 +203,36 @@ const EventDetails = () => {
       </div>
 
       <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
-        {/* Event Code */}
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white">
-            Event Code<span className="text-red-500"> *</span>
-          </label>
-          <Controller
-            name="code"
-            control={control}
-            rules={{ required: "Event code is required." }}
-            render={({ field, fieldState }) => (
-              <div className="flex flex-col">
-                <input
-                  {...field}
-                  placeholder="Enter event code"
-                  disabled={true}
-                  className={`${inputBase} bg-[#F9FAFB] text-[#A0A0A0] border-gray-300 dark:bg-darkTheme dark:border-gray-800`}
-                />
-                {fieldState.error && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {fieldState.error.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-        </div>
+        {/* Event Code (hide when adding) */}
+        {!isAdding && (
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white">
+              Event Code<span className="text-red-500"> *</span>
+            </label>
+            <Controller
+              name="code"
+              control={control}
+              rules={{ required: "Event code is required." }}
+              render={({ field, fieldState }) => (
+                <div className="flex flex-col">
+                  <input
+                    {...field}
+                    placeholder="Enter event code"
+                    disabled={true}
+                    className={`${inputBase} bg-[#F9FAFB] text-[#A0A0A0] border-gray-300 dark:bg-darkTheme dark:border-gray-800`}
+                  />
+                  {fieldState.error && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
+          </div>
+        )}
 
+        {/* Event Source Device */}
         <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.eventSourceDevice"
@@ -242,9 +245,8 @@ const EventDetails = () => {
           disabled={isViewing || isEditing}
           required
         />
-      </div>
 
-      <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
+        {/* Scheme (move beside Event Source Device when adding) */}
         <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.scheme"
@@ -253,11 +255,12 @@ const EventDetails = () => {
             key: item.key,
             node: item.valueEn,
           }))}
-          className="w-full"
+          className={`w-full ${isAdding ? "" : "xl:col-start-1"}`}
           disabled={isViewing || isEditing}
           required
         />
 
+        {/* Status */}
         <DropdownMenu<EventFormValues>
           control={control}
           name="status"
@@ -306,12 +309,11 @@ const EventDetails = () => {
             }}
             onCancel={() => {
               setIsPopupOpen(false);
-              if(isEditing){
+              if (isEditing) {
                 reset();
                 navigate("/events");
-              }
-              else{
-              navigate(-1);
+              } else {
+                navigate(-1);
               }
             }}
           />
