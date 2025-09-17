@@ -202,6 +202,33 @@ const EventDetails = () => {
       </div>
 
       <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
+        {/* Event Code */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white">
+            Event Code<span className="text-red-500"> *</span>
+          </label>
+          <Controller
+            name="code"
+            control={control}
+            rules={{ required: "Event code is required." }}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <input
+                  {...field}
+                  placeholder="Enter event code"
+                  disabled={true}
+                  className={`${inputBase} bg-[#F9FAFB] text-[#A0A0A0] border-gray-300 dark:bg-darkTheme dark:border-gray-800`}
+                />
+                {fieldState.error && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
         <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.eventSourceDevice"
@@ -214,7 +241,9 @@ const EventDetails = () => {
           disabled={isViewing || isEditing}
           required
         />
+      </div>
 
+      <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
         <DropdownMenu<EventFormValues>
           control={control}
           name="identifier.scheme"
@@ -227,9 +256,7 @@ const EventDetails = () => {
           disabled={isViewing || isEditing}
           required
         />
-      </div>
 
-      <div className="px-6 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
         <DropdownMenu<EventFormValues>
           control={control}
           name="status"
