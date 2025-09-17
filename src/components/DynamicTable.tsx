@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -10,6 +10,8 @@ import Spinner from "./Spinner";
 import type { LoadingState } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
+import DropdownMenu from "./DropDown";
+import { useForm, useWatch } from "react-hook-form";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
 const FilterIcon = React.lazy(() => import("../assets/svg/Filters.svg?react"));
@@ -30,6 +32,7 @@ interface DynamicTableProps<TData extends object> {
   currentPage: number;
   itemsPerPage: number;
   setCurrentPage: (page: number | ((prev: number) => number)) => void;
+  setItemsPerPage?: (size: number) => void;
   onFilterStatus?: (status: string) => void;
   statusFilter?: string;
   onClearSearch?: () => void;
@@ -61,6 +64,7 @@ export function DynamicTable<TData extends object>({
   currentPage,
   itemsPerPage,
   setCurrentPage,
+  setItemsPerPage,
   onFilterStatus,
   statusFilter,
   onClearSearch,
@@ -98,13 +102,17 @@ export function DynamicTable<TData extends object>({
       originalRow?.id ? `${originalRow.id}-${index}` : `${index}`,
   });
 
-  // if (error) {
-  //   return (
-  //     <div className="w-full h-[75vh] flex items-center justify-center text-red-500 text-lg">
-  //       {error}
-  //     </div>
-  //   );
-  // }
+  const { control } = useForm<{ display: string }>({
+    defaultValues: { display: String(itemsPerPage) },
+  });
+  const selectedDisplay = useWatch({ control, name: "display" });
+
+  useEffect(() => {
+    if (setItemsPerPage && selectedDisplay) {
+      setItemsPerPage(Number(selectedDisplay));
+      setCurrentPage(1);
+    }
+  }, [selectedDisplay, setItemsPerPage, setCurrentPage]);
 
   const onArrowClick = (columnId: string) => {
     const col = table.getColumn(columnId);
@@ -170,7 +178,7 @@ export function DynamicTable<TData extends object>({
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && applyFilters) {
                         applyFilters();
-                        console.log("mdmsmdms", searchText)
+                        console.log("mdmsmdms", searchText);
                         setSubmittedText(searchText || "");
                       }
                     }}
@@ -440,42 +448,117 @@ export function DynamicTable<TData extends object>({
       </div>
 
       {!minimal && (
-        <div className="flex-col sm:flex-row flex justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
-          <div className="text-center sm:text-left">
-            Page {totalCount === 0 ? 0 : currentPage} of{" "}
-            {totalCount === 0 ? 0 : Math.ceil(totalCount / itemsPerPage)}
+        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-3 border-t dark:border-gray-800 text-sm text-black dark:text-white gap-3 sm:gap-0">
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2">
+              Display
+              <div className="w-[100px]">
+                <DropdownMenu
+                  control={control}
+                  name="display"
+                  label=""
+                  options={[
+                    { key: "10", node: "10" },
+                    { key: "25", node: "25" },
+                    { key: "50", node: "50" },
+                    { key: "100", node: "100" },
+                  ]}
+                  placeholder="Rows"
+                />
+              </div>
+            </label>
+
+            <span>
+              {totalCount === 0 ? 0 : itemsPerPage} results out of {totalCount}
+            </span>
           </div>
 
-          {table.getRowModel().rows.length > 0 && (
-            <div className="flex w-full sm:w-auto gap-2 sm:space-x-2 text-gray-700">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className={`px-3 py-2 w-full sm:w-[87px] h-[36px] border border-gray-300 rounded-lg ${
-                  currentPage === 1
-                    ? "dark:text-white cursor-not-allowed opacity-50"
-                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-                }`}
-              >
-                Previous
-              </button>
-              <button
-                onClick={() =>
-                  setCurrentPage((p) =>
-                    p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
-                  )
-                }
-                disabled={currentPage === Math.ceil(totalCount / itemsPerPage)}
-                className={`px-3 py-2 w-full sm:w-[60px] h-[36px] border border-gray-300 rounded-lg ${
-                  currentPage === Math.ceil(totalCount / itemsPerPage)
-                    ? "dark:text-white cursor-not-allowed opacity-50"
-                    : "hover:bg-gray-100 text-black dark:text-white dark:hover:bg-gray-800"
-                }`}
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <span>
+              Page {totalCount === 0 ? 0 : currentPage} of{" "}
+              {totalCount === 0 ? 0 : Math.ceil(totalCount / itemsPerPage)}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1 || totalCount === 0}
+              className={`px-2 py-1 border rounded ${
+                currentPage === 1 || totalCount === 0
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              {"<<"}
+            </button>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1 || totalCount === 0}
+              className={`px-2 py-1 border rounded ${
+                currentPage === 1 || totalCount === 0
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              {"<"}
+            </button>
+
+            {totalCount > 0 &&
+              Array.from(
+                { length: Math.ceil(totalCount / itemsPerPage) },
+                (_, i) => i + 1
+              ).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-1 border rounded ${
+                    currentPage === page
+                      ? "bg-gray-800 text-white dark:bg-white dark:text-black"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+
+            <button
+              onClick={() =>
+                setCurrentPage((p) =>
+                  p < Math.ceil(totalCount / itemsPerPage) ? p + 1 : p
+                )
+              }
+              disabled={
+                totalCount === 0 ||
+                currentPage === Math.ceil(totalCount / itemsPerPage)
+              }
+              className={`px-2 py-1 border rounded ${
+                totalCount === 0 ||
+                currentPage === Math.ceil(totalCount / itemsPerPage)
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              {">"}
+            </button>
+
+            <button
+              onClick={() =>
+                setCurrentPage(Math.ceil(totalCount / itemsPerPage))
+              }
+              disabled={
+                totalCount === 0 ||
+                currentPage === Math.ceil(totalCount / itemsPerPage)
+              }
+              className={`px-2 py-1 border rounded ${
+                totalCount === 0 ||
+                currentPage === Math.ceil(totalCount / itemsPerPage)
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              {">>"}
+            </button>
+          </div>
         </div>
       )}
     </div>
