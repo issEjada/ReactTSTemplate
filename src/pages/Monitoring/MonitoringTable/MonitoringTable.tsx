@@ -59,7 +59,7 @@ const getColumns = (): ColumnDef<Session>[] => [
       isSorted: true,
     },
     cell: (info) => (
-      <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
+      <div className="flex flex-col w-[95px] h-[40px] overflow-hidden justify-center">
         <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">
           {String(info.getValue() ?? "")}
         </span>
