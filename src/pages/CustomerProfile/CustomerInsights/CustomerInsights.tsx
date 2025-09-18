@@ -18,10 +18,6 @@ const AnalyticsIcon = React.lazy(
   () => import("../../../assets/svg/AAnalytics.svg?react")
 );
 
-const RulesIcon = React.lazy(
-  () => import("../../../assets/svg/rules.svg?react")
-);
-
 const MostMapIcon = React.lazy(
   () => import("../../../assets/svg/MostUsedTargetCountry.svg?react")
 );

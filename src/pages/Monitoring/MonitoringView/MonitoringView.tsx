@@ -201,20 +201,6 @@ const MonitoringView = () => {
               <div className="space-y-6">
                 <div className="min-h-[56px] flex flex-col gap-2">
                   <span className="text-base font-normal text-gray-900 leading-[24px] dark:text-white">
-                    ISP
-                  </span>
-                  <span
-                    className={
-                      "text-base font-normal text-gray-500 leading-6 break-all"
-                    }
-                  >
-                    {data?.isp.join(", ")}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div className="min-h-[56px] flex flex-col gap-2">
-                  <span className="text-base font-normal text-gray-900 leading-[24px] dark:text-white">
                     LAT, LONG
                   </span>
                   <span
