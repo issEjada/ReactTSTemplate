@@ -213,17 +213,6 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         label="Trusted Platforms"
         data={insightsData?.userInsights?.trusted3DSPagePlatforms}
       />
-      <ExpandableCard
-        icon={<RulesIcon className="text-blue-700 w-[9.33px]" />}
-        label="Blacklisted Devices"
-        data={insightsData?.userInsights?.blacklistedDevices?.map(
-          (item, index) => (
-            <p key={index}>
-              {item.uniqueId + ", " + item.model + ", " + item.manufacturer}
-            </p>
-          )
-        )}
-      />
     </div>
   );
 };
