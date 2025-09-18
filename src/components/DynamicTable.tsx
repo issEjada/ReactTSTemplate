@@ -91,6 +91,9 @@ export function DynamicTable<TData extends object>({
   const [submittedText, setSubmittedText] = useState<string>("");
   const navigate = useNavigate();
 
+
+  
+
   const table = useReactTable<TData>({
     data,
     columns,
@@ -103,7 +106,7 @@ export function DynamicTable<TData extends object>({
   });
 
   const { control } = useForm<{ display: string }>({
-    defaultValues: { display: String(itemsPerPage) },
+    defaultValues: { display: String(10) },
   });
   const selectedDisplay = useWatch({ control, name: "display" });
   const pageSizeOptions = [5, 10, 25, 50, 100];
@@ -511,22 +514,38 @@ export function DynamicTable<TData extends object>({
             </button>
 
             {totalCount > 0 &&
-              Array.from(
-                { length: Math.ceil(totalCount / itemsPerPage) },
-                (_, i) => i + 1
-              ).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`px-3 py-1 border rounded ${
-                    currentPage === page
-                      ? "bg-gray-800 text-white dark:bg-white dark:text-black"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
+              (() => {
+                const totalPages = Math.ceil(totalCount / itemsPerPage);
+                let pages: number[] = [];
+
+                if (totalPages <= 3) {
+                  // Show all if total pages ≤ 3
+                  pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+                } else if (currentPage === 1) {
+                  // First page
+                  pages = [1, 2, 3];
+                } else if (currentPage === totalPages) {
+                  // Last page
+                  pages = [totalPages - 2, totalPages - 1, totalPages];
+                } else {
+                  // Middle pages
+                  pages = [currentPage - 1, currentPage, currentPage + 1];
+                }
+
+                return pages.map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-1 border rounded ${
+                      currentPage === page
+                        ? "bg-gray-800 text-white dark:bg-white dark:text-black"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ));
+              })()}
 
             <button
               onClick={() =>
