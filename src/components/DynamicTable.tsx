@@ -140,7 +140,7 @@ export function DynamicTable<TData extends object>({
                       <button
                         key={option.key}
                         onClick={() => onFilterStatus(option.key)}
-                        className={`text-xs h-9 sm:h-10 px-3 w-[90px] min-w-fit ${
+                        className={`text-xs h-9 sm:h-10 px-3 w-[90px]  min-w-max ${
                           statusFilter === option.key
                             ? "bg-gray-50 text-black"
                             : "hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
