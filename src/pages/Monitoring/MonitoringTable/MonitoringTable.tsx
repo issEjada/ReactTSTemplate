@@ -70,7 +70,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     header: "Channel",
     accessorKey: "channel",
     cell: (info) => (
-      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+      <div className="flex items-center w-[95px] h-[40px] overflow-hidden justify-center">
         <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue() ?? "")}
         </span>
@@ -81,7 +81,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     header: "Customer Identity",
     accessorKey: "customerIdentity",
     cell: (info) => (
-      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+      <div className="flex items-center w-[95px] h-[40px] overflow-hidden justify-center">
         <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue() ?? "")}
         </span>
