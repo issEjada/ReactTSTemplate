@@ -464,16 +464,16 @@ export function DynamicTable<TData extends object>({
           <div className="flex items-center gap-3">
             <label className="flex items-center gap-2">
               Display
-              <div className="w-[100px] relative z-10 overflow-visible">
+              <div className="w-[100px]">
                 <DropdownMenu
                   control={control}
                   name="display"
                   label=""
-                  portal={true}
                   options={availableOptions.map((opt) => ({
                     key: String(opt),
                     node: String(opt),
                   }))}
+                  placeholder="Rows"
                 />
               </div>
             </label>
