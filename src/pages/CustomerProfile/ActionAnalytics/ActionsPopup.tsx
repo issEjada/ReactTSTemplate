@@ -48,7 +48,6 @@ const CloseIcon = React.lazy(
 type TrustedId =
   | "averageAmount"
   | "maxAmount"
-  | "minAmount"
   | "mostUsedTargetCountry"
   | "mostUsedTargetMerchant"
   | "mostUsedTargetBank"
@@ -72,11 +71,6 @@ const TRUSTED_DEF: {
     id: "maxAmount",
     title: "Max Amount",
     Icon: <ArrowRiseIcon className="text-blue-700" />,
-  },
-  {
-    id: "minAmount",
-    title: "Min Amount",
-    Icon: <ArrowRiseIcon className="text-blue-700 rotate-180" />,
   },
   {
     id: "mostUsedTargetCountry",

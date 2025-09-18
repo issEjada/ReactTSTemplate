@@ -31,7 +31,6 @@ const MobileIcon = React.lazy(
 const DesktopIcon = React.lazy(
   () => import("../../../assets/svg/Desktop.svg?react")
 );
-const WebIcon = React.lazy(() => import("../../../assets/svg/web.svg?react"));
 const AnyDeviceIcon = React.lazy(
   () => import("../../../assets/svg/any-device.svg?react")
 );
@@ -56,10 +55,8 @@ const iconClasses = "w-[20px] h-[20px] text-blue-700 dark:text-blue-600";
 
 const deviceIcons: Record<string, React.ReactNode> = {
   Mobile: <MobileIcon className={iconClasses} />,
-  Web: <WebIcon className={iconClasses} />,
   "3DS Authentication Page": <DesktopIcon className={iconClasses} />,
-  "Any Device": <AnyDeviceIcon className={iconClasses} />,
-  Any: <AnyDeviceIcon className={iconClasses} />,
+  "Any Managed Device": <AnyDeviceIcon className={iconClasses} />,
 };
 
 const DevicePill = ({ device }: { device: string }) => {
@@ -276,7 +273,7 @@ export const EventsTable = () => {
     popupType,
     popupMessage,
     handleToggleStatus,
-    setItemsPerPage
+    setItemsPerPage,
   } = useEventsTable();
 
   const navigate = useNavigate();
@@ -425,10 +422,8 @@ export const EventsTable = () => {
           statusFilterOptions={[
             { key: "ALL", label: "View all" },
             { key: "MOBILE_SDK_MD", label: "Mobile" },
-            { key: "WEB_SDK_MD", label: "Web" },
             { key: "3DS_MICROSITE_SDK_MD", label: "3DS Authentication Page" },
-            { key: "ANY_SDK_MD", label: "Any Device" },
-            { key: "CLIENT_MD", label: "Any" },
+            { key: "ANY_SDK_MD", label: "Any Managed Device" },
           ]}
           onRowClick={(rowData) => {
             const { id } = rowData as { id: string | number };
