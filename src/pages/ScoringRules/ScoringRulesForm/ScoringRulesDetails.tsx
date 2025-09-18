@@ -40,7 +40,8 @@ const ScoringRulesDetails = () => {
     loadingState,
     isFormValid,
     formValues,
-    ruleData, // Added ruleData for view mode
+    ruleData,
+    setValue,
   } = useViewScoringRules();
 
   const navigate = useNavigate();
@@ -110,6 +111,18 @@ const ScoringRulesDetails = () => {
     setShowConfirmModal(false);
   };
 
+  const handleDiscardClear = () => {
+    setValue("identifier.aspectCode", previousValues.current.aspectCode);
+    setValue("identifier.controlCode", previousValues.current.controlCode);
+    setValue("identifier.platform", previousValues.current.platform);
+    setValue("identifier.scheme", previousValues.current.scheme);
+    setValue(
+      "identifier.eventSourceDevice",
+      previousValues.current.eventSourceDevice
+    );
+    setShowConfirmModal(false);
+  };
+
   useEffect(() => {
     if (popupType === "successModal" && loadingState === LoadingState.Success) {
       setIsPopupOpen(true);
@@ -173,7 +186,7 @@ const ScoringRulesDetails = () => {
           <RulesPopupJsx
             isConfirm
             onConfirm={handleConfirmClear}
-            onCancel={() => setShowConfirmModal(false)}
+            onCancel={handleDiscardClear}
           />
         </PopupLayout>
       )}

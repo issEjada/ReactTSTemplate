@@ -51,6 +51,7 @@ const DecisionRulesDetails = () => {
     eventSourceDeviceValues,
     reset,
     ruleData,
+    setValue,
   } = useViewDecisionRules();
 
   useEffect(() => {
@@ -95,6 +96,15 @@ const DecisionRulesDetails = () => {
 
   const handleConfirmClear = () => {
     setEditorContent("");
+    setShowConfirmModal(false);
+  };
+
+  const handleDiscardClear = () => {
+    setValue("identifier.scheme", previousValues.current.scheme);
+    setValue(
+      "identifier.eventSourceDevice",
+      previousValues.current.eventSourceDevice
+    );
     setShowConfirmModal(false);
   };
 
@@ -170,7 +180,7 @@ const DecisionRulesDetails = () => {
           <RulesPopupJsx
             isConfirm
             onConfirm={handleConfirmClear}
-            onCancel={() => setShowConfirmModal(false)}
+            onCancel={handleDiscardClear}
           />
         </PopupLayout>
       )}
