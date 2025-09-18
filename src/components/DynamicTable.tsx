@@ -105,16 +105,6 @@ export function DynamicTable<TData extends object>({
     defaultValues: { display: String(10) },
   });
   const selectedDisplay = useWatch({ control, name: "display" });
-  const pageSizeOptions = [5, 10, 25, 50, 100];
-  const current = Number(itemsPerPage);
-  const ceiling = pageSizeOptions.find((opt) => opt > current);
-  const maxOption = ceiling ?? current;
-  let availableOptions = pageSizeOptions.filter((opt) => opt <= maxOption);
-  if (!availableOptions.includes(itemsPerPage)) {
-    availableOptions = [itemsPerPage, ...availableOptions].sort(
-      (a, b) => a - b
-    );
-  }
 
   useEffect(() => {
     if (itemsPerPage && selectedDisplay) {
@@ -465,9 +455,14 @@ export function DynamicTable<TData extends object>({
                   {...control.register("display")}
                   className="w-full h-9 rounded-[8px] border border-gray-300 px-2 text-sm text-gray-700 dark:bg-gray-800 dark:text-white dark:border-gray-700"
                 >
-                  {availableOptions.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
+                  {[
+                    { key: "5", node: "5" },
+                    { key: "10", node: "10" },
+                    { key: "25", node: "25" },
+                    { key: "50", node: "50" },
+                  ].map((opt) => (
+                    <option key={opt.key} value={opt.key}>
+                      {opt.node}
                     </option>
                   ))}
                 </select>
