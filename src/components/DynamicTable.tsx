@@ -10,7 +10,6 @@ import Spinner from "./Spinner";
 import type { LoadingState } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../routes/AppRoutes";
-import DropdownMenu from "./DropDown";
 import { useForm, useWatch } from "react-hook-form";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
@@ -90,9 +89,6 @@ export function DynamicTable<TData extends object>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [submittedText, setSubmittedText] = useState<string>("");
   const navigate = useNavigate();
-
-
-  
 
   const table = useReactTable<TData>({
     data,
@@ -465,16 +461,16 @@ export function DynamicTable<TData extends object>({
             <label className="flex items-center gap-2">
               Display
               <div className="w-[100px]">
-                <DropdownMenu
-                  control={control}
-                  name="display"
-                  label=""
-                  options={availableOptions.map((opt) => ({
-                    key: String(opt),
-                    node: String(opt),
-                  }))}
-                  placeholder="Rows"
-                />
+                <select
+                  {...control.register("display")}
+                  className="w-full h-9 rounded-[8px] border border-gray-300 px-2 text-sm text-gray-700 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+                >
+                  {availableOptions.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
               </div>
             </label>
 
