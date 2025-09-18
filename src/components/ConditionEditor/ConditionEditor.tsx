@@ -122,7 +122,7 @@ export const ConditionEditor = ({
     const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
 
     setCursorPosition({
-      top: caretCoords.top + lineHeight,
+      top: caretCoords.top - lineHeight,
       left: caretCoords.left,
     });
 
@@ -288,7 +288,7 @@ export const ConditionEditor = ({
             ref={suggestionsBoxRef}
             className="absolute z-50 bg-white border border-gray-200 rounded-md shadow-lg w-64"
             style={{
-              top: `${cursorPosition.top} px`,
+              top: `${cursorPosition.top}px`,
               left: `${cursorPosition.left}px`,
               maxHeight: "200px",
               overflowY: "auto",
@@ -318,7 +318,7 @@ export const ConditionEditor = ({
   );
 };
 
-// helper: get caret coords
+// helper: get caret coords 
 const getCaretCoordinates = (
   element: HTMLTextAreaElement,
   position: number
@@ -340,10 +340,11 @@ const getCaretCoordinates = (
 
   document.body.appendChild(div);
   const { offsetLeft, offsetTop } = span;
+  const rect = element.getBoundingClientRect();
   document.body.removeChild(div);
 
   return {
     left: offsetLeft,
-    top: offsetTop - element.scrollTop,
+    top: rect.top + offsetTop - element.scrollTop + window.scrollY,
   };
 };
