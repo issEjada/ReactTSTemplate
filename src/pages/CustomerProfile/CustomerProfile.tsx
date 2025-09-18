@@ -159,7 +159,7 @@ export const CustomerProfile = () => {
             <span>Customer Information</span>
             <div className="flex flex-col gap-3">
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100  border-blueLight-50 border-4">
                   <MobileIcon className="text-blue-700 dark:text-blue-600 w-[9.33px]" />
                 </div>
                 <div className="flex flex-col">
@@ -172,7 +172,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border-blueLight-50 border-4">
                   <UserIcon className="text-blue-700 h-[12px]" />
                 </div>
                 <div className="flex flex-col">
@@ -185,7 +185,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border-blueLight-50 border-4">
                   <ClientIDIcon className="text-blue-700 w-[14.67px]" />
                 </div>
                 <div className="flex flex-col">

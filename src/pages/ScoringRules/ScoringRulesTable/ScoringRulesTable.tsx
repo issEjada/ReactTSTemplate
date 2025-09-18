@@ -268,14 +268,17 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     setCurrentPage(1);
   };
 
-  const handleDeleteRule = async (id: number) => {
-    try {
-      await deleteRule(id);
-      await refetch();
-    } catch (err) {
-      console.error("Error deleting rule:", err);
-    }
-  };
+  const handleDeleteRule = useCallback(
+    async (id: number) => {
+      try {
+        await deleteRule(id);
+        await refetch();
+      } catch (err) {
+        console.error("Error deleting rule:", err);
+      }
+    },
+    [deleteRule, refetch]
+  );
 
   const columns = useMemo(
     () => getColumns(handleToggleStatus, handleDeleteRule),

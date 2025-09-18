@@ -133,7 +133,6 @@ const DropdownMenu = <T extends FieldValues>({
             <ul
               ref={menuRef}
               role="listbox"
-              aria-hidden={!open}
               className="z-50 mt-[4px] bg-white border border-gray-300 rounded-[8px] shadow-md overflow-y-auto max-h-60 dark:bg-darkTheme dark:border-gray-800"
               style={
                 portal && coords
