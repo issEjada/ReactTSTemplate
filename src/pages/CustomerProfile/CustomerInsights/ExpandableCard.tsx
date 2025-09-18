@@ -3,7 +3,7 @@ import React, { useState } from "react";
 type ExpandableCardProps = {
   icon: React.ReactNode;
   label: string;
-  data: React.ReactNode[] | number | string;
+  data?: React.ReactNode[] | number | string | null;
 };
 
 const ChevronDown = React.lazy(
@@ -18,16 +18,16 @@ export default function ExpandableCard({
   const [expanded, setExpanded] = useState(false);
 
   const hasMultiple = Array.isArray(data) && data.length > 1;
+
   const firstItem =
-    data !== null && data !== undefined
-      ? Array.isArray(data)
-        ? React.isValidElement(data[0])
-          ? (
-              data[0] as React.ReactElement<{ children?: React.ReactNode }>
-            ).props?.children?.toString() || ""
-          : String(data[0])
-        : String(data)
-      : "";
+    data == null
+      ? ""
+      : Array.isArray(data)
+      ? data.length > 0
+        ? data[0]
+        : ""
+      : data;
+
   return (
     <>
       {!expanded ? (
@@ -43,13 +43,13 @@ export default function ExpandableCard({
           </div>
           <div className="flex flex-col w-full">
             <div className="flex justify-between items-center w-full">
-            <span className="text-sm text-gray-600 dark:text-gray-200">
-              {label}
-            </span>
-            {hasMultiple && <ChevronDown/>}
+              <span className="text-sm text-gray-600 dark:text-gray-200">
+                {label}
+              </span>
+              {hasMultiple && <ChevronDown />}
             </div>
             <span className="text-base text-gray-900 dark:text-white">
-              {firstItem}
+              {firstItem || ""}
             </span>
           </div>
         </div>
@@ -64,14 +64,12 @@ export default function ExpandableCard({
               {icon}
             </div>
             <div className="flex justify-between items-center w-full">
-            <span className="font-medium">{label}</span>
-            {hasMultiple && (
-              <ChevronDown className="rotate-180" />
-            )}
+              <span className="font-medium">{label}</span>
+              {hasMultiple && <ChevronDown className="rotate-180" />}
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            {Array.isArray(data) ? (
+            {Array.isArray(data) && data.length > 0 ? (
               data.map((item, idx) => (
                 <div
                   key={idx}
@@ -82,7 +80,7 @@ export default function ExpandableCard({
               ))
             ) : (
               <div className="flex items-center w-full bg-blueGray-50 border border-blueGray-200 rounded-lg px-4 py-[10px] h-[40px] dark:bg-gray-700 dark:border-gray-800">
-                {data}
+                {data || ""}
               </div>
             )}
           </div>

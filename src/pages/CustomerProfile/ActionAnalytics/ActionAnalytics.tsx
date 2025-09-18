@@ -39,9 +39,8 @@ export interface FormattedAnalyticData {
   mfaActions: number;
   scaActions: number;
   authenticatedActions: number;
-  averageAmount: number;
-  maxAmount: number;
-  minAmount: number;
+  averageAmount: string;
+  maxAmount: string;
   mostUsedTargetCountry: string[];
   trustedTargetCountries: string[];
   mostUsedTargetMerchant: string[];
@@ -186,22 +185,18 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
       meta: {
         isSorted: true,
       },
-      cell: (i) => i.getValue(),
     },
     {
       accessorKey: "totalActions",
       header: "Total Actions",
-      cell: (i) => i.getValue() as number,
     },
     {
       accessorKey: "acceptedActions",
       header: "Accepted Actions",
-      cell: (i) => i.getValue() as number,
     },
     {
       accessorKey: "averageAmount",
       header: "Average Amount",
-      cell: (i) => i.getValue() as number,
     },
     {
       id: "menu",
@@ -241,11 +236,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         event.actionsStatistics.numberOfAuthenticatedActions,
 
       // ---- Trusted Indicators ----
-      averageAmount: parseFloat(
-        event.actionsTrustedIndicators.avgAmount ?? "0"
-      ),
-      maxAmount: parseFloat(event.actionsTrustedIndicators.maxAmount ?? "0"),
-      minAmount: parseFloat(event.actionsTrustedIndicators.minAmount ?? "0"),
+      averageAmount: event.actionsTrustedIndicators.avgAmount ?? "0",
+
+      maxAmount: event.actionsTrustedIndicators.maxAmount ?? "0",
       mostUsedTargetCountry:
         event.actionsTrustedIndicators.mostUsedTargetCountry,
       trustedTargetCountries:
