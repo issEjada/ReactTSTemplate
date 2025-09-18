@@ -169,7 +169,6 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   const [itemsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
-  console.log(clientId, userId);
 
   const { actionAnalyticsData, errorValidation, loadingState } =
     useActionAnalytics(

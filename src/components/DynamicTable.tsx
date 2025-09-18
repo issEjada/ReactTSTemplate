@@ -188,7 +188,6 @@ export function DynamicTable<TData extends object>({
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && applyFilters) {
                         applyFilters();
-                        console.log("mdmsmdms", searchText);
                         setSubmittedText(searchText || "");
                       }
                     }}

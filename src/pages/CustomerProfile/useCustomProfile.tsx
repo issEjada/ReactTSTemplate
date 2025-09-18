@@ -73,12 +73,6 @@ export const useCustomProfile = () => {
 
   const fetchCustomerDevicesData = async () => {
     setLoadingState("loading");
-    console.log("user info", insightsData?.userInfo);
-
-    // if (globalFilterData) {
-    //   globalFilterData.userId = insightsData?.userInfo.userId;
-    //   globalFilterData.clientUserId = insightsData?.userInfo.clientUserId;
-    // }
 
     const data: CustomerDevicesPayload = {
       maxPageSize: itemsPerPage,
@@ -99,7 +93,6 @@ export const useCustomProfile = () => {
   };
 
   useEffect(() => {
-    console.log("Global Filter Data Changed:", globalFilterData);
     if (globalFilterData?.userMobileNumber) {
       localStorage.setItem(
         MOBILE_NUMBER_STORAGE_KEY,

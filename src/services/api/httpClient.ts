@@ -120,7 +120,6 @@ const handleAxiosError = (error: AxiosError<ServerErrorResponse>) => {
   console.log("errorData", error);
 
   if (error && !(error.response?.data?.error ?? "").includes("invalid_grant")) {
-    console.log("test");
     handle401Error(error);
   }
 
