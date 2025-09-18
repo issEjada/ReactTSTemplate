@@ -41,7 +41,7 @@ const MonitoringView = () => {
     },
     {
       accessorKey: "transactionId",
-      header: "Transaction Id",
+      header: "Event Id",
       meta: { isSorted: true },
     },
     { accessorKey: "transactionAmount", header: "Transaction Amount" },
