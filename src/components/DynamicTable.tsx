@@ -120,10 +120,8 @@ export function DynamicTable<TData extends object>({
   };
   return (
     <div
-      className={`relative border border-gray-200 ${
-        isCustomerProfile
-          ? "dark:border-gray-800 rounded-lg bg-white dark:bg-darkTheme"
-          : "bg-white dark:border-gray-800 rounded-lg dark:bg-darkTheme overflow-auto"
+      className={`relative border border-gray-200 dark:border-gray-800  dark:bg-darkTheme bg-white  rounded-lg ${
+        isCustomerProfile ? "" : "overflow-auto"
       }`}
     >
       {!(minimal || minimalWithPagination) && (
@@ -243,13 +241,7 @@ export function DynamicTable<TData extends object>({
           }`}
         >
           {table.getRowModel().rows.length > 0 ? (
-            <thead
-              className={`${
-                isCustomerProfile
-                  ? "bg-white dark:bg-darkTheme dark:border-gray-800 dark:text-white"
-                  : "bg-gray-25 text-gray-600 dark:bg-darkTheme dark:border-gray-800 dark:text-white"
-              }`}
-            >
+            <thead className="dark:bg-darkTheme dark:border-gray-800 dark:text-white bg-gray-200">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
