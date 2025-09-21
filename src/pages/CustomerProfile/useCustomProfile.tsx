@@ -143,5 +143,6 @@ export const useCustomProfile = () => {
     setCurrentPage,
     customerDevicesData,
     globalFilterData,
+    fetchCustomerInsightsData,
   };
 };

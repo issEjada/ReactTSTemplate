@@ -58,6 +58,7 @@ export const CustomerProfile = () => {
     setGlobalFilterData,
     errorValidation,
     loadingState,
+    fetchCustomerInsightsData,
   } = useCustomProfile();
 
   const applyFilters = () => {
@@ -207,7 +208,10 @@ export const CustomerProfile = () => {
                     ? "bg-blueGray-100 dark:bg-gray-900"
                     : "bg-white"
                 }`}
-                onClick={() => setCurrentSection("customerInsights")}
+                onClick={() => {
+                  setCurrentSection("customerInsights");
+                  fetchCustomerInsightsData(); // call the separate fetch function
+                }}
               >
                 <CustomerInsightsIcon
                   className={`${
