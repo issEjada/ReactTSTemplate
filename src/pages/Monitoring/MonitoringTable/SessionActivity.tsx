@@ -88,14 +88,14 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
         <div className="h-[20px] w-px bg-gray-950/20 dark:bg-white" />
         <div className="flex flex-wrap items-center gap-3 text-sm font-medium">
           <div className="flex items-center gap-2 text-gray-950 font-normal">
-            <span className="w-2 h-2 rounded-full bg-blue-700" />
+            <span className="w-2 h-2 rounded-full bg-warning-500" />
             <span className="dark:text-white">
               Viewed Sessions{" "}
               <strong className="font-semibold">{viewedTotal}</strong>
             </span>
           </div>
           <div className="flex items-center gap-2 text-gray-950 font-normal">
-            <span className="w-2 h-2 rounded-full bg-[#F79009]" />
+            <span className="w-2 h-2 rounded-full bg-blue-700" />
             <span className="dark:text-white">
               Not Viewed Sessions{" "}
               <strong className="font-semibold">{notViewedTotal}</strong>
