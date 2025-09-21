@@ -314,8 +314,8 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
       } dark:bg-black w-full`}
     >
       {" "}
-      <div className="mb-6 px-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
+      <div className="pt-5  pb-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
           {/* Left side: Title + description */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
