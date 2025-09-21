@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useSystemConfigTable,
   type ConfigurationFormValues,
@@ -69,10 +69,10 @@ export const SystemConfigTable = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
-      if (loadingState === "success" && isInitialLoad) {
-        setIsInitialLoad(false);
-      }
-    }, [loadingState, isInitialLoad]);
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   if (loadingState === "loading" && isInitialLoad) {
     return <Spinner />;
@@ -99,9 +99,7 @@ export const SystemConfigTable = () => {
       {totalCount == 0 && !filters ? (
         <TableFallback
           icon={
-          
-              <SettingsIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-            
+            <SettingsIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
           }
           title="You don’t have any configurations yet"
           description={<>Start configuring your system now.</>}
@@ -123,6 +121,7 @@ export const SystemConfigTable = () => {
           setCurrentPage={setCurrentPage}
           onClearSearch={handleClearSearch}
           title="System configurations"
+          loadingState={loadingState}
           error={error}
           searchText={searchText}
           setSearchText={setSearchText}
