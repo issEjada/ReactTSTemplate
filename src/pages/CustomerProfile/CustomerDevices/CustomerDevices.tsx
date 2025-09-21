@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import CustomerDevicesFilter from "../CustomerProfileFilter/CustomerDevicesFilter";
 import { useCustomerDevices } from "./useCustomerDevices";
@@ -29,6 +29,14 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
     errorValidation,
   } = useCustomerDevices({ userInfo });
 
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+  
+    useEffect(() => {
+      if (loadingState === "success" && isInitialLoad) {
+        setIsInitialLoad(false);
+      }
+    }, [loadingState, isInitialLoad]);
+
   const columns = useMemo<ColumnDef<SDKCustomerDeviceInfo>[]>(
     () => [
       {
@@ -56,7 +64,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
     setCustomerDevicesFilterData(searchData);
   };
 
-  if (loadingState === "loading") {
+  if (loadingState === "loading" && isInitialLoad) {
     return (
       <Spinner
         mode="overlay"
