@@ -8,8 +8,6 @@ import {
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import Spinner from "./Spinner";
 import type { LoadingState } from "../types/types";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../routes/AppRoutes";
 import { useForm, useWatch } from "react-hook-form";
 
 const SearchIcon = React.lazy(() => import("../assets/svg/Search.svg?react"));
@@ -45,7 +43,6 @@ interface DynamicTableProps<TData extends object> {
   searchPlaceholder?: string;
   showStatusFilter?: boolean;
   statusFilterOptions?: { key: string; label: string }[];
-  isMonitoringTable?: boolean;
   onRowClick?: (rowData: TData) => void;
   minimal?: boolean;
   minimalWithPagination?: boolean;
@@ -77,7 +74,6 @@ export function DynamicTable<TData extends object>({
   searchPlaceholder = "Search",
   showStatusFilter = true,
   statusFilterOptions,
-  isMonitoringTable = false,
   onRowClick,
   minimal = false,
   minimalWithPagination = false,
@@ -88,7 +84,6 @@ export function DynamicTable<TData extends object>({
 }: DynamicTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [submittedText, setSubmittedText] = useState<string>("");
-  const navigate = useNavigate();
 
   const table = useReactTable<TData>({
     data,

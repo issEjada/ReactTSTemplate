@@ -270,7 +270,6 @@ const MonitoringView = () => {
           </div>
           <DynamicTable<EventItem>
             data={eventsData}
-            isMonitoringTable
             columns={columns}
             totalCount={totalCount}
             currentPage={currentPage}
