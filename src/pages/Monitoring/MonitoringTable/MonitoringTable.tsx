@@ -105,11 +105,9 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "country",
     cell: (info) => {
       const value = String(info.getValue());
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white  overflow-hidden">
-          {display}
+          {value}
         </span>
       );
     },
@@ -119,11 +117,9 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "city",
     cell: (info) => {
       const value = String(info.getValue());
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
-          {display}
+          {value}
         </span>
       );
     },
