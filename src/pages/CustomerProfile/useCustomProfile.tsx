@@ -93,25 +93,38 @@ export const useCustomProfile = () => {
   };
 
   useEffect(() => {
+    const hasFilters =
+      globalFilterData?.userMobileNumber ||
+      globalFilterData?.userId ||
+      globalFilterData?.clientUserId;
+
     if (globalFilterData?.userMobileNumber) {
       localStorage.setItem(
         MOBILE_NUMBER_STORAGE_KEY,
         globalFilterData.userMobileNumber
       );
-      if (globalFilterData?.userId) {
-        localStorage.setItem(USER_ID_STORAGE_KEY, globalFilterData.userId);
-      }
-      if (globalFilterData?.clientUserId) {
-        localStorage.setItem(
-          CLIENT_USER_ID_STORAGE_KEY,
-          globalFilterData.clientUserId
-        );
-      }
-      fetchCustomerInsightsData();
-    } else if (globalFilterData && !globalFilterData.userMobileNumber) {
+    } else {
       localStorage.removeItem(MOBILE_NUMBER_STORAGE_KEY);
-      localStorage.removeItem(CLIENT_USER_ID_STORAGE_KEY);
+    }
+
+    if (globalFilterData?.userId) {
+      localStorage.setItem(USER_ID_STORAGE_KEY, globalFilterData.userId);
+    } else {
       localStorage.removeItem(USER_ID_STORAGE_KEY);
+    }
+
+    if (globalFilterData?.clientUserId) {
+      localStorage.setItem(
+        CLIENT_USER_ID_STORAGE_KEY,
+        globalFilterData.clientUserId
+      );
+    } else {
+      localStorage.removeItem(CLIENT_USER_ID_STORAGE_KEY);
+    }
+
+    if (hasFilters) {
+      fetchCustomerInsightsData();
+    } else {
       setInsightsData(undefined);
       setErrorValidate(undefined);
     }

@@ -64,7 +64,7 @@ export const CustomerProfile = () => {
     const searchData = {
       userMobileNumber: searchText.trim() || undefined,
     };
-    setGlobalFilterData(searchData);
+    setGlobalFilterData((prev) => ({ ...prev, ...searchData }));
   };
 
   const onClearSearch = () => {
