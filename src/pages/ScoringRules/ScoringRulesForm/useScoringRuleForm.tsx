@@ -231,108 +231,87 @@ function useViewScoringRules() {
       fetchDropDownsValues([]);
     }
   }, [isViewing, isEditing, id]);
-
   useEffect(() => {
-    if (selectedEventSource && !isViewing) {
+    if (isViewing || !selectedEventSource) return;
+
+    // CASE 1: only event source is selected
+    if (
+      !selectedScheme &&
+      !selectedAspect &&
+      !selectedControl &&
+      !selectedPlatForm
+    ) {
       setAspectValues([]);
       setControleValues([]);
-
       fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
+        { key: "event_source_device", value: selectedEventSource },
       ]);
+      return;
     }
-  }, [selectedEventSource]);
 
-  useEffect(() => {
-    if (selectedEventSource && selectedScheme && !isViewing) {
+    // CASE 2: event source + scheme selected (no aspect yet)
+    if (selectedScheme && !selectedAspect) {
       setAspectValues([]);
       setControleValues([]);
-
       fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
       ]);
+      return;
     }
-  }, [selectedScheme]);
 
-  useEffect(() => {
-    if (selectedEventSource && selectedScheme && selectedAspect && !isViewing) {
+    // CASE 3: event source + scheme + aspect selected (no control yet)
+    if (selectedScheme && selectedAspect && !selectedControl) {
       setControleValues([]);
       setValue("identifier.controlCode", "");
       fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
-        {
-          key: "aspect",
-          value: selectedAspect,
-        },
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+        { key: "aspect", value: selectedAspect },
       ]);
+      return;
     }
-  }, [selectedAspect]);
 
-  useEffect(() => {
+    // CASE 4: event source + scheme + aspect + control selected (no platform yet)
     if (
-      selectedEventSource &&
       selectedScheme &&
       selectedAspect &&
       selectedControl &&
-      !isViewing
+      !selectedPlatForm
     ) {
       setPlatformValues([]);
       fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
-        {
-          key: "aspect",
-          value: selectedAspect,
-        },
-        {
-          key: "control",
-          value: selectedControl,
-        },
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+        { key: "aspect", value: selectedAspect },
+        { key: "control", value: selectedControl },
       ]);
+      return;
     }
-  }, [selectedControl]);
 
-  useEffect(() => {
+    // CASE 5: all selected → fetch parameters
     if (
-      selectedControl &&
-      selectedPlatForm &&
-      selectedEventSource &&
       selectedScheme &&
       selectedAspect &&
-      !isViewing
+      selectedControl &&
+      selectedPlatForm
     ) {
+      setControleValues([]);
+      fetchDropDownsValues([
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+        { key: "aspect", value: selectedAspect },
+      ]);
       fetchParameterData();
     }
   }, [
-    selectedPlatForm,
     selectedEventSource,
     selectedScheme,
     selectedAspect,
     selectedControl,
+    selectedPlatForm,
     isViewing,
+    setValue,
   ]);
 
   useEffect(() => {
