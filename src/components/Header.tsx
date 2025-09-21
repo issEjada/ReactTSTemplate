@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
       <div className="flex items-start gap-5">
-        <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
+        <div className="p-1 cursor-pointer pt-[10px]" onClick={toggleDarkMode} >
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
@@ -170,50 +170,51 @@ export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   };
 
   return (
-    <div className="flex items-center space-x-2 lg:space-x-4 text-sm text-gray-500 dark:text-gray-400">
+    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+      {/* Sidebar icon always visible */}
       <SideBarIcon
         className="text-black dark:text-white cursor-pointer"
         onClick={onSidebarIconClick}
       />
-      {window.innerWidth >= 768 && (
-        <>
-          <Link
-            to="/"
-            className="text-gray-950/40 dark:text-gray-400 hover:underline"
-          >
-            Dashboard
-          </Link>
-          <span className="text-gray-950/20 dark:text-gray-700">/</span>
 
-          {fullPath.map((name, index) => {
-            const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
-            const isLast = index === fullPath.length - 1;
-            const label =
-              customBreadcrumbLabels[name.toLowerCase()] ||
-              decodeURIComponent(name);
+      {/* Breadcrumb trail hidden on mobile */}
+      <div className="hidden md:flex items-center space-x-2 lg:space-x-4 ml-2">
+        <Link
+          to="/"
+          className="text-gray-950/40 dark:text-gray-400 hover:underline"
+        >
+          Dashboard
+        </Link>
+        <span className="text-gray-950/20 dark:text-gray-700">/</span>
 
-            return (
-              <span key={name} className="flex items-center space-x-4">
-                {isLast ? (
-                  <span className="text-black dark:text-white font-normal capitalize">
+        {fullPath.map((name, index) => {
+          const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
+          const isLast = index === fullPath.length - 1;
+          const label =
+            customBreadcrumbLabels[name.toLowerCase()] ||
+            decodeURIComponent(name);
+
+          return (
+            <span key={name} className="flex items-center space-x-4">
+              {isLast ? (
+                <span className="text-black dark:text-white font-normal capitalize">
+                  {label}
+                </span>
+              ) : (
+                <>
+                  <Link
+                    to={routeTo}
+                    className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
+                  >
                     {label}
-                  </span>
-                ) : (
-                  <>
-                    <Link
-                      to={routeTo}
-                      className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
-                    >
-                      {label}
-                    </Link>
-                    <span>/</span>
-                  </>
-                )}
-              </span>
-            );
-          })}
-        </>
-      )}
+                  </Link>
+                  <span>/</span>
+                </>
+              )}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 };
