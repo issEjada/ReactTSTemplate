@@ -300,22 +300,11 @@ export function DynamicTable<TData extends object>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  {...(isCustomerProfile && isMonitoringTable
-                    ? {
-                        onClick: () => {
-                          const { id } = row.original as {
-                            id: string | number;
-                          };
-                          navigate(AppRoutes.monitoringView, {
-                            state: { id: id.toString() },
-                          });
-                        },
-                      }
-                    : onRowClick && {
-                        onClick: () => onRowClick(row.original),
-                      })}
+                  {...(onRowClick && {
+                    onClick: () => onRowClick(row.original),
+                  })}
                   className={`border-t dark:border-gray-800 ${
-                    isCustomerProfile || onRowClick
+                    onRowClick
                       ? "hover:bg-gray-50 dark:hover:bg-gray-900 cursor-pointer"
                       : ""
                   }`}

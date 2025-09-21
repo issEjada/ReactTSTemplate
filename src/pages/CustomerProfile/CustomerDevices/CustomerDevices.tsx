@@ -54,7 +54,6 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
       deviceUniqueId: searchText.trim() || undefined,
     };
     setCustomerDevicesFilterData(searchData);
-    setSearchText("");
   };
 
   if (loadingState === "loading") {
@@ -88,6 +87,7 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         searchText={searchText}
+        searchPlaceholder="Search Device ID"
         setSearchText={setSearchText}
         onClearSearch={() => {
           setSearchText("");
