@@ -306,7 +306,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full max-w-full overflow-x-auto">
+            <div className="w-full max-w-full overflow-x-auto max-h-[65vh]">
               {currentSection === "customerInsights" && (
                 <CustomerInsights {...insightsData} />
               )}
