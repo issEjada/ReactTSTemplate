@@ -62,6 +62,30 @@ export const useCustomProfile = () => {
         setInsightsData(value);
         setLoadingState("success");
         setErrorValidate(undefined);
+
+        if (value.userInfo?.mobileNumber) {
+          localStorage.setItem(
+            MOBILE_NUMBER_STORAGE_KEY,
+            value.userInfo.mobileNumber
+          );
+        } else {
+          localStorage.removeItem(MOBILE_NUMBER_STORAGE_KEY);
+        }
+
+        if (value.userInfo?.userId) {
+          localStorage.setItem(USER_ID_STORAGE_KEY, value.userInfo.userId);
+        } else {
+          localStorage.removeItem(USER_ID_STORAGE_KEY);
+        }
+
+        if (value.userInfo?.clientUserId) {
+          localStorage.setItem(
+            CLIENT_USER_ID_STORAGE_KEY,
+            value.userInfo.clientUserId
+          );
+        } else {
+          localStorage.removeItem(CLIENT_USER_ID_STORAGE_KEY);
+        }
       })
       .catch((error) => {
         setInsightsData(undefined);

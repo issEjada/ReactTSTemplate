@@ -24,12 +24,11 @@ export const useDevicesHealthChecks = () => {
   >("success");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const input = (
-    devicesHealthChecksFilterData.fromTimestamp || new Date().toISOString()
-  ).slice(0, 16); // e.g., "2025-09-21T09:50"
-  const forcedUtc = new Date(input + ":00.000Z");
-
-  console.log("Forced UTC ISO:", forcedUtc.toISOString());
+  const MOBILE_NUMBER_STORAGE_KEY = localStorage.getItem(
+    "customerProfileMobileNumber"
+  );
+  const USER_ID_STORAGE_KEY = localStorage.getItem("customerProfileUserId");
+  console.log(USER_ID_STORAGE_KEY);
 
   const fetchDevicesHealthChecksData = async () => {
     setLoadingState("loading");
@@ -37,6 +36,8 @@ export const useDevicesHealthChecks = () => {
     const data = {
       maxPageSize: 10,
       page: currentPage,
+      mobileNumber: MOBILE_NUMBER_STORAGE_KEY,
+      userId: USER_ID_STORAGE_KEY,
       fromTimestamp: new Date(
         (
           devicesHealthChecksFilterData.fromTimestamp ||
