@@ -9,7 +9,7 @@ const ComingSoon: React.FC = () => {
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
-      setTyped(tagline.slice(0, i + 1));
+      setTyped(tagline.slice(0, i + 10));
       i++;
       if (i === tagline.length) clearInterval(interval);
     }, 50);

@@ -19,6 +19,7 @@ import EventsTable from "../pages/Events/EventsTable/EventsTable";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
 import GeoLocation from "../pages/GeoLocation/GeoLocation";
 import EventDetails from "../pages/Events/EventsForm/EventDetails";
+import ComingSoon from "../pages/ComingSoon";
 import Spinner from "../components/Spinner";
 
 interface ProtectedRouteProps {
@@ -251,13 +252,18 @@ export const AppRouter = createBrowserRouter([
             <Support />
           </ProtectedRoute>
         ),
-        errorElement: <></>,
+        errorElement: <ComingSoon />,
       },
     ],
   },
   {
     path: AppRoutes.login,
     element: <LoginForm />,
-    errorElement: <></>,
+    errorElement: <ComingSoon />,
+  },
+  {
+    path: "*",
+    element: <ComingSoon />,
+    errorElement: <ComingSoon />,
   },
 ]);
