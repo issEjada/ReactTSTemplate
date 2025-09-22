@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes";
 import App from "../App";
@@ -9,28 +10,42 @@ import AboutUs from "../pages/AboutUs";
 import { ScoringRulesTable } from "../pages/ScoringRules/ScoringRulesTable/ScoringRulesTable";
 import { MonitoringTable } from "../pages/Monitoring/MonitoringTable/MonitoringTable";
 import MonitoringView from "../pages/Monitoring/MonitoringView/MonitoringView";
-import RuleForm from "../pages/ScoringRules/ScoringRulesForm/ScoringRuleForm";
+import ScoringRulesDetails from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesDetails";
 import { DecisionRulesTable } from "../pages/DecisionRules/DecisionRulesTable/DecisionRulesTable";
-import DecisionRuleForm from "../pages/DecisionRules/DecisionRulesForm/DecisionRuleForm";
-import DecisionRulesView from "../pages/DecisionRules/DecisionRulesForm/DecisionRulesView";
+import DecisionRulesDetails from "../pages/DecisionRules/DecisionRulesForm/DecisionRulesDetails";
 import { SystemConfigTable } from "../pages/SystemConfig/SystemConfigTable/SystemConfigTable";
 import { SystemConfigDetails } from "../pages/SystemConfig/SystemConfigDetails/SystemConfigDetails";
 import EventsTable from "../pages/Events/EventsTable/EventsTable";
-import EventsForm from "../pages/Events/EventsForm/EventsForm";
-import EventsView from "../pages/Events/EventsForm/EventsView";
 import { CustomerProfile } from "../pages/CustomerProfile/CustomerProfile";
-import ScoringRuleView from "../pages/ScoringRules/ScoringRulesForm/ScoringRulesView";
+import GeoLocation from "../pages/GeoLocation/GeoLocation";
+import EventDetails from "../pages/Events/EventsForm/EventDetails";
+import Spinner from "../components/Spinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const token =
-    sessionStorage.getItem(ConstantKeys.accessToken) ||
-    localStorage.getItem(ConstantKeys.accessToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (!token) {
+  useEffect(() => {
+    const token =
+      sessionStorage.getItem(ConstantKeys.accessToken) ||
+      localStorage.getItem(ConstantKeys.accessToken);
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Spinner show={true} mode="fullscreen" />;
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to={AppRoutes.login} />;
   }
 
@@ -85,6 +100,15 @@ export const AppRouter = createBrowserRouter([
         errorElement: <></>,
       },
       {
+        path: AppRoutes.geoLocation,
+        element: (
+          <ProtectedRoute>
+            <GeoLocation />
+          </ProtectedRoute>
+        ),
+        errorElement: <></>,
+      },
+      {
         path: AppRoutes.systemConfiguration,
         element: (
           <ProtectedRoute>
@@ -115,7 +139,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.addScoringRule,
         element: (
           <ProtectedRoute>
-            <RuleForm />
+            <ScoringRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -124,7 +148,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewScoringRule,
         element: (
           <ProtectedRoute>
-            <ScoringRuleView />
+            <ScoringRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -133,7 +157,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.editScoringRule,
         element: (
           <ProtectedRoute>
-            <RuleForm />
+            <ScoringRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -151,7 +175,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.addDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRuleForm />
+            <DecisionRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -160,7 +184,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRulesView />
+            <DecisionRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -169,7 +193,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.editDecisionRule,
         element: (
           <ProtectedRoute>
-            <DecisionRuleForm />
+            <DecisionRulesDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -188,7 +212,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.addEvents,
         element: (
           <ProtectedRoute>
-            <EventsForm />
+            <EventDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -197,7 +221,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.viewEvents,
         element: (
           <ProtectedRoute>
-            <EventsView />
+            <EventDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,
@@ -206,7 +230,7 @@ export const AppRouter = createBrowserRouter([
         path: AppRoutes.editEvents,
         element: (
           <ProtectedRoute>
-            <EventsForm />
+            <EventDetails />
           </ProtectedRoute>
         ),
         errorElement: <></>,

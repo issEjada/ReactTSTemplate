@@ -6,12 +6,13 @@ import {
 import { DynamicTable } from "../../../components/DynamicTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Attribute } from "../systemConfigService";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import SystemConfigPopup from "../../../components/Popup/SystemConfigPopup";
 import { SystemConfigForm } from "./SystemConfigForm";
 import { ScoringDimensionForm } from "./ScoringDimensionForm";
+import { TableFallback } from "../../../components/TableFallback";
+import Spinner from "../../../components/Spinner";
 
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -20,9 +21,6 @@ const DeleteIcon = React.lazy(
 
 const LockIcon = React.lazy(
   () => import("../../../assets/svg/settings.svg?react")
-);
-const BackgroundCircle = React.lazy(
-  () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
 
 const PlusBorderIcon = React.lazy(
@@ -65,6 +63,7 @@ export const SystemConfigDetails = () => {
     setError,
     isErrorPopupOpen,
     setIsErrorPopupOpen,
+    setItemsPerPage,
   } = useSystemConfigDetails();
 
   const columns = useMemo(
@@ -84,7 +83,7 @@ export const SystemConfigDetails = () => {
 
   const navigate = useNavigate();
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -94,9 +93,6 @@ export const SystemConfigDetails = () => {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {rowProps.name}
           </h2>
-          <div className="ml-2 text-blue-50 bg-blue-100 px-1 py-1 rounded-full">
-            <EditIcon className="sm:w-[15px] sm:h-[15px] text-blue-700" />
-          </div>
         </div>
       </div>
 
@@ -121,7 +117,11 @@ export const SystemConfigDetails = () => {
         onClick={() => handleDescriptionUpdate(configDesc)}
         disabled={configDesc === rowProps.desc}
         className={`my-7 self-end w-[150px] h-10 bg-blue-700 text-white px-4 border border-blue-700 rounded-[8px] text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-blue-800
-            ${configDesc === rowProps.desc ? " cursor-not-allowed" : ""}`}
+            ${
+              configDesc === rowProps.desc
+                ? " opacity-80 cursor-not-allowed"
+                : ""
+            }`}
       >
         Save description
       </button>
@@ -139,21 +139,21 @@ export const SystemConfigDetails = () => {
             onClick={handleUpdateScoring}
             className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
           >
-            <Suspense>
+       
               <EditIcon className="w-4 h-4" />
-            </Suspense>
-            Update Dimantions
+       
+            Update Dimensions
           </button>
         ) : (
           rowProps.allowAddRow && (
             <button
               type="button"
               onClick={handleAddConfirm}
-              className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:text-black"
+              className=" h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <Suspense>
-                <PlusBorderIcon className="w-4 h-4 text-gray-700" />
-              </Suspense>
+            
+                <PlusBorderIcon className="w-4 h-4 text-gray-700 dark:text-white" />
+             
               {attributes ? `Add ${attributes[0]?.name}` : "Add New Item"}
             </button>
           )
@@ -161,40 +161,16 @@ export const SystemConfigDetails = () => {
       </div>
 
       {totalCount === 0 ? (
-        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
-          {/* Wrapper for icon + background */}
-          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
-            {/* Background Circle positioned behind */}
-            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
-              <BackgroundCircle
-                className="
-                        absolute
-                        left-1/2 top-[28%]
-                        -translate-x-1/2 -translate-y-1/2
-                        w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
-                        h-[400px]
-                        pointer-events-none select-none
-                        z-0 text-gray-200 dark:text-gray-500
-                      "
-              />
-            </div>
+        <TableFallback
+          icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
+          title="Start adding System Configuration"
+          description={
+            <>
 
-            {/* Lock Icon in styled border */}
-            <div className="relative z-10 flex items-center justify-center bg-white border border-gray-300 rounded-[16px] gap-[8px] p-[4px]">
-              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-              </div>
-            </div>
-          </div>
-
-          {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
-            You don’t have any {rowProps.name} yet
-          </h3>
-          <p className="text-sm text-gray-500 mb-6">
-            You don’t have any {rowProps.name} added yet.
-          </p>
-        </div>
+              You don’t have any {rowProps.name} added yet.
+            </>
+          }
+        />
       ) : (
         <DynamicTable<{ [key: string]: any }>
           data={(data ?? []).map((value) => {
@@ -211,6 +187,7 @@ export const SystemConfigDetails = () => {
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
+          setItemsPerPage={setItemsPerPage}
           title="System configurations"
           error={error}
           searchPlaceholder="Search"
@@ -221,7 +198,7 @@ export const SystemConfigDetails = () => {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className={`${"w-[100px]"} h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:text-black`}
+          className={`${"w-[100px]"} h-10 border border-gray-300 rounded-[8px] px-4 text-gray-700 text-[14px] font-semibold flex items-center justify-center hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
         >
           Back
         </button>
@@ -243,14 +220,24 @@ export const SystemConfigDetails = () => {
         isOpen={isPopupOpen}
         className="md:w-[30%] lg:w-[35%] w-[90%]"
       >
-        <SystemConfigForm
-          mode={popupMode}
-          fields={popupFields}
-          popupTitle={rowProps.name}
-          onSave={handleSave}
-          onCancel={() => setIsPopupOpen(false)}
-          addRow={rowProps.allowAddRow}
-        />
+        <Suspense
+          fallback={
+            <Spinner
+              mode="overlay"
+              size="md"
+              overlayClassName="h-full w-full bg-transparent"
+            />
+          }
+        >
+          <SystemConfigForm
+            mode={popupMode}
+            fields={popupFields}
+            popupTitle={rowProps.name}
+            onSave={handleSave}
+            onCancel={() => setIsPopupOpen(false)}
+            addRow={rowProps.allowAddRow}
+          />
+        </Suspense>
       </PopupLayout>
 
       <PopupLayout
@@ -318,14 +305,41 @@ const getColumns = (
 ): ColumnDef<{ [key: string]: any }>[] => {
   if (!attributes.length) return [];
 
-  const dynamicColumns = attributes.map((attribute) => ({
+  const dynamicColumns = attributes.map((attribute, index) => ({
     header: attribute.name,
     accessorKey: attribute.key,
+    meta: {
+      isSorted: index == 0,
+    },
     cell: (row: any) => {
       const node = row.cell.getValue() as string;
       const displayValue = attribute.hasLov
         ? dropDownOptions.find((option) => option.key === node)?.node || node
         : node;
+
+      if (attribute.key === "riskLevel") {
+        const colorMap: Record<string, string> = {
+          Low: "text-gray-700 bg-gray-100",
+          Moderate: "text-warning-600 bg-warning-50",
+          Medium: "text-warning-700 bg-warning-100",
+          High: "text-red-500 bg-red-200",
+          Extreme: "text-red-100 bg-red-700",
+        };
+
+        const displayValue = attribute.hasLov
+          ? dropDownOptions.find((option) => option.key === node)?.node || node
+          : node;
+
+        return (
+          <span
+            className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+              colorMap[displayValue] || "text-gray-700"
+            }`}
+          >
+            {displayValue}
+          </span>
+        );
+      }
       return (
         <span className="font-medium text-gray-900  dark:text-white">
           {displayValue}
@@ -366,14 +380,14 @@ const getColumns = (
                     setPopupMode("update");
                     setIsPopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5 cursor-pointer"
                 />
                 <DeleteIcon
                   onClick={() => {
                     setItemToDelete(rowData.id);
                     setIsDeletePopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-gray-400 ml-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 ml-5 cursor-pointer"
                 />
               </>
             ) : (
@@ -391,7 +405,7 @@ const getColumns = (
                     setPopupMode("update");
                     setIsPopupOpen(true);
                   }}
-                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5"
+                  className="sm:w-[20px] sm:h-[20px] text-gray-400 mr-5 cursor-pointer"
                 />
                 {/* show Update Pop  */}
               </>

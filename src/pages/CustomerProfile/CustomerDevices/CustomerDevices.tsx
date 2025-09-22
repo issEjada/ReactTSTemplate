@@ -1,16 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CustomerProfileTable } from "../CustomerProfileTable";
 import CustomerDevicesFilter from "../CustomerProfileFilter/CustomerDevicesFilter";
 import { useCustomerDevices } from "./useCustomerDevices";
 import type { SDKCustomerDeviceInfo } from "../customerProfileServices";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { DynamicTable } from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
 
 export type CustomerDevicesProps = {
   userInfo: {
-  userId?: string;
-  clientUserId?: string;
-  userMobileNumber?: string;
+    userId?: string;
+    clientUserId?: string;
+    userMobileNumber?: string;
   };
 };
 
@@ -27,12 +27,25 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
     setCurrentPage,
     loadingState,
     errorValidation,
-  } = useCustomerDevices({userInfo});
+  } = useCustomerDevices({ userInfo });
 
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+  
+    useEffect(() => {
+      if (loadingState === "success" && isInitialLoad) {
+        setIsInitialLoad(false);
+      }
+    }, [loadingState, isInitialLoad]);
 
   const columns = useMemo<ColumnDef<SDKCustomerDeviceInfo>[]>(
     () => [
-      { header: "Mobile #", accessorKey: "userMobileNumber" },
+      {
+        header: "Mobile #",
+        accessorKey: "userMobileNumber",
+        meta: {
+          isSorted: true,
+        },
+      },
       { header: "User ID", accessorKey: "userId" },
       { header: "Client ID", accessorKey: "clientUserId" },
       { header: "Device ID", accessorKey: "deviceUniqueId" },
@@ -49,11 +62,16 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
       deviceUniqueId: searchText.trim() || undefined,
     };
     setCustomerDevicesFilterData(searchData);
-    setSearchText("");
   };
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+  if (loadingState === "loading" && isInitialLoad) {
+    return (
+      <Spinner
+        mode="overlay"
+        size="sm"
+        overlayClassName="h-full w-full bg-transparent"
+      />
+    );
   }
 
   if (errorValidation) {
@@ -62,19 +80,22 @@ export const CustomerDevices: React.FC<CustomerDevicesProps> = ({
 
   return (
     <div className="px-5 pb-5 overflow-x-auto">
-      <CustomerProfileTable<SDKCustomerDeviceInfo>
+      <DynamicTable<SDKCustomerDeviceInfo>
         title="Customer Devices"
+        isCustomerProfile={true}
         headerLeft={
           <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
             Customer Devices
           </h2>
         }
         data={customerDevicesData?.data.userSdkRecords || []}
+        loadingState={loadingState}
         columns={columns}
         totalCount={customerDevicesData?.meta.totalItems || 0}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         searchText={searchText}
+        searchPlaceholder="Search Device ID"
         setSearchText={setSearchText}
         onClearSearch={() => {
           setSearchText("");

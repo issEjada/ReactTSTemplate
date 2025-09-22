@@ -3,17 +3,16 @@ import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
 import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
-import PopupLayout from "./Popup/LayoutPopup";
-import FullScreenSpinner from "./FullScreenSpinner";
+import PopupLayout from "./Popup/PopupLayout";
 import { ConstantKeys } from "../constants/ConstantKeys.constants";
-
 import { ThemeContext } from "../context/Context";
 import { ThemeModeIcon } from "../context/ThemeProvider";
+import Spinner from "./Spinner";
 
 const SideBarIcon = React.lazy(
   () => import(`/src/assets/svg/Sidebar.svg?react`)
 );
-const SearchIcon = React.lazy(() => import(`/src/assets/svg/Search.svg?react`));
+
 const SettingsIcon = React.lazy(
   () => import(`/src/assets/svg/settings.svg?react`)
 );
@@ -31,7 +30,15 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setIsAuthenticated] = useState(false);
+  const [dontShowLogoutPopup, setDontShowLogoutPopup] = useState(() => {
+    return localStorage.getItem("dontShowLogoutPopup") === "true";
+  });
   const { toggleDarkMode } = useContext(ThemeContext);
+
+  const handleSetDontShowLogoutPopup = (value: boolean) => {
+    setDontShowLogoutPopup(value);
+    localStorage.setItem("dontShowLogoutPopup", String(value));
+  };
 
   const handleLogout = () => {
     setIsPopupOpen(false);
@@ -43,29 +50,29 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       localStorage.removeItem(ConstantKeys.accessToken);
       sessionStorage.removeItem(ConstantKeys.rememberMe);
       localStorage.removeItem(ConstantKeys.rememberMe);
+      localStorage.removeItem("customerProfileMobileNumber");
+      localStorage.removeItem("customerProfileCurrentSection");
+      localStorage.removeItem("isClosed");
       setIsAuthenticated(false);
     }, 1000);
   };
 
+  const handleOpenPopup = () => {
+    if (!dontShowLogoutPopup) {
+      setIsPopupOpen(true);
+    } else {
+      handleLogout();
+    }
+  };
+
   return (
     <header className="flex items-center justify-between px-6 py-[20px] w-full border-b bg-white dark:bg-darkTheme dark:border-gray-800">
-      {isLoading && <FullScreenSpinner />}
+      {isLoading && <Spinner mode="overlay" size="md" />}
       {/* Left: Breadcrumbs */}
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
       <div className="flex items-start gap-5">
-        {/* Search Bar */}
-        <div className="relative hidden md:flex items-center">
-          <SearchIcon className="absolute left-3 text-black/20 dark:text-gray-400 cursor-pointer " />
-          <input
-            type="text"
-            placeholder="Search"
-            className="pl-8 pr-9 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none w-[160px]"
-          />
-          <kbd className="absolute right-2 text-xs text-black/20 dark:text-white">⌘/</kbd>
-        </div>
-
-        <div className="p-1 cursor-pointer" onClick={toggleDarkMode}>
+        <div className="p-1 cursor-pointer pt-[10px]" onClick={toggleDarkMode} >
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
@@ -75,11 +82,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             className="flex items-center space-x-2 cursor-pointer"
             onClick={() => toggleDropdown("user")}
           >
-            <img
-              src="https://i.pravatar.cc/40"
-              alt="Avatar"
-              className="w-8 h-8 rounded-full"
-            />
+            <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
             <div className="text-sm">
               <div className="font-medium text-gray-800 dark:text-white text-[12px]">
                 Ahmed Abdullah
@@ -89,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               </div>
             </div>
             {showDropdown.user && (
-              <div className="absolute top-[34px] right-[-20px] mt-2 mr-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
+              <div className="absolute top-[34px] right-[-20px] mt-2  bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
                     <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
@@ -105,11 +108,11 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
                   </div>
                 </div>
 
-                <div className="h-[3px] bg-gray-200 w-full mb-3 mt-2"></div>
+                <div className="h-[3px] bg-gray-200 dark:bg-gray-700 my-2 -mx-2" />
 
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => setIsPopupOpen(true)}
+                    onClick={handleOpenPopup}
                     className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400  text-left"
                   >
                     <LogoutIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
@@ -120,19 +123,20 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
             )}
           </div>
         </div>
-        {isPopupOpen && (
-          <div>
-            <PopupLayout
-              isOpen={isPopupOpen}
-              className="md:w-[38%] lg:w-[35%] w-[90%]"
-            >
-              <LogoutPopupJsx
-                onCancel={() => setIsPopupOpen(false)}
-                onConfirm={handleLogout}
-              />
-            </PopupLayout>
-          </div>
-        )}
+
+        <div>
+          <PopupLayout
+            isOpen={isPopupOpen}
+            className="md:w-[38%] lg:w-[35%] w-[90%]"
+          >
+            <LogoutPopupJsx
+              onCancel={() => setIsPopupOpen(false)}
+              onConfirm={handleLogout}
+              dontShowPreference={dontShowLogoutPopup}
+              onSetDontShowPreference={handleSetDontShowLogoutPopup}
+            />
+          </PopupLayout>
+        </div>
       </div>
     </header>
   );
@@ -140,13 +144,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
 
 export default Header;
 
-interface BreadcrumbProps {
-  onSidebarIconClick: () => void;
-}
-
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({
-  onSidebarIconClick,
-}) => {
+export const Breadcrumb: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter(Boolean);
 
@@ -172,44 +170,51 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   };
 
   return (
-    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+      {/* Sidebar icon always visible */}
       <SideBarIcon
         className="text-black dark:text-white cursor-pointer"
         onClick={onSidebarIconClick}
       />
 
-      <Link to="/" className="text-gray-950/40 dark:text-gray-400 hover:underline">
-        Dashboard
-      </Link>
-      <span className="text-gray-950/20 dark:text-gray-700">/</span>
+      {/* Breadcrumb trail hidden on mobile */}
+      <div className="hidden md:flex items-center space-x-2 lg:space-x-4 ml-2">
+        <Link
+          to="/"
+          className="text-gray-950/40 dark:text-gray-400 hover:underline"
+        >
+          Dashboard
+        </Link>
+        <span className="text-gray-950/20 dark:text-gray-700">/</span>
 
-      {fullPath.map((name, index) => {
-        const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
-        const isLast = index === fullPath.length - 1;
-        const label =
-          customBreadcrumbLabels[name.toLowerCase()] ||
-          decodeURIComponent(name);
+        {fullPath.map((name, index) => {
+          const routeTo = `/${fullPath.slice(0, index + 1).join("/")}`;
+          const isLast = index === fullPath.length - 1;
+          const label =
+            customBreadcrumbLabels[name.toLowerCase()] ||
+            decodeURIComponent(name);
 
-        return (
-          <span key={name} className="flex items-center space-x-2">
-            {isLast ? (
-              <span className="text-black dark:text-white font-normal capitalize">
-                {label}
-              </span>
-            ) : (
-              <>
-                <Link
-                  to={routeTo}
-                  className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
-                >
+          return (
+            <span key={name} className="flex items-center space-x-4">
+              {isLast ? (
+                <span className="text-black dark:text-white font-normal capitalize">
                   {label}
-                </Link>
-                <span>/</span>
-              </>
-            )}
-          </span>
-        );
-      })}
+                </span>
+              ) : (
+                <>
+                  <Link
+                    to={routeTo}
+                    className="text-gray-950/40 dark:text-gray-400 hover:underline capitalize"
+                  >
+                    {label}
+                  </Link>
+                  <span>/</span>
+                </>
+              )}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 };

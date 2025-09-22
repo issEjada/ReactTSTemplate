@@ -6,7 +6,6 @@ import type {
   DropDownsAttributes,
   DropDownValue,
 } from "../../../services/dropdownServices";
-import type { GetRuleByIdPayload } from "../../ScoringRules/scoringRulesServices";
 import type {
   CreateEventPayload,
   UpdateEventPayload,
@@ -15,7 +14,7 @@ import type {
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { EventsServices } from "../eventsServices";
 import { useLocation } from "react-router-dom";
-import { LoadingState } from "../../../types/types";
+import { LoadingState, type GetRuleByIdPayload } from "../../../types/types";
 import { formatTime } from "../../../utils/helpers";
 // import { formatTime } from "../../../helpers";
 

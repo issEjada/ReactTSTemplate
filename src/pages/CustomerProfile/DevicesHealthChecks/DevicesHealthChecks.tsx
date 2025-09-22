@@ -1,8 +1,8 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React, { useMemo, useState, useRef, useEffect, Suspense } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useDevicesHealthChecks } from "./useDeviceHealthChecks";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { DynamicTable } from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
 
 const DateIcon = React.lazy(() => import("../../../assets/svg/Date.svg?react"));
 
@@ -67,14 +67,23 @@ const HealthCheckDateButton: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((s) => !s)}
-        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 flex items-center gap-2 hover:bg-gray-100  dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
+        className="h-10 px-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-[#0F141A] dark:text-white"
       >
         Date
-        <DateIcon className="w-[20px] h-[20px]" />
+        <Suspense
+          fallback={
+            <div className="w-[20px] h-[20px] bg-gray-300 rounded-full" />
+          }
+        >
+          <DateIcon className="w-[20px] h-[20px]" />
+        </Suspense>
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-10 w-[200px]">
+        <div
+          className="absolute top-full mt-2 right-1 bg-white dark:bg-black rounded-lg shadow-lg border border-gray-200 p-4 z-50 w-[250px]
+                     animate-fadeIn"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-white">
@@ -85,11 +94,11 @@ const HealthCheckDateButton: React.FC<{
                 value={dateTimeRange.fromTimestamp}
                 onChange={handleDateTimeChange("fromTimestamp")}
                 title="Select start date and time"
-                className=" w-full h-[44px] mt-1 p-2 rounded-md text-sm
-                    border border-gray-300 text-gray-900
-                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
-                    placeholder:text-gray-400 dark:placeholder:text-gray-500
-                    [color-scheme:light] dark:[color-scheme:dark]"
+                className="w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
+                           border border-gray-300 uppercase
+                           dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                           dark:placeholder:text-gray-500
+                           [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
 
@@ -103,13 +112,15 @@ const HealthCheckDateButton: React.FC<{
                 onChange={handleDateTimeChange("toTimestamp")}
                 min={dateTimeRange.fromTimestamp}
                 title="Select end date and time"
-                className={` w-full h-[44px] mt-1 p-2 rounded-md text-sm
-                    border border-gray-300 text-gray-900
-                    dark:bg-darkTheme dark:border-gray-800 dark:text-white
-                    placeholder:text-gray-400 dark:placeholder:text-gray-500
-                    [color-scheme:light] dark:[color-scheme:dark] ${
-                      isValidRange() ? "border-gray-300" : "border-red-500"
-                    }`}
+                className={`w-full h-[44px] mt-2 px-[14px] py-[10px] rounded-md text-base text-gray-500 mb-2
+                           border border-gray-300 uppercase
+                           dark:bg-darkTheme dark:border-gray-800 dark:text-white
+                           dark:placeholder:text-gray-500
+                           [color-scheme:light] dark:[color-scheme:dark] ${
+                             isValidRange()
+                               ? "border-gray-300"
+                               : "border-red-500"
+                           }`}
               />
               {!isValidRange() && (
                 <p className="mt-1 text-sm text-red-600">
@@ -148,8 +159,6 @@ export const DevicesHealthChecks: React.FC = () => {
     setCurrentPage,
   } = useDevicesHealthChecks();
 
-
-
   const flattened: FlattenedHealthResponse[] =
     devicesHealthChecksData?.data.healthCheckRecords.map((record) => ({
       uniqueId: record.deviceInfo.deviceId.uniqueId,
@@ -162,7 +171,13 @@ export const DevicesHealthChecks: React.FC = () => {
 
   const columns = useMemo<ColumnDef<FlattenedHealthResponse>[]>(
     () => [
-      { header: "Device ID", accessorKey: "uniqueId" },
+      {
+        header: "Device ID",
+        accessorKey: "uniqueId",
+        meta: {
+          isSorted: true,
+        },
+      },
       { header: "Manufacturers", accessorKey: "manufacturer" },
       { header: "Model", accessorKey: "model" },
       { header: "App Installation ID", accessorKey: "appInstallationId" },
@@ -185,14 +200,20 @@ export const DevicesHealthChecks: React.FC = () => {
   };
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return (
+      <Spinner
+        mode="overlay"
+        size="sm"
+        overlayClassName="h-full w-full bg-transparent"
+      />
+    );
   }
-
 
   return (
     <div className="px-5 overflow-x-auto">
-      <CustomerProfileTable<FlattenedHealthResponse>
+      <DynamicTable<FlattenedHealthResponse>
         title="Devices Health Check"
+        isCustomerProfile={true}
         headerLeft={
           <h2 className="text-gray-900 dark:text-white text-[18px] font-semibold">
             Devices Health Check

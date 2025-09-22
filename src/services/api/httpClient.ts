@@ -81,7 +81,13 @@ const handle401Error = (error: AxiosError<ServerErrorResponse>) => {
   console.info(getLogMessage("status"), status);
 
   if (status === 401 || status === 403) {
-    SecureStorage.removeItem(ConstantKeys.accessToken);
+    sessionStorage.removeItem(ConstantKeys.accessToken);
+    localStorage.removeItem(ConstantKeys.accessToken);
+    sessionStorage.removeItem(ConstantKeys.rememberMe);
+    localStorage.removeItem(ConstantKeys.rememberMe);
+    localStorage.removeItem("customerProfileMobileNumber");
+    localStorage.removeItem("customerProfileCurrentSection");
+    localStorage.removeItem("isClosed");
     setTimeout(() => {
       window.location.assign("/login"); // Use assign for better compatibility
     }, 0);
@@ -120,7 +126,6 @@ const handleAxiosError = (error: AxiosError<ServerErrorResponse>) => {
   console.log("errorData", error);
 
   if (error && !(error.response?.data?.error ?? "").includes("invalid_grant")) {
-    console.log("test");
     handle401Error(error);
   }
 

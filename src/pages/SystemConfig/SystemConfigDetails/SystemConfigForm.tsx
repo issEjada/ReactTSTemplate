@@ -3,9 +3,10 @@ import type { Value } from "../systemConfigService";
 import type { FieldConfig } from "./useSystemConfigDetails";
 import { validations } from "./ValidationSchema";
 import PopupDropdownMenu from "./PopupDropDownsMenue";
+import type { FieldError } from "../../../types/types";
 
-const EditPopupIcon = React.lazy(
-  () => import("../../../assets/svg/EditPopupIcon.svg?react")
+const EditPenIcon = React.lazy(
+  () => import("../../../assets/svg/EditPen.svg?react")
 );
 
 interface SystemConfigFormProps {
@@ -15,10 +16,6 @@ interface SystemConfigFormProps {
   onCancel: () => void;
   addRow: boolean;
   popupTitle: string;
-}
-interface FieldError {
-  isValid: boolean;
-  message: string;
 }
 
 export const SystemConfigForm = ({
@@ -54,9 +51,11 @@ export const SystemConfigForm = ({
 
   // Validate when field values change
   useEffect(() => {
-    const { errors, isValid } = validateAllFields();
-    setFieldErrors(errors);
-    updateSaveButtonState(isValid);
+    if(fieldValues["phoneNumber"] != ""){
+      const { errors, isValid } = validateAllFields();
+      setFieldErrors(errors);
+      updateSaveButtonState(isValid);
+    }
   }, [fieldValues]);
 
   const validateAllFields = () => {
@@ -66,7 +65,8 @@ export const SystemConfigForm = ({
     fields.forEach((field, index) => {
       // First field is required
       if (
-        index === 0 &&
+        field.mandatory &&
+        fieldValues[field.key] &&
         (fieldValues[field.key] === "" || fieldValues[field.key] === undefined)
       ) {
         errors[field.key] = {
@@ -184,7 +184,9 @@ export const SystemConfigForm = ({
 
   return (
     <div>
-      <EditPopupIcon className="text-blue-700"/>
+      <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-blue-100 border border-blue-50 border-8">
+        <EditPenIcon className="text-blue-700" />
+      </div>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -246,10 +248,15 @@ export const SystemConfigForm = ({
       ))}
       <div className="mt-6 w-full flex justify-center gap-3">
         <button
-          onClick={onCancel}
+          onClick={
+            ()=>{
+              setFieldErrors((prev) => ({ ...prev, ["phoneNumber"]: {isValid: true, message: ""} }));
+              onCancel();
+            }
+          }
           className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
         >
-          Back
+          Cancel
         </button>
         <button
           onClick={() => onSave(fieldValues)}
@@ -258,7 +265,7 @@ export const SystemConfigForm = ({
             isSaveDisabled ? " cursor-not-allowed" : ""
           }`}
         >
-          Save Changes
+          Confirm
         </button>
       </div>
     </div>

@@ -18,10 +18,6 @@ const AnalyticsIcon = React.lazy(
   () => import("../../../assets/svg/AAnalytics.svg?react")
 );
 
-const RulesIcon = React.lazy(
-  () => import("../../../assets/svg/rules.svg?react")
-);
-
 const MostMapIcon = React.lazy(
   () => import("../../../assets/svg/MostUsedTargetCountry.svg?react")
 );
@@ -90,7 +86,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
       />
       <ExpandableCard
         icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
-        label="Trusted Device IP's"
+        label="Trusted Device IPs"
         data={insightsData?.userInsights?.trustedDeviceIPs}
       />
       <ExpandableCard
@@ -130,7 +126,7 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
       />
       <ExpandableCard
         icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
-        label="Trusted 3DS Page IP's"
+        label="Trusted 3DS Page IPs"
         data={insightsData?.userInsights?.trusted3DSPageIPs}
       />
       <ExpandableCard
@@ -212,17 +208,6 @@ export const CustomerInsights = (insightsData: CustomerInsightsResponse) => {
         icon={<TrustedIcon className="text-blue-700 w-[9.33px]" />}
         label="Trusted Platforms"
         data={insightsData?.userInsights?.trusted3DSPagePlatforms}
-      />
-      <ExpandableCard
-        icon={<RulesIcon className="text-blue-700 w-[9.33px]" />}
-        label="Blacklisted Devices"
-        data={insightsData?.userInsights?.blacklistedDevices?.map(
-          (item, index) => (
-            <p key={index}>
-              {item.uniqueId + ", " + item.model + ", " + item.manufacturer}
-            </p>
-          )
-        )}
       />
     </div>
   );

@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
 import type {
   DropDownCategory,
   DropDownValue,
@@ -9,18 +8,21 @@ import type {
 } from "../../../services/dropdownServices";
 import {
   type CreateRulesPayload,
-  type DeleteRuleByIdPayload,
-  type GetRuleByIdPayload,
   type GetRulesParametersPayload,
   type UpdateRulesPayload,
   type GetRuleByIdResponse,
   type GetRulesParameterResponse,
+  type ViewScoringRulesFormValues,
   ScoringRulesServices,
 } from "../scoringRulesServices";
 import { useLocation } from "react-router-dom";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { LoadingState } from "../../../types/types";
 import { formatTime } from "../../../utils/helpers";
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../../types/types";
 
 function useViewScoringRules() {
   const [editorContent, setEditorContent] = useState("");
@@ -60,7 +62,7 @@ function useViewScoringRules() {
   const isAdding = useMemo(() => !id && !screenAction, [id, screenAction]);
 
   const { control, handleSubmit, formState, watch, setValue, reset } =
-    useForm<ViewRulesFormValues>({
+    useForm<ViewScoringRulesFormValues>({
       mode: "onTouched",
       defaultValues: {
         id: 0,
@@ -81,11 +83,21 @@ function useViewScoringRules() {
       },
     });
 
-  const selectedScheme = watch("identifier.scheme");
-  const selectedAspect = watch("identifier.aspectCode");
-  const selectedControl = watch("identifier.controlCode");
-  const selectedEventSource = watch("identifier.eventSourceDevice");
-  const selectedPlatForm = watch("identifier.platform");
+  const identifier = watch().identifier!;
+  const filteredIdentifier = Object.fromEntries(
+    Object.entries(identifier).map(([field, obj]) => [field, obj?.key ?? ""])
+  );
+  const selectedScheme =
+    filteredIdentifier["scheme"] || watch("identifier.scheme");
+  const selectedAspect =
+    filteredIdentifier["aspectCode"] || watch("identifier.aspectCode");
+  const selectedControl =
+    filteredIdentifier["controlCode"] || watch("identifier.controlCode");
+  const selectedEventSource =
+    filteredIdentifier["eventSourceDevice"] ||
+    watch("identifier.eventSourceDevice");
+  const selectedPlatForm =
+    filteredIdentifier["platform"] || watch("identifier.platform");
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
@@ -189,7 +201,13 @@ function useViewScoringRules() {
   };
   const fetchParameterData = async () => {
     const data: GetRulesParametersPayload = {
-      identifier: watch().identifier!,
+      identifier: {
+        eventSourceDevice: selectedEventSource,
+        aspectCode: selectedAspect,
+        controlCode: selectedControl,
+        platform: selectedPlatForm,
+        scheme: selectedScheme,
+      },
     };
 
     await ScoringRulesServices.getRulesParameters(data)
@@ -200,6 +218,7 @@ function useViewScoringRules() {
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
         setPopupMessage(error.message);
+        setParametersData(undefined); // Clear parameters data on error
       });
   };
 
@@ -207,107 +226,92 @@ function useViewScoringRules() {
     if (isViewing || isEditing) {
       fetchRuleData(id);
     }
-    fetchRiskLevelAndStatus();
-    fetchDropDownsValues([]);
-  }, []);
-
-  useEffect(() => {
-    if (selectedEventSource) {
-      setAspectValues([]);
-      setControleValues([]);
-
-      fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-      ]);
+    if (!isViewing) {
+      fetchRiskLevelAndStatus();
+      fetchDropDownsValues([]);
     }
-  }, [selectedEventSource]);
-
+  }, [isViewing, isEditing, id]);
   useEffect(() => {
-    if (selectedEventSource && selectedScheme) {
-      setAspectValues([]);
-      setControleValues([]);
+    if (isViewing || !selectedEventSource) return;
 
-      fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
-      ]);
-    }
-  }, [selectedScheme]);
-
-  useEffect(() => {
-    if (selectedEventSource && selectedScheme && selectedAspect) {
-      setControleValues([]);
-      fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
-        {
-          key: "aspect",
-          value: selectedAspect,
-        },
-      ]);
-    }
-  }, [selectedAspect]);
-
-  useEffect(() => {
+    // CASE 1: only event source is selected
     if (
-      selectedEventSource &&
+      !selectedScheme &&
+      !selectedAspect &&
+      !selectedControl &&
+      !selectedPlatForm
+    ) {
+      setAspectValues([]);
+      setControleValues([]);
+      fetchDropDownsValues([
+        { key: "event_source_device", value: selectedEventSource },
+      ]);
+      return;
+    }
+
+    // CASE 2: event source + scheme selected (no aspect yet)
+    if (selectedScheme && !selectedAspect) {
+      setAspectValues([]);
+      setControleValues([]);
+      fetchDropDownsValues([
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+      ]);
+      return;
+    }
+
+    // CASE 3: event source + scheme + aspect selected (no control yet)
+    if (selectedScheme && selectedAspect && !selectedControl) {
+      setControleValues([]);
+      setValue("identifier.controlCode", "");
+      fetchDropDownsValues([
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+        { key: "aspect", value: selectedAspect },
+      ]);
+      return;
+    }
+
+    // CASE 4: event source + scheme + aspect + control selected (no platform yet)
+    if (
       selectedScheme &&
       selectedAspect &&
-      selectedControl
+      selectedControl &&
+      !selectedPlatForm
     ) {
       setPlatformValues([]);
       fetchDropDownsValues([
-        {
-          key: "event_source_device",
-          value: selectedEventSource,
-        },
-        {
-          key: "scoring_scheme",
-          value: selectedScheme,
-        },
-        {
-          key: "aspect",
-          value: selectedAspect,
-        },
-        {
-          key: "control",
-          value: selectedControl,
-        },
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+        { key: "aspect", value: selectedAspect },
+        { key: "control", value: selectedControl },
       ]);
+      return;
     }
-  }, [selectedControl]);
 
-  useEffect(() => {
+    // CASE 5: all selected → fetch parameters
     if (
-      selectedControl &&
-      selectedPlatForm &&
-      selectedEventSource &&
       selectedScheme &&
-      selectedAspect
+      selectedAspect &&
+      selectedControl &&
+      selectedPlatForm
     ) {
+      setControleValues([]);
+      fetchDropDownsValues([
+        { key: "event_source_device", value: selectedEventSource },
+        { key: "scoring_scheme", value: selectedScheme },
+        { key: "aspect", value: selectedAspect },
+      ]);
       fetchParameterData();
     }
   }, [
-    selectedPlatForm,
     selectedEventSource,
     selectedScheme,
     selectedAspect,
     selectedControl,
+    selectedPlatForm,
+    isViewing,
+    setValue,
   ]);
 
   useEffect(() => {
@@ -319,11 +323,13 @@ function useViewScoringRules() {
           ruleData.identifier.controlCode || ""
         );
       }, 1);
-      setEditorContent(ruleData.condition);
+      if (!editorContent || editorContent === "") {
+        setEditorContent(ruleData.condition);
+      }
     }
-  }, [ruleData, reset, setValue]);
+  }, [ruleData, reset, setValue, editorContent]); // Add editorContent to dependencies
 
-  const onSubmit = (data: ViewRulesFormValues) => {
+  const onSubmit = (data: ViewScoringRulesFormValues) => {
     if (isAdding) {
       setloadingState(LoadingState.Loading);
       const body: CreateRulesPayload = {

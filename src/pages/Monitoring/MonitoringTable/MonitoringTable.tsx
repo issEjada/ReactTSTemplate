@@ -1,18 +1,26 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MonitoringFilterForm } from "../MonitoringFilter/MonitoringFilterJsx";
 import { useMonitoringTable } from "./useMonitoringTable";
 import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import SessionActivity from "./SessionActivity";
 import { useSessionActivity } from "./useSessionActivity";
 import { DynamicTable } from "../../../components/DynamicTable";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../../components/Spinner";
+import MetricCard from "../../CustomerProfile/ActionAnalytics/MetricCard";
+import { formatTime } from "../../../utils/helpers";
 
 const ShieldIcon = React.lazy(
   () => import("../../../assets/svg/shieldG.svg?react")
+);
+const Threatblock = React.lazy(
+  () => import("../../../assets/svg/Threatblock.svg?react")
+);
+const ActiveAlerts = React.lazy(
+  () => import("../../../assets/svg/ActiveAlerts.svg?react")
 );
 
 export type Session = {
@@ -25,13 +33,17 @@ export type Session = {
   country: string;
   city: string;
   status: "VIEWED" | "NOT_VIEWED";
-  date: string;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 };
 
 const getColumns = (): ColumnDef<Session>[] => [
   {
     header: "Session ID",
     accessorKey: "sessionId",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
       <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
         <span className="font-medium text-gray-900 dark:text-white ">
@@ -43,13 +55,13 @@ const getColumns = (): ColumnDef<Session>[] => [
   {
     header: "Device ID",
     accessorKey: "deviceId",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
-      <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
+      <div className="flex flex-col w-[95px] h-[40px] overflow-hidden justify-center">
         <span className="font-medium text-gray-900 h-[20px] overflow-hidden dark:text-white  ">
           {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 h-[20px] overflow-hidden">
-          category
         </span>
       </div>
     ),
@@ -58,7 +70,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     header: "Channel",
     accessorKey: "channel",
     cell: (info) => (
-      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+      <div className="flex items-center w-[95px] h-[40px] overflow-hidden justify-center">
         <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue() ?? "")}
         </span>
@@ -69,7 +81,7 @@ const getColumns = (): ColumnDef<Session>[] => [
     header: "Customer Identity",
     accessorKey: "customerIdentity",
     cell: (info) => (
-      <div className="flex items-center w-[95px] h-[40px] overflow-hidden">
+      <div className="w-full flex items-center w-[95px] h-[40px] overflow-hidden justify-center">
         <span className="font-medium text-gray-900 dark:text-white ">
           {String(info.getValue() ?? "")}
         </span>
@@ -93,11 +105,9 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "country",
     cell: (info) => {
       const value = String(info.getValue());
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span className="flex items-center w-[95px] h-[40px] text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white  overflow-hidden">
-          {display}
+          {value}
         </span>
       );
     },
@@ -107,11 +117,9 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "city",
     cell: (info) => {
       const value = String(info.getValue());
-      const display =
-        value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
       return (
         <span className="text-xs font-medium px-2 py-1 whitespace-nowrap text-gray-700 dark:text-white">
-          {display}
+          {value}
         </span>
       );
     },
@@ -121,53 +129,39 @@ const getColumns = (): ColumnDef<Session>[] => [
     accessorKey: "status",
     cell: (info) => {
       return (
+        <div className="w-full flex justify-center">
         <span
           className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
             info.getValue() === "VIEWED"
-              ? "bg-green-100 text-green-700"
+              ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
               : "bg-gray-200 text-gray-700"
           }`}
         >
           <div
             className={`rounded-full bg-black w-[6px] h-[6px] ${
-              info.getValue() === "VIEWED" ? "bg-green-500" : "bg-gray-500"
+              info.getValue() === "VIEWED"
+                ? "bg-success-500 dark:bg-success-400"
+                : "bg-gray-500"
             }`}
           ></div>
           {info.getValue() === "VIEWED" ? "Viewed" : "Not Viewed"}
         </span>
+        </div>
       );
     },
   },
   {
-    header: "Date & Time",
-    accessorKey: "date",
-    cell: (info) => {
-      const value = String(info.getValue());
-      const date = new Date(value);
-      const formattedDate = date.toLocaleDateString("en-GB"); // '02/07/2025'
-
-      // Format time as HH:MM:SS AM/PM
-      const formattedTime = date.toLocaleTimeString("en-US", {
-        hour12: true,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }); // '03:24:06 AM'
-
-      // If you want to trim seconds to always show `00` as in your example
-      const trimmedTime = `${formattedTime.split(":")[0]}:${
-        formattedTime.split(":")[1]
-      }:00 ${formattedTime.split(" ")[1]}`;
-      return (
-        <div className="flex flex-col w-[95px] h-[40px] overflow-hidden">
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
-            {formattedDate}
-          </span>
-          <span className="text-xs font-medium px-2 whitespace-nowrap text-gray-700 dark:text-white ">
-            {trimmedTime}
-          </span>
-        </div>
-      );
+    header: "Creation Time",
+    accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
     },
   },
 ];
@@ -175,7 +169,7 @@ const getColumns = (): ColumnDef<Session>[] => [
 export const MonitoringTable = () => {
   const {
     data = [],
-    isLoading,
+    loadingState,
     error,
     totalCount,
     currentPage,
@@ -184,16 +178,26 @@ export const MonitoringTable = () => {
     filters,
     setFilters,
     handleSearchSubmit,
+    setItemsPerPage,
   } = useMonitoringTable();
 
-  const { sessionActivityData } = useSessionActivity();
+  const { sessionActivityData, statisticsData } = useSessionActivity();
   const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
     "All" | "VIEWED" | "NOT_VIEWED"
   >("All");
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const onFilterStatus = (status: "All" | "VIEWED" | "NOT_VIEWED") => {
     setStatusFilter(status);
@@ -210,6 +214,7 @@ export const MonitoringTable = () => {
 
     setFilters(newFilters);
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
@@ -243,11 +248,11 @@ export const MonitoringTable = () => {
         country: item.country,
         city: item.city,
         status: item.status,
-        date: item.lastUpdatedTimestamp,
+        creationTimestamp: formatTime(item.creationTimestamp),
+        lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp),
       })),
     [data]
   );
-
 
   const isFilterActive = useMemo(
     () => Object.keys(filters ?? {}).length > 0 || searchText.trim() !== "",
@@ -259,6 +264,7 @@ export const MonitoringTable = () => {
     setFilters(undefined);
     setStatusFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   if (error) {
@@ -269,20 +275,19 @@ export const MonitoringTable = () => {
     );
   }
 
-  if (isLoading) {
-    return <FullScreenSpinner />;
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
   }
 
-
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
-      <div className="pt-5 px-6 pb-[18px]">
+    <div className="flex flex-col gap-3 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
+      <div className="pt-5  pb-[18px]">
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
           <div>
-            <h2 className="text-lg text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               Monitor Activity Sessions{" "}
-              <span className="ml-2 text-blue-700 bg-blue-50 px-[8px] py-[2px] rounded-full text-[12px]">
-                {totalCount} Active Session{totalCount !== 1 && "s"}
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                {totalCount} Activity Session{totalCount !== 1 && "s"}
               </span>
             </h2>
 
@@ -292,7 +297,27 @@ export const MonitoringTable = () => {
           </div>
         </div>
       </div>
-      {totalCount === 0 && !isFilterActive ? (
+      <div className="flex flex-row gap-6 justify-around">
+        <MetricCard
+          title="Total Sessions"
+          value={statisticsData?.totalSessions || 0}
+          icon={<ShieldIcon className="text-blue-700" />}
+          className="w-full sm:w-[200px]  md:w-[370px]"
+        />
+        <MetricCard
+          title="Viewed"
+          value={statisticsData?.viewedSessions || 0}
+          icon={<Threatblock className="text-success-600" />}
+          className="w-full  md:w-[370px]"
+        />
+        <MetricCard
+          title="Not Viewed"
+          value={statisticsData?.notViewedSessions || 0}
+          icon={<ActiveAlerts className="text-warning-600" />}
+          className="w-full md:w-[370px]"
+        />
+      </div>
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={
             <ShieldIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
@@ -310,6 +335,7 @@ export const MonitoringTable = () => {
         <>
           <DynamicTable<Session>
             data={sessionsData}
+            loadingState={loadingState}
             columns={columns}
             filterComponent={
               <MonitoringFilterForm
@@ -322,11 +348,11 @@ export const MonitoringTable = () => {
             totalCount={totalCount}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
             setCurrentPage={setCurrentPage}
             onFilterStatus={onFilterStatus as (status: string) => void}
             statusFilter={statusFilter}
             onClearSearch={handleClearSearch}
-            onAddNewItem={() => {}}
             error={error}
             title="Monitor Activity Sessions"
             searchText={searchText}

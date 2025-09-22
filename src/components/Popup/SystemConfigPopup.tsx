@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Suspense } from "react";
+
 const CheckIcon = React.lazy(() => import(`/src/assets/svg/Check.svg?react`));
 const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
@@ -51,9 +52,13 @@ const SystemConfigPopup = ({
 
   const icon =
     isError || isDeleting ? (
-      <AlertIcon className="w-6 h-6" />
+      <Suspense>
+        <AlertIcon className="w-6 h-6" />
+      </Suspense>
     ) : (
-      <CheckIcon className="w-6 h-6 text-success-600" />
+      <Suspense>
+        <CheckIcon className="w-6 h-6 text-success-600" />
+      </Suspense>
     );
   const iconBgClass =
     isError || isDeleting
@@ -92,7 +97,7 @@ const SystemConfigPopup = ({
               onClick={onConfirm}
               className="flex-1 px-4 py-2 rounded-[8px] bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
             >
-              Create New Rule
+              Add New
             </button>
           </>
         )}

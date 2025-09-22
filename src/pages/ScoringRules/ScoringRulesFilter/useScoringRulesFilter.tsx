@@ -7,31 +7,17 @@ import type {
 } from "../../../services/dropdownServices";
 import { getDropDownsValue } from "../../../services/dropdownServices";
 import { useForm } from "react-hook-form";
-import type { RuleIdentifierInterface } from "../scoringRulesServices";
 import {
   cleanObject,
   formatFromTime,
   formatToTime,
 } from "../../../utils/helpers";
-
-export interface ViewRulesFormValues {
-  id?: number;
-  name?: string;
-  description?: string;
-  status?: string;
-  condition?: string;
-  riskLevel?: string;
-  identifier?: RuleIdentifierInterface;
-  creationTimestamp?: string;
-  lastUpdatedTimestamp?: string;
-  fromCreationTimestamp?: string;
-  toCreationTimestamp?: string;
-}
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 
 export const useScoringRulesFilter = (
   closeDrawer: () => void,
-  filterData: ViewRulesFormValues | undefined,
-  handleSearchSubmit: (searchData: ViewRulesFormValues) => void
+  filterData: ViewScoringRulesFormValues | undefined,
+  handleSearchSubmit: (searchData: ViewScoringRulesFormValues) => void
 ) => {
   const [schemeValues, setSchemeValues] = useState<DropDownValue[]>([]);
   const [asapectValues, setAspectValues] = useState<DropDownValue[]>([]);
@@ -43,7 +29,7 @@ export const useScoringRulesFilter = (
     DropDownValue[]
   >([]);
 
-  const defaultValues: ViewRulesFormValues = {
+  const defaultValues: ViewScoringRulesFormValues = {
     id: 0,
     name: "",
     description: "",
@@ -65,7 +51,7 @@ export const useScoringRulesFilter = (
   };
 
   const { control, handleSubmit, formState, reset, watch, setValue } =
-    useForm<ViewRulesFormValues>({
+    useForm<ViewScoringRulesFormValues>({
       mode: "onTouched",
       defaultValues: filterData ?? defaultValues,
     });
@@ -174,7 +160,7 @@ export const useScoringRulesFilter = (
     }
   }, [selectedAspect]);
 
-  const onSubmit = (data: ViewRulesFormValues) => {
+  const onSubmit = (data: ViewScoringRulesFormValues) => {
     const filteredData = cleanObject(data);
     filteredData.fromCreationTimestamp = formatFromTime(
       filteredData.fromCreationTimestamp ?? ""
@@ -183,7 +169,7 @@ export const useScoringRulesFilter = (
       filteredData.toCreationTimestamp ?? ""
     );
 
-    handleSearchSubmit(filteredData as ViewRulesFormValues);
+    handleSearchSubmit(filteredData as ViewScoringRulesFormValues);
     closeDrawer();
   };
 

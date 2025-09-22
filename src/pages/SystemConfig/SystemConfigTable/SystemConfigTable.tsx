@@ -1,19 +1,17 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useSystemConfigTable,
   type ConfigurationFormValues,
 } from "./useSystemConfigTable";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DynamicTable } from "../../../components/DynamicTable";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import Spinner from "../../../components/Spinner";
+import { TableFallback } from "../../../components/TableFallback";
 
-const LockIcon = React.lazy(
+const SettingsIcon = React.lazy(
   () => import("../../../assets/svg/settings.svg?react")
-);
-const BackgroundCircle = React.lazy(
-  () => import("../../../assets/svg/BackgroundCircle.svg?react")
 );
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
@@ -36,6 +34,7 @@ export const SystemConfigTable = () => {
     setCurrentPage,
     filters,
     setFilters,
+    setItemsPerPage,
   } = useSystemConfigTable();
 
   const [searchText, setSearchText] = useState("");
@@ -67,9 +66,16 @@ export const SystemConfigTable = () => {
   };
 
   const columns = useMemo(() => getColumns(handleViewSystemConfig), []);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
+
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
   }
 
   return (
@@ -79,7 +85,7 @@ export const SystemConfigTable = () => {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             System Configurations
             <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Rule
+              {totalCount} System Configuration
               {totalCount !== 1 && "s"}
             </span>
           </h2>
@@ -90,41 +96,14 @@ export const SystemConfigTable = () => {
         </p>
       </div>
 
-      {totalCount === 0 && !filters ? (
-        <div className="w-full h-[75vh] flex flex-col items-center justify-center rounded-md border">
-          {/* Wrapper for icon + background */}
-          <div className="relative flex items-center justify-center mb-6 w-[80px] h-[80px]">
-            {/* Background Circle positioned behind */}
-            <div className="absolute z-0 w-[80px] h-[80px] flex items-center justify-center">
-              <BackgroundCircle
-                className="
-                  absolute
-                  left-1/2 top-[28%]
-                  -translate-x-1/2 -translate-y-1/2
-                  w-[400px] sm:w-[400px] md:w-[400px] lg:w-[400px]
-                  h-[400px]
-                  pointer-events-none select-none
-                  z-0 text-gray-200 dark:text-gray-500
-                "
-              />
-            </div>
-
-            {/* Lock Icon in styled border */}
-            <div className="relative z-10 flex items-center justify-center bg-white border border-gray-300 rounded-[16px] gap-[8px] p-[4px]">
-              <div className="flex items-center justify-center bg-white border border-black/10 rounded-[12px] sm:w-[52px] sm:h-[52px] p-[12px] shadow-[0px_1px_2px_0px_#0000001A,0px_3px_3px_0px_#00000017]">
-                <LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
-              </div>
-            </div>
-          </div>
-
-          {/* Title & Description */}
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
-            You don’t have any configurations yet
-          </h3>
-          <p className="text-sm text-gray-500 mb-6">
-            You don’t have any configurations added yet.
-          </p>
-        </div>
+      {totalCount == 0 && !filters ? (
+        <TableFallback
+          icon={
+            <SettingsIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />
+          }
+          title="You don’t have any configurations yet"
+          description={<>Start configuring your system now.</>}
+        />
       ) : (
         <DynamicTable<SystemConfig>
           data={(data ?? []).map((item) => ({
@@ -137,10 +116,12 @@ export const SystemConfigTable = () => {
           columns={columns}
           totalCount={totalCount}
           currentPage={currentPage}
+          setItemsPerPage={setItemsPerPage}
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
           onClearSearch={handleClearSearch}
           title="System configurations"
+          loadingState={loadingState}
           error={error}
           searchText={searchText}
           setSearchText={setSearchText}
@@ -175,6 +156,9 @@ const getColumns = (
   {
     header: "Configuration Name",
     accessorKey: "configName",
+    meta: {
+      isSorted: true,
+    },
     cell: ({ row }) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">

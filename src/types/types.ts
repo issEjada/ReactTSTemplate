@@ -34,3 +34,26 @@ export const LoadingState = {
 } as const;
 
 export type LoadingState = (typeof LoadingState)[keyof typeof LoadingState];
+
+export interface GetRuleByIdPayload {
+  id: number;
+}
+
+export interface DeleteRuleByIdPayload {
+  id: number;
+}
+
+export interface Option {
+  key: string;
+  node: string;
+}
+
+export interface FieldError {
+  isValid: boolean;
+  message: string;
+}
+
+export interface PaginationMeta {
+  totalPages: number;
+  totalItems: number;
+}

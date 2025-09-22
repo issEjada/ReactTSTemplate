@@ -1,15 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState} from "react";
 import { Controller } from "react-hook-form";
 import type { Path, Control, FieldValues } from "react-hook-form";
 const ChevronDown = React.lazy(
   () => import("../assets/svg/ChevronDown.svg?react")
 );
-
-interface Option {
-  key: string;
-  node: string;
-}
-
+import type { Option } from "../types/types";
+ 
 interface DropdownMenuProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
@@ -20,7 +16,7 @@ interface DropdownMenuProps<T extends FieldValues> {
   className?: string;
   placeholder?: string;
 }
-
+ 
 const DropdownMenu = <T extends FieldValues>({
   control,
   name,
@@ -32,13 +28,13 @@ const DropdownMenu = <T extends FieldValues>({
 }: DropdownMenuProps<T>) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-
+ 
   const toggleDropdown = () => {
     if (!disabled) setOpen((prev) => !prev);
   };
-
+ 
   const closeDropdown = () => setOpen(false);
-
+ 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -48,28 +44,28 @@ const DropdownMenu = <T extends FieldValues>({
         closeDropdown();
       }
     };
-
+ 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+ 
   return (
     <div className={`mb-2 ${className}`} ref={dropdownRef}>
       <Controller
         name={name}
         control={control}
-        defaultValue={"" as any}
+        defaultValue={"" as unknown as T[keyof T]}
         render={({ field, fieldState }) => {
           const { onChange, value } = field;
           const { error } = fieldState;
-
+ 
           return (
             <div className="flex flex-col gap-[6px] relative dark:border-gray-800">
               <label className="text-sm font-medium text-gray-700 dark:text-white flex items-center gap-1">
                 {label}
                 {required && <span className="text-red-500">*</span>}
               </label>
-
+ 
               {/* Dropdown Trigger */}
               <div
                 className={`
@@ -81,30 +77,29 @@ const DropdownMenu = <T extends FieldValues>({
                       ? "border-red-500 text-red-500"
                       : "border-gray-300 text-gray-500"
                   }
-                  ${
-                    disabled
-                      ? "text-gray-700 cursor-not-allowed"
-                      : "cursor-pointer dark:text-white"
-                  }
+                  ${disabled ? " cursor-not-allowed" : "cursor-pointer"}
                 `}
                 onClick={toggleDropdown}
               >
                 <span
-                  className={` 
-                    ${
-                      disabled
-                        ? "text-gray-400 cursor-not-allowed"
-                        : "cursor-pointer dark:text-white"
-                    }
+                  className={`
+                   ${
+                     disabled
+                       ? "text-gray-400 dark:text-gray-400 cursor-not-allowed"
+                       : !value
+                       ? "text-gray-500 dark:text-gray-200" // placeholder
+                       : "text-gray-600 dark:text-white" // selected
+                   }
                   
                   `}
                 >
                   {options.find((opt) => opt.key === value)?.node ||
+                    options.find((opt) => opt.key === value.key)?.node ||
                     `Choose ${label}`}
                 </span>
-                <ChevronDown className="w-[10px] h-5 object-contain text-gray-500"/>
+                  <ChevronDown className="w-[10px] h-5 object-contain text-gray-500" />
               </div>
-
+ 
               {/* Dropdown Menu */}
               {open && (
                 <ul className="absolute top-full left-0 z-50 mt-[4px] w-full bg-white border border-gray-300 rounded-[8px] shadow-md overflow-y-auto max-h-60 dark:bg-darkTheme dark:border-gray-800">
@@ -129,7 +124,7 @@ const DropdownMenu = <T extends FieldValues>({
                   ))}
                 </ul>
               )}
-
+ 
               {error && (
                 <span className="text-sm text-red-500 mt-1">
                   {error.message}
@@ -142,5 +137,5 @@ const DropdownMenu = <T extends FieldValues>({
     </div>
   );
 };
-
+ 
 export default DropdownMenu;

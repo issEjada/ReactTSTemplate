@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import MetricCard from "./MetricCard";
-import { CustomerProfileTable } from "../CustomerProfileTable";
 import { useActionAnalytics } from "./useActionAnalytics";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { ActionPopup } from "./ActionsPopup";
+import { DynamicTable } from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
 
 const StatisticsIcon = React.lazy(
   () => import("../../../assets/svg/CInsight.svg?react")
@@ -39,9 +39,8 @@ export interface FormattedAnalyticData {
   mfaActions: number;
   scaActions: number;
   authenticatedActions: number;
-  averageAmount: number;
-  maxAmount: number;
-  minAmount: number;
+  averageAmount: string;
+  maxAmount: string;
   mostUsedTargetCountry: string[];
   trustedTargetCountries: string[];
   mostUsedTargetMerchant: string[];
@@ -152,10 +151,14 @@ function RowMenu({
 
 type ActionAnalyticsProps = {
   userMobileNumber: string;
+  userId: string;
+  clientId: string;
 };
 
 export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   userMobileNumber,
+  userId,
+  clientId,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [popUpType, setPopUpType] = useState<
@@ -167,29 +170,33 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
   const [popUpData, setPopUpData] = useState<FormattedAnalyticData>();
 
   const { actionAnalyticsData, errorValidation, loadingState } =
-    useActionAnalytics(userMobileNumber, currentPage, itemsPerPage);
-
+    useActionAnalytics(
+      userMobileNumber,
+      userId,
+      clientId,
+      currentPage,
+      itemsPerPage
+    );
 
   const columns: ColumnDef<FormattedAnalyticData>[] = [
     {
       accessorKey: "eventName",
       header: "Event Name",
-      cell: (i) => i.getValue(),
+      meta: {
+        isSorted: true,
+      },
     },
     {
       accessorKey: "totalActions",
       header: "Total Actions",
-      cell: (i) => i.getValue() as number,
     },
     {
       accessorKey: "acceptedActions",
       header: "Accepted Actions",
-      cell: (i) => i.getValue() as number,
     },
     {
       accessorKey: "averageAmount",
       header: "Average Amount",
-      cell: (i) => i.getValue() as number,
     },
     {
       id: "menu",
@@ -229,11 +236,9 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
         event.actionsStatistics.numberOfAuthenticatedActions,
 
       // ---- Trusted Indicators ----
-      averageAmount: parseFloat(
-        event.actionsTrustedIndicators.avgAmount ?? "0"
-      ),
-      maxAmount: parseFloat(event.actionsTrustedIndicators.maxAmount ?? "0"),
-      minAmount: parseFloat(event.actionsTrustedIndicators.minAmount ?? "0"),
+      averageAmount: event.actionsTrustedIndicators.avgAmount ?? "0",
+
+      maxAmount: event.actionsTrustedIndicators.maxAmount ?? "0",
       mostUsedTargetCountry:
         event.actionsTrustedIndicators.mostUsedTargetCountry,
       trustedTargetCountries:
@@ -253,39 +258,44 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
     })) ?? [];
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return (
+      <Spinner
+        mode="overlay"
+        size="sm"
+        overlayClassName="h-full w-full bg-transparent"
+      />
+    );
   }
 
   if (errorValidation) {
     return <span className="text-red-500">{errorValidation}</span>;
   }
 
-
   return (
     <div className="flex flex-col gap-4">
       {/* KPI Cards */}
-      <div className="flex flex-col md:flex-row gap-4 flex-wrap justify-around">
+      <div className="flex flex-row gap-4 flex-wrap justify-around">
         <MetricCard
           title="Total Actions"
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfTotalActions || 0
           }
-          icon={<TotalActionIcon className="text-blue-700"/>}
-          className="w-full md:w-[370px]"
+          icon={<TotalActionIcon className="text-blue-700" />}
+          className="w-full sm:w-[200px] md:w-[370px]"
         />
         <MetricCard
           title="Accepted Actions"
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfAcceptedActions || 0
           }
-          icon={<AcceptedIcon className="text-success-600"/>}
+          icon={<AcceptedIcon className="text-success-600" />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
           title="MFA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfMFAActions || 0}
-          icon={<MfaIcon className="text-warning-600"/>}
-          className="w-full md:w-[370px]"
+          icon={<MfaIcon className="text-warning-600" />}
+          className="w-full  md:w-[370px]"
         />
 
         <MetricCard
@@ -294,7 +304,7 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
             actionAnalyticsData?.actionsAnalytics
               .numberOfAuthenticatedActions || 0
           }
-          icon={<AuthActionIcon className="text-purple-700"/>}
+          icon={<AuthActionIcon className="text-purple-700" />}
           className="w-full md:w-[370px]"
         />
         <MetricCard
@@ -302,14 +312,14 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
           value={
             actionAnalyticsData?.actionsAnalytics.numberOfRejectedActions || 0
           }
-          icon={<RejectedIcon className="text-red-600"/>}
-          className="w-full md:w-[370px]"
+          icon={<RejectedIcon className="text-red-600" />}
+          className="w-full  md:w-[370px]"
         />
         <MetricCard
           title="SCA Actions"
           value={actionAnalyticsData?.actionsAnalytics.numberOfSCAActions || 0}
           icon={<ScaIcon className="text-blueLight-600" />}
-          className="w-full md:w-[370px]"
+          className="w-full  md:w-[370px]"
         />
       </div>
 
@@ -332,7 +342,8 @@ export const ActionAnalytics: React.FC<ActionAnalyticsProps> = ({
 
         <div className="px-5 pb-5 overflow-x-auto">
           <div className="overflow-x-auto">
-            <CustomerProfileTable<FormattedAnalyticData>
+            <DynamicTable<FormattedAnalyticData>
+              isCustomerProfile={true}
               title="User Actions Table"
               data={formattedAnalyticData}
               columns={columns}

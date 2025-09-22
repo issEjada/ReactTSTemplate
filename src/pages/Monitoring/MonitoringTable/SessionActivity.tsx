@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import {
   LineChart,
   Line,
@@ -10,7 +10,6 @@ import {
   type DotProps,
 } from "recharts";
 
-import { useContext } from "react";
 import { ThemeContext } from "../../../context/Context";
 
 function CustomDotDetected({ cx, cy }: DotProps) {
@@ -56,21 +55,32 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
 
   useEffect(() => {
     if (!outerRef.current) return;
-    const ro = new ResizeObserver((entries) => {
-      const w = entries[0]?.contentRect.width ?? 0;
+
+    const measure = () => {
+      const w = outerRef.current?.getBoundingClientRect().width ?? 0;
       setContainerWidth(w);
-    });
+    };
+
+    measure(); // initial measure
+    const ro = new ResizeObserver(() => measure());
     ro.observe(outerRef.current);
-    return () => ro.disconnect();
+
+    // ensure Windows/Chrome gets an initial value after layout
+    const id = requestAnimationFrame(measure);
+
+    return () => {
+      ro.disconnect();
+      cancelAnimationFrame(id);
+    };
   }, []);
 
   // keep the original look; give each point some space (~90px) so labels/dots don’t collide
-  const naturalWidth = Math.max(560, data.length * 90); 
+  const naturalWidth = Math.max(560, data.length * 90);
   const innerWidth = Math.max(containerWidth, naturalWidth);
 
   return (
     <div className="bg-white dark:bg-darkTheme dark:border-gray-800 p-4 sm:p-6 w-full border border-gray-200 rounded-[12px] shadow-[0_1px_2px_0_#0A0D120F,0_1px_3px_0_#0A0D121A]">
-      {/* header/legend unchanged */}
+      {/* header/legend */}
       <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4">
         <p className="text-black dark:text-white font-semibold text-[16px] leading-[20px]">
           Sessions Activity Overview
@@ -78,14 +88,14 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
         <div className="h-[20px] w-px bg-gray-950/20 dark:bg-white" />
         <div className="flex flex-wrap items-center gap-3 text-sm font-medium">
           <div className="flex items-center gap-2 text-gray-950 font-normal">
-            <span className="w-2 h-2 rounded-full bg-blue-700" />
+            <span className="w-2 h-2 rounded-full bg-warning-500" />
             <span className="dark:text-white">
               Viewed Sessions{" "}
               <strong className="font-semibold">{viewedTotal}</strong>
             </span>
           </div>
           <div className="flex items-center gap-2 text-gray-950 font-normal">
-            <span className="w-2 h-2 rounded-full bg-[#F79009]" />
+            <span className="w-2 h-2 rounded-full bg-blue-700" />
             <span className="dark:text-white">
               Not Viewed Sessions{" "}
               <strong className="font-semibold">{notViewedTotal}</strong>
@@ -94,61 +104,63 @@ export default function SessionActivity({ data = [] }: LineChartContent) {
         </div>
       </div>
 
-      {/* chart wrapper: allows horizontal scroll on mobile, keeps original chart unchanged */}
-      <div
-        ref={outerRef}
-        className="w-full h-72 sm:h-[420px] md:h-[480px] overflow-x-auto"
-      >
-        <div style={{ width: innerWidth, height: "100%" }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={data}
-              margin={{ top: 28, right: 95, left: 17.5, bottom: 38 }}
-            >
-              <CartesianGrid horizontal stroke="#e5e7eb" />
-              <YAxis
-                domain={[yMin, yMax]}
-                tickLine={false}
-                axisLine={false}
-                tick={{ fill: "#9ca3af", fontSize: 12 }}
-                tickMargin={44}
-              />
-              <XAxis
-                dataKey="Month"
-                interval={0}
-                axisLine={{ stroke: "#d1d5db" }}
-                tickSize={4}
-                tickLine={false}
-                tick={{ fill: "#9ca3af", fontSize: 12 }}
-                tickMargin={38}
-              />
-              <Tooltip
-                contentStyle={{
-                  color: isDarkMode ? "white" : "",
-                  backgroundColor: isDarkMode ? "#1F2937" : "white",
-                  boxShadow: "none",
-                  padding: "8px 12px",
-                  border: "1px solid #E5E7EB",
-                }}
-              />
-              <Line
-                type="linear"
-                dataKey="Viewed"
-                stroke="#F79009"
-                strokeWidth={3}
-                dot={<CustomDotDetected />}
-                activeDot={{ r: 6 }}
-              />
-              <Line
-                type="linear"
-                dataKey="NotViewed"
-                stroke="#1637C4"
-                strokeWidth={3}
-                dot={<CustomDotBlocked />}
-                activeDot={{ r: 6 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+      {/* chart wrapper: scroll wrapper outside measured container */}
+      <div className="w-full overflow-x-auto">
+        <div
+          ref={outerRef}
+          className="h-72 sm:h-[420px] md:h-[480px] min-w-[560px]"
+        >
+          <div style={{ width: innerWidth, height: "100%" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={data}
+                margin={{ top: 28, right: 95, left: 17.5, bottom: 38 }}
+              >
+                <CartesianGrid horizontal stroke="#e5e7eb" />
+                <YAxis
+                  domain={[yMin, yMax]}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#9ca3af", fontSize: 12 }}
+                  tickMargin={44}
+                />
+                <XAxis
+                  dataKey="Month"
+                  interval={0}
+                  axisLine={{ stroke: "#d1d5db" }}
+                  tickSize={4}
+                  tickLine={false}
+                  tick={{ fill: "#9ca3af", fontSize: 12 }}
+                  tickMargin={38}
+                />
+                <Tooltip
+                  contentStyle={{
+                    color: isDarkMode ? "white" : "",
+                    backgroundColor: isDarkMode ? "#1F2937" : "white",
+                    boxShadow: "none",
+                    padding: "8px 12px",
+                    border: "1px solid #E5E7EB",
+                  }}
+                />
+                <Line
+                  type="linear"
+                  dataKey="Viewed"
+                  stroke="#F79009"
+                  strokeWidth={3}
+                  dot={<CustomDotDetected />}
+                  activeDot={{ r: 6 }}
+                />
+                <Line
+                  type="linear"
+                  dataKey="NotViewed"
+                  stroke="#1637C4"
+                  strokeWidth={3}
+                  dot={<CustomDotBlocked />}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

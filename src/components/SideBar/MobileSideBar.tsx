@@ -4,28 +4,35 @@ import { AppRoutes } from "../../routes/AppRoutes";
 import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
 import { ThemeModeIcon } from "../../context/ThemeProvider";
 
-const LogoWithTextIcon = React.lazy(
-  () => import("../../assets/svg/logo_with_text.svg?react")
+const AnotherLogoWithTextIcon = React.lazy(
+  () => import("../../assets/svg/logo_with_text_copy.svg?react")
+);
+const FiltersIcon = React.lazy(
+  () => import("../../assets/svg/Filters.svg?react")
 );
 
-export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
+export const MobileSideBar: React.FC<{
+  isClosed: boolean;
+  setIsClosed: (value: boolean) => void;
+}> = ({ isClosed, setIsClosed }) => {
   return (
     <>
       <div
-        className={`hidden md:block h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-darkTheme dark:border-gray-800 py-[20px] ${
-          isClosed ? " w-[110px] ps-[33px] pe-[34px]" : " w-64 px-4"
+        className={`block md:hidden absolute bg-white z-20 h-screen flex flex-col justify-between gap-2 transition-all duration-300 ease-in-out dark:bg-darkTheme dark:border-gray-800 py-[20px] ${
+          isClosed ? "w-0 overflow-hidden" : " w-full sm:w-64 px-4"
         }`}
       >
         <div className={`flex flex-col gap-2`}>
           {/* Logo Section */}
-
           <div
-            className={`flex flex-col justify-between gap-2 overflow-hidden pt-[8px] pb-[6px]`}
+            className={`flex justify-between items-center gap-2 overflow-hidden pt-[8px] pb-[6px]`}
           >
-              <LogoWithTextIcon
-                className={`text-black dark:text-white flex self-baseline transition-all duration-300 ${
-                  isClosed && "w-[140px]"
-                }`}
+            <AnotherLogoWithTextIcon
+              className={`text-black dark:text-white flex self-baseline transition-all duration-300`}
+            />
+              <FiltersIcon
+                className="text-gray-700 dark:text-white"
+                onClick={() => setIsClosed(true)}
               />
           </div>
           <div
@@ -35,6 +42,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
           ></div>
           <div className="pb-3">
             <SideBarItemsGroup
+              setIsClosed={setIsClosed}
               items={[
                 {
                   pageTitle: "Dashboard",
@@ -54,6 +62,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               Developer
             </span>
             <SideBarItemsGroup
+              setIsClosed={setIsClosed}
               items={[
                 {
                   pageTitle: "Scoring Rules",
@@ -82,7 +91,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 {
                   pageTitle: "Customer Profile",
                   text: "Customer Profile",
-                  icon: "profile",
+                  icon: "settings",
                   url: AppRoutes.customerProfile,
                 },
                 {
@@ -109,6 +118,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
               Account
             </span>
             <SideBarItemsGroup
+              setIsClosed={setIsClosed}
               items={[
                 {
                   pageTitle: "About Us",
@@ -143,7 +153,7 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
                 </span>
 
                 <span
-                  className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-[5px] font-sans hidden md:inline dark:text-white ${
+                  className={`overflow-hidden transition-all ease-in-out whitespace-nowrap text-sm font-readexProBold700 w-fit ml-[5px] font-sans inline dark:text-white ${
                     isClosed ? "opacity-0 w-0 h-0" : ""
                   }`}
                 >
@@ -167,4 +177,4 @@ export const SideBar: React.FC<{ isClosed: boolean }> = ({ isClosed }) => {
   );
 };
 
-export default SideBar;
+export default MobileSideBar;

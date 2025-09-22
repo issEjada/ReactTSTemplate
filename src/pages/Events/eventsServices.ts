@@ -1,5 +1,6 @@
 import { getHeaders, httpClient } from "../../services/api/httpClient";
 import { API } from "../../constants/ConstantKeys.constants";
+import type { PaginationMeta } from "../../types/types";
 
 export interface EventFormValues {
   id?: number;
@@ -15,8 +16,8 @@ export interface EventFormValues {
 }
 
 export interface EventIdentifierInterface {
-  eventSourceDevice: string;
-  scheme: string;
+  eventSourceDevice?: string;
+  scheme?: string;
 }
 
 export interface GetEventDataPayload {
@@ -44,10 +45,10 @@ export interface CreateEventPayload {
 }
 
 export interface UpdateEventPayload {
-  name: string;
-  identifier: EventIdentifierInterface;
-  description: string;
-  status: string;
+  name?: string;
+  identifier?: EventIdentifierInterface;
+  description?: string;
+  status?: string;
 }
 
 export interface GetEventsItem {
@@ -58,6 +59,7 @@ export interface GetEventsItem {
   status: string;
   identifier: EventIdentifierInterface;
   creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 }
 
 export interface EventData {
@@ -66,11 +68,6 @@ export interface EventData {
 export interface GetEventsResponse {
   data: EventData;
   meta: PaginationMeta;
-}
-
-export interface PaginationMeta {
-  totalPages: number;
-  totalItems: number;
 }
 
 export class EventsServices {

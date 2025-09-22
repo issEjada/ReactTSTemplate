@@ -3,10 +3,11 @@ import type { GetSessionItemInterface } from "../monitoringServices";
 import { monitoringService } from "../monitoringServices";
 import type { ViewSessionsFormValues } from "../MonitoringFilter/useMonitoringFilter";
 import { cleanObject } from "../../../utils/helpers";
+import { LoadingState } from "../../../types/types";
 
 export const useMonitoringTable = () => {
   const [data, setData] = useState<GetSessionItemInterface[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingState, setloadingState] = useState<LoadingState>();
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +17,7 @@ export const useMonitoringTable = () => {
   );
 
   const fetchData = async () => {
-    setIsLoading(true);
+    setloadingState(LoadingState.Loading);
     setError(null);
     try {
       const result = await monitoringService.getSessionsList({
@@ -29,8 +30,9 @@ export const useMonitoringTable = () => {
     } catch (err: unknown) {
       console.error("Failed to fetch sessions:", err);
       setError("Error loading sessions data");
+      setloadingState(LoadingState.Error);
     } finally {
-      setIsLoading(false);
+      setloadingState(LoadingState.Success);
     }
   };
 
@@ -46,7 +48,7 @@ export const useMonitoringTable = () => {
 
   return {
     data,
-    isLoading,
+    loadingState,
     error,
     totalCount,
     currentPage,

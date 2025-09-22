@@ -6,6 +6,7 @@ import {
   EventsServices,
   type GetEventsItem,
   type GetEventsResponse,
+  type UpdateEventPayload,
 } from "../eventsServices";
 import { cleanObject } from "../../../utils/helpers";
 // import { formatTime } from "../../../helpers";
@@ -40,6 +41,24 @@ const useEventsTable = () => {
     setCurrentPage(1);
   };
 
+  const handleToggleStatus = async (id: number, currentStatus: string) => {
+    setloadingState(LoadingState.Loading);
+    const newStatus = currentStatus === "ENABLED" ? "DISABLED" : "ENABLED";
+    const payload: UpdateEventPayload = {
+      status: newStatus,
+    };
+
+    try {
+      await EventsServices.updateEvent(payload, id);
+      await fetchEventData();
+      setloadingState(LoadingState.Success);
+    } catch (err) {
+      console.error("Failed to update decision rule status:", err);
+      // setError("Failed to update decision rule status.");
+      setloadingState(LoadingState.Error);
+    }
+  };
+
   const fetchEventData = async () => {
     setloadingState(LoadingState.Loading);
     await EventsServices.getEventData({
@@ -49,9 +68,7 @@ const useEventsTable = () => {
     })
       .then((result: GetEventsResponse) => {
         setData(result.data.events || []);
-        setTotalCount(
-          result.meta?.totalPages ? result.meta.totalPages * itemsPerPage : 0
-        );
+        setTotalCount(result.meta.totalItems);
 
         setloadingState(LoadingState.Success);
       })
@@ -61,6 +78,7 @@ const useEventsTable = () => {
         setPopupMessage(error);
         setIsPopupOpen(true);
         setloadingState(LoadingState.Error);
+        setFilters(undefined);
       });
   };
 
@@ -88,6 +106,7 @@ const useEventsTable = () => {
     setIsPopupOpen,
     setPopupMessage,
     setPopupType,
+    handleToggleStatus,
   };
 };
 export default useEventsTable;

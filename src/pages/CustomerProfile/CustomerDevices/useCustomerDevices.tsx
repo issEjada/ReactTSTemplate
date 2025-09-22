@@ -18,9 +18,9 @@ export interface CustomerDevicesFilterData {
   dateTo?: string;
 }
 
-export const useCustomerDevices = ({userInfo} : CustomerDevicesProps) => {
+export const useCustomerDevices = ({ userInfo }: CustomerDevicesProps) => {
   const [customerDevicesData, setCustomerDevicesData] =
-    useState<CustomerDeviceResponse>(); 
+    useState<CustomerDeviceResponse>();
   const [customerDevicesFilterData, setCustomerDevicesFilterData] =
     useState<CustomerDevicesFilterData>();
   const [errorValidation, setErrorValidate] = useState<string>();
@@ -28,9 +28,9 @@ export const useCustomerDevices = ({userInfo} : CustomerDevicesProps) => {
     "loading" | "success" | "error"
   >("success");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   const fetchCustomerDevicesData = async () => {
-    
     setLoadingState("loading");
 
     const data = {
@@ -43,6 +43,7 @@ export const useCustomerDevices = ({userInfo} : CustomerDevicesProps) => {
     await CustomerClient.getCustomerDeviceData(data)
       .then((value) => {
         setCustomerDevicesData(value);
+        setTotalCount(value.meta.totalItems);
         setLoadingState("success");
       })
       .catch((error) => {
@@ -64,5 +65,6 @@ export const useCustomerDevices = ({userInfo} : CustomerDevicesProps) => {
     loadingState,
     currentPage,
     setCurrentPage,
+    totalCount,
   };
 };

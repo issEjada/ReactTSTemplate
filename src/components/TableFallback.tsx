@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 const BackgroundCircle = React.lazy(
   () => import("../assets/svg/BackgroundCircle.svg?react")
@@ -29,7 +29,6 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
         minimal ? "h-[437px]" : "h-[600px]"
       } flex flex-col items-center justify-center rounded-2xl border relative overflow-hidden`}
     >
-      <Suspense>
         <BackgroundCircle
           className="
             absolute
@@ -39,9 +38,8 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             z-0 text-gray-200 dark:text-gray-500
           "
         />
-      </Suspense>
 
-      <div className="relative z-10 flex flex-col gap-20">
+      <div className="relative z-8 flex flex-col gap-20">
         <div
           className={`flex items-center justify-center w-[80px] ${
             minimal ? "h-[80px]" : ""
@@ -59,8 +57,8 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between mt-10 items-center gap-[0.8rem]">
-          <h3 className="text-lg font-medium text-gray-900 mb-1 mt-[48px] dark:text-white">
+        <div className="flex flex-col justify-between mt-10 items-center gap-[4px]">
+          <h3 className="text-lg font-medium text-gray-900 mt-[44px] dark:text-white">
             {title}
           </h3>
           <p className="text-sm text-gray-500 mb-6 text-center">
@@ -69,7 +67,15 @@ export const TableFallback: React.FC<TableFallbackProps> = ({
           {buttonText && (
             <button
               onClick={onButtonClick}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[352px] h-10 flex items-center justify-center gap-2"
+              className="
+      bg-blue-700 hover:bg-blue-800 text-white 
+      px-4 py-2 rounded-[8px] text-sm font-medium 
+      flex items-center justify-center gap-2
+      h-full
+      max-h-10 
+      w-full max-w-[352px] 
+      sm:w-[352px] 
+    "
             >
               {buttonIcon && <span>{buttonIcon}</span>}
               <span>{buttonText}</span>

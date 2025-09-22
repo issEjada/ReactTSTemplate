@@ -13,13 +13,13 @@ module.exports = {
     },
     extend: {
       colors: {
-        darkTheme : "#121418",
-        blueLight:{
+        darkTheme: "#121418",
+        blueLight: {
           50: "#F0F9FF",
-          100:"#E0F2FE",
+          100: "#E0F2FE",
           600: "#0086C9",
         },
-        blueGray:{
+        blueGray: {
           50: "#F8F9FC",
           100: "#EAECF5",
           200: "#D5D9EB",
@@ -49,7 +49,7 @@ module.exports = {
           500: "#2E90FA",
           700: "#1637C4",
         },
-        purple:{
+        purple: {
           700: "#5925DC",
         },
         red: {
@@ -61,6 +61,7 @@ module.exports = {
         },
         warning: {
           50: "#FFFAEB",
+          100: "#FEF0C7",
           200: "#FEDF89",
           300: "#FEC84B",
           400: "#FDB022",
@@ -68,8 +69,12 @@ module.exports = {
           600: "#DC6803",
           700: "#B54708",
         },
-        success:{
-          600: "#039855",        
+        success: {
+          50:  "#ECFDF3",
+          400: "#32D583",
+          500: "#12B76A",
+          600: "#039855",
+          700: "#027A48",
         },
       },
       maxWidth: {

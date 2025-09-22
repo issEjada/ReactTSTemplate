@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import DropdownMenu from "../../../components/DropDown";
 import { Controller } from "react-hook-form";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
 import { useNavigate } from "react-router-dom";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import useViewScoringRules from "./useScoringRuleForm";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
+import Spinner from "../../../components/Spinner";
+import DynamicView from "../../../components/DynamicView"; // Added for DynamicView
+import { LoadingState } from "../../../types/types"; // Added for LoadingState
 
 const ConditionIcon = React.lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
-const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
-
-const RuleForm = () => {
+const ScoringRulesDetails = () => {
   const {
     handleSubmit,
     onSubmit,
@@ -38,9 +37,11 @@ const RuleForm = () => {
     popupType,
     popupMessage,
     setScreenAction,
-    loadingState, 
+    loadingState,
     isFormValid,
     formValues,
+    ruleData,
+    setValue,
   } = useViewScoringRules();
 
   const navigate = useNavigate();
@@ -95,16 +96,14 @@ const RuleForm = () => {
 
   const handleCancel = () => {
     reset();
-    navigate("/scoring-rules");
+    navigate(-1);
   };
 
   const handleEditClick = () => {
     setScreenAction("edit");
-    navigate("/scoring-rules/edit-rule");
-  };
-
-  const handleDeleteClick = () => {
-    setIsDeletePopupOpen(true);
+    navigate("/scoring-rules/edit-rule", {
+      state: { id: ruleData?.id, action: "edit" },
+    });
   };
 
   const handleConfirmClear = () => {
@@ -112,47 +111,94 @@ const RuleForm = () => {
     setShowConfirmModal(false);
   };
 
+  const handleDiscardClear = () => {
+    setValue("identifier.aspectCode", previousValues.current.aspectCode);
+    setValue("identifier.controlCode", previousValues.current.controlCode);
+    setValue("identifier.platform", previousValues.current.platform);
+    setValue("identifier.scheme", previousValues.current.scheme);
+    setValue(
+      "identifier.eventSourceDevice",
+      previousValues.current.eventSourceDevice
+    );
+    setShowConfirmModal(false);
+  };
+
   useEffect(() => {
-    if (popupType === "successModal" && loadingState === "success") {
+    if (popupType === "successModal" && loadingState === LoadingState.Success) {
       setIsPopupOpen(true);
-    } else if (popupType === "errorModal" && loadingState === "error") {
+    } else if (
+      popupType === "errorModal" &&
+      loadingState === LoadingState.Error
+    ) {
       setIsPopupOpen(true);
     }
   }, [popupType, loadingState]);
+
+  if (loadingState === LoadingState.Loading) {
+    return <Spinner />;
+  }
+
+  if (screenAction === "view") {
+    return (
+      <DynamicView
+        title="Scoring Rule details"
+        fields={[
+          { title: "Rule Name", value: ruleData?.name },
+          { title: "Risk Level", value: ruleData?.riskLevel },
+          { title: "Description", value: ruleData?.description },
+          {
+            title: "Event Source Device",
+            value: ruleData?.identifier?.eventSourceDevice,
+          },
+          { title: "Scheme", value: ruleData?.identifier?.scheme },
+          { title: "Aspect Code", value: ruleData?.identifier.aspectCode },
+          { title: "Control", value: ruleData?.identifier.controlCode },
+          { title: "Platform", value: ruleData?.identifier.platform },
+          {
+            title: "Status",
+            value: ruleData?.status === "ENABLED" ? "Active" : "Inactive",
+          },
+          { title: "Condition", value: ruleData?.condition },
+        ]}
+        actions={[
+          {
+            label: "Back",
+            onClick: () => handleCancel(),
+            variant: "secondary",
+          },
+          {
+            label: "Update Rule",
+            onClick: handleEditClick,
+            variant: "primary",
+          },
+        ]}
+      />
+    );
+  }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[16px]"
     >
-      {loadingState === "loading" && <FullScreenSpinner />}
-
       {showConfirmModal && (
-        <LayoutPopup isOpen={showConfirmModal} className="w-[30%]">
+        <PopupLayout isOpen={showConfirmModal} className="w-[30%]">
           <RulesPopupJsx
             isConfirm
             onConfirm={handleConfirmClear}
-            onCancel={() => setShowConfirmModal(false)}
+            onCancel={handleDiscardClear}
           />
-        </LayoutPopup>
+        </PopupLayout>
       )}
 
-      <div className="h-auto flex flex-row items-start px-6 py-5">
-        <div className="flex flex-col gap-2">
+      <div className="relative h-auto md:flex md:flex-row items-start px-6 pt-5 md:py-5">
+        <div className="block flex-col gap-2 md:w-[352px] ">
           <label
             htmlFor="ruleName"
             className="block text-md font-medium text-gray-700 mb-2 dark:text-white"
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Rule Name
-            {screenAction === "view" && (
-              <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-blue-50 p-[8px] gap-[4px]"
-                onClick={handleEditClick}
-              >
-                <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
-              </div>
-            )}
           </label>
           <Controller
             name="name"
@@ -165,17 +211,12 @@ const RuleForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={screenAction === "view"}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium cursor-pointer dark:text-white
+                  className={`text-sm sm:text-base text-gray-700 placeholder-gray-500 rounded-[8px] shadow-sm px-[14px] py-[10px] w-full h-[44px] cursor-pointer dark:text-white
             focus:outline-none focus:ring-2
             ${
               fieldState.error
                 ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
                 : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-            }
-            ${
-              screenAction === "view"
-                ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
-                : ""
             }
             `}
                 />
@@ -188,20 +229,11 @@ const RuleForm = () => {
             )}
           />
         </div>
-        {(screenAction === "view" || screenAction === "edit") && (
-          <button
-            type="button"
-            onClick={handleDeleteClick}
-            className="ml-auto mr-12  flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
-          >
-            Delete Rule
-          </button>
-        )}
       </div>
 
-      <div className="flex flex-col gap-[12px] h-[412px] w-[1440px] gap-y-[24px] mb-[16px]">
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <DropdownMenu<ViewRulesFormValues>
+      <div className="relative flex flex-col md:gap-[12px] md:h-[400px] w-full md:gap-y-[20px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 md:py-5 gap-[16px]">
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.eventSourceDevice"
             label="Event Source Device"
@@ -218,7 +250,7 @@ const RuleForm = () => {
             required
           />
 
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.scheme"
             label="Scheme"
@@ -235,7 +267,7 @@ const RuleForm = () => {
             required
           />
 
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.aspectCode"
             label="Aspect"
@@ -253,8 +285,8 @@ const RuleForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <DropdownMenu<ViewRulesFormValues>
+        <div className=" w-full md:w-[1136px] md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 py-5 gap-[16px]">
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.controlCode"
             label="Control"
@@ -271,7 +303,7 @@ const RuleForm = () => {
             required
           />
 
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="identifier.platform"
             label="Platform"
@@ -289,8 +321,8 @@ const RuleForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <DropdownMenu<ViewRulesFormValues>
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 py-5 gap-[16px]">
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="status"
             label="Status"
@@ -298,11 +330,11 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
-          <DropdownMenu<ViewRulesFormValues>
+          <DropdownMenu<ViewScoringRulesFormValues>
             control={control}
             name="riskLevel"
             label="Risk Level"
@@ -310,13 +342,13 @@ const RuleForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={screenAction === "view" || riskLevelValues.length === 0}
             required
           />
         </div>
 
-        <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
+        <div className="w-full md:w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
             className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white"
@@ -390,7 +422,7 @@ const RuleForm = () => {
           <button
             type="button"
             onClick={handleCancel}
-            className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] ml-auto mt-10 hover:bg-gray-100 transition duration-100"
+            className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] ml-auto mt-10 hover:bg-gray-100 dark:hover:text-black transition duration-100"
           >
             Cancel
           </button>
@@ -410,7 +442,12 @@ const RuleForm = () => {
                 }}
                 onCancel={() => {
                   setIsPopupOpen(false);
-                  navigate("/scoring-rules");
+                  if (isEditing) {
+                    reset();
+                    navigate("/events");
+                  } else {
+                    navigate(-1);
+                  }
                 }}
               />
             )}
@@ -443,7 +480,7 @@ const RuleForm = () => {
               isDeleting
               onConfirm={() => {
                 setIsDeletePopupOpen(false);
-                navigate("/scoring-rules");
+                navigate(-1);
               }}
               onCancel={() => {
                 setIsDeletePopupOpen(false);
@@ -456,4 +493,4 @@ const RuleForm = () => {
   );
 };
 
-export default RuleForm;
+export default ScoringRulesDetails;

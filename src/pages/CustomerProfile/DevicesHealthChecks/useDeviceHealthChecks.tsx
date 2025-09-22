@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   CustomerClient,
-  type DevicesHealthChecksResponse
+  type DevicesHealthChecksResponse,
 } from "../customerProfileServices";
 
 export interface DevicesHealthChecksFilterData {
@@ -12,7 +12,7 @@ export interface DevicesHealthChecksFilterData {
 
 export const useDevicesHealthChecks = () => {
   const [devicesHealthChecksData, setDevicesHealthChecksData] =
-    useState<DevicesHealthChecksResponse>(); 
+    useState<DevicesHealthChecksResponse>();
   const [devicesHealthChecksFilterData, setDevicesHealthChecksFilterData] =
     useState<DevicesHealthChecksFilterData>({
       fromTimestamp: new Date().toISOString(),
@@ -24,15 +24,30 @@ export const useDevicesHealthChecks = () => {
   >("success");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const input = (
+    devicesHealthChecksFilterData.fromTimestamp || new Date().toISOString()
+  ).slice(0, 16); // e.g., "2025-09-21T09:50"
+  const forcedUtc = new Date(input + ":00.000Z");
+
+  console.log("Forced UTC ISO:", forcedUtc.toISOString());
+
   const fetchDevicesHealthChecksData = async () => {
-    
     setLoadingState("loading");
 
     const data = {
       maxPageSize: 10,
       page: currentPage,
-      fromTimestamp: new Date(devicesHealthChecksFilterData.fromTimestamp || Date.now()).toISOString(),
-      toTimestamp: new Date(devicesHealthChecksFilterData.toTimestamp || Date.now()).toISOString(),
+      fromTimestamp: new Date(
+        (
+          devicesHealthChecksFilterData.fromTimestamp ||
+          new Date().toISOString()
+        ).slice(0, 16) + ":00.000Z"
+      ).toISOString(),
+      toTimestamp: new Date(
+        (
+          devicesHealthChecksFilterData.toTimestamp || new Date().toISOString()
+        ).slice(0, 16) + ":00.000Z"
+      ).toISOString(),
     };
 
     await CustomerClient.getDevicesHealthChecksData(data)

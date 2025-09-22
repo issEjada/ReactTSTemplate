@@ -4,18 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useViewDecisionRules } from "./useDecisionRuleForm";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import DropdownMenu from "../../../components/DropDown";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { LoadingState } from "../../../types/types";
 import { ConditionEditor } from "../../../components/ConditionEditor/ConditionEditor";
-import LayoutPopup from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import Spinner from "../../../components/Spinner";
+import DynamicView from "../../../components/DynamicView";
 
 const ConditionIcon = lazy(
   () => import("../../../assets/svg/ConditionIcon.svg?react")
 );
-const EditIcon = lazy(() => import("../../../assets/svg/Edit.svg?react"));
 
-const DecisionForm = () => {
+const DecisionRulesDetails = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -50,6 +50,8 @@ const DecisionForm = () => {
     screenAction,
     eventSourceDeviceValues,
     reset,
+    ruleData,
+    setValue,
   } = useViewDecisionRules();
 
   useEffect(() => {
@@ -80,19 +82,29 @@ const DecisionForm = () => {
 
   const handleCancel = () => {
     reset();
-    navigate("/decision-rules");
+    navigate(-1);
   };
 
   const handleEditClick = () => {
     setScreenAction("edit");
-  };
-
-  const handleDeleteClick = () => {
-    setIsDeletePopupOpen(true);
+    if (isViewing) {
+      navigate("/decision-rules/edit-rule", {
+        state: { id: ruleData?.id, action: "edit" },
+      });
+    }
   };
 
   const handleConfirmClear = () => {
     setEditorContent("");
+    setShowConfirmModal(false);
+  };
+
+  const handleDiscardClear = () => {
+    setValue("identifier.scheme", previousValues.current.scheme);
+    setValue(
+      "identifier.eventSourceDevice",
+      previousValues.current.eventSourceDevice
+    );
     setShowConfirmModal(false);
   };
 
@@ -108,7 +120,54 @@ const DecisionForm = () => {
   }, [popupType, loadingState]);
 
   if (loadingState === LoadingState.Loading && !isAdding) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
+  }
+
+  if (isViewing) {
+    if (loadingState === LoadingState.Error || !ruleData) {
+      return (
+        <div className="w-full min-h-screen flex items-center justify-center">
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            Decision Rule not found or an error occurred.
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <DynamicView
+        title="Decision Rule details"
+        fields={[
+          { title: "Rule Name", value: ruleData?.name },
+          { title: "Criteria Name", value: ruleData?.criteriaName },
+          {
+            title: "Event Source Device",
+            value: ruleData?.identifier?.eventSourceDevice,
+          },
+          { title: "Scheme", value: ruleData?.identifier?.scheme },
+          { title: "Decision", value: ruleData?.decision },
+          { title: "Event Name", value: ruleData?.eventName },
+          {
+            title: "Status",
+            value: ruleData?.status === "ENABLED" ? "Active" : "Inactive",
+          },
+          { title: "Description", value: ruleData?.description },
+          { title: "Condition", value: ruleData?.condition },
+        ]}
+        actions={[
+          {
+            label: "Back",
+            onClick: () => handleCancel(),
+            variant: "secondary",
+          },
+          {
+            label: "Update Rule",
+            onClick: handleEditClick,
+            variant: "primary",
+          },
+        ]}
+      />
+    );
   }
 
   return (
@@ -117,30 +176,22 @@ const DecisionForm = () => {
       className="flex flex-col gap-[16px]"
     >
       {showConfirmModal && (
-        <LayoutPopup isOpen={showConfirmModal} className="w-[30%]">
+        <PopupLayout isOpen={showConfirmModal} className="w-[30%]">
           <RulesPopupJsx
             isConfirm
             onConfirm={handleConfirmClear}
-            onCancel={() => setShowConfirmModal(false)}
+            onCancel={handleDiscardClear}
           />
-        </LayoutPopup>
+        </PopupLayout>
       )}
-      <div className="h-auto flex flex-row items-start px-6 py-5">
+      <div className="px-6 pt-8 grid grid-cols-1 xl:grid-cols-2 gap-6 max-w-[1140px]">
         <div className="flex flex-col gap-2">
           <label
             htmlFor="ruleName"
-            className="block text-md font-medium text-gray-700 mb-2 dark:text-white"
+            className="block text-md font-medium text-gray-700 mb-1 dark:text-white"
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             Decision Rule
-            {isViewing && (
-              <div
-                className="cursor-pointer w-[28px] h-[28px] flex items-center justify-center rounded-[16px] bg-blue-50 p-[8px] gap-[4px"
-                onClick={handleEditClick}
-              >
-                <EditIcon className="w-[12px] h-[12px] object-contain text-blue-700" />
-              </div>
-            )}
           </label>
           <Controller
             name="name"
@@ -152,17 +203,13 @@ const DecisionForm = () => {
                   {...field}
                   placeholder="Rule Name"
                   disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] py-[10px] w-[320px] h-[44px] font-medium focus:outline-none focus:ring-2
-                    ${
-                      fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
-                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-                    }
-                    ${
-                      isViewing
-                        ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
-                        : ""
-                    }
+                  className={`text-sm sm:text-base placeholder-gray-500 text-gray-700 rounded-[8px] shadow-sm px-[14px] py-[10px]  w-full md:w-[344px]  h-[44px] cursor-pointer dark:text-white
+            focus:outline-none focus:ring-2
+                     ${
+                       fieldState.error
+                         ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                         : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
+                     }             
                   `}
                 />
                 {fieldState.error && (
@@ -174,31 +221,15 @@ const DecisionForm = () => {
             )}
           />
         </div>
-
-        {!isAdding && (
-          <div className="flex gap-4 ml-auto mr-12">
-            {!isEditing && (
-              <>
-                <button
-                  type="button"
-                  onClick={handleDeleteClick}
-                  className="flex items-center gap-[4px] px-[16px] py-[10px] rounded-[8px] bg-red-600 border border-red-600 text-white font-medium text-sm hover:bg-red-700 transition duration-100"
-                >
-                  Delete Rule
-                </button>
-              </>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Dropdowns */}
-      <div className="flex flex-col gap-[12px] h-[400px] w-full gap-y-[20px]">
-        <div className="w-[1136px] h-[70px] flex items-center justify-between px-6 py-5 gap-[16px]">
-          <div className="w-[368px] h-[120px]">
+      <div className="relative flex flex-col md:gap-[12px] md:h-[400px] w-full md:gap-y-[20px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center justify-between px-6 md:py-5 gap-[16px]">
+          <div className="w-full md:w-[368px] md:h-[120px]">
             <label
               htmlFor="criteriaName"
-              className="block text-sm font-medium text-gray-700 mb-[6px] mt-[20.8px] dark:text-white"
+              className="block text-sm font-medium text-gray-700 mb-[6px] mt-2 md:mt-[20.8px] dark:text-white"
             >
               Criteria Name
               {isAdding && (
@@ -219,18 +250,15 @@ const DecisionForm = () => {
                 <input
                   {...field}
                   placeholder="Criteria Name"
-                  disabled={isViewing}
-                  className={`text-sm sm:text-base rounded-[8px] shadow-sm px-[14px] w-[320px] h-[44px] focus:outline-none focus:ring-2
-                    ${
-                      fieldState.error
-                        ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800"
-                        : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
-                    }
-                    ${
-                      isViewing
-                        ? "bg-[#F9FAFB] text-[#A0A0A0] cursor-not-allowed dark:text-[#A0A0A0]"
-                        : ""
-                    }
+                  disabled={screenAction === "view"}
+                  className={`text-sm sm:text-base placeholder-gray-500 text-gray-700 rounded-[8px] shadow-sm px-[14px] py-[10px]  w-full md:w-[344px]  h-[44px] cursor-pointer dark:text-white
+            focus:outline-none focus:ring-2
+            ${
+              fieldState.error
+                ? "border border-red-500 bg-red-50 placeholder-red-400 text-gray-800 dark:bg-darkTheme dark:border-gray-800"
+                : "border border-gray-300 bg-white text-gray-500 dark:bg-darkTheme dark:border-gray-800"
+            }
+               
                   `}
                 />
               )}
@@ -265,7 +293,7 @@ const DecisionForm = () => {
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center px-6 py-5 gap-[16px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center px-6 py-5 gap-[16px]">
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
             name="decision"
@@ -274,7 +302,7 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
@@ -286,13 +314,13 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[50%]"
+            className="w-full md:w-[50%]"
             disabled={isViewing || isEditing || eventNameValues.length === 0}
             required
           />
         </div>
 
-        <div className="w-[1136px] h-[70px] flex items-center px-6 py-5 gap-[16px]">
+        <div className=" w-full md:w-[1136px]  md:h-[70px] flex-wrap md:flex-nowrap flex items-center px-6 py-5 gap-[16px]">
           <DropdownMenu<DecisionRulesFormValues>
             control={control}
             name="status"
@@ -301,13 +329,13 @@ const DecisionForm = () => {
               key: item.key,
               node: item.valueEn,
             }))}
-            className="w-[49.3%]"
+            className="w-full md:w-[49.3%]"
             disabled={screenAction === "view" || statusValues.length === 0}
             required
           />
         </div>
 
-        <div className="w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
+        <div className="w-full md:w-[1136px] h-[154px] gap-[6px] flex flex-col px-6">
           <label
             htmlFor="description"
             className="text-sm font-medium text-gray-700 mb-[6px] dark:text-white"
@@ -338,7 +366,7 @@ const DecisionForm = () => {
       </div>
 
       {/* Conditions Editor */}
-      <div className="flex items-center gap-2 pl-6 pt-[36px]">
+      <div className="relative flex items-center gap-2 pl-6 pt-[36px]">
         <div className="flex justify-center items-center w-6 h-6 text-center bg-blue-50 border rounded-full">
           <ConditionIcon className="object-contain text-blue-700" />
         </div>
@@ -353,7 +381,7 @@ const DecisionForm = () => {
           isReadOnly={isViewing}
         />
       ) : (
-        <div className="px-6 py-4 text-red-500">
+        <div className="relative px-6 py-4 text-red-500">
           Please complete all required fields to enable the Conditions.
           <ul className="mt-4">
             {Object.entries(formValues!).map(([field, isValid]) =>
@@ -371,7 +399,7 @@ const DecisionForm = () => {
       )}
 
       {/* Actions */}
-      <div className="flex justify-end gap-4 px-6 pb-6">
+      <div className="relative flex justify-end gap-4 px-6 pb-6">
         <button
           type="submit"
           disabled={isViewing}
@@ -382,7 +410,7 @@ const DecisionForm = () => {
         <button
           type="button"
           onClick={handleCancel}
-          className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] hover:bg-gray-100 transition duration-100"
+          className="w-[125px] h-[48px] px-5 py-3 border font-medium rounded-[8px] hover:bg-gray-100 dark:hover:text-black  transition duration-100"
         >
           Cancel
         </button>
@@ -390,7 +418,7 @@ const DecisionForm = () => {
 
       {/* Success / Error Popup */}
       {isPopupOpen && (
-        <LayoutPopup isOpen={isPopupOpen} className="w-[30%]">
+        <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
           {isAdding && popupType === "successModal" && (
             <RulesPopupJsx
               title="Decision Rule"
@@ -402,7 +430,12 @@ const DecisionForm = () => {
               }}
               onCancel={() => {
                 setIsPopupOpen(false);
-                navigate("/decision-rules");
+                if (isEditing) {
+                  reset();
+                  navigate("/decision-rules");
+                } else {
+                  navigate(-1);
+                }
               }}
             />
           )}
@@ -423,12 +456,12 @@ const DecisionForm = () => {
               onCancel={() => setIsPopupOpen(false)}
             />
           )}
-        </LayoutPopup>
+        </PopupLayout>
       )}
 
       {/* Delete Popup */}
       {isDeletePopupOpen && (
-        <LayoutPopup isOpen={isDeletePopupOpen} className="w-[30%]">
+        <PopupLayout isOpen={isDeletePopupOpen} className="w-[30%]">
           <RulesPopupJsx
             title="Decision Rule"
             isDeleting
@@ -441,10 +474,10 @@ const DecisionForm = () => {
               setIsDeletePopupOpen(false);
             }}
           />
-        </LayoutPopup>
+        </PopupLayout>
       )}
     </form>
   );
 };
 
-export default DecisionForm;
+export default DecisionRulesDetails;

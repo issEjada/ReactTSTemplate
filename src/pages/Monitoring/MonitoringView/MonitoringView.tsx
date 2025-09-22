@@ -1,8 +1,22 @@
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
+import { useMemo } from "react";
+import {
+  DynamicTable,
+  type CustomColumnDef,
+} from "../../../components/DynamicTable";
+import Spinner from "../../../components/Spinner";
+import type { EventItem } from "../monitoringServices";
 import { useMonitoringView } from "./useMonitoringView";
 
 const MonitoringView = () => {
-  const { data, isLoading } = useMonitoringView();
+  const {
+    data,
+    isLoading,
+    currentPage,
+    setCurrentPage,
+    itemsPerPage,
+    totalCount,
+    error,
+  } = useMonitoringView();
 
   const date = new Date(data?.lastUpdatedTimestamp || "");
   const formattedDate = date.toLocaleDateString("en-GB");
@@ -18,10 +32,51 @@ const MonitoringView = () => {
     formattedTime.split(":")[1]
   }:00 ${formattedTime.split(" ")[1]}`;
 
+  const columns: CustomColumnDef<EventItem>[] = [
+    { accessorKey: "eventCode", header: "Event Code" },
+    {
+      accessorKey: "eventName",
+      header: "Event Name",
+      meta: { isSorted: true },
+    },
+    {
+      accessorKey: "transactionId",
+      header: "Event Id",
+      meta: { isSorted: true },
+    },
+    { accessorKey: "transactionAmount", header: "Transaction Amount" },
+    { accessorKey: "transactionCurrency", header: "Transaction Currency" },
+    { accessorKey: "maskedCard", header: "Masked Card" },
+    { accessorKey: "ip", header: "IP" },
+    { accessorKey: "country", header: "Country" },
+    { accessorKey: "city", header: "City" },
+    { accessorKey: "phoneNumber", header: "Phone Number" },
+    { accessorKey: "riskScore", header: "Risk Score" },
+  ];
+
+  const eventsData: EventItem[] = useMemo(
+    () =>
+      data?.events.data?.map((item) => ({
+        eventCode: item.eventCode,
+        eventName: item.eventName,
+        transactionId: item.transactionId,
+        transactionAmount: item.transactionAmount,
+        transactionCurrency: item.transactionCurrency,
+        maskedCard: item.maskedCard,
+        phoneNumber: item.phoneNumber,
+        riskScore: item.riskScore,
+        eventTimestamp: item.eventTimestamp,
+        ip: item.ip,
+        country: item.country,
+        city: item.city,
+      })) || [],
+    [data]
+  );
+
   return (
     <>
       {isLoading ? (
-        <FullScreenSpinner />
+        <Spinner />
       ) : (
         <div className="w-full min-h-screen flex flex-col pt-6 px-2 sm:px-4 md:px-6 gap-2">
           <div className="w-full px-1 py-5">
@@ -146,20 +201,6 @@ const MonitoringView = () => {
               <div className="space-y-6">
                 <div className="min-h-[56px] flex flex-col gap-2">
                   <span className="text-base font-normal text-gray-900 leading-[24px] dark:text-white">
-                    ISP
-                  </span>
-                  <span
-                    className={
-                      "text-base font-normal text-gray-500 leading-6 break-all"
-                    }
-                  >
-                    {data?.isp.join(", ")}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div className="min-h-[56px] flex flex-col gap-2">
-                  <span className="text-base font-normal text-gray-900 leading-[24px] dark:text-white">
                     LAT, LONG
                   </span>
                   <span
@@ -227,6 +268,16 @@ const MonitoringView = () => {
               </div>
             </div>
           </div>
+          <DynamicTable<EventItem>
+            data={eventsData}
+            columns={columns}
+            totalCount={totalCount}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            setCurrentPage={setCurrentPage}
+            title="Events Data"
+            error={error}
+          />
         </div>
       )}
     </>

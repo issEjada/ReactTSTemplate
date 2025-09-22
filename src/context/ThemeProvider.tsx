@@ -1,6 +1,6 @@
 import React, { useState, useContext, Suspense } from "react";
 import { ThemeContext } from "./Context";
-import FullScreenSpinner from "../components/FullScreenSpinner";
+import Spinner from "../components/Spinner";
 
 const MoonIcon = React.lazy(() => import(`/src/assets/svg/darkMode.svg?react`));
 const SunIcon = React.lazy(() => import(`/src/assets/svg/Sun.svg?react`));
@@ -37,7 +37,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
-      {isLoading && <FullScreenSpinner />}
+      {isLoading && <Spinner />}
       {children}
     </ThemeContext.Provider>
   );

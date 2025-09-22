@@ -7,6 +7,11 @@ import type {
   GetDropDownsResponse,
 } from "../../services/dropdownServices";
 
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../types/types";
+
 export interface RuleIdentifierInterface {
   eventSourceDevice: string;
   scoring_scheme?: string;
@@ -26,6 +31,20 @@ export interface GetScoringRulesItemInterface {
   identifier: RuleIdentifierInterface;
   creationTimestamp: string;
   lastUpdatedTimestamp: string;
+}
+
+export interface ViewScoringRulesFormValues {
+  id?: number;
+  name?: string;
+  description?: string;
+  status?: string;
+  condition?: string;
+  riskLevel?: string;
+  identifier?: RuleIdentifierInterface;
+  creationTimestamp?: string;
+  lastUpdatedTimestamp?: string;
+  fromCreationTimestamp?: string;
+  toCreationTimestamp?: string;
 }
 
 export interface GetScoringRulesListPayload {
@@ -48,14 +67,6 @@ export interface GetScoringRulesListResponse {
       currentPage: number;
     };
   };
-}
-
-export interface GetRuleByIdPayload {
-  id: number;
-}
-
-export interface DeleteRuleByIdPayload {
-  id: number;
 }
 
 export interface GetRuleByIdResponse {

@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CustomerInsights } from "./CustomerInsights/CustomerInsights";
 import { ActionAnalytics } from "./ActionAnalytics/ActionAnalytics";
 import { CustomerDevices } from "./CustomerDevices/CustomerDevices";
@@ -7,7 +7,7 @@ import React from "react";
 import CustomerInformationFilter from "./CustomerProfileFilter/CustomerInformationFilter";
 import { useCustomProfile } from "./useCustomProfile";
 import type { CustomerInsightsPayload } from "./customerProfileServices";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const MobileIcon = React.lazy(
   () => import("../../../src/assets/svg/Mobile.svg?react")
@@ -38,24 +38,34 @@ const FilterIcon = React.lazy(
 );
 
 const MOBILE_NUMBER_STORAGE_KEY = "customerProfileMobileNumber";
+const CURRENT_SECTION_STORAGE_KEY = "customerProfileCurrentSection";
 
 export const CustomerProfile = () => {
-  const [currentSection, setCurrentSection] =
-    useState<string>("customerInsights");
+  const [currentSection, setCurrentSection] = useState<string>(() => {
+    return (
+      localStorage.getItem(CURRENT_SECTION_STORAGE_KEY) || "customerInsights"
+    );
+  });
   const [searchText, setSearchText] = useState(() => {
     const storedMobileNumber = localStorage.getItem(MOBILE_NUMBER_STORAGE_KEY);
     return storedMobileNumber || "";
   });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const { insightsData, setGlobalFilterData, errorValidation, loadingState } =
-    useCustomProfile();
+  const {
+    insightsData,
+    globalFilterData,
+    setGlobalFilterData,
+    errorValidation,
+    loadingState,
+    fetchCustomerInsightsData,
+  } = useCustomProfile();
 
   const applyFilters = () => {
     const searchData = {
       userMobileNumber: searchText.trim() || undefined,
     };
-    setGlobalFilterData(searchData);
+    setGlobalFilterData((prev) => ({ ...prev, ...searchData }));
   };
 
   const onClearSearch = () => {
@@ -70,8 +80,12 @@ export const CustomerProfile = () => {
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
+  useEffect(() => {
+    localStorage.setItem(CURRENT_SECTION_STORAGE_KEY, currentSection);
+  }, [currentSection]);
+
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
@@ -88,9 +102,7 @@ export const CustomerProfile = () => {
               onClick={applyFilters}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
             >
-              <Suspense>
-                <SearchIcon className="w-5 h-5" />
-              </Suspense>
+              <SearchIcon className="w-5 h-5" />
             </button>
 
             <input
@@ -100,7 +112,7 @@ export const CustomerProfile = () => {
               onKeyDown={(e) => {
                 if (e.key === "Enter") applyFilters();
               }}
-              placeholder={"Search"}
+              placeholder={"Search Mobile Number"}
               className="w-full h-full pl-10 pr-9 text-[13px] sm:text-[14px] text-gray-700 rounded-[8px] border border-gray-300 outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-gray-300 dark:bg-gray-800 dark:text-white"
             />
 
@@ -117,20 +129,19 @@ export const CustomerProfile = () => {
           <CustomerInformationFilter
             isOpen={isFilterOpen}
             closeDrawer={closeFilterModal}
-            filterData={{ userMobileNumber: "", userId: "", clientUserId: "" }}
+            filterData={globalFilterData}
             handleSearchSubmit={(searchData) => {
               handleSearchSubmit(searchData);
               closeFilterModal();
               setCurrentSection("customerInsights");
             }}
           />
+
           <button
             className="shrink-0 flex items-center justify-center gap-2 h-10 px-3 border border-gray-300 rounded-[8px] text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             onClick={openFilterModal}
           >
-            <Suspense>
-              <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
-            </Suspense>
+            <FilterIcon className="w-5 h-5 text-gray-500 dark:text-white" />
             <span className="hidden sm:inline">Filter</span>
           </button>
         </div>
@@ -149,7 +160,7 @@ export const CustomerProfile = () => {
             <span>Customer Information</span>
             <div className="flex flex-col gap-3">
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100  border-blueLight-50 border-4">
                   <MobileIcon className="text-blue-700 dark:text-blue-600 w-[9.33px]" />
                 </div>
                 <div className="flex flex-col">
@@ -162,7 +173,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border-blueLight-50 border-4">
                   <UserIcon className="text-blue-700 h-[12px]" />
                 </div>
                 <div className="flex flex-col">
@@ -175,7 +186,7 @@ export const CustomerProfile = () => {
                 </div>
               </div>
               <div className="flex align-start gap-4 p-4 w-[272px] h-[72px] bg-white rounded-lg border border-blueGray-100 dark:bg-gray-800 dark:border-gray-900">
-                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border border-blueLight-50 border-4">
+                <div className="flex justify-center items-center w-[32px] h-[32px] rounded-full bg-blueLight-100 border-blueLight-50 border-4">
                   <ClientIDIcon className="text-blue-700 w-[14.67px]" />
                 </div>
                 <div className="flex flex-col">
@@ -197,9 +208,18 @@ export const CustomerProfile = () => {
                     ? "bg-blueGray-100 dark:bg-gray-900"
                     : "bg-white"
                 }`}
-                onClick={() => setCurrentSection("customerInsights")}
+                onClick={() => {
+                  setCurrentSection("customerInsights");
+                  fetchCustomerInsightsData(); // call the separate fetch function
+                }}
               >
-                <CustomerInsightsIcon className={`${currentSection === "customerInsights" ? "text-blueGray-500" : "text-gray-500"}`} />
+                <CustomerInsightsIcon
+                  className={`${
+                    currentSection === "customerInsights"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerInsights"
@@ -218,7 +238,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("actionAnalytics")}
               >
-                <ActionAnalyticsIcon className={`${currentSection === "actionAnalytics" ? "text-blueGray-500" : "text-gray-500"}`} />
+                <ActionAnalyticsIcon
+                  className={`${
+                    currentSection === "actionAnalytics"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "actionAnalytics"
@@ -237,7 +263,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("customerDevices")}
               >
-                <CustomerDevicesIcon className={`${currentSection === "customerDevices" ? "text-blueGray-500" : "text-gray-500"}`} />
+                <CustomerDevicesIcon
+                  className={`${
+                    currentSection === "customerDevices"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "customerDevices"
@@ -256,7 +288,13 @@ export const CustomerProfile = () => {
                 }`}
                 onClick={() => setCurrentSection("devicesHealthChecks")}
               >
-                <DevicesHealthChecksIcon className={`w-[23px] ${currentSection === "devicesHealthChecks" ? "text-blueGray-500" : "text-gray-500"}`}/>
+                <DevicesHealthChecksIcon
+                  className={`w-[23px] ${
+                    currentSection === "devicesHealthChecks"
+                      ? "text-blueGray-500"
+                      : "text-gray-500"
+                  }`}
+                />
                 <div
                   className={`font-bold text-[14px] leading-[20px] tracking-normal ${
                     currentSection === "devicesHealthChecks"
@@ -275,6 +313,8 @@ export const CustomerProfile = () => {
               {currentSection === "actionAnalytics" && (
                 <ActionAnalytics
                   userMobileNumber={insightsData?.userInfo?.mobileNumber}
+                  userId={insightsData?.userInfo?.userId}
+                  clientId={insightsData?.userInfo?.clientUserId}
                 />
               )}
               {currentSection === "customerDevices" && (

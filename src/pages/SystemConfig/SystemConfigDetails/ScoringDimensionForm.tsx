@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import type { Value } from "../systemConfigService";
 import { validateNumberRange } from "./ValidationSchema";
+import type { FieldError } from "../../../types/types";
 
-const EditPopupIcon = React.lazy(
-  () => import("../../../assets/svg/EditPopupIcon.svg?react")
+const EditPenIcon = React.lazy(
+  () => import("../../../assets/svg/EditPen.svg?react")
 );
 
 interface ScoringDimensionFormProps {
@@ -11,10 +12,6 @@ interface ScoringDimensionFormProps {
   onSave: (values: Value[]) => void;
   onCancel: () => void;
   popupTitle: string;
-}
-interface FieldError {
-  isValid: boolean;
-  message: string;
 }
 
 export const ScoringDimensionForm = ({
@@ -73,7 +70,9 @@ export const ScoringDimensionForm = ({
 
   return (
     <div>
-      <EditPopupIcon className="text-blue-700"/>
+      <div className="flex justify-center items-center w-[56px] h-[56px] rounded-full bg-blue-100 border border-blue-50 border-8">
+        <EditPenIcon className="text-blue-700"/>
+      </div>
       <div className="mb-6">
         <div className="flex items-center justify-between pt-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -120,7 +119,7 @@ export const ScoringDimensionForm = ({
           onClick={onCancel}
           className="flex-1 px-4 py-2 rounded-[8px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white bg-white hover:bg-gray-50 dark:bg-transparent dark:hover:bg-gray-700 shadow-sm"
         >
-          Back
+          Cancel
         </button>
         <button
           onClick={() => onSave(content)}
@@ -129,7 +128,7 @@ export const ScoringDimensionForm = ({
             isSaveDisabled ? " cursor-not-allowed" : ""
           }`}
         >
-          Save Changes
+          Confirm
         </button>
       </div>
     </div>

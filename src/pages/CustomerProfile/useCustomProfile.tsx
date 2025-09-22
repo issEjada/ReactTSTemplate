@@ -19,6 +19,8 @@ export interface CustomerDevice {
 }
 
 const MOBILE_NUMBER_STORAGE_KEY = "customerProfileMobileNumber";
+const USER_ID_STORAGE_KEY = "customerProfileUserId";
+const CLIENT_USER_ID_STORAGE_KEY = "customerProfileClientUserId";
 
 export const useCustomProfile = () => {
   const [insightsData, setInsightsData] = useState<CustomerInsightsResponse>();
@@ -27,8 +29,20 @@ export const useCustomProfile = () => {
       const storedMobileNumber = localStorage.getItem(
         MOBILE_NUMBER_STORAGE_KEY
       );
-      return storedMobileNumber ? { userMobileNumber: storedMobileNumber } : {};
+      const storedUserId =
+        localStorage.getItem(USER_ID_STORAGE_KEY) ?? undefined;
+      const storedClientUserId =
+        localStorage.getItem(CLIENT_USER_ID_STORAGE_KEY) ?? undefined;
+
+      return storedMobileNumber
+        ? {
+            userMobileNumber: storedMobileNumber,
+            userId: storedUserId,
+            clientUserId: storedClientUserId,
+          }
+        : ({} as CustomerInsightsPayload);
     });
+
   const [errorValidation, setErrorValidate] = useState<string>();
   const [loadingState, setLoadingState] = useState<
     "loading" | "success" | "error"
@@ -60,11 +74,6 @@ export const useCustomProfile = () => {
   const fetchCustomerDevicesData = async () => {
     setLoadingState("loading");
 
-    if (globalFilterData) {
-      globalFilterData.userId = insightsData?.userInfo.userId;
-      globalFilterData.clientUserId = insightsData?.userInfo.clientUserId;
-    }
-
     const data: CustomerDevicesPayload = {
       maxPageSize: itemsPerPage,
       page: currentPage,
@@ -84,26 +93,46 @@ export const useCustomProfile = () => {
   };
 
   useEffect(() => {
+    const hasFilters =
+      globalFilterData?.userMobileNumber ||
+      globalFilterData?.userId ||
+      globalFilterData?.clientUserId;
+
     if (globalFilterData?.userMobileNumber) {
       localStorage.setItem(
         MOBILE_NUMBER_STORAGE_KEY,
         globalFilterData.userMobileNumber
       );
-      fetchCustomerInsightsData();
-    } else if (globalFilterData && !globalFilterData.userMobileNumber) {
+    } else {
       localStorage.removeItem(MOBILE_NUMBER_STORAGE_KEY);
+    }
+
+    if (globalFilterData?.userId) {
+      localStorage.setItem(USER_ID_STORAGE_KEY, globalFilterData.userId);
+    } else {
+      localStorage.removeItem(USER_ID_STORAGE_KEY);
+    }
+
+    if (globalFilterData?.clientUserId) {
+      localStorage.setItem(
+        CLIENT_USER_ID_STORAGE_KEY,
+        globalFilterData.clientUserId
+      );
+    } else {
+      localStorage.removeItem(CLIENT_USER_ID_STORAGE_KEY);
+    }
+
+    if (hasFilters) {
+      fetchCustomerInsightsData();
+    } else {
       setInsightsData(undefined);
       setErrorValidate(undefined);
     }
   }, [globalFilterData]);
 
-  useEffect(
-    () => {
-      fetchCustomerDevicesData();
-    },
-    [
-    ]
-  );
+  useEffect(() => {
+    fetchCustomerDevicesData();
+  }, []);
 
   return {
     insightsData,
@@ -113,5 +142,7 @@ export const useCustomProfile = () => {
     setItemsPerPage,
     setCurrentPage,
     customerDevicesData,
+    globalFilterData,
+    fetchCustomerInsightsData,
   };
 };

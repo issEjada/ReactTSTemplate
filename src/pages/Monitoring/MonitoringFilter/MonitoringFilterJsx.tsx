@@ -106,6 +106,8 @@ export const MonitoringFilterForm = ({
     },
     { type: "date", name: "fromDate", label: "Date From" },
     { type: "date", name: "toDate", label: "Date To" },
+    { type: "time", name: "fromTime", label: "From Time" },
+    { type: "time", name: "toTime", label: "To Time" },
   ];
 
   return (

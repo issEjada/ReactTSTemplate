@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PieChartComponent from "../../components/Charts/PieChartComponent";
 import useEventsTable from "../Events/EventsTable/useEventsTable";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const MobileIcon = React.lazy(() => import(`/src/assets/svg/Mobile.svg?react`));
 
@@ -19,7 +19,7 @@ const DashboardEvents: React.FC = () => {
   const { data, loadingState } = useEventsTable();
 
   useEffect(() => {
-    const formattedEvents = data.map((e: any) => ({
+    const formattedEvents = data.map((e) => ({
       id: e.id,
       name: e.name,
     }));
@@ -37,11 +37,11 @@ const DashboardEvents: React.FC = () => {
   };
 
   if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   return (
-    <div className="flex flex-col min-w-[35%]">
+    <div className="flex flex-col min-w-[35%] mt-[20px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 px-5">
         <div>
@@ -55,7 +55,7 @@ const DashboardEvents: React.FC = () => {
 
         <button
           onClick={handleAddNewEvent}
-          className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
+          className="h-10 w-10 rounded-xl ml-auto bg-gray-100   shadow-sm hover:bg-gray-200 flex items-center justify-center dark:bg-gray-800 dark:border-gray-800 dark:hover:bg-gray-600"
           aria-label="Add New Rule"
         >
           <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
@@ -68,7 +68,7 @@ const DashboardEvents: React.FC = () => {
           {events.slice(0, 3).map((ev) => (
             <div
               key={ev.id}
-              className="flex items-center justify-between rounded-lg border-b border-gray-200 dark:border-gray-800 px-3 py-3"
+              className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-3 py-3"
             >
               <div className="flex items-center gap-2">
                 <div className="w-[2rem] h-[2rem] rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center text-[10px]">
@@ -92,7 +92,7 @@ const DashboardEvents: React.FC = () => {
 
         <div className="mb-2">
           {" "}
-          <PieChartComponent />{" "}
+          <PieChartComponent type="events" />{" "}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Suspense } from "react";
+
 const CheckIcon = React.lazy(() => import(`/src/assets/svg/Check.svg?react`));
 const AlertIcon = React.lazy(
   () => import(`/src/assets/svg/AlertIcon.svg?react`)
@@ -36,18 +37,17 @@ const DynamicPopupJsx = ({
   onConfirm,
   onCancel,
 }: RulesPopupProps) => {
-  const title = 
-    isError
-      ? "Error"
-      : isAdding
-      ? `New ${propTitle} Created`
-      : isEditing
-      ? `Updated ${propTitle} Successfully`
-      : isDeleting
-      ? `Delete ${propTitle}?`
-      : isConfirm
-      ? "Critical Change"
-      : "";
+  const title = isError
+    ? "Error"
+    : isAdding
+    ? `New ${propTitle} Created`
+    : isEditing
+    ? `Updated ${propTitle} Successfully`
+    : isDeleting
+    ? `Delete ${propTitle}?`
+    : isConfirm
+    ? "Critical Change"
+    : "";
 
   const message = isError
     ? typeof errorMessage === "object" && errorMessage !== null
@@ -64,20 +64,27 @@ const DynamicPopupJsx = ({
     : isDeleting
     ? `Are you sure you want to delete this ${propTitle}?`
     : isConfirm
-    ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed ?"
+    ? "Changing this option will clear the Conditions Editor. \nDo you wont to Proceed?"
     : "";
 
   const icon = isConfirm ? (
-    <AlertTraingletIcon className="w-6 h-6 text-warning-600" />
+    <Suspense>
+      <AlertTraingletIcon className="w-5 h-5" />
+    </Suspense>
   ) : isError || isDeleting ? (
-    <AlertIcon className="w-6 h-6" />
+    <Suspense>
+      <AlertIcon className="w-5 h-5" />
+    </Suspense>
   ) : (
-    <CheckIcon className="w-6 h-6 text-success-600" />
+    <Suspense>
+      <CheckIcon className="w-5 h-5 text-success-600" />
+    </Suspense>
   );
-  const iconBgClass =
-    isError || isDeleting || isConfirm
-      ? "bg-red-100 text-red-600"
-      : "bg-green-100 text-green-600";
+  const iconBgClass = isConfirm
+    ? "bg-warning-100 border-8 border-warning-50 text-warning-600"
+    : isError || isDeleting
+    ? "bg-red-100 text-red-600 border-8 border-red-50"
+    : "bg-green-100 text-green-600";
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -119,7 +126,7 @@ const DynamicPopupJsx = ({
               }}
               className="flex-1 px-4 py-2 rounded-[8px] bg-blue-700 text-white font-medium hover:bg-blue-800 transition-colors"
             >
-              Create New Rule
+              Create New {propTitle}
             </button>
           </>
         )}

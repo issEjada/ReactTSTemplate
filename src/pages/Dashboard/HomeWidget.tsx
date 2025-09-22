@@ -1,8 +1,8 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../routes/AppRoutes";
 import { useDashboard } from "./useDashboard";
-import FullScreenSpinner from "../../components/FullScreenSpinner";
+import Spinner from "../../components/Spinner";
 
 const ShieldIcon = React.lazy(
   () => import("../../assets/svg/ShieldG.svg?react")
@@ -49,9 +49,7 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({
           {title}
         </Link>
         <div className="w-[36px] h-[36px] p-[4px] bg-gray-950/5 dark:bg-gray-800 rounded-[8px] flex items-center justify-center">
-          <Suspense fallback={<div className="w-7 h-7 bg-gray-300 rounded" />}>
             <Icon className={`w-[28px] h-[28px] ${myClass}`} />
-          </Suspense>
         </div>
       </div>
 
@@ -108,7 +106,7 @@ const HomeWidgetGroup: React.FC = () => {
   }, [data]);
 
   if (loading) {
-    return <FullScreenSpinner />;
+    return <Spinner />;
   }
 
   if (error) {
@@ -116,7 +114,7 @@ const HomeWidgetGroup: React.FC = () => {
   }
 
   return (
-    <div className="max-w-[1144px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px]">
       {widgetData.map((item, index) => (
         <HomeWidget
           key={index}

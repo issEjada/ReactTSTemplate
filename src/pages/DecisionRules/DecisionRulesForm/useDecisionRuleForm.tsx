@@ -9,9 +9,11 @@ import type {
   GetDecisionRuleByIdResponse,
   GetEventDropDownsPayload,
   UpdateDecisionPayload,
-  GetDecisionRuleByIdPayload,
-  DeleteRuleByIdPayload,
 } from "../decisionRulesServices";
+import type {
+  GetRuleByIdPayload,
+  DeleteRuleByIdPayload,
+} from "../../../types/types";
 import {
   getDropDownsValue,
   type DropDownsAttributes,
@@ -38,7 +40,6 @@ export const useViewDecisionRules = () => {
   >();
   const [ruleData, setRuleData] = useState<GetDecisionRuleByIdResponse>();
   const [popupType, setPopupType] = useState<string>("");
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [popupMessage, setPopupMessage] = useState<string>();
 
   const [loadingState, setloadingState] = useState<LoadingState>(
@@ -62,7 +63,7 @@ export const useViewDecisionRules = () => {
   );
   const isAdding = useMemo(() => !id && !screenAction, [id, screenAction]);
 
-  const { control, handleSubmit, formState, reset, watch, getValues } =
+  const { control, handleSubmit, formState, reset, watch, setValue } =
     useForm<DecisionRulesFormValues>({
       mode: "onTouched",
       defaultValues: {
@@ -81,8 +82,15 @@ export const useViewDecisionRules = () => {
       },
     });
 
-  const selectedScheme = watch("identifier.scheme");
-  const selectedEventSource = watch("identifier.eventSourceDevice");
+  const identifier = watch().identifier!;
+  const filteredIdentifier = Object.fromEntries(
+    Object.entries(identifier).map(([field, obj]) => [field, obj?.key ?? ""])
+  );
+  const selectedScheme =
+    filteredIdentifier["scheme"] || watch("identifier.scheme");
+  const selectedEventSource =
+    filteredIdentifier["eventSourceDevice"] ||
+    watch("identifier.eventSourceDevice");
 
   const fetchDropDownsValues = async (attributes: DropDownsAttributes[]) => {
     const data: DropDownsPayload = {
@@ -147,7 +155,7 @@ export const useViewDecisionRules = () => {
 
   const fetchRuleData = async (id: number) => {
     setloadingState(LoadingState.Loading);
-    const data: GetDecisionRuleByIdPayload = {
+    const data: GetRuleByIdPayload = {
       id: id,
     };
     await DecisionRulesServices.getDecisionRulesById(data)
@@ -170,7 +178,10 @@ export const useViewDecisionRules = () => {
 
   const fetchParameterData = async () => {
     const data: GetDecisionParametersPayload = {
-      identifier: watch().identifier!,
+      identifier: {
+        eventSourceDevice: selectedEventSource,
+        scheme: selectedScheme,
+      },
     };
 
     await DecisionRulesServices.getRulesParameters(data)
@@ -187,8 +198,8 @@ export const useViewDecisionRules = () => {
   const fetchEventDropDownsData = async () => {
     const data: GetEventDropDownsPayload = {
       identifier: {
-        eventSourceDevice: getValues("identifier.eventSourceDevice") || "",
-        scheme: getValues("identifier.scheme") || "",
+        eventSourceDevice: selectedEventSource,
+        scheme: selectedScheme,
       },
       status: "ENABLED",
     };
@@ -226,11 +237,11 @@ export const useViewDecisionRules = () => {
   }, [ruleData, reset]);
 
   useEffect(() => {
-    if (selectedEventSource && selectedScheme) {
+    if (selectedEventSource && selectedScheme && !isViewing) {
       fetchEventDropDownsData();
       fetchParameterData();
     }
-  }, [selectedEventSource, selectedScheme]);
+  }, [selectedEventSource, selectedScheme, isViewing]);
 
   const onSubmit = (data: DecisionRulesFormValues) => {
     if (isAdding) {
@@ -256,7 +267,6 @@ export const useViewDecisionRules = () => {
       DecisionRulesServices.createDecisionRule(bodyData)
         .then(() => {
           setPopupType("successModal");
-          setIsPopupOpen(true);
           setPopupMessage(
             "The Decision Rule Details have been successfully Created."
           );
@@ -266,7 +276,6 @@ export const useViewDecisionRules = () => {
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
           setPopupMessage(error);
-          setIsPopupOpen(true);
         });
     }
 
@@ -285,7 +294,6 @@ export const useViewDecisionRules = () => {
         .then(() => {
           setloadingState(LoadingState.Success);
           setPopupType("successModal");
-          setIsPopupOpen(true);
           setPopupMessage(
             "The Decision Rule Details have been successfully updated."
           );
@@ -294,7 +302,6 @@ export const useViewDecisionRules = () => {
           setloadingState(LoadingState.Error);
           setPopupType("errorModal");
           setPopupMessage(error);
-          setIsPopupOpen(true);
         });
     }
   };
@@ -308,15 +315,14 @@ export const useViewDecisionRules = () => {
       .then(() => {
         setloadingState(LoadingState.Success);
         setPopupType("successModal");
-        setIsPopupOpen(true);
+
         setPopupMessage("The Decision Rule have been successfully deleted.");
       })
       .catch((error) => {
         setloadingState(LoadingState.Error);
         setPopupType("errorModal");
         setPopupMessage(error);
-        setIsPopupOpen(true);
-        throw error; // Re-throw the error to be caught by the caller
+        throw error;
       });
   };
 
@@ -344,8 +350,6 @@ export const useViewDecisionRules = () => {
     screenAction,
     deleteDecisionRule,
     popupType,
-    isPopupOpen,
-    setIsPopupOpen,
     popupMessage,
     setPopupType,
     loadingState,
@@ -355,5 +359,6 @@ export const useViewDecisionRules = () => {
     handleSubmit,
     reset,
     ruleData,
+    setValue,
   };
 };

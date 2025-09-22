@@ -10,13 +10,14 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DecisionRulesFilter } from "../DecisionRulesFilter/DecisionRulesFilterJsx";
 import { useDecisionRulesTable } from "./useDecisionRulesTable";
 import { DynamicTable } from "../../../components/DynamicTable";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import type { DecisionRulesFormValues } from "../decisionRulesServices";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import Spinner from "../../../components/Spinner";
+import { formatTime } from "../../../utils/helpers";
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
 const DeleteIcon = React.lazy(
@@ -26,6 +27,15 @@ const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 const RuleIcon = React.lazy(
   () => import("../../../assets/svg/EmptyDecisions.svg?react")
 );
+const MobileIcon = React.lazy(
+  () => import("../../../assets/svg/mobile.svg?react")
+);
+const DesktopIcon = React.lazy(
+  () => import("../../../assets/svg/Desktop.svg?react")
+);
+const AnyDeviceIcon = React.lazy(
+  () => import("../../../assets/svg/any-device.svg?react")
+);
 
 type DecisionRule = {
   id: number;
@@ -34,6 +44,33 @@ type DecisionRule = {
   status: "ENABLED" | "DISABLED";
   scheme: string;
   eventSourceDevice: string;
+  decision: string;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
+};
+
+const iconClasses = "w-[20px] h-[20px] text-blue-700 dark:text-blue-600";
+
+const deviceIcons: Record<string, React.ReactNode> = {
+  Mobile: <MobileIcon className={iconClasses} />,
+  "3DS Authentication Page": <DesktopIcon className={iconClasses} />,
+  "Any Managed Device": <AnyDeviceIcon className={iconClasses} />,
+};
+
+const DevicePill = ({ device }: { device: string }) => {
+  if (!device) return null;
+
+  return (
+    <span className="inline-flex items-center gap-[10px]">
+      <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
+        {/* ✅ Render from map, fallback to AnyDeviceIcon */}
+        {deviceIcons[device] || <AnyDeviceIcon className={iconClasses} />}
+      </span>
+      <span className="text-[14px] leading-[20px] dark:text-white">
+        {device}
+      </span>
+    </span>
+  );
 };
 
 const RuleMenu = ({
@@ -71,8 +108,8 @@ const RuleMenu = ({
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY, 
-        left: rect.right - 143 + window.scrollX, 
+        top: rect.bottom + window.scrollY,
+        left: rect.right - 143 + window.scrollX,
       });
     }
     setOpen((prev) => !prev);
@@ -146,7 +183,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700"/>
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -160,7 +197,7 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <EditIcon />
+              <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
@@ -172,7 +209,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,
@@ -210,6 +247,7 @@ export const DecisionRulesTable = () => {
     refetch,
     totalCount,
     error,
+    setItemsPerPage,
     handleToggleStatus, // Destructure handleToggleStatus from the hook
   } = useDecisionRulesTable();
   const [searchText, setSearchText] = useState("");
@@ -217,6 +255,15 @@ export const DecisionRulesTable = () => {
   const [statusFilter, setStatusFilter] = useState<
     "All" | "ENABLED" | "DISABLED"
   >("All");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
@@ -233,6 +280,7 @@ export const DecisionRulesTable = () => {
 
     setFilters(newFilters);
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
@@ -281,6 +329,7 @@ export const DecisionRulesTable = () => {
     setFilters({});
     setStatusFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   const isFilterActive = useMemo(
@@ -288,39 +337,41 @@ export const DecisionRulesTable = () => {
     [filters, searchText]
   );
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
   }
 
   return (
     <div className="p-6 bg-white shadow-sm dark:bg-black">
       <div className="mb-6">
-        <div className="flex items-center justify-between pt-5">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Decision Rules{" "}
-            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Rule
-              {totalCount !== 1 && "s"}
-            </span>
-          </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
+          {/* Left side: Title + description */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              Decision Rules{" "}
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                {totalCount} Rule{totalCount !== 1 && "s"}
+              </span>
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Keep track of customers and their security levels.
+            </p>
+          </div>
 
-          {totalCount !== 0 && (
+          {/* Right side: Button */}
+          {(totalCount !== 0 || !isFilterActive || isSearching) && (
             <button
               onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2"
+              className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
               <PlusIcon className="w-[20px] h-[20px] text-white" />
               Add New Rule
             </button>
           )}
         </div>
-
-        <p className="text-sm text-gray-500 mt-1">
-          Keep track of customers and their security levels.
-        </p>
       </div>
 
-      {totalCount === 0 && !isFilterActive ? (
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={<RuleIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
           title="Start adding decision rules"
@@ -344,6 +395,9 @@ export const DecisionRulesTable = () => {
             status: item.status as "ENABLED" | "DISABLED",
             scheme: item.identifier.scheme,
             eventSourceDevice: item.identifier.eventSourceDevice,
+            decision: item.decision,
+            creationTimestamp: formatTime(item.creationTimestamp ?? ""),
+            lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp ?? ""),
           }))}
           columns={columns}
           filterComponent={
@@ -357,12 +411,14 @@ export const DecisionRulesTable = () => {
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}
           onFilterStatus={onFilterStatus as (status: string) => void}
           statusFilter={statusFilter}
           onClearSearch={handleClearSearch}
           onAddNewItem={handleAddNewRule}
           title="Decision Rules"
+          loadingState={loadingState}
           error={error}
           searchText={searchText}
           setSearchText={setSearchText}
@@ -398,7 +454,7 @@ const getColumns = (
 
       const isActive = status === "ENABLED";
       return (
-        <div className="flex justify-start">
+        <div className="flex justify-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -420,18 +476,16 @@ const getColumns = (
   {
     header: "ID",
     accessorKey: "id",
+    meta: {
+      isSorted: true,
+    },
   },
   {
     header: "Rule Name",
     accessorKey: "name",
-    cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
-      </div>
-    ),
+    meta: {
+      isSorted: true,
+    },
   },
   {
     header: "Description",
@@ -441,45 +495,90 @@ const getColumns = (
     header: "Status",
     accessorKey: "status",
     cell: (info) => (
-      <span
-        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
-          info.getValue() === "ENABLED"
-            ? "bg-green-100 text-green-700"
-            : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        <div
-          className={`rounded-full bg-black w-[6px] h-[6px] ${
-            info.getValue() === "ENABLED" ? "bg-green-500" : "bg-gray-500"
+      <div className="w-full flex justify-center">
+        <span
+          className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
+            info.getValue() === "ENABLED"
+              ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
+              : "bg-gray-200 text-gray-700"
           }`}
-        ></div>
-        {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
-      </span>
+        >
+          <div
+            className={`rounded-full bg-black w-[6px] h-[6px] ${
+              info.getValue() === "ENABLED"
+                ? "bg-success-500 dark:bg-success-400"
+                : "bg-gray-500"
+            }`}
+          ></div>
+          {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        </span>
+      </div>
     ),
+  },
+  {
+    header: "Decision",
+    accessorKey: "decision",
+    cell: (info) => {
+      const value = String(info.getValue());
+      const colorMap: Record<string, string> = {
+        MFA: "text-blue-700 bg-blue-100 dark:bg-blue-900 dark:text-blue-100",
+        SCA: "text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-100",
+        REJECT: "text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-100",
+      };
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+            colorMap[value] ||
+            "text-gray-700 bg-gray-100 dark:bg-gray-800 dark:text-gray-200"
+          }`}
+        >
+          {value}
+        </span>
+      );
+    },
   },
   {
     header: "Scheme",
-    accessorKey: "scheme",
-    cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
-        </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
-      </div>
-    ),
+    accessorKey: "scheme.value",
   },
   {
     header: "Event Source Device",
-    accessorKey: "eventSourceDevice",
-    cell: (info) => (
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
+    accessorKey: "eventSourceDevice.value",
+    cell: (info) => <DevicePill device={String(info.getValue() ?? "")} />,
+  },
+  {
+    header: "Creation Time",
+    accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
+    cell: ({ row }) => {
+      const value = String(row.original.creationTimestamp);
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap`}
+        >
+          {value}
         </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
-      </div>
-    ),
+      );
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
+    },
+    cell: ({ row }) => {
+      const value = String(row.original.lastUpdatedTimestamp);
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap`}
+        >
+          {value}
+        </span>
+      );
+    },
   },
   {
     header: "",

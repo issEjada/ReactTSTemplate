@@ -6,17 +6,20 @@ import React, {
   useCallback,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import type { ColumnDef } from "@tanstack/react-table";
 import { ScoringRulesFilterForm } from "../ScoringRulesFilter/ScoringRulesFilterJsx";
 import { useScoringRulesTable } from "./useScoringRulesTable";
-import type { ViewRulesFormValues } from "../ScoringRulesFilter/useScoringRulesFilter";
-import { DynamicTable } from "../../../components/DynamicTable";
-import PopupLayout from "../../../components/Popup/LayoutPopup";
+import type { ViewScoringRulesFormValues } from "../scoringRulesServices";
+import {
+  DynamicTable,
+  type CustomColumnDef,
+} from "../../../components/DynamicTable";
+import PopupLayout from "../../../components/Popup/PopupLayout";
 import RulesPopupJsx from "../../../components/Popup/DynamicPopupJsx";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { createPortal } from "react-dom";
 import { TableFallback } from "../../../components/TableFallback";
 import { AppRoutes } from "../../../routes/AppRoutes";
+import Spinner from "../../../components/Spinner";
+import { formatTime } from "../../../utils/helpers";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
 const EditIcon = React.lazy(() => import("../../../assets/svg/Edit.svg?react"));
@@ -35,6 +38,9 @@ type Rule = {
   description: string;
   status: "ENABLED" | "DISABLED";
   riskLevel: "Low" | "Medium" | "High";
+  aspectCode: string;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 };
 
 const RuleMenu = ({
@@ -142,7 +148,7 @@ const RuleMenu = ({
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700"/>
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -156,8 +162,8 @@ const RuleMenu = ({
                 handleEdit();
               }}
             >
-              <EditIcon className="h-4 w-4" />
-              <span className="text-[14px]">Edit Rule</span>
+              <EditIcon className="text-gray-700 dark:text-white w-4 h-4" />
+              <span className="text-[14px] whitespace-nowrap">Edit Rule</span>
             </button>
             <div className="border-t border-gray-200" />
             <button
@@ -168,7 +174,7 @@ const RuleMenu = ({
                 handleDelete();
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Delete</span>
             </button>
           </div>,
@@ -178,10 +184,10 @@ const RuleMenu = ({
       <div className="cursor-auto" onClick={(e) => e.stopPropagation()}>
         <PopupLayout
           isOpen={isDeletePopupOpen}
-          className="md:w-[30%] lg:w-[35%] w-[90%]"
+          className="md:w-[30%] lg:w-[28%] w-[90%]"
         >
           <RulesPopupJsx
-            title="Delete Scoring Rule"
+            title="Scoring Rule"
             isDeleting={true}
             onConfirm={handleConfirmDelete}
             onCancel={() => setIsDeletePopupOpen(false)}
@@ -208,18 +214,27 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     refetch,
     handleSearchSubmit,
     deleteRule,
-    handleToggleStatus, 
+    handleToggleStatus,
+    setItemsPerPage,
   } = useScoringRulesTable();
   const [searchText, setSearchText] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<
     "All" | "ENABLED" | "DISABLED"
   >("All");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const onFilterStatus = (status: "All" | "ENABLED" | "DISABLED") => {
     setStatusFilter(status);
 
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewScoringRulesFormValues = {
       ...filters,
     };
 
@@ -231,13 +246,14 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 
     setFilters(newFilters);
     setCurrentPage(1);
+    setIsSearching(false);
   };
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
 
   const applyFilters = () => {
-    const newFilters: ViewRulesFormValues = {
+    const newFilters: ViewScoringRulesFormValues = {
       ...filters,
       name: searchText.trim(),
     };
@@ -252,14 +268,17 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     setCurrentPage(1);
   };
 
-  const handleDeleteRule = async (id: number) => {
-    try {
-      await deleteRule(id);
-      await refetch();
-    } catch (err) {
-      console.error("Error deleting rule:", err);
-    }
-  };
+  const handleDeleteRule = useCallback(
+    async (id: number) => {
+      try {
+        await deleteRule(id);
+        await refetch();
+      } catch (err) {
+        console.error("Error deleting rule:", err);
+      }
+    },
+    [deleteRule, refetch]
+  );
 
   const columns = useMemo(
     () => getColumns(handleToggleStatus, handleDeleteRule),
@@ -273,6 +292,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     setFilters({});
     setStatusFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   const isFilterActive = useMemo(
@@ -280,57 +300,57 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
     [filters, searchText]
   );
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
   }
   const handleAddNewRule = () => {
     navigate("/scoring-rules/new-rule");
   };
+
   return (
     <div
-      className={` bg-white dark:bg-black${
-        fromDashboard
-          ? " h-full dark:bg-black flex-grow"
-          : " pt-[50px] p-6 w-full overflow-hidden"
-      }`}
+      className={`py-6 bg-white ${
+        fromDashboard ? "xl:w-[62%] pt-0" : "shadow-sm ps-6 pe-6"
+      } dark:bg-black w-full`}
     >
       {" "}
-      <div className="flex items-center justify-between mb-6 ">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Scoring Rules{" "}
-            <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-              {totalCount} Rule
-              {totalCount !== 1 && "s"}
-            </span>
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Keep track of customers and their security levels.
-          </p>
-        </div>
-        {totalCount !== 0 && !fromDashboard && (
-          <div className="ml-auto">
-            <button
-              onClick={handleAddNewRule}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 "
-            >
-              <PlusIcon className="w-[20px] h-[20px] text-white" />
-              Add New Rule
-            </button>
+      <div className="pt-5  pb-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
+          {/* Left side: Title + description */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              Scoring Rules{" "}
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                {totalCount} Rule{totalCount !== 1 && "s"}
+              </span>
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Keep track of customers and their security levels.
+            </p>
           </div>
-        )}
 
-        {fromDashboard && (
-          <button
-            onClick={handleAddNewRule}
-            className="h-10 w-10 rounded-xl ml-auto bg-gray-100 shadow-sm hover:bg-gray-150 flex items-center justify-center dark:bg-darkTheme dark:border-gray-800"
-            aria-label="Add New Rule"
-          >
-            <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
-          </button>
-        )}
+          {/* Right side: Button */}
+          {(totalCount !== 0 || !isFilterActive || isSearching) &&
+            (fromDashboard ? (
+              <button
+                onClick={handleAddNewRule}
+                className="h-10 w-10 rounded-xl ml-auto bg-gray-100  shadow-sm hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center dark:bg-gray-800 dark:border-gray-800 "
+                aria-label="Add New Rule"
+              >
+                <PlusIcon className="w-[20px] h-[20px] text-blue-700 dark:text-gray-100" />
+              </button>
+            ) : (
+              <button
+                onClick={handleAddNewRule}
+                className="bg-blue-700  hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
+              >
+                <PlusIcon className="w-[20px] h-[20px] text-white dark:text-gray-100" />
+                Add New Rule
+              </button>
+            ))}
+        </div>
       </div>
-      {totalCount === 0 && !isFilterActive ? (
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           minimal={fromDashboard}
           icon={<LockIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
@@ -348,12 +368,15 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
         />
       ) : (
         <DynamicTable<Rule>
-          data={data.map((item) => ({
+          data={(fromDashboard ? data.slice(0, 5) : data).map((item) => ({
             id: item.id,
             name: item.name ?? "",
             description: item.description ?? "",
             status: item.status as "ENABLED" | "DISABLED",
             riskLevel: item.riskLevel as "Low" | "Medium" | "High",
+            aspectCode: item.identifier.aspectCode ?? "",
+            creationTimestamp: formatTime(item.creationTimestamp ?? ""),
+            lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp ?? ""),
           }))}
           columns={columns}
           filterComponent={
@@ -367,6 +390,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}
           onFilterStatus={
             !fromDashboard ? (onFilterStatus as (s: string) => void) : undefined
@@ -408,7 +432,7 @@ export const ScoringRulesTable: React.FC<{ fromDashboard?: boolean }> = ({
 const getColumns = (
   onToggleStatus: (id: number, currentStatus: string) => void,
   onDelete: (id: number) => void
-): ColumnDef<Rule>[] => [
+): CustomColumnDef<Rule>[] => [
   {
     header: "OFF/ON",
     cell: ({ row }) => {
@@ -416,7 +440,7 @@ const getColumns = (
 
       const isActive = status === "ENABLED";
       return (
-        <div className="flex justify-content flex-start">
+        <div className="flex justify-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -438,16 +462,29 @@ const getColumns = (
   {
     header: "ID",
     accessorKey: "id",
+    meta: {
+      isSorted: true,
+    },
   },
   {
     header: "Rule Name",
     accessorKey: "name",
-    cell: (info) => (
+    meta: {
+      isSorted: true,
+    },
+    cell: ({ row }) => (
       <div className="flex flex-col">
         <span className="font-medium text-gray-900  dark:text-white">
-          {String(info.getValue() ?? "")}
+          {String(row.original.name ?? "")}
         </span>
-        <span className="text-xs text-gray-500 dark:text-white">category</span>
+        <span className="text-xs text-gray-500 dark:text-white">
+          {Array.isArray(row.original.aspectCode) &&
+          row.original.aspectCode.length > 0
+            ? row.original.aspectCode
+                .map((item: { value: string }) => item.value)
+                .join(", ")
+            : ""}
+        </span>
       </div>
     ),
   },
@@ -459,20 +496,24 @@ const getColumns = (
     header: "Status",
     accessorKey: "status",
     cell: (info) => (
-      <span
-        className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
-          info.getValue() === "ENABLED"
-            ? "bg-green-100 text-green-700"
-            : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        <div
-          className={`rounded-full bg-black w-[6px] h-[6px] ${
-            info.getValue() === "ENABLED" ? "bg-green-500" : "bg-gray-500"
+      <div className="w-full flex justify-center">
+        <span
+          className={`flex items-center h-[22px] w-fit text-xs font-medium ps-2 pe-2 py-[2px] gap-2 rounded-full whitespace-nowrap overflow-hidden ${
+            info.getValue() === "ENABLED"
+              ? "bg-success-50 text-success-700 dark:bg-success-700 dark:text-success-50"
+              : "bg-gray-200 text-gray-700"
           }`}
-        ></div>
-        {info.getValue() === "ENABLED" ? "Active" : "Not Active"}
-      </span>
+        >
+          <div
+            className={`rounded-full bg-black w-[6px] h-[6px] ${
+              info.getValue() === "ENABLED"
+                ? "bg-success-500 dark:bg-success-400"
+                : "bg-gray-500"
+            }`}
+          ></div>
+          {info.getValue() === "ENABLED" ? "Active" : "Inactive"}
+        </span>
+      </div>
     ),
   },
   {
@@ -482,10 +523,10 @@ const getColumns = (
       const value = String(info.getValue());
       const colorMap: Record<string, string> = {
         Low: "text-gray-700 bg-gray-100",
-        Moderate: "text-warning-700 bg-warning-50",
-        Medium: "text-warning-700 bg-warning-50",
-        High: "text-red-700 bg-red-50",
-        Extreme: "text-red-700 bg-red-50",
+        Moderate: "text-warning-600 bg-warning-50",
+        Medium: "text-warning-700 bg-warning-100",
+        High: "text-red-500 bg-red-200",
+        Extreme: "text-red-100 bg-red-700",
       };
       const display =
         value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
@@ -496,6 +537,40 @@ const getColumns = (
           }`}
         >
           {display}
+        </span>
+      );
+    },
+  },
+  {
+    header: "Creation Time",
+    accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
+    cell: ({ row }) => {
+      const value = String(row.original.creationTimestamp);
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap`}
+        >
+          {value}
+        </span>
+      );
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
+    },
+    cell: ({ row }) => {
+      const value = String(row.original.lastUpdatedTimestamp);
+      return (
+        <span
+          className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap`}
+        >
+          {value}
         </span>
       );
     },

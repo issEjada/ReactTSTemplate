@@ -12,12 +12,17 @@ import { createPortal } from "react-dom";
 import EventsFilter from "../EventsFilter/EventsFilterJsx";
 import useEventsTable from "./useEventsTable";
 import { TableFallback } from "../../../components/TableFallback";
-import FullScreenSpinner from "../../../components/FullScreenSpinner";
 import { AppRoutes } from "../../../routes/AppRoutes";
 import type { EventFormValues } from "../eventsServices";
+import PopupLayout from "../../../components/Popup/PopupLayout";
+import DynamicPopupJsx from "../../../components/Popup/DynamicPopupJsx";
+import Spinner from "../../../components/Spinner";
+import { formatTime } from "../../../utils/helpers";
 
 const ViewIcon = React.lazy(() => import("../../../assets/svg/View.svg?react"));
-const UpdateIcon = React.lazy(() => import("../../../assets/svg/update.svg?react"));
+const UpdateIcon = React.lazy(
+  () => import("../../../assets/svg/update.svg?react")
+);
 const PlusIcon = React.lazy(() => import("../../../assets/svg/plus.svg?react"));
 
 const MobileIcon = React.lazy(
@@ -26,7 +31,9 @@ const MobileIcon = React.lazy(
 const DesktopIcon = React.lazy(
   () => import("../../../assets/svg/Desktop.svg?react")
 );
-const WebIcon = React.lazy(() => import("../../../assets/svg/web.svg?react"));
+const AnyDeviceIcon = React.lazy(
+  () => import("../../../assets/svg/any-device.svg?react")
+);
 
 const EventIcon = React.lazy(
   () => import("../../../assets/svg/events.svg?react")
@@ -38,28 +45,28 @@ type EventRow = {
   name: string;
   description: string;
   status: string;
-  scheme: string;
-  eventSourceDevice: string;
-  createdAt: string;
+  scheme: string | undefined;
+  eventSourceDevice: string | undefined;
+  creationTimestamp: string;
+  lastUpdatedTimestamp: string;
 };
 
-const DevicePill: React.FC<{ device: string }> = ({ device }) => {
-  const key = /web/i.test(device)
-    ? "3DS_MICROSITE_SDK_MD"
-    : /desk/i.test(device)
-    ? "WEB_SDK_MD"
-    : "MOBILE_SDK_MD";
+const iconClasses = "w-[20px] h-[20px] text-blue-700 dark:text-blue-600";
+
+const deviceIcons: Record<string, React.ReactNode> = {
+  Mobile: <MobileIcon className={iconClasses} />,
+  "3DS Authentication Page": <DesktopIcon className={iconClasses} />,
+  "Any Managed Device": <AnyDeviceIcon className={iconClasses} />,
+};
+
+const DevicePill = ({ device }: { device: string }) => {
+  if (!device) return null;
 
   return (
     <span className="inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
-        {key === "MOBILE_SDK_MD" && (
-          <MobileIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
-        {key === "WEB_SDK_MD" && <DesktopIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />}
-        {key === "3DS_MICROSITE_SDK_MD" && (
-          <WebIcon className="w-[20px] h-[20px] text-blue-700 dark:text-blue-600" />
-        )}
+        {/* ✅ Render from map, fallback to AnyDeviceIcon */}
+        {deviceIcons[device] || <AnyDeviceIcon className={iconClasses} />}
       </span>
       <span className="text-[14px] leading-[20px] dark:text-white">
         {device}
@@ -146,7 +153,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleView();
               }}
             >
-              <ViewIcon className="text-gray-700"/>
+              <ViewIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px] whitespace-nowrap">
                 View Details
               </span>
@@ -160,7 +167,7 @@ const EventMenu = ({ row }: { row: EventRow }) => {
                 handleUpdateEvent();
               }}
             >
-              <UpdateIcon className="text-gray-700"/>
+              <UpdateIcon className="text-gray-700 dark:text-white w-4 h-4" />
               <span className="text-[14px]">Update Event</span>
             </button>
           </div>,
@@ -170,11 +177,48 @@ const EventMenu = ({ row }: { row: EventRow }) => {
   );
 };
 
-const getColumns = (): ColumnDef<EventRow>[] => [
-  { header: "Code", accessorKey: "code" },
+const getColumns = (
+  onToggleStatus: (id: number, currentStatus: string) => void
+): ColumnDef<EventRow>[] => [
+  {
+    header: "OFF/ON",
+    cell: ({ row }) => {
+      const status = row.original.status;
+
+      const isActive = status === "ENABLED";
+      return (
+        <div className="flex justify-center">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleStatus(row.original.id, status);
+            }}
+            className={`w-9 h-5 flex items-center rounded-full p-0.5 cursor-pointer transition-colors duration-300 
+            ${isActive ? "bg-green-600" : "bg-gray-300"}`}
+            aria-label="Toggle Rule Status"
+          >
+            <div
+              className={`w-4 h-4 rounded-full bg-white transition-transform duration-300 transform
+            ${isActive ? "translate-x-4" : "translate-x-0"}`}
+            />
+          </button>
+        </div>
+      );
+    },
+  },
+  {
+    header: "Code",
+    accessorKey: "code",
+    meta: {
+      isSorted: true,
+    },
+  },
   {
     header: "Event Name",
     accessorKey: "name",
+    meta: {
+      isSorted: true,
+    },
     cell: (info) => (
       <div className="flex flex-col">
         <span className="font-medium dark:text-white">
@@ -184,41 +228,26 @@ const getColumns = (): ColumnDef<EventRow>[] => [
     ),
   },
   { header: "Description", accessorKey: "description" },
-  { header: "Scheme", accessorKey: "scheme" },
+  { header: "Scheme", accessorKey: "scheme.value" },
 
   {
     header: "Device",
-    accessorKey: "eventSourceDevice",
+    accessorKey: "eventSourceDevice.value",
     cell: (info) => <DevicePill device={String(info.getValue() ?? "")} />,
   },
 
   {
     header: "Creation Time",
-    accessorKey: "createdAt",
-    cell: (info) => {
-      const value = String(info.getValue() ?? "");
-      const d = new Date(value);
-      const date = isNaN(d.getTime()) ? "-" : d.toLocaleDateString("en-GB");
-      const tRaw = isNaN(d.getTime())
-        ? "-"
-        : d.toLocaleTimeString("en-US", {
-            hour12: true,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-      const time =
-        tRaw !== "-" && tRaw.includes(":")
-          ? `${tRaw.split(":")[0]}:${tRaw.split(":")[1]}:00 ${
-              tRaw.split(" ")[1]
-            }`
-          : "-";
-      return (
-        <div className="flex flex-col">
-          <span className="text-xs font-medium dark:text-white">{date}</span>
-          <span className="text-xs font-medium dark:text-white">{time}</span>
-        </div>
-      );
+    accessorKey: "creationTimestamp",
+    meta: {
+      isSorted: true,
+    },
+  },
+  {
+    header: "Last Updated Time",
+    accessorKey: "lastUpdatedTimestamp",
+    meta: {
+      isSorted: true,
     },
   },
   {
@@ -239,21 +268,34 @@ export const EventsTable = () => {
     setFilters,
     totalCount,
     loadingState,
+    isPopupOpen,
+    setIsPopupOpen,
+    popupType,
+    popupMessage,
+    handleToggleStatus,
+    setItemsPerPage,
   } = useEventsTable();
 
   const navigate = useNavigate();
 
   const [searchText, setSearchText] = useState("");
-  const [deviceFilter, setDeviceFilter] = useState<
-    "All" | "Mobile" | "Desktop" | "Web"
-  >("All");
-
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const columns = useMemo(() => getColumns(), []);
+  const columns = useMemo(
+    () => getColumns(handleToggleStatus), // Pass the destructured handleToggleStatus
+    [handleToggleStatus] // Add dependencies
+  );
 
   const openFilterModal = useCallback(() => setIsFilterOpen(true), []);
   const closeFilterModal = useCallback(() => setIsFilterOpen(false), []);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    if (loadingState === "success" && isInitialLoad) {
+      setIsInitialLoad(false);
+    }
+  }, [loadingState, isInitialLoad]);
 
   const applyFilters = () => {
     const newFilters: EventFormValues = {
@@ -272,26 +314,45 @@ export const EventsTable = () => {
   const handleClearSearch = () => {
     setSearchText("");
     setFilters({});
-    setDeviceFilter("All");
     setCurrentPage(1);
+    setIsSearching(true);
   };
 
   const handleAddNewEvent = () => {
     navigate(AppRoutes.addEvents);
   };
 
-  if (loadingState === "loading") {
-    return <FullScreenSpinner />;
-  }
+  const handleDeviceFilter = (device: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      identifier: {
+        ...prevFilters?.identifier,
+        eventSourceDevice: device === "ALL" ? undefined : device,
+      },
+    }));
+    setCurrentPage(1);
+    setIsSearching(false);
+  };
 
+  const getDeviceFilterValue = useMemo(() => {
+    if (filters?.identifier?.eventSourceDevice) {
+      return filters.identifier.eventSourceDevice;
+    }
+    return "ALL";
+  }, [filters]);
+
+  if (loadingState === "loading" && isInitialLoad) {
+    return <Spinner />;
+  }
   return (
-    <div className="flex flex-col gap-6 p-6 bg-white shadow-sm dark:bg-black dark:border-gray-800 dark:text-white">
-      <div className="pt-5 px-6 pb-[18px]">
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-start sm:items-center gap-3 sm:gap-0">
+    <div className="p-6 bg-white shadow-sm dark:bg-black">
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-5">
+          {/* Left side: Title + description */}
           <div>
-            <h2 className="text-lg text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
               Events Management{" "}
-              <span className="ml-2 text-blue-700 bg-blue-50 px-[8px] py-[2px] rounded-full text-[12px]">
+              <span className="ml-2 text-sm text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
                 {totalCount} Event{totalCount !== 1 && "s"}
               </span>
             </h2>
@@ -300,32 +361,32 @@ export const EventsTable = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Right side: Button */}
+          {(totalCount !== 0 || !isFilterActive || isSearching) && (
             <button
               onClick={handleAddNewEvent}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-4 h-[40px] rounded-[8px] text-sm font-semibold flex items-center gap-2"
+              className="bg-blue-700 hover:bg-blue-800 text-white rounded-[8px] text-sm font-medium w-[155px] h-10 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
               <PlusIcon className="w-[20px] h-[20px] text-white" />
-              <span className="text-[14px]">Add New Event</span>
+              Add New Event
             </button>
-          </div>
+          )}
         </div>
       </div>
-      {totalCount === 0 && !isFilterActive ? (
+
+      {totalCount === 0 && !isFilterActive && !isSearching ? (
         <TableFallback
           icon={<EventIcon className="sm:w-[28px] sm:h-[28px] text-gray-500" />}
-          title="Start adding decision rules"
+          title="Start adding Events"
           description={
             <>
               You don’t have any Events yet.
               <br />
-              Start monitoring by adding new evemts now"
+              Start monitoring by adding new events now"
             </>
           }
           buttonText="Add New Event"
-          buttonIcon={
-            <PlusIcon className="w-[20px] h-[20px] text-white dark:text-black " />
-          }
+          buttonIcon={<PlusIcon className="w-[20px] h-[20px] text-white" />}
           onButtonClick={handleAddNewEvent}
         />
       ) : (
@@ -339,6 +400,8 @@ export const EventsTable = () => {
             scheme: item.identifier.scheme,
             eventSourceDevice: item.identifier.eventSourceDevice,
             createdAt: item.creationTimestamp,
+            creationTimestamp: formatTime(item.creationTimestamp),
+            lastUpdatedTimestamp: formatTime(item.lastUpdatedTimestamp),
           }))}
           columns={columns}
           filterComponent={
@@ -352,16 +415,15 @@ export const EventsTable = () => {
           totalCount={totalCount}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}
-          onFilterStatus={(v) =>
-            setDeviceFilter(v as "All" | "Mobile" | "Desktop" | "Web")
-          }
-          statusFilter={deviceFilter}
+          onFilterStatus={handleDeviceFilter}
+          statusFilter={getDeviceFilterValue}
           statusFilterOptions={[
-            { key: "All", label: "View all" },
-            { key: "Mobile", label: "Mobile" },
-            { key: "Desktop", label: "Desktop" },
-            { key: "Web", label: "Web" },
+            { key: "ALL", label: "View all" },
+            { key: "MOBILE_SDK_MD", label: "Mobile" },
+            { key: "3DS_MICROSITE_SDK_MD", label: "3DS Authentication Page" },
+            { key: "ANY_SDK_MD", label: "Any Managed Device" },
           ]}
           onRowClick={(rowData) => {
             const { id } = rowData as { id: string | number };
@@ -379,8 +441,20 @@ export const EventsTable = () => {
           applyFilters={applyFilters}
           searchPlaceholder="Search Event Name"
           showStatusFilter={true}
+          loadingState={loadingState}
         />
       )}
+
+      <PopupLayout isOpen={isPopupOpen} className="w-[30%]">
+        <DynamicPopupJsx
+          title="Event"
+          isError={popupType === "errorModal"}
+          errorMessage={popupMessage}
+          onCancel={() => {
+            setIsPopupOpen(false);
+          }}
+        />
+      </PopupLayout>
     </div>
   );
 };
