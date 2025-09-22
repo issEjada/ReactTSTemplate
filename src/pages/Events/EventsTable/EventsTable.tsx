@@ -63,7 +63,7 @@ const DevicePill = ({ device }: { device: string }) => {
   if (!device) return null;
 
   return (
-    <span className="inline-flex items-center gap-[10px]">
+    <span className="w-full inline-flex items-center gap-[10px]">
       <span className="w-[40px] h-[40px] rounded-[8px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
         {/* ✅ Render from map, fallback to AnyDeviceIcon */}
         {deviceIcons[device] || <AnyDeviceIcon className={iconClasses} />}
