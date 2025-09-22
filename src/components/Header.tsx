@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/Context";
 import { useHeader } from "./useHeader";
 import LogoutPopupJsx from "./Popup/LogoutPopupJsx";
@@ -8,6 +8,7 @@ import { ConstantKeys } from "../constants/ConstantKeys.constants";
 import { ThemeContext } from "../context/Context";
 import { ThemeModeIcon } from "../context/ThemeProvider";
 import Spinner from "./Spinner";
+import { AppRoutes } from "../routes/AppRoutes";
 
 const SideBarIcon = React.lazy(
   () => import(`/src/assets/svg/Sidebar.svg?react`)
@@ -34,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
     return localStorage.getItem("dontShowLogoutPopup") === "true";
   });
   const { toggleDarkMode } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   const handleSetDontShowLogoutPopup = (value: boolean) => {
     setDontShowLogoutPopup(value);
@@ -72,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
       <Breadcrumb onSidebarIconClick={onSidebarIconClick} />
       {/* Right: Actions */}
       <div className="flex items-start gap-5">
-        <div className="p-1 cursor-pointer pt-[10px]" onClick={toggleDarkMode} >
+        <div className="p-1 cursor-pointer pt-[10px]" onClick={toggleDarkMode}>
           <ThemeModeIcon className="text-black dark:text-white" />
         </div>
         {/* Icons */}
@@ -95,13 +97,19 @@ const Header: React.FC<HeaderProps> = ({ onSidebarIconClick }) => {
               <div className="absolute top-[34px] right-[-20px] mt-2  bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 px-2 w-52 z-10">
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-2">
-                    <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                    <button
+                      className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left"
+                      onClick={() => navigate(AppRoutes.comingSoon)}
+                    >
                       <ProfileIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       View Profile
                     </button>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <button className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left">
+                    <button
+                      className="w-full flex items-center gap-2 text-sm text-gray-700 dark:text-gray-100 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 py-1 dark:border-gray-400 text-left"
+                      onClick={() => navigate(AppRoutes.comingSoon)}
+                    >
                       <SettingsIcon className="w-5 h-5 text-gray-700 dark:text-gray-400" />
                       Settings
                     </button>
